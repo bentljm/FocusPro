@@ -1,0 +1,8 @@
+/node_modules
+npm-debug.log
+.DS_Store
+.floo
+.flooignore
+/compiled
+/*.env
+/client/dist/bundle.js
