@@ -17,7 +17,7 @@ if (config.use_env_variable) {
 
 
 
-var models = require('./Models');
+var models = require('./Schema');
 models.sequelize.authenticate().then(function () { // Test connection
 	console.log('Connection successful');
 }).catch(function (err) { // Error handling
