@@ -1,8 +1,16 @@
 var Sequelize = require('sequelize');
-var password = require('../config/config.js');
 var pg = require('pg');
+var DB_URL;
+
+if(process.env.node_env === 'production') {
+  DB_URL = process.env.DATABASE_URL;
+} else {
+  var config = require('../config/config.js');
+  DB_URL = config.LOCAL_DATABASE_URL;
+}
+
 pg.defaults.ssl = true;
-var db = new Sequelize('postgres://plihxksykayods:' + password.DB_PASSWORD + '@ec2-54-163-240-7.compute-1.amazonaws.com:5432/d41rni98208e1m?&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory');
+var db = new Sequelize(DB_URL + '?&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory');
 
 var User = db.define('User', {
   username: {type: Sequelize.STRING, unique: true},
