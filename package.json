@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "server/server.js",
-  "test": "npm test",
   "scripts": {
     "start": "node server/server.js",
     "devstart": "nodemon server/server.js",
