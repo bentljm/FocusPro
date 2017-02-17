@@ -1,6 +1,4 @@
-var models = require('../server/databases/Models')
-var url = require('url');
-var db = require('');
+var db = require('../server/databases/Schema');
 var parser  = require('body-parser');
 var express = require('express');
 var app = express();
@@ -32,7 +30,8 @@ function getSingleUser(req, res, next) {
 }
 
 function getSetting(req, res, next) {
-
+  var settings = req.params.username.setting;
+  db.one('select * from users')
 }
 
 function getBlackList(req, res, next) {
