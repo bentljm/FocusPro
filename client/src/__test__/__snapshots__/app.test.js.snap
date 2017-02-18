@@ -1,5 +1,1 @@
-exports[`App (Snapshot) App renders hello world 1`] = `
-<div>
-  Hello world!
-</div>
-`;
+exports[`App (Snapshot) App renders hello world 1`] = `<div />`;

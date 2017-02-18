@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Landingpage from './Landingpage.js';
 
 export default class App extends React.Component {
   constructor (props) {
@@ -7,7 +8,7 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
-        Hello world!
+        {this.props.children}
       </div>
     );
   }
