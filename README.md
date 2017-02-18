@@ -1,13 +1,12 @@
 # FocusPro Documentation
 
-Find the deployed version of Membrain at: [focuspro.herokuapp.com](http://focuspro.herokuapp.com)
+Find the deployed version of FocusPro at: [focuspro.herokuapp.com](http://focuspro.herokuapp.com)
 
-Membrain runs on the following tech stack:
+FocusPro runs on the following tech stack:
 - Node.js
 - Express
 - React
-- MongoDB
-- Mongoose
+- PostgreSQL
 
 To start the application on a local machine:
 
