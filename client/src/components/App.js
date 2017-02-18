@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Landingpage from './Landingpage.js';
+import {Sidebar} from './Sidebar.js';
 
 export default class App extends React.Component {
   constructor (props) {
@@ -8,7 +9,12 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
-        {this.props.children}
+        <Sidebar />
+        <main>
+          <div className="container">
+            {this.props.children}
+          </div>
+        </main>
       </div>
     );
   }
