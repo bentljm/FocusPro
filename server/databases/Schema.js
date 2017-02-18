@@ -1,8 +1,8 @@
 var Sequelize = require('sequelize');
 var pg = require('pg');
-var DB_URL;
+var DB_URL = '';
 
-if(process.env.node_env === 'production') {
+if(process.env.NODE_ENV === 'production') {
   DB_URL = process.env.DATABASE_URL;
 } else {
   var config = require('../config/config.js');
