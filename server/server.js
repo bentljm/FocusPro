@@ -8,7 +8,7 @@ var app = express();
 app.use(bodyparser.json());
 app.use(express.static(path.join(__dirname, '../client')));
 
-var port = PROCESS.ENV.PORT || 7777;
+var port = process.env.PORT || 7777;
 app.listen(port, function() {
   console.log('Listening on', port);
 });
