@@ -14,6 +14,7 @@ render(
   <Router history={hashHistory}>
     <Route path="/" component = {App}>
     <IndexRoute component={Landingpage}></IndexRoute>
+    <Route path="access_token=:token" component={Dashboard}/>
     <Route path="dashboard" component={Dashboard}/>
     <Route path="selfreflection" component={Selfreflection}/>
     <Route path="settings" component={Settings}/>
