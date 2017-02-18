@@ -3,12 +3,11 @@ var parser  = require('body-parser');
 var express = require('express');
 var app = express();
 
-
 function getAllUsers(req, res, next) {
   db.any('select * from User').then(function(data) {
   	res.status(200).json({
-  		status: 'success', 
-  		data: data, 
+  		status: 'success',
+  		data: data,
   		message: 'RETREIVED ALL USERS'
   	});
   }).catch(function (err) {
@@ -55,7 +54,7 @@ function getAllGoals(req, res, next) {
 }
 
 function postAllGoals(req, res, next) {
-  db.none('insert into Goal(goal_id, progress, subgoal_id, goal_picture + goal + reflection_id)' 
+  db.none('insert into Goal(goal_id, progress, subgoal_id, goal_picture + goal + reflection_id)'
     + 'values(${goal_id} + ${progress} + ${subgoal_id} + ${goal_picture} + ${goal} + ${reflection_id})', req.body)
   .tnen(function () {
     res.status(200).json({
