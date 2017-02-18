@@ -1,69 +1,93 @@
 var Sequelize = require('sequelize');
-var db = new Sequelize('database', 'root', '');
+var pg = require('pg');
+var DB_URL;
+
+if(process.env.node_env === 'production') {
+  DB_URL = process.env.DATABASE_URL;
+} else {
+  var config = require('../config/config.js');
+  DB_URL = config.LOCAL_DATABASE_URL;
+}
+
+pg.defaults.ssl = true;
+var db = new Sequelize(DB_URL + '?&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory');
 
 var User = db.define('User', {
-  id: Sequelize.INTEGER,
-  goal_id: Sequelize.INTEGER,
-  setting_id: Sequelize.INTEGER,
-  extension_id: Sequelize.INTEGER
+  username: {type: Sequelize.STRING, unique: true},
+  password: Sequelize.STRING,
+  daily_goal: Sequelize.STRING
+});
+
+var Goal = db.define('Goal', {
+  goal: Sequelize.STRING,
+  progress: Sequelize.INTEGER,
+  goal_picture: Sequelize.STRING
+});
+
+var Subgoal = db.define('Subgoal', {
+  subgoal: Sequelize.STRING,
+  status: Sequelize.BOOLEAN
+});
+
+var Setting = db.define('Setting', {
+  picture: Sequelize.STRING,
+  quote: Sequelize.STRING,
+  reflection_freq: Sequelize.INTEGER,
+  reminder: Sequelize.BOOLEAN,
+  reminder_type: Sequelize.STRING,
+  reminder_freq: Sequelize.INTEGER,
+  reminder_address: Sequelize.STRING
+});
+
+var Extension = db.define('Extension', {
+  url: {type: Sequelize.STRING, unique: true},
+  time_spent: Sequelize.INTEGER,
+  freq: Sequelize.INTEGER
+});
+
+var Reflection = db.define('Reflection', {
+  answer: Sequelize.STRING
+});
+
+var Question = db.define('Question', {
+  question: Sequelize.STRING
+});
+
+var Url = db.define('Url', {
+  url: {type: Sequelize.STRING, unique: true},
+  blacklist_type: Sequelize.STRING,
+  blacklist_time: Sequelize.INTEGER
 });
 
 var Friendship = db.define('Friendship', {
-  friend_id: Sequelize.INTEGER,
-  user1_id: Sequelize.INTEGER,
-  user2_id: Sequelize.INTEGER,
   isFriends: Sequelize.BOOLEAN
-})
-
-
-var Goal = db.define('Goal' {
-  goal_id: Sequelize.INTEGER,
-  progress: Sequelize.INTEGER,
-  subgoal_id: Sequelize.INTEGER,
-  goal_picture: Sequelize.STRING,
-  goal: Sequelize.STRING,
-  reflection_id: Sequelize.INTEGER
-})
-
-var Subgoal = db.define('Subgoal', {
-  subgoal_id: Sequelize.INTEGER,
-  status: Sequelize.BOOLEAN,
-  subgoal: Sequelize.STRING
-})
-
-var Reflection = db.define('Reflection', {
-  reflection_id: Sequelize.NUMBER,
-  question_id: Sequelize.NUMBER,
-  answer: Sequelize.STRING
-})
-
-var Question = db.define('Question', {
-  question_id: Sequelize.NUMBER,
-  question: Sequelize.STRING
-})
-
-var Url = db.define('Url' {
-  url_id: Sequelize.NUMBER,
-  blacklist_type: Sequelize.NUMBER,
-  blacklist_time: Sequelize.NUMBER,
-  url: Sequelize.String
 });
 
-var Settings = db.define('Setting' {
-  setting_id: Sequelize.NUMBER,
-  url_id: Sequelize.NUMBER,
-  picture: Sequelize.STRING,
-  quote: Sequelize.STRING,
-  reflection_freq: Sequelize.NUMBER,
-  reminder: Sequelize.BOOLEAN,
-  reminder_type: Sequelize.STRING,
-  reminder_freq: Sequelize.NUMBER,
-  reminder_address: Sequelize.STRING
-})
+User.hasMany(Goal);
+User.hasOne(Setting);
+User.hasMany(Extension);
+Goal.hasMany(Subgoal);
+Goal.hasMany(Reflection);
+Reflection.hasOne(Question);
+Setting.hasMany(Url);
+User.belongsToMany(User, {as: 'user1', through: 'Friendship', foreignKey: 'user1_id' });
+User.belongsToMany(User, {as: 'user2', through: 'Friendship', foreignKey: 'user2_id' });
 
-var Extension = db.define('Extension' {
-  url: Sequelize.STRING,
-  time_spent: Sequelize.NUMBER,
-  freq: Sequelize.NUMBER,
-  e_id: Sequelize.NUMBER
-})
+db.sync();
+
+exports.Sequelize = db;
+
+exports.User = User;
+exports.Goal = Goal;
+exports.Subgoal = Subgoal;
+exports.Setting = Setting;
+exports.Extension = Extension;
+exports.Reflection = Reflection;
+exports.Question = Question;
+exports.Friendship = Friendship;
+exports.Url = Url;
+
+
+
+
+
