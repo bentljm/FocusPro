@@ -1,6 +1,22 @@
-body {
+/*body {
   height: 100%;
   text-align: center;
   margin-left: 5%;
   margin-right: 5%;
+}*/
+
+nav {
+  background-color: #2e6cca;
+}
+
+.theme-color {
+  background-color: #4b87e1;
+}
+.side-nav a {
+  color: white;
+
+}
+
+.side-nav li>a>i.icon-white {
+    color: white;
 }
