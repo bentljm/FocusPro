@@ -11,6 +11,7 @@ if(process.env.node_env === 'production') {
 
 pg.defaults.ssl = true;
 var db = new Sequelize(DB_URL + '?&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory');
+console.log('Successfully connected to PostgreSQL database');
 
 var User = db.define('User', {
   username: {type: Sequelize.STRING, unique: true},
@@ -76,7 +77,6 @@ User.belongsToMany(User, {as: 'user2', through: 'Friendship', foreignKey: 'user2
 db.sync();
 
 exports.Sequelize = db;
-
 exports.User = User;
 exports.Goal = Goal;
 exports.Subgoal = Subgoal;
