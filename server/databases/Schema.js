@@ -1,12 +1,12 @@
 var Sequelize = require('sequelize');
 var pg = require('pg');
-var DB_URL;
+var DB_URL = '';
 
-if(process.env.node_env === 'production') {
-  DB_URL = process.env.DATABASE_URL;
+if(PROCESS.ENV.NODE_ENV === 'production') {
+  DB_URL = PROCESS.ENV.DATABASE_URL;
 } else {
-  var config = require('../config/config.js');
-  DB_URL = config.LOCAL_DATABASE_URL;
+  // var config = require('../config/config.js');
+  // DB_URL = config.LOCAL_DATABASE_URL;
 }
 
 pg.defaults.ssl = true;
