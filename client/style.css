@@ -14,9 +14,19 @@ nav {
 }
 .side-nav a {
   color: white;
-
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .side-nav li>a>i.icon-white {
     color: white;
+    margin-right: 10px;
+}
+
+.side-nav .userView .circle {
+  height: 100px;
+  width: 100px;
+  border-color: white;
+  border: solid;
+  margin-left: 20px;
 }
