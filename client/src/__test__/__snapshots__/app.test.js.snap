@@ -1,1 +1,69 @@
-exports[`App (Snapshot) App renders hello world 1`] = `<div />`;
+exports[`App (Snapshot) App renders 1`] = `<div />`;
+
+exports[`Dashboard (Snapshot) Dashboard renders 1`] = `
+<div>
+  <h1>
+     Welcome, USER 
+  </h1>
+  <div>
+    <h3>
+       Goal 
+    </h3>
+    <div>
+      <h5>
+         Subgoal 
+      </h5>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Goal (Snapshot) Goal renders 1`] = `
+<div>
+  <h3>
+     Goal 
+  </h3>
+  <div>
+    <h5>
+       Subgoal 
+    </h5>
+  </div>
+</div>
+`;
+
+exports[`Landingpage (Snapshot) Landingpage renders 1`] = `
+<div>
+  <h1>
+     FocusPro 
+  </h1>
+  <h5>
+     Welcome to PhocusPro. 
+    <br />
+     We help you limit distractions and stay on task. 
+  </h5>
+</div>
+`;
+
+exports[`Selfreflection (Snapshot) Selfreflection renders 1`] = `
+<div>
+  <h1>
+     Self-Reflection 
+  </h1>
+</div>
+`;
+
+exports[`Settings (Snapshot) Settings renders 1`] = `
+<div>
+  <h1>
+     Settings 
+  </h1>
+</div>
+`;
+
+exports[`Subgoal (Snapshot) Subgoal renders 1`] = `
+<div>
+  <h5>
+     Subgoal 
+  </h5>
+</div>
+`;
