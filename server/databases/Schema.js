@@ -5,8 +5,8 @@ var DB_URL = '';
 if(process.env.NODE_ENV === 'production') {
   DB_URL = process.env.DATABASE_URL;
 } else {
-  // var config = require('../config/config.js');
-  // DB_URL = config.LOCAL_DATABASE_URL;
+  var config = require('../config/config.js');
+  DB_URL = config.LOCAL_DATABASE_URL;
 }
 
 pg.defaults.ssl = true;
