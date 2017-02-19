@@ -3,6 +3,7 @@ import {Row, Input, Col, Button} from 'react-materialize';
 import Goal from './Goal.js';
 import Site from './Site.js';
 import Stat from './Stat.js';
+import Motivational from './Motivational.js';
 
 export default class Dashboard extends React.Component {
   render() {
@@ -32,7 +33,7 @@ export default class Dashboard extends React.Component {
           </li>
         </ul>
         <Row>
-        <Input s={8} label="New Goal"/> <Button className="goalButton" waves='light' onClick={()=>console.log('set goal')}>Set Goal</Button> <Button className="goalButton" waves='light'>Inspire Me</Button>
+        <Input s={8} label="New Goal"/> <Button className="goalButton" waves='light' onClick={()=>console.log('set goal')}>Set Goal</Button> <Motivational />
         </Row>
         <br />
         <h3> Sites: </h3>
