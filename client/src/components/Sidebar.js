@@ -9,10 +9,8 @@ export class Sidebar extends React.Component {
     this.state = {
       profile: this.props.auth.getProfile()
     };
-    console.log('state profile', this.state.profile);
     // listen to profile_updated events to update internal state
     this.props.auth.event.on('profile_updated',(newProfile)=>{
-      console.log('event listened', newProfile);
       this.setState({'profile': newProfile});
     });
   }
@@ -20,16 +18,16 @@ export class Sidebar extends React.Component {
   render(){
     return (
       <header>
-          <nav className="top-nav">
-            <div className="container">
-              <div className="nav-wrapper"><a className="page-title">FocusPro</a></div>
-            </div>
-          </nav>
-          <div className="container"><a href="#" data-activates="slide-out" className="button-collapse top-nav full hide-on-large-only"><i className="material-icons">menu</i></a></div>
+        <nav className="top-nav full hide-on-large-only"> 
+          <div className="nav-wrapper">
+            <a href="#" data-activates="slide-out" className="button-collapse top-nav full hide-on-large-only"><i className="material-icons">menu</i>
+            </a>
+          </div> 
+        </nav>
 
           <ul id="slide-out" className="side-nav fixed theme-color">
             {localStorage.profile && <li><div className="userView">
-              <a href="#"><img className="circle" /></a>
+              <a href="#"><img className="circle" src={this.state.profile.picture}/></a>
               <a href="#"><span className="name">{this.state.profile.nickname}</span></a>
               <a href="#"><span className="email">{this.state.profile.email}</span></a>
               <a href="#" className="btn" onClick={this.props.auth.logout}>Log Out</a>
@@ -39,8 +37,8 @@ export class Sidebar extends React.Component {
                 {!localStorage.id_token && <a href="#" className="btn" onClick={this.props.auth.login}>Log In</a>}
             </li>
             <li><div className="divider"></div></li>
-            <li><a href="#" className="waves-effect"><i className="material-icons icon-white">settings</i>Settings</a></li>
-            <li><a href="#" className="waves-effect"><i className="material-icons icon-white">perm_identity</i>Self Reflections</a></li>
+            {localStorage.profile && <li><a href="#/settings" className="waves-effect"><i className="material-icons icon-white">settings</i>Settings</a></li>}
+            {localStorage.profile && <li><a href="#/selfreflection" className="waves-effect"><i className="material-icons icon-white">perm_identity</i>Self Reflections</a></li>}
           </ul>
       </header>
     );

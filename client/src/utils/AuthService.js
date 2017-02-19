@@ -18,8 +18,6 @@ export default class AuthService {
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
 
-    //set a profile property
-    this.profile = null;
     this.event = new EventEmitter();
   }
 
@@ -38,20 +36,12 @@ export default class AuthService {
   }
 
   setProfile(profile) {
-    console.log(profile);
-    console.log('stringify profile',JSON.stringify(profile));
     localStorage.setItem('profile', JSON.stringify(profile));
-    this.profile = profile;
-    console.log('this.profile',this.profile);
-    // let event = new EventEmitter();
     this.event.emit('profile_updated', profile);
   }
 
   getProfile(callback) {
     const profile = localStorage.getItem('profile');
-    // callback && callback(JSON.parse(profile));
-    // console.log('get this.Profile',this.profile);
-    // return this.profile; //return null
     return profile ? JSON.parse(profile) : {};
   }
 
@@ -76,7 +66,6 @@ export default class AuthService {
   }
 
   logout() {
-    console.log('logout',this.getProfile().name);
     localStorage.removeItem('id_token');
     localStorage.removeItem('profile');
     browserHistory.replace('/');
