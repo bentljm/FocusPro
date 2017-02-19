@@ -1,11 +1,13 @@
 import React from 'react';
-import {} from 'react-materialize';
+import {Row, Input} from 'react-materialize';
 
 export default class Subgoal extends React.Component {
   render() {
     return (
       <div>
-        <h5> Subgoal </h5>
+        <Row>
+          <Input name='group1' type='checkbox' value='red' label='Subgoal' />
+        </Row>
       </div>
     );
   }
