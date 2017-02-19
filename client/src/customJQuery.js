@@ -10,6 +10,9 @@ $( document ).ready(function() {
 
       //Collapsible
       $('.collapsible').collapsible();
+
+      //Select button
+      $('select').material_select();
     }
   );
 });
