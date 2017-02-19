@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Landingpage from './Landingpage.js';
 import {Sidebar} from './Sidebar.js';
-import Auth from './Auth.js';
 import {Grid, Row, Col} from 'react-materialize';
 
 export default class App extends React.Component {
@@ -10,46 +9,24 @@ export default class App extends React.Component {
     super(props);
   }
 
-  componentWillMount () {
-      this.lock = new Auth0Lock('V3oJOmHRIeW7nJnLZIa7ioWOo8godJVQ', 'focuspro.auth0.com');
-      // Set the state with a property that has the token
-      this.setState({idToken: this.getIdToken()})
-  }
-
-  createLock () {
-    this.lock = new Auth0Lock(this.props.clientId, this.props.domain);
-  }
-
-  getIdToken () {
-    // First, check if there is already a JWT in local storage
-    var idToken = localStorage.getItem('id_token');
-    var authHash = this.lock.parseHash(window.location.hash);
-    // If there is no JWT in local storage and there is one in the URL hash,
-    // save it in local storage
-    if (!idToken && authHash) {
-      if (authHash.id_token) {
-        idToken = authHash.id_token
-        localStorage.setItem('id_token', authHash.id_token);
-      }
-      if (authHash.error) {
-        // Handle any error conditions
-        console.log("Error signing in", authHash);
-      }
-    }
-    return idToken;
-  }
-
   render() {
+    //pass auth to all children elements
+    let children = null;
+    if (this.props.children) {
+      //add the auth property to each of children
+      children = React.cloneElement(this.props.children,{
+        auth: this.props.route.auth
+      });
+    }
     return (
       <div>
-        <Sidebar />
+        <Sidebar auth={this.props.route.auth}/>
         <main>
           <Row>
           <Col s= {1}> </Col>
           <Col s={11}>
           <div className="container">
-            <Auth lock={this.lock} />
-            {this.props.children}
+            {children}
           </div>
           </Col>
           </Row>
