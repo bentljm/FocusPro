@@ -132,7 +132,7 @@ function getSubGoals(req, res, next) {  // Get subgoals
 // POSTERS
 
 function postBlackList(req, res, next)  {
-  console.log("EZ")
+  console.log("HELLO WORLD")
 }
 
 function postReflectionId(req, res, next) {
