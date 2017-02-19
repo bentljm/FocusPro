@@ -6,7 +6,7 @@ export default class Subgoal extends React.Component {
     return (
       <div>
         <Row>
-          <Input name='group1' type='checkbox' value='red' label='Subgoal' />
+          <Input name='group1' type='checkbox' value='check' label='Subgoal' />
         </Row>
       </div>
     );

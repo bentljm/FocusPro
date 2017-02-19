@@ -155,7 +155,7 @@ exports[`Dashboard (Snapshot) Dashboard renders 1`] = `
                   onChange={[Function]}
                   placeholder={undefined}
                   type="checkbox"
-                  value="red" />
+                  value="check" />
                 <label
                   className=""
                   data-error={undefined}
@@ -224,7 +224,7 @@ exports[`Dashboard (Snapshot) Dashboard renders 1`] = `
     <button
       className="btn waves-effect waves-light goalButton"
       disabled={false}
-      onClick={undefined}>
+      onClick={[Function]}>
       Inspire Me
     </button>
   </div>
@@ -243,7 +243,9 @@ exports[`Dashboard (Snapshot) Dashboard renders 1`] = `
       <div
         className="collapsible-body">
         <span>
-          Line chart here.
+          <div>
+            Image of line chart goes here. Along with whatever text.
+          </div>
         </span>
       </div>
     </li>
@@ -255,7 +257,9 @@ exports[`Dashboard (Snapshot) Dashboard renders 1`] = `
       <div
         className="collapsible-body">
         <span>
-          Line chart here.
+          <div>
+            Image of line chart goes here. Along with whatever text.
+          </div>
         </span>
       </div>
     </li>
@@ -267,7 +271,9 @@ exports[`Dashboard (Snapshot) Dashboard renders 1`] = `
       <div
         className="collapsible-body">
         <span>
-          Line chart here.
+          <div>
+            Image of line chart goes here. Along with whatever text.
+          </div>
         </span>
       </div>
     </li>
@@ -281,14 +287,23 @@ exports[`Dashboard (Snapshot) Dashboard renders 1`] = `
     className="row">
     <div
       className="col s4">
+      <div>
+        Placeholder pie chart goes here.
+      </div>
       Today\'s Stats
     </div>
     <div
       className="col s4">
+      <div>
+        Placeholder pie chart goes here.
+      </div>
       Week\'s Stats
     </div>
     <div
       className="col s4">
+      <div>
+        Placeholder pie chart goes here.
+      </div>
       All Time Stats
     </div>
   </div>
@@ -318,17 +333,17 @@ exports[`Goal (Snapshot) Goal renders 1`] = `
           <input
             className=""
             defaultValue={undefined}
-            id="input_3"
+            id="input_4"
             name="group1"
             onChange={[Function]}
             placeholder={undefined}
             type="checkbox"
-            value="red" />
+            value="check" />
           <label
             className=""
             data-error={undefined}
             data-success={undefined}
-            htmlFor="input_3">
+            htmlFor="input_4">
             Subgoal
           </label>
         </div>
@@ -608,31 +623,76 @@ exports[`Selfreflection (Snapshot) Selfreflection renders 1`] = `
   <h1>
      Self-Reflection 
   </h1>
-  <table
-    className="responsive highlight">
-    <thead>
-      <tr>
-        <th
-          data-field="id">
-          Date
-        </th>
-        <th
-          data-field="question">
+  <ul
+    className="collapsible"
+    data-collapsible="expandable">
+    <li>
+      <div
+        className="collapsible-header">
+        <span
+          className="questionDate">
+          02/17/17
+        </span>
+        <span
+          className="questionDate">
+          |
+        </span>
+        <span>
+          Did you spend adequate time towards your goal today?
+        </span>
+      </div>
+      <div
+        className="collapsible-body">
+        <span>
+          Answer here.
+        </span>
+      </div>
+    </li>
+    <li>
+      <div
+        className="collapsible-header">
+        <span
+          className="questionDate">
+          02/18/17
+        </span>
+        <span
+          className="questionDate">
+          |
+        </span>
+        <span>
           Question
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>
-          2/18/17
-        </td>
-        <td>
-          Question Goes Here
-        </td>
-      </tr>
-    </tbody>
-  </table>
+        </span>
+      </div>
+      <div
+        className="collapsible-body">
+        <span>
+          Answer here.
+        </span>
+      </div>
+    </li>
+    <li>
+      <div
+        className="collapsible-header">
+        <span
+          className="questionDate">
+          02/19/17
+        </span>
+        <span
+          className="questionDate">
+          |
+        </span>
+        <span>
+          Question
+        </span>
+      </div>
+      <div
+        className="collapsible-body">
+        <span>
+          Answer here.
+        </span>
+      </div>
+    </li>
+  </ul>
 </div>
 `;
 
@@ -684,7 +744,7 @@ exports[`Settings (Snapshot) Settings renders 1`] = `
       <input
         className=""
         defaultValue={undefined}
-        id="input_5"
+        id="input_6"
         onChange={[Function]}
         placeholder={undefined}
         type="text" />
@@ -692,7 +752,7 @@ exports[`Settings (Snapshot) Settings renders 1`] = `
         className=""
         data-error={undefined}
         data-success={undefined}
-        htmlFor="input_5">
+        htmlFor="input_6">
         Add Site
       </label>
     </div>
@@ -702,13 +762,13 @@ exports[`Settings (Snapshot) Settings renders 1`] = `
         className="active"
         data-error={undefined}
         data-success={undefined}
-        htmlFor="input_6">
+        htmlFor="input_7">
         Type
       </label>
       <select
         className=""
         defaultValue="1"
-        id="input_6"
+        id="input_7"
         multiple={undefined}>
         <option
           value="1">
@@ -729,29 +789,6 @@ exports[`Settings (Snapshot) Settings renders 1`] = `
       <input
         className=""
         defaultValue={undefined}
-        id="input_7"
-        onChange={[Function]}
-        placeholder={undefined}
-        type="text" />
-      <label
-        className=""
-        data-error={undefined}
-        data-success={undefined}
-        htmlFor="input_7">
-        Time Limit (min)
-      </label>
-    </div>
-  </div>
-  <h3>
-     Personalization: 
-  </h3>
-  <div
-    className="row">
-    <div
-      className="col input-field s12">
-      <input
-        className=""
-        defaultValue={undefined}
         id="input_8"
         onChange={[Function]}
         placeholder={undefined}
@@ -761,10 +798,13 @@ exports[`Settings (Snapshot) Settings renders 1`] = `
         data-error={undefined}
         data-success={undefined}
         htmlFor="input_8">
-        Image
+        Time Limit (min)
       </label>
     </div>
   </div>
+  <h3>
+     Personalization: 
+  </h3>
   <div
     className="row">
     <div
@@ -781,6 +821,26 @@ exports[`Settings (Snapshot) Settings renders 1`] = `
         data-error={undefined}
         data-success={undefined}
         htmlFor="input_9">
+        Image
+      </label>
+    </div>
+  </div>
+  <div
+    className="row">
+    <div
+      className="col input-field s12">
+      <input
+        className=""
+        defaultValue={undefined}
+        id="input_10"
+        onChange={[Function]}
+        placeholder={undefined}
+        type="text" />
+      <label
+        className=""
+        data-error={undefined}
+        data-success={undefined}
+        htmlFor="input_10">
         Quote
       </label>
     </div>
@@ -793,13 +853,13 @@ exports[`Settings (Snapshot) Settings renders 1`] = `
         className="active"
         data-error={undefined}
         data-success={undefined}
-        htmlFor="input_10">
+        htmlFor="input_11">
         Reminder Type
       </label>
       <select
         className=""
         defaultValue="1"
-        id="input_10"
+        id="input_11"
         multiple={undefined}>
         <option
           value="1">
@@ -820,7 +880,7 @@ exports[`Settings (Snapshot) Settings renders 1`] = `
       <input
         className=""
         defaultValue={undefined}
-        id="input_11"
+        id="input_12"
         onChange={[Function]}
         placeholder={undefined}
         type="text" />
@@ -828,7 +888,7 @@ exports[`Settings (Snapshot) Settings renders 1`] = `
         className=""
         data-error={undefined}
         data-success={undefined}
-        htmlFor="input_11">
+        htmlFor="input_12">
         Number/Email Address
       </label>
     </div>
@@ -838,13 +898,13 @@ exports[`Settings (Snapshot) Settings renders 1`] = `
         className="active"
         data-error={undefined}
         data-success={undefined}
-        htmlFor="input_12">
+        htmlFor="input_13">
         Frequency
       </label>
       <select
         className=""
         defaultValue="1"
-        id="input_12"
+        id="input_13"
         multiple={undefined}>
         <option
           value="1">
@@ -873,17 +933,17 @@ exports[`Subgoal (Snapshot) Subgoal renders 1`] = `
       <input
         className=""
         defaultValue={undefined}
-        id="input_4"
+        id="input_5"
         name="group1"
         onChange={[Function]}
         placeholder={undefined}
         type="checkbox"
-        value="red" />
+        value="check" />
       <label
         className=""
         data-error={undefined}
         data-success={undefined}
-        htmlFor="input_4">
+        htmlFor="input_5">
         Subgoal
       </label>
     </div>

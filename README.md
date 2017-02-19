@@ -12,9 +12,11 @@ FocusPro runs on the following tech stack:
 To set up local database (Mac):
 1. Download and install Postgres.app.
 2. Create config.js in server/config/ and insert the following (replace username with your username):
+```javascript
  module.exports = {
   'LOCAL_DATABASE_URL': 'postgres://username:@localhost:5432/username'
 }
+```
 3. Follow the steps here: [Enable SSL in Postgres.app on Mac](http://blog.workherder.com/enable-ssl-in-the-postgres-app-on-mac-os-x/)
 
 To use Chrome Extension:
