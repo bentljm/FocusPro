@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Landingpage from './Landingpage.js';
 import {Sidebar} from './Sidebar.js';
 import Auth from './Auth.js';
+import {Grid, Row, Col} from 'react-materialize';
 
 export default class App extends React.Component {
 
@@ -43,10 +44,15 @@ export default class App extends React.Component {
       <div>
         <Sidebar />
         <main>
+          <Row>
+          <Col s= {1}> </Col>
+          <Col s={11}>
           <div className="container">
             <Auth lock={this.lock} />
             {this.props.children}
           </div>
+          </Col>
+          </Row>
         </main>
       </div>
     );

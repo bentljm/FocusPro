@@ -15,7 +15,7 @@ To set up local database (Mac):
  module.exports = {
   'LOCAL_DATABASE_URL': 'postgres://username:@localhost:5432/username'
 }
-3. Follow the steps here: http://blog.workherder.com/enable-ssl-in-the-postgres-app-on-mac-os-x/
+3. Follow the steps here: [Enable SSL in Postgres.app on Mac](http://blog.workherder.com/enable-ssl-in-the-postgres-app-on-mac-os-x/)
 
 To use Chrome Extension:
 1. Navigate to chrome://extensions on a Chrome tab.
