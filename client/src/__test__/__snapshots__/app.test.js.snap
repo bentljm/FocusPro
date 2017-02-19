@@ -98,43 +98,508 @@ exports[`Dashboard (Snapshot) Dashboard renders 1`] = `
   <h1>
      Welcome, USER 
   </h1>
-  <div>
-    <h3>
-       Goal 
-    </h3>
-    <div>
-      <h5>
-         Subgoal 
-      </h5>
+  \"The way to get started is to quit talking and begin doing.\" - Walt Disney
+  <br />
+  <br />
+  <h3>
+     Goal of the Day: 
+  </h3>
+  <div
+    className="row">
+    <div
+      className="col input-field s12">
+      <input
+        className=""
+        defaultValue={undefined}
+        id="input_0"
+        onChange={[Function]}
+        placeholder={undefined}
+        type="text" />
+    </div>
+  </div>
+  <h3>
+     Main Goals: 
+  </h3>
+  <ul
+    className="collapsible"
+    data-collapsible="expandable">
+    <li>
+      <div
+        className="collapsible-header">
+        Goal
+      </div>
+      <div
+        className="collapsible-body">
+        <span>
+          <form
+            action="#">
+            <p
+              className="range-field">
+              <input
+                id="slider"
+                max="100"
+                min="0"
+                type="range" />
+            </p>
+          </form>
+          <div>
+            <div
+              className="row">
+              <div
+                className="col">
+                <input
+                  className=""
+                  defaultValue={undefined}
+                  id="input_1"
+                  name="group1"
+                  onChange={[Function]}
+                  placeholder={undefined}
+                  type="checkbox"
+                  value="red" />
+                <label
+                  className=""
+                  data-error={undefined}
+                  data-success={undefined}
+                  htmlFor="input_1">
+                  Subgoal
+                </label>
+              </div>
+            </div>
+          </div>
+        </span>
+      </div>
+    </li>
+    <li>
+      <div
+        className="collapsible-header">
+        Second
+      </div>
+      <div
+        className="collapsible-body">
+        <span>
+          Map for every goal.
+        </span>
+      </div>
+    </li>
+    <li>
+      <div
+        className="collapsible-header">
+        Third
+      </div>
+      <div
+        className="collapsible-body">
+        <span>
+          Map for every goal.
+        </span>
+      </div>
+    </li>
+  </ul>
+  <div
+    className="row">
+    <div
+      className="col input-field s8">
+      <input
+        className=""
+        defaultValue={undefined}
+        id="input_2"
+        onChange={[Function]}
+        placeholder={undefined}
+        type="text" />
+      <label
+        className=""
+        data-error={undefined}
+        data-success={undefined}
+        htmlFor="input_2">
+        New Goal
+      </label>
+    </div>
+     
+    <button
+      className="btn waves-effect waves-light goalButton"
+      disabled={false}
+      onClick={[Function]}>
+      Set Goal
+    </button>
+     
+    <button
+      className="btn waves-effect waves-light goalButton"
+      disabled={false}
+      onClick={undefined}>
+      Inspire Me
+    </button>
+  </div>
+  <br />
+  <h3>
+     Sites: 
+  </h3>
+  <ul
+    className="collapsible"
+    data-collapsible="expandable">
+    <li>
+      <div
+        className="collapsible-header">
+        Site 1
+      </div>
+      <div
+        className="collapsible-body">
+        <span>
+          Line chart here.
+        </span>
+      </div>
+    </li>
+    <li>
+      <div
+        className="collapsible-header">
+        Site 2
+      </div>
+      <div
+        className="collapsible-body">
+        <span>
+          Line chart here.
+        </span>
+      </div>
+    </li>
+    <li>
+      <div
+        className="collapsible-header">
+        Site 3
+      </div>
+      <div
+        className="collapsible-body">
+        <span>
+          Line chart here.
+        </span>
+      </div>
+    </li>
+  </ul>
+  <br />
+  <br />
+  <h3>
+     Stats: 
+  </h3>
+  <div
+    className="row">
+    <div
+      className="col s4">
+      Today\'s Stats
+    </div>
+    <div
+      className="col s4">
+      Week\'s Stats
+    </div>
+    <div
+      className="col s4">
+      All Time Stats
     </div>
   </div>
 </div>
 `;
 
 exports[`Goal (Snapshot) Goal renders 1`] = `
-<div>
-  <h3>
-     Goal 
-  </h3>
-  <div>
-    <h5>
-       Subgoal 
-    </h5>
-  </div>
+<div
+  className="collapsible-body">
+  <span>
+    <form
+      action="#">
+      <p
+        className="range-field">
+        <input
+          id="slider"
+          max="100"
+          min="0"
+          type="range" />
+      </p>
+    </form>
+    <div>
+      <div
+        className="row">
+        <div
+          className="col">
+          <input
+            className=""
+            defaultValue={undefined}
+            id="input_3"
+            name="group1"
+            onChange={[Function]}
+            placeholder={undefined}
+            type="checkbox"
+            value="red" />
+          <label
+            className=""
+            data-error={undefined}
+            data-success={undefined}
+            htmlFor="input_3">
+            Subgoal
+          </label>
+        </div>
+      </div>
+    </div>
+  </span>
 </div>
 `;
 
 exports[`Landingpage (Snapshot) Landingpage renders 1`] = `
 <div
   className="row">
-  <h1>
+  <h1
+    className="center">
      FocusPro 
   </h1>
-  <h5>
-     Welcome to PhocusPro. 
-    <br />
+  <h3
+    className="center">
+     Welcome to FocusPro.
+  </h3>
+  <h5
+    className="center">
      We help you limit distractions and stay on task. 
   </h5>
+  <br />
+   
+  <br />
+  <div
+    className="row">
+    <div
+      className="col s7">
+      <img
+        className="placeholder" />
+    </div>
+    <div
+      className="col s5">
+      <br />
+       
+      <br />
+      <br />
+       
+      <br />
+       
+      <br />
+      Set goals and subgoals and track your progress. Blacklist sites to limit distractions by blocking or warning you when you have exceeded the time limit you have set.
+    </div>
+  </div>
+  <br />
+   
+  <br />
+  <div
+    className="row">
+    <div
+      className="col s7">
+      <br />
+       
+      <br />
+      <br />
+       
+      <br />
+       
+      <br />
+      Alerts you when you are off task through window notifications using our Chrome extension. Shows prompts to ask you to self-reflect on your progress for the day and how much you have worked towards your goal.
+    </div>
+    <div
+      className="col s5">
+      <img
+        className="placeholder" />
+    </div>
+  </div>
+  <br />
+   
+  <br />
+  <div
+    className="row">
+    <div
+      className="col s7">
+      <img
+        className="placeholder" />
+    </div>
+    <div
+      className="col s5">
+      <br />
+       
+      <br />
+      <br />
+       
+      <br />
+       
+      <br />
+      Intelligently keeps track of overall data patterns. See how your habits change as you slowly wean yourself off unproductive sites.
+    </div>
+  </div>
+  <br />
+   
+  <br />
+  <div
+    className="row">
+    <div
+      className="col s7">
+      <br />
+       
+      <br />
+      <br />
+       
+      <br />
+       
+      <br />
+      <h5>
+        Companion Google Chrome Extension
+      </h5>
+      Use our Chrome extension to track your tab usage and to send you alert messages and self-reflection questions. Download here.
+    </div>
+    <div
+      className="col s5">
+      <img
+        className="placeholder" />
+    </div>
+  </div>
+  <br />
+  <div
+    className="center">
+    <a
+      className="waves-effect waves-light btn-large">
+      Get Started
+    </a>
+  </div>
+  <br />
+  <h5
+    className="center">
+     Meet the Team 
+  </h5>
+  <div
+    className="row">
+    <div
+      className="col s3">
+      <div
+        className="white card">
+        <div
+          className="card-content">
+          <span
+            className="card-title grey-text text-darken-4">
+            Jeff Bentler
+          </span>
+          <div>
+            Image and blurb goes here
+          </div>
+        </div>
+        <div
+          className="card-reveal">
+          <span
+            className="card-title grey-text text-darken-4">
+            Jeff Bentler
+            <i
+              className="material-icons right">
+              close
+            </i>
+          </span>
+        </div>
+        <div
+          className="card-action">
+          <a
+            href="#">
+            GitHub
+          </a>
+        </div>
+      </div>
+    </div>
+    <div
+      className="col s3">
+      <div
+        className="white card">
+        <div
+          className="card-content">
+          <span
+            className="card-title grey-text text-darken-4">
+            Josephine Chen
+          </span>
+          <div>
+            Image and blurb goes here
+          </div>
+        </div>
+        <div
+          className="card-reveal">
+          <span
+            className="card-title grey-text text-darken-4">
+            Josephine Chen
+            <i
+              className="material-icons right">
+              close
+            </i>
+          </span>
+        </div>
+        <div
+          className="card-action">
+          <a
+            href="#">
+            GitHub
+          </a>
+        </div>
+      </div>
+    </div>
+    <div
+      className="col s3">
+      <div
+        className="white card">
+        <div
+          className="card-content">
+          <span
+            className="card-title grey-text text-darken-4">
+            Ian George
+          </span>
+          <div>
+            Image and blurb goes here
+          </div>
+        </div>
+        <div
+          className="card-reveal">
+          <span
+            className="card-title grey-text text-darken-4">
+            Ian George
+            <i
+              className="material-icons right">
+              close
+            </i>
+          </span>
+        </div>
+        <div
+          className="card-action">
+          <a
+            href="#">
+            GitHub
+          </a>
+        </div>
+      </div>
+    </div>
+    <div
+      className="col s3">
+      <div
+        className="white card">
+        <div
+          className="card-content">
+          <span
+            className="card-title grey-text text-darken-4">
+            Sherry Hsu
+          </span>
+          <div>
+            Image and blurb goes here
+          </div>
+        </div>
+        <div
+          className="card-reveal">
+          <span
+            className="card-title grey-text text-darken-4">
+            Sherry Hsu
+            <i
+              className="material-icons right">
+              close
+            </i>
+          </span>
+        </div>
+        <div
+          className="card-action">
+          <a
+            href="#">
+            GitHub
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 `;
 
@@ -143,6 +608,31 @@ exports[`Selfreflection (Snapshot) Selfreflection renders 1`] = `
   <h1>
      Self-Reflection 
   </h1>
+  <table
+    className="responsive highlight">
+    <thead>
+      <tr>
+        <th
+          data-field="id">
+          Date
+        </th>
+        <th
+          data-field="question">
+          Question
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          2/18/17
+        </td>
+        <td>
+          Question Goes Here
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 `;
 
@@ -151,13 +641,252 @@ exports[`Settings (Snapshot) Settings renders 1`] = `
   <h1>
      Settings 
   </h1>
+  <h3>
+     Blacklist: 
+  </h3>
+  <table
+    className="">
+    <thead>
+      <tr>
+        <th
+          data-field="id">
+          Site
+        </th>
+        <th
+          data-field="type">
+          Type
+        </th>
+        <th
+          data-field="limit">
+          Time Limit
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          www.facebook.com
+        </td>
+        <td>
+          Blackout
+        </td>
+        <td>
+          N/A
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <br />
+  <div
+    className="row">
+    <div
+      className="col input-field s6">
+      <input
+        className=""
+        defaultValue={undefined}
+        id="input_5"
+        onChange={[Function]}
+        placeholder={undefined}
+        type="text" />
+      <label
+        className=""
+        data-error={undefined}
+        data-success={undefined}
+        htmlFor="input_5">
+        Add Site
+      </label>
+    </div>
+    <div
+      className="col input-field s3">
+      <label
+        className="active"
+        data-error={undefined}
+        data-success={undefined}
+        htmlFor="input_6">
+        Type
+      </label>
+      <select
+        className=""
+        defaultValue="1"
+        id="input_6"
+        multiple={undefined}>
+        <option
+          value="1">
+          Blackout
+        </option>
+        <option
+          value="2">
+          Block after exceeding
+        </option>
+        <option
+          value="3">
+          Warn after exceeding
+        </option>
+      </select>
+    </div>
+    <div
+      className="col input-field s3">
+      <input
+        className=""
+        defaultValue={undefined}
+        id="input_7"
+        onChange={[Function]}
+        placeholder={undefined}
+        type="text" />
+      <label
+        className=""
+        data-error={undefined}
+        data-success={undefined}
+        htmlFor="input_7">
+        Time Limit (min)
+      </label>
+    </div>
+  </div>
+  <h3>
+     Personalization: 
+  </h3>
+  <div
+    className="row">
+    <div
+      className="col input-field s12">
+      <input
+        className=""
+        defaultValue={undefined}
+        id="input_8"
+        onChange={[Function]}
+        placeholder={undefined}
+        type="text" />
+      <label
+        className=""
+        data-error={undefined}
+        data-success={undefined}
+        htmlFor="input_8">
+        Image
+      </label>
+    </div>
+  </div>
+  <div
+    className="row">
+    <div
+      className="col input-field s12">
+      <input
+        className=""
+        defaultValue={undefined}
+        id="input_9"
+        onChange={[Function]}
+        placeholder={undefined}
+        type="text" />
+      <label
+        className=""
+        data-error={undefined}
+        data-success={undefined}
+        htmlFor="input_9">
+        Quote
+      </label>
+    </div>
+  </div>
+  <div
+    className="row">
+    <div
+      className="col input-field s2">
+      <label
+        className="active"
+        data-error={undefined}
+        data-success={undefined}
+        htmlFor="input_10">
+        Reminder Type
+      </label>
+      <select
+        className=""
+        defaultValue="1"
+        id="input_10"
+        multiple={undefined}>
+        <option
+          value="1">
+          No Reminder
+        </option>
+        <option
+          value="2">
+          Text
+        </option>
+        <option
+          value="3">
+          Email
+        </option>
+      </select>
+    </div>
+    <div
+      className="col input-field s8">
+      <input
+        className=""
+        defaultValue={undefined}
+        id="input_11"
+        onChange={[Function]}
+        placeholder={undefined}
+        type="text" />
+      <label
+        className=""
+        data-error={undefined}
+        data-success={undefined}
+        htmlFor="input_11">
+        Number/Email Address
+      </label>
+    </div>
+    <div
+      className="col input-field s2">
+      <label
+        className="active"
+        data-error={undefined}
+        data-success={undefined}
+        htmlFor="input_12">
+        Frequency
+      </label>
+      <select
+        className=""
+        defaultValue="1"
+        id="input_12"
+        multiple={undefined}>
+        <option
+          value="1">
+          Daily
+        </option>
+        <option
+          value="2">
+          Weekly
+        </option>
+      </select>
+    </div>
+  </div>
+  <h3>
+     Chrome Extension: 
+  </h3>
+  Forgot to download the extension? Download it here: ___________
 </div>
 `;
 
 exports[`Subgoal (Snapshot) Subgoal renders 1`] = `
 <div>
-  <h5>
-     Subgoal 
-  </h5>
+  <div
+    className="row">
+    <div
+      className="col">
+      <input
+        className=""
+        defaultValue={undefined}
+        id="input_4"
+        name="group1"
+        onChange={[Function]}
+        placeholder={undefined}
+        type="checkbox"
+        value="red" />
+      <label
+        className=""
+        data-error={undefined}
+        data-success={undefined}
+        htmlFor="input_4">
+        Subgoal
+      </label>
+    </div>
+  </div>
 </div>
 `;

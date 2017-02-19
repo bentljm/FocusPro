@@ -59,22 +59,22 @@ export default class Landingpage extends React.Component {
       <h5 className="center"> Meet the Team </h5>
       <Row>
       <Col s={3}>
-        <Card className='white' title='Jeff Bentler' actions={[<a href='#'>GitHub</a>]}>
+        <Card key={0} className='white' title='Jeff Bentler' actions={[<a href='#'>GitHub</a>]}>
         Image and blurb goes here
         </Card>
       </Col>
       <Col s={3}>
-        <Card className='white' title='Josephine Chen' actions={[<a href='#'>GitHub</a>]}>
+        <Card key={1} className='white' title='Josephine Chen' actions={[<a href='#'>GitHub</a>]}>
         Image and blurb goes here
         </Card>
       </Col>
       <Col s={3}>
-        <Card className='white' title='Ian George' actions={[<a href='#'>GitHub</a>]}>
+        <Card key={2} className='white' title='Ian George' actions={[<a href='#'>GitHub</a>]}>
         Image and blurb goes here
         </Card>
       </Col>
        <Col s={3}>
-        <Card className='white' title='Sherry Hsu' actions={[<a href='#'>GitHub</a>]}>
+        <Card key={3} className='white' title='Sherry Hsu' actions={[<a href='#'>GitHub</a>]}>
         Image and blurb goes here
         </Card>
       </Col>

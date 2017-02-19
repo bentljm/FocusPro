@@ -10,9 +10,9 @@ describe('Sidebar', () => {
     sidebar = shallow(<Sidebar />);
   });
 
-  it('Sidebar renders title', () => {
-    expect(sidebar.find('.page-title').text()).toEqual('FocusPro');
-  });
+  // it('Sidebar renders title', () => {
+  //   expect(sidebar.find('.page-title').text()).toEqual('FocusPro');
+  // });
 });
 
 describe('Sidebar (Snapshot)', () => {
