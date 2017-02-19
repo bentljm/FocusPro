@@ -55,6 +55,8 @@ export default class Settings extends React.Component {
           <option value='2'>Weekly</option>
         </Input>
         </Row>
+        <h3> Chrome Extension: </h3>
+        Forgot to download the extension? Download it here: ___________
       </div>
     );
   }
