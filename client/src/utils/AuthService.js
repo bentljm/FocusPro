@@ -4,9 +4,10 @@ import { browserHistory } from 'react-router';
 export default class AuthService {
   constructor(clientId, domain) {
     // Configure Auth0
+    var HOST_URL = process.env.NODE_ENV === 'production'? 'http://focuspro.herokuapp.com/#/':'http://localhost:7777/#/';
     this.lock = new Auth0Lock(clientId, domain, {
       auth: {
-        redirectUrl: 'http://localhost:7777/',
+        redirectUrl: HOST_URL,
         responseType: 'token'
       }
     });
