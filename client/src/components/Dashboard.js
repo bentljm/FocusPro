@@ -1,7 +1,7 @@
 import React from 'react';
 import {Row, Input, Col, Button} from 'react-materialize';
 import Goal from './Goal.js';
-
+//Todo: Create a site component
 export default class Dashboard extends React.Component {
   render() {
     return (
