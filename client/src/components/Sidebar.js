@@ -12,8 +12,8 @@ export const Sidebar =({auth})=>(
           
           <a href="#"><span className="name">John Doe</span></a>
           <a href="#"><span className="email">jdandturk@gmail.com</span></a>
-          {!localStorage.id_toekn && <a href="#" className="btn" onClick={auth.login}>Log In</a>}
-          {localStorage.id_toekn &&<a href="#" className="btn" onClick={auth.logout}>Log Out</a>}
+          {!localStorage.id_token && <a href="#" className="btn" onClick={auth.login}>Log In</a>}
+          {localStorage.id_token &&<a href="#" className="btn" onClick={auth.logout}>Log Out</a>}
         </div></li>
         <li><div className="divider"></div></li>
         <li><a href="#/dashboard" className="waves-effect"><i className="material-icons icon-white">dashboard</i>Dashboard</a></li>
