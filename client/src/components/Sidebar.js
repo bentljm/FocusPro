@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Grid, Row, Col} from 'react-materialize'
-export const Sidebar =()=>(
+export const Sidebar =({auth})=>(
 
   <header>
       <nav className="top-nav full hide-on-large-only">
@@ -9,9 +9,8 @@ export const Sidebar =()=>(
       <ul id="slide-out" className="side-nav fixed theme-color">
         <li><div className="userView">
           <a href="#"><img className="circle" /></a>
-          <a href="#"><span className="name">John Doe</span></a>
-          <a href="#"><span className="email">jdandturk@gmail.com</span></a>
-          <a href="#" className="btn">Log Out</a>
+          <a href="#" className="btn" onClick={auth.login}>Log In</a>
+          <a href="#" className="btn" onClick={auth.logout}>Log Out</a>
         </div></li>
         <li><div className="divider"></div></li>
         <li><a href="#/dashboard" className="waves-effect"><i className="material-icons icon-white">dashboard</i>Dashboard</a></li>
