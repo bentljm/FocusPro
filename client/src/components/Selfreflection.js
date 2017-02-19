@@ -1,5 +1,6 @@
 import React from 'react';
-import {Table} from 'react-materialize';
+import {} from 'react-materialize';
+import Question from './Question.js';
 
 //Todo: Create a question component
 export default class Selfreflection extends React.Component {
@@ -7,21 +8,27 @@ export default class Selfreflection extends React.Component {
     return (
       <div>
         <h1> Self-Reflection </h1>
-        <Table className="responsive highlight">
-          <thead>
-            <tr>
-              <th data-field="id">Date</th>
-              <th data-field="question">Question</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr>
-              <td>2/18/17</td>
-              <td>Question Goes Here</td>
-            </tr>
-          </tbody>
-        </Table>
+        <ul className="collapsible" data-collapsible="expandable">
+          <li>
+            <div className="collapsible-header">
+              <span className="questionDate">02/17/17</span><span className="questionDate">|</span>
+              <span>Did you spend adequate time towards your goal today?</span>
+            </div>
+            <div className="collapsible-body"><span>Answer here.</span></div>
+          </li>
+          <li>
+            <div className="collapsible-header">
+              <span className="questionDate">02/18/17</span><span className="questionDate">|</span><span>Question</span>
+            </div>
+            <div className="collapsible-body"><span>Answer here.</span></div>
+          </li>
+          <li>
+            <div className="collapsible-header">
+              <span className="questionDate">02/19/17</span><span className="questionDate">|</span><span>Question</span>
+            </div>
+            <div className="collapsible-body"><span>Answer here.</span></div>
+          </li>
+        </ul>
       </div>
     );
   }
