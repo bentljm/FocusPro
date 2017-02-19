@@ -45,8 +45,8 @@ export default class App extends React.Component {
         <Sidebar />
         <main>
           <Row>
-          <Col s= {2}> </Col>
-          <Col s={10}>
+          <Col s= {1}> </Col>
+          <Col s={11}>
           <div className="container">
             <Auth lock={this.lock} />
             {this.props.children}

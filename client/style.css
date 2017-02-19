@@ -22,7 +22,9 @@ nav {
     color: white;
     margin-right: 10px;
 }
-
+ul#slide-out.side-nav.fixed.theme-color {
+  max-width: 200px;
+}
 .side-nav .userView .circle {
   height: 100px;
   width: 100px;
@@ -42,4 +44,10 @@ nav {
   margin-top: 20px;
   padding-left: 20px;
   padding-right: 20px;
+}
+
+.side-nav .divider {
+  margin-top: 25px;
+  margin-bottom: 15px;
+  padding-top: 5px;
 }

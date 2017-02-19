@@ -14,8 +14,10 @@ export const Sidebar =()=>(
           <a href="#" className="btn">Log Out</a>
         </div></li>
         <li><div className="divider"></div></li>
-        <li><a href="#" className="waves-effect"><i className="material-icons icon-white">settings</i>Settings</a></li>
-        <li><a href="#" className="waves-effect"><i className="material-icons icon-white">perm_identity</i>Self Reflections</a></li>
+        <li><a href="#/dashboard" className="waves-effect"><i className="material-icons icon-white">dashboard</i>Dashboard</a></li>
+        <li><a href="#/selfreflection" className="waves-effect"><i className="material-icons icon-white">perm_identity</i>Self Reflections</a></li>
+        <li><a href="#/settings" className="waves-effect"><i className="material-icons icon-white">settings</i>Settings</a></li>
+
       </ul>
     </header>
 );
