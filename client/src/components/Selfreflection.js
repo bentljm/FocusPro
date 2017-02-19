@@ -1,8 +1,6 @@
 import React from 'react';
 import {} from 'react-materialize';
-import Question from './Question.js';
 
-//Todo: Create a question component
 export default class Selfreflection extends React.Component {
   render() {
     return (

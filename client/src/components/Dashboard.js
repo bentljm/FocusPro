@@ -1,7 +1,9 @@
 import React from 'react';
 import {Row, Input, Col, Button} from 'react-materialize';
 import Goal from './Goal.js';
-//Todo: Create a site component
+import Site from './Site.js';
+import Stat from './Stat.js';
+
 export default class Dashboard extends React.Component {
   render() {
     return (
@@ -37,15 +39,15 @@ export default class Dashboard extends React.Component {
         <ul className="collapsible" data-collapsible="expandable">
           <li>
             <div className="collapsible-header">Site 1</div>
-            <div className="collapsible-body"><span>Line chart here.</span></div>
+            <div className="collapsible-body"><span><Site /></span></div>
           </li>
           <li>
             <div className="collapsible-header">Site 2</div>
-            <div className="collapsible-body"><span>Line chart here.</span></div>
+            <div className="collapsible-body"><span><Site /></span></div>
           </li>
           <li>
             <div className="collapsible-header">Site 3</div>
-            <div className="collapsible-body"><span>Line chart here.</span></div>
+            <div className="collapsible-body"><span><Site /></span></div>
           </li>
         </ul>
         <br />
@@ -53,12 +55,15 @@ export default class Dashboard extends React.Component {
         <h3> Stats: </h3>
         <Row>
           <Col s={4}>
+          <Stat />
           Today's Stats
           </Col>
           <Col s={4}>
+          <Stat />
           Week's Stats
           </Col>
           <Col s={4}>
+          <Stat />
           All Time Stats
           </Col>
         </Row>
