@@ -17,7 +17,7 @@ function getAllUsers(req, res, next) {
 }
 
 function getSingleUser(req, res, next) {
-  var goal = req.body.username;
+  var username = req.params.username;
   db.User.find({where: {username: username}}).then(function (data) {
     res.status(200).json({
       status: 'success',
@@ -98,11 +98,11 @@ function getReflections(req, res, next) {
 
 function getReflectionId(req, res, next) {
   var answer = req.params.answer;
-  db.User.find({where: {answer: answer}}).then(function (data) {
+  db.Reflection.find({where: {answer: answer}}).then(function (data) {
     res.status(200).json({
       status: 'success',
       data: data,
-      message: 'GOT USER FROM DATABASE: answer ' + answer
+      message: 'GOT REFLECTION FROM DATABASE: answer ' + answer
     })
   }).catch(function (err) {
     return next(err);
@@ -110,7 +110,7 @@ function getReflectionId(req, res, next) {
 }
 
 function postReflectionId(req, res, next) {
-  db.Url.create({
+  db.Reflection.create({
     answer: req.body.answer
    })
   .then(function () {
@@ -136,12 +136,12 @@ function getAllGoals(req, res, next) {
 }
 
 function getSingleGoal(req, res, next) {
-  var username = req.body.goal;
-  db.User.find({where: {goal: goal}}).then(function (data) {
+  var goal = req.body.goal;
+  db.Goal.find({where: {goal: goal}}).then(function (data) {
     res.status(200).json({
       status: 'success',
       data: data,
-      message: 'GOT USER FROM DATABASE: goal' + goal
+      message: 'GOT GOAL FROM DATABASE: goal' + goal
     })
   }).catch(function (err) {
     return next(err);
