@@ -19,7 +19,7 @@ module.exports = function(app, express) {
 
   app.get('/api/users/:username/:reflection_id', controller.getReflectionId) // Get individual reflection id
 
-  app.post('/api/users/:username/:reflection_id', controller.postgetReflectionId) // Post individual reflection id
+  app.post('/api/users/:username/:reflection_id', controller.postReflectionId) // Post individual reflection id
 
   app.get('/api/users/:username/goals', controller.getAllGoals) //Get all goals
 
