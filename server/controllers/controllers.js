@@ -1,4 +1,4 @@
-var db = require('../server/databases/Schema');
+var db = require('../databases/Schema');
 var parser  = require('body-parser');
 var express = require('express');
 var app = express();
