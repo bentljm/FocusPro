@@ -5,45 +5,45 @@ var app = express();
 
 
 function getAllUsers(req, res, next) {
-  db.any('select * from User').then(function(data) {
-  	res.status(200).json({
-  		status: 'success', 
-  		data: data, 
-  		message: 'RETREIVED ALL USERS'
-  	});
+  db.User.findAll({}).then(function(data) {
+    res.status(200).json({
+      status: 'success', 
+      data: data, 
+      message: 'RETREIVED ALL USERS'
+    });
   }).catch(function (err) {
-  	return next(err);
+    return next(err);
   });
 }
 
 function getSingleUser(req, res, next) {
-  var username = parseInt(req.params.username);
-  db.one('select * from Users where username = $1', username).then(function (data) {
-  	res.status(200).json({
-  		status: 'success',
-  		data: data,
-  		message: 'GOT ONE USER FROM DATABASE: username' + username;
-  	})
+  var username = req.params.username;
+  db.User.find({where: {username: username}}).then(function (data) {
+    res.status(200).json({
+      status: 'success',
+      data: data,
+      message: 'GOT USER FROM DATABASE: username' + username
+    })
   }).catch(function (err) {
-  	return next(err);
+    return next(err);
   });
 }
 
 function getSetting(req, res, next) {
-  var settings = req.params.id;
-  db.one('select * from Users where id = $1', settings).then(function (data) {
-  	res.status(200).json({
-  		status: 'success',
-  		data: data,
-  		message: 'GOT SETTINGS FROM DATABASE: ID' + id;
-  	});
+  var settings = req.body.setting;
+  db.Setting.find({where: {picture: settings}}).then(function (data) {
+    res.status(200).json({
+      status: 'success',
+      data: data,
+      message: 'GOT SETTINGS FROM DATABASE: ID   ' + settings
+    });
   }).catch(function (err) {
     return next(err);
   });
 }
 
 function getBlackList(req, res, next) {
-  db.one('select * from Url').then(function (data) {
+  db.Url.findAll({}).then(function (data) {
     res.status(200).json({
       status: 'success', 
       data: data,
@@ -55,8 +55,13 @@ function getBlackList(req, res, next) {
 }
 
 function postBlackList(req, res, next) {
-  db.none('insert into Url(url, blacklist_type, blacklist_name)'
-    + 'values(${url} + ${blacklist_type} + ${blacklist_name})', req.body)
+   db.Url.create({
+    url: req.body.url,
+    blacklist_type: req.body.blacklist_type,
+    blacklist_time: req.body.blacklist_time
+   })
+//  db.Url.create('insert into Url(url, blacklist_type, blacklist_name)'
+  //  + 'values(${url} + ${blacklist_type} + ${blacklist_name})', req.body)
   .then(function () {
     res.status(201).json({
       status: 'success', 
@@ -68,7 +73,7 @@ function postBlackList(req, res, next) {
 }
 
 function getExtension(req, res, next) {
-  db.one('select * from Extension').then(function (data) {
+  db.Extension.findAll({}).then(function (data) {
     res.status(200).json({
       status: 'success',
       data: data,
@@ -80,7 +85,7 @@ function getExtension(req, res, next) {
 }
 
 function getReflections(req, res, next) {
-  db.one('select * from Reflection').then(function (data) {
+  db.Reflection.findAll({}).then(function (data) {
     res.status(200).json({
       status: 'success',
       data: data,
@@ -92,12 +97,28 @@ function getReflections(req, res, next) {
 }
 
 function getReflectionId(req, res, next) {
-  var id = parseInt(req.params.id);
-  db.one('select * from Users where id = $1', id).then(function (data) {
+  var answer = req.params.answer;
+  db.User.find({where: {answer: answer}}).then(function (data) {
     res.status(200).json({
       status: 'success',
       data: data,
-      message: 'GOT ONE USER FROM DATABASE: id' + id;
+      message: 'GOT USER FROM DATABASE: answer ' + answer
+    })
+  }).catch(function (err) {
+    return next(err);
+  });
+}
+
+function postReflectionId(req, res, next) {
+  db.Url.create({
+    answer: answer
+   })
+//  db.Url.create('insert into Url(url, blacklist_type, blacklist_name)'
+  //  + 'values(${url} + ${blacklist_type} + ${blacklist_name})', req.body)
+  .then(function () {
+    res.status(201).json({
+      status: 'success', 
+      message: 'INSERTED NEW BLACKLIST'
     })
   }).catch(function (err) {
     return next(err);
@@ -118,7 +139,7 @@ function postReflectionId(req, res, next) {
 }
 
 function getAllGoals(req, res, next) {
-  db.any('select * from Goal').then(function (data) {
+  db.Goal.findAll({}).then(function (data) {
     res.status(200).json({
       status: 'success',
       data: data,
@@ -130,11 +151,11 @@ function getAllGoals(req, res, next) {
 }
 
 function postAllGoals(req, res, next) {
-  db.none('insert into Goal(goal, progress, goal_picture)'
+  db.User.findById('insert into Goal(goal, progress, goal_picture)'
     + 'values(${goal}, ${progress}, ${goal_picture})' + req.body)
   .then(function () {
     res.status(201).json({
-      status: 'success'
+      status: 'success',
       message: 'POSTED GOALS'
     });
   }).catch(function (err) {
@@ -156,11 +177,11 @@ function getSingleGoal(req, res, next) {
 }
 
 function postSingleGoal(req, res, next) {
-  db.none('insert into Goal(goal, progress, goal_picture)'
+  db.User.findById('insert into Goal(goal, progress, goal_picture)'
     + 'values($1, $2, $3)', [req.params.goal, req.params.progress, req.params.goal_picture])
-  .tnen(function () {
-    res.status(200).json({
-      status: 'success'
+  .then(function () {
+    res.status(201).json({
+      status: 'success',
       message: 'Inserted goals'
     });
   }).catch(function (err) {
@@ -170,7 +191,7 @@ function postSingleGoal(req, res, next) {
 
 
 function getSubGoals(req, res, next) {
-  db.any('select * from Subgoal').then(function(data) {
+  db.Subgoal.findAll({}).then(function(data) {
     res.status(200).json({
       status: 'success', 
       data: data, 
@@ -183,11 +204,11 @@ function getSubGoals(req, res, next) {
 
 
 function postSubGoals(req, res, next) {
-  db.none('insert into Subgoal(subgoal, status)' 
+  db.User.findById('insert into Subgoal(subgoal, status)' 
     + 'values(${subgoal} + ${status})', req.body)
-  .tnen(function () {
-    res.status(200).json({
-      status: 'success'
+  .then(function () {
+    res.status(201).json({
+      status: 'success',
       message: 'INSERTED SUBGOALS'
     });
   }).catch(function (err) {
@@ -202,6 +223,8 @@ module.exports = {
   getBlackList: getBlackList,
   postBlackList: postBlackList,
   getExtension: getExtension,
+  getAllGoals: getAllGoals,
+  postAllGoals: postAllGoals,
   getReflections: getReflections,
   getReflectionId: getReflectionId,
   postReflectionId: postReflectionId,
