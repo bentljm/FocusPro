@@ -111,7 +111,7 @@ function getReflectionId(req, res, next) {
 
 function postReflectionId(req, res, next) {
   db.Url.create({
-    answer: answer
+    answer: req.body.answer
    })
   .then(function () {
     res.status(201).json({
@@ -136,16 +136,19 @@ function getAllGoals(req, res, next) {
 }
 
 function postAllGoals(req, res, next) {
-  db.User.findById('insert into Goal(goal, progress, goal_picture)'
-    + 'values(${goal}, ${progress}, ${goal_picture})' + req.body)
+  db.Goal.create({
+    goal: req.body.goal,
+    progress: req.body.progress,
+    goal_picture: req.body.goal_picture
+   })
   .then(function () {
     res.status(201).json({
-      status: 'success',
-      message: 'POSTED GOALS'
-    });
+      status: 'success', 
+      message: 'INSERTED NEW GOAL'
+    })
   }).catch(function (err) {
     return next(err);
-  })
+  });
 }
 
 function getSingleGoal(req, res, next) {
