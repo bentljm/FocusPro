@@ -17,7 +17,7 @@ function getAllUsers(req, res, next) {
 }
 
 function getSingleUser(req, res, next) {
-  var username = req.params.username;
+  var goal = req.body.username;
   db.User.find({where: {username: username}}).then(function (data) {
     res.status(200).json({
       status: 'success',
@@ -135,7 +135,20 @@ function getAllGoals(req, res, next) {
   })
 }
 
-function postAllGoals(req, res, next) {
+function getSingleGoal(req, res, next) {
+  var username = req.body.goal;
+  db.User.find({where: {goal: goal}}).then(function (data) {
+    res.status(200).json({
+      status: 'success',
+      data: data,
+      message: 'GOT USER FROM DATABASE: goal' + goal
+    })
+  }).catch(function (err) {
+    return next(err);
+  });
+}
+
+function postSingleGoal(req, res, next) {
   db.Goal.create({
     goal: req.body.goal,
     progress: req.body.progress,
@@ -151,31 +164,6 @@ function postAllGoals(req, res, next) {
   });
 }
 
-function getSingleGoal(req, res, next) {
-  var id = req.params.id
-  db.any('select * from Goal where id = $1', id).then(function (data) {
-    res.status(200).json({
-      status: 'success',
-      data: data,
-      message: 'RETREIVED ALL GOALS'
-    });
-  }).catch(function (err) {
-    return next(err);
-  })
-}
-
-function postSingleGoal(req, res, next) {
-  db.User.findById('insert into Goal(goal, progress, goal_picture)'
-    + 'values($1, $2, $3)', [req.params.goal, req.params.progress, req.params.goal_picture])
-  .then(function () {
-    res.status(201).json({
-      status: 'success',
-      message: 'Inserted goals'
-    });
-  }).catch(function (err) {
-    return next(err);
-  })
-}
 
 
 function getSubGoals(req, res, next) {
@@ -191,17 +179,19 @@ function getSubGoals(req, res, next) {
 }
 
 
-function postSubGoals(req, res, next) {
-  db.User.findById('insert into Subgoal(subgoal, status)' 
-    + 'values(${subgoal} + ${status})', req.body)
+function postSubGoal(req, res, next) {
+  db.Subgoal.create({
+    subgoal: req.body.subgoal,
+    status: req.body.status
+   })
   .then(function () {
     res.status(201).json({
-      status: 'success',
-      message: 'INSERTED SUBGOALS'
-    });
+      status: 'success', 
+      message: 'INSERTED NEW SUBGOAL'
+    })
   }).catch(function (err) {
     return next(err);
-  })
+  });
 }
 
 module.exports = {
@@ -212,12 +202,11 @@ module.exports = {
   postBlackList: postBlackList,
   getExtension: getExtension,
   getAllGoals: getAllGoals,
-  postAllGoals: postAllGoals,
   getReflections: getReflections,
   getReflectionId: getReflectionId,
   postReflectionId: postReflectionId,
   getSingleGoal: getSingleGoal,
   postSingleGoal: postSingleGoal,
   getSubGoals: getSubGoals,
-  postSubGoals: postSubGoals
+  postSubGoal: postSubGoal
 }

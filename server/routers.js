@@ -23,14 +23,12 @@ module.exports = function(app, express) {
 
   app.get('/api/users/:username/goals', controller.getAllGoals) //Get all goals
 
-  app.post('/api/users/:username/goals', controller.postAllGoals) //Post all goals
-
   app.get('/api/users/:username/goals/:goal_id', controller.getSingleGoal) //Get single goal
 
   app.post('/api/users/:username/goals/:goal_id', controller.postSingleGoal) //Post single goal
 
   app.get('/api/users/:username/goals/:goal_id/subgoals', controller.getSubGoals) //Get all subgoals of a single goal
 
-  app.post('/api/users/:username/goals/:goal_id/subgoals', controller.postSubGoals) //Post all subgoals of a single goal
+  app.post('/api/users/:username/goals/:goal_id/subgoals', controller.postSubGoal) //Post all subgoals of a single goal
 
 }
