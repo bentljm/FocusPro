@@ -3,9 +3,21 @@
   "manifest_version": 2,
   "name": "FocusPro Extension",
   "version": "0.1",
+  "description": "Website time tracker and companion to FocusPro web app",
+  "homepage_url": "http://focuspro.herokuapp.com/",
   "background": {
     "scripts": ["background.js"]
   },
+  "permissions": [
+          "tabs",
+          "activeTab",
+          "history",
+          "storage",
+          "unlimitedStorage",
+          "webNavigation",
+          "idle",
+          "alarms"
+        ],
   "content_scripts": [
     {
       "matches": [
