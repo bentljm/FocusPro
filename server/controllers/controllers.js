@@ -113,29 +113,14 @@ function postReflectionId(req, res, next) {
   db.Url.create({
     answer: answer
    })
-//  db.Url.create('insert into Url(url, blacklist_type, blacklist_name)'
-  //  + 'values(${url} + ${blacklist_type} + ${blacklist_name})', req.body)
   .then(function () {
     res.status(201).json({
       status: 'success', 
-      message: 'INSERTED NEW BLACKLIST'
+      message: 'INSERTED NEW REFLECTION'
     })
   }).catch(function (err) {
     return next(err);
   });
-}
-
-function postReflectionId(req, res, next) {
-  db.none('insert into Reflection(answer)'
-    + 'values(${answer})', req.body)
-  .then(function () {
-    res.status(201).json({
-      status: 'success', 
-      message: 'INSERTED NEW REFLECTION ID'
-    })
-  }).catch(function (err) {
-    return next(err);
-  })
 }
 
 function getAllGoals(req, res, next) {
