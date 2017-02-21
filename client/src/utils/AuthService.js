@@ -17,7 +17,6 @@ export default class AuthService {
     // binds login functions to keep this context
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
-
     this.event = new EventEmitter();
   }
 
@@ -40,7 +39,7 @@ export default class AuthService {
     this.event.emit('profile_updated', profile);
   }
 
-  getProfile(callback) {
+  getProfile() {
     const profile = localStorage.getItem('profile');
     return profile ? JSON.parse(profile) : {};
   }

@@ -1,67 +1,17 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
 import App from '../components/App.js';
-import Landingpage from '../components/Landingpage.js';
-import Dashboard from '../components/Dashboard.js';
-import Goal from '../components/Goal.js'
-import Subgoal from '../components/Subgoal.js'
-import Selfreflection from '../components/Selfreflection.js';
-import Settings from '../components/Settings.js';
+import Sidebar from '../components/Sidebar.js';
+import { shallow, mount } from 'enzyme';
+import {Col} from 'react-materialize';
 
-describe('App (Snapshot)', () => {
-  it('App renders', () => {
-    // const component = renderer.create(<App />);
-    // const json = component.toJSON();
-    // expect(json).toMatchSnapshot();
+describe('App', ()=>{
+  it('renders without crashing', ()=>{
+    var route = {auth: 'dummy'};
+    shallow(<App route={route}/>);
+  });
+  it('renders main section inside a materializeCSS grid column', ()=>{
+    var route = {auth: 'dummy'};
+    const wrapper = shallow(<App route={route}/>);
+    expect(wrapper.find(Col).contains(<div className="container" />)).toBeTruthy();
   });
 });
-
-describe('Landingpage (Snapshot)', () => {
-  it('Landingpage renders', () => {
-    const component = renderer.create(<Landingpage />);
-    const json = component.toJSON();
-    expect(json).toMatchSnapshot();
-  });
-});
-
-describe('Dashboard (Snapshot)', () => {
-  it('Dashboard renders', () => {
-    const component = renderer.create(<Dashboard />);
-    const json = component.toJSON();
-    expect(json).toMatchSnapshot();
-  });
-});
-
-describe('Goal (Snapshot)', () => {
-  it('Goal renders', () => {
-    const component = renderer.create(<Goal />);
-    const json = component.toJSON();
-    expect(json).toMatchSnapshot();
-  });
-});
-
-describe('Subgoal (Snapshot)', () => {
-  it('Subgoal renders', () => {
-    const component = renderer.create(<Subgoal />);
-    const json = component.toJSON();
-    expect(json).toMatchSnapshot();
-  });
-});
-
-describe('Selfreflection (Snapshot)', () => {
-  it('Selfreflection renders', () => {
-    const component = renderer.create(<Selfreflection />);
-    const json = component.toJSON();
-    expect(json).toMatchSnapshot();
-  });
-});
-
-describe('Settings (Snapshot)', () => {
-  it('Settings renders', () => {
-    const component = renderer.create(<Settings />);
-    const json = component.toJSON();
-    expect(json).toMatchSnapshot();
-  });
-});
-
-
