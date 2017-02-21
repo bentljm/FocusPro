@@ -49,9 +49,9 @@ function getSettings(req, res, next) { // Get settings for specific user.
   });
 }
 
-function getBlackList(req, res, next) {
-  var username = req.params.username; // Obtain username
-  db.User.find({where: {username: username}}).then(function (user) {
+function getBlackList(req, res, next) { // Get blacklisted websites for specific user.
+  var username = req.params.username; // Obtain specific username.
+  db.User.find({where: {username: username}}).then(function (user) { // Find user with the given username.
     db.Url.findAll({}).then(function (data) { // Get all blacklist data.
       res.status(200).json({ // Send 200 status upon success.
         status: 'success', 
@@ -74,15 +74,17 @@ function getBlackList(req, res, next) {
 
 function postSettings(req, res, next) { // Post settings for specific user.
   var username = req.params.username; // Obtain specific username.
-  db.User.find({where: {username: username}}).then(function (user) { // Grab settings data for given user.
-    var setting = req.params.id; // Find settings parameters.
+  db.User.find({where: {username: username}}).then(function (user) { // Find user with the given username.
+    var setting = req.params.id; // Use input settings parameters, defined in schema.
     var picture = req.body.picture;
     var reflection_freq = req.body.reflection_freq;
     var reminder = req.body.reminder;
     var reminder_type = req.body.reminder_type;
     var reminder_freq = req.body.reminder_freq;
     var reminder_address = req.body.reminder_address;
+
     // Create entry in Settings with above parameters.
+
     db.Setting.create({picture: picture, reflection_freq: reflection_freq, reminder: reminder, reminder_type: reminder_type, reminder_freq: reminder_freq, reminder_address: reminder_address}).then(function (data) {
       res.status(201).json({ // Send 201 status upon success.
         status: 'success',
@@ -98,23 +100,24 @@ function postSettings(req, res, next) { // Post settings for specific user.
 }
 
 
-function postBlackList(req, res, next) { // Post blacklisted website for specific user.
-   var username = req.params.username;
-   db.User.find({where: {username: username}}).then(function (user) {
-   db.Url.create({
-       url: req.body.url,
-      blacklist_type: req.body.blacklist_type,
-      blacklist_time: req.body.blacklist_time
-     })
-    .then(function () {
-    res.status(201).json({
-      status: 'success', 
-      message: 'INSERTED NEW BLACKLIST'
-    })
-  }).catch(function (err) {
-    return next(err);
-  });
-}).catch(function (err) {
+function postBlackList(req, res, next) { // Post blacklisted websites for specific user.
+   var username = req.params.username; // Obtain specific username.
+   db.User.find({where: {username: username}}).then(function (user) { // Find user with the given username. 
+    var url = req.body.url; // Use input blacklist url parameters, defined in schema.
+    var blacklist_type = req.body.blacklist_type;
+    var blacklist_time = req.body.blacklist_time
+
+    // Create entry in Url with above parameters.
+
+    db.Url.create({url: req.body.url, blacklist_type: req.body.blacklist_type, blacklist_time: req.body.blacklist_time}).then(function () {
+      res.status(201).json({ // Send 201 status upon success.
+        status: 'success', 
+        message: 'INSERTED NEW BLACKLIST'
+      });
+    }).catch(function (err) { // Error handling for inner callback create.
+      return next(err);
+    });
+  }).catch(function (err) { // Error handling for outer callback find.
     return next(err);
   });
 }
