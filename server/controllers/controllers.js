@@ -66,7 +66,109 @@ function getBlackList(req, res, next) { // Get blacklisted websites for specific
   });
 }
 
+function getExtension(req, res, next) { // Get blacklisted websites for specific user.
+  var username = req.params.username;
+  db.User.find({where: {username: username}}).then(function (user) {
+    db.Extension.findAll({}).then(function (data) {
+      res.status(200).json({
+        status: 'success',
+        data: data,
+        message: 'OBTAINED EXTENSIONS'
+      });
+    }).catch(function (err) {
+      return next(err);
+    });
+  }).catch(function (err) {
+    return next(err);
+  });
+}
 
+function getReflections(req, res, next) { // Get blacklisted websites for specific user.
+  var username = req.params.username;
+  db.User.find({where: {username: username}}).then(function (user) {
+    db.Reflection.findAll({}).then(function (data) {
+      res.status(200).json({
+        status: 'success',
+        data: data,
+        message: 'OBTAINED REFLECTIONS'
+      });
+    }).catch(function (err) {
+      return next(err);
+    });
+  }).catch(function (err) {
+    return next(err);
+  });
+}
+
+function getReflectionId(req, res, next) { // Get blacklisted websites for specific user.
+  var username = req.params.username;
+  db.User.find({where: {username: username}}).then(function (user) {
+    var id = req.params.reflection_id;
+    db.Reflection.find({where: {id: id}}).then(function (data) {
+      res.status(200).json({
+        status: 'success',
+        data: data,
+        message: 'GOT REFLECTION FROM DATABASE: id ' + id
+      });
+    }).catch(function (err) {
+      return next(err);
+    });
+  }).catch(function (err) {
+    return next(err);
+  });
+}
+
+function getAllGoals(req, res, next) {
+  var user = req.params.user;
+  db.User.find({where: {username: user}}).then(function (data) {
+    db.Goal.findAll({}).then(function (data) {
+      res.status(200).json({
+        status: 'success',
+        data: data,
+        message: 'RETREIVED ALL GOALS'
+      });
+    }).catch(function (err) {
+      return next(err);
+    });
+  }).catch(function (err) {
+    return next(err);
+  });  
+}
+
+function getSingleGoal(req, res, next) {
+  var user = req.params.user;
+  db.User.find({where: {username: user}}).then(function (data) {
+    var goal = req.params.goal;
+    db.Goal.find({where: {goal: goal}}).then(function (data) {
+      res.status(200).json({
+        status: 'success',
+        data: data,
+        message: 'RETREIVED ALL GOALS'
+      });
+    }).catch(function (err) {
+      return next(err);
+    });
+  }).catch(function (err) {
+    return next(err);
+  });
+}
+
+function getSubGoals(req, res, next) {
+  var user = req.params.user;
+  db.User.find({where: {username: user}}).then(function (data) {
+    db.Subgoal.findAll({}).then(function(data) {
+      res.status(200).json({
+        status: 'success', 
+        data: data, 
+        message: 'RETREIVED ALL SUBGOALS'
+      });
+    }).catch(function (err) {
+      return next(err);
+    });
+  }).catch(function (err) {
+    return next(err);
+  });
+}
 
 // SETTERS
 
@@ -185,117 +287,10 @@ function postSubGoal(req, res, next) { // Post individual subgoal for specific u
  });
 }
 
-function getExtension(req, res, next) {
-
-   var username = req.params.username;
-  db.User.find({where: {username: username}}).then(function (user) {
-  db.Extension.findAll({}).then(function (data) {
-    res.status(200).json({
-      status: 'success',
-      data: data,
-      message: 'OBTAINED EXTENSIONS'
-    });
-  }).catch(function (err) {
-    return next(err);
-  })
-  }).catch(function (err) {
-    return next(err);
-  });
-}
-
-function getReflections(req, res, next) {
-   var username = req.params.username;
-  db.User.find({where: {username: username}}).then(function (user) {
-  db.Reflection.findAll({}).then(function (data) {
-    res.status(200).json({
-      status: 'success',
-      data: data,
-      message: 'OBTAINED REFLECTIONS'
-    });
-  }).catch(function (err) {
-    return next(err);
-  }).catch(function (err) {
-    return next(err);
-  });
-});
-}
-
-function getReflectionId(req, res, next) {
-   var username = req.params.username;
-  db.User.find({where: {username: username}}).then(function (user) {
-  var id = req.params.reflection_id;
-  db.Reflection.find({where: {id: id}}).then(function (data) {
-    res.status(200).json({
-      status: 'success',
-      data: data,
-      message: 'GOT REFLECTION FROM DATABASE: id ' + id
-    })
-  }).catch(function (err) {
-    return next(err);
-  }).catch(function (err) {
-    return next(err);
-  });
-});
-}
 
 
+// Export functions to routers...
 
-function getAllGoals(req, res, next) {
-  var user = req.params.user;
-  db.User.find({where: {username: user}}).then(function (data) {
-    db.Goal.findAll({}).then(function (data) {
-    res.status(200).json({
-      status: 'success',
-      data: data,
-      message: 'RETREIVED ALL GOALS'
-    });
-  }).catch(function (err) {
-    return next(err);
-  })
-
-}).catch(function (err) {
-  return next(err);
-});
-  
-}
-
-function getSingleGoal(req, res, next) {
-  var user = req.params.user;
-  db.User.find({where: {username: user}}).then(function (data) {
-    var goal = req.params.goal;
-    db.Goal.find({where: {goal: goal}}).then(function (data) {
-    res.status(200).json({
-      status: 'success',
-      data: data,
-      message: 'RETREIVED ALL GOALS'
-    });
-  }).catch(function (err) {
-    return next(err);
-  })
-  }).catch(function (err) {
-  return next(err);
-})
-}
-
-
-
-
-function getSubGoals(req, res, next) {
-  var user = req.params.user;
-  db.User.find({where: {username: user}}).then(function (data) {
-  db.Subgoal.findAll({}).then(function(data) {
-    res.status(200).json({
-      status: 'success', 
-      data: data, 
-      message: 'RETREIVED ALL SUBGOALS'
-    });
-  }).catch(function (err) {
-    return next(err);
-  }).catch(function (err) {
-  return next(err);
-});
-})
-}
 
 
 module.exports = {
