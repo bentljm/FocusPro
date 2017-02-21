@@ -19,10 +19,8 @@ export class Sidebar extends React.Component {
     return (
       <header>
         <nav className="top-nav full hide-on-large-only"> 
-          <div className="nav-wrapper">
             <a href="#" data-activates="slide-out" className="button-collapse top-nav full hide-on-large-only"><i className="material-icons">menu</i>
             </a>
-          </div> 
         </nav>
 
           <ul id="slide-out" className="side-nav fixed theme-color">
@@ -34,11 +32,11 @@ export class Sidebar extends React.Component {
             </div></li>}
 
             <li>
-                {!localStorage.id_token && <a href="#" className="btn" onClick={this.props.auth.login}>Log In</a>}
+                {!localStorage.id_token && <a href="#" className="btn login" onClick={this.props.auth.login}>Log In</a>}
             </li>
-            <li><div className="divider"></div></li>
+            {localStorage.profile && <li><div className="divider"></div></li>}
             {localStorage.profile && <li><a href="#/settings" className="waves-effect"><i className="material-icons icon-white">settings</i>Settings</a></li>}
-            {localStorage.profile && <li><a href="#/selfreflection" className="waves-effect"><i className="material-icons icon-white">perm_identity</i>Self Reflections</a></li>}
+            {localStorage.profile && <li><a href="#/selfreflection" className="waves-effect"><i className="material-icons icon-white">perm_identity</i>Self-Reflections</a></li>}
           </ul>
       </header>
     );

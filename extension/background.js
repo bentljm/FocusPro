@@ -7,7 +7,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
   });
 });
 
-// This block is new!
+// Listen for open new tab request to create a tab to focusProUrl
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     if( request.message === "open_new_tab" ) {

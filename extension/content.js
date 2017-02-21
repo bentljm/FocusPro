@@ -5,6 +5,8 @@ chrome.runtime.onMessage.addListener(
 
       //This is site url
       console.log(firstHref);
+
+      //Send message to background.js to open a new tab to focusProURL
       var focusProURL = 'https://focuspro.herokuapp.com/';
       chrome.runtime.sendMessage({"message": "open_new_tab", "url": focusProURL});
     }

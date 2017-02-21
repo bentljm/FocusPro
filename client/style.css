@@ -55,3 +55,13 @@ ul#slide-out.side-nav.fixed.theme-color {
 .questionDate{
   margin-right: 25px;
 }
+
+a.btn.login{
+  padding-left:10px;
+}
+span.email{
+  font-size: smaller !important;
+}
+span.name{
+  font-size: large !important;
+}
