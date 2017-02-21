@@ -27,7 +27,7 @@ describe('Given the user is logged in, Sidebar', () => {
   });
 
   it('renders the navbar', () => {
-    expect(sidebar.find('.top-nav .nav-wrapper a')).toHaveLength(1);
+    expect(sidebar.find('.top-nav a')).toHaveLength(1);
   });
 
   it('does not render the login button', () => {
@@ -72,7 +72,7 @@ describe('Given the user is NOT logged in, Sidebar', () => {
   });
 
   it('renders the navbar', () => {
-    expect(sidebar.find('.top-nav .nav-wrapper a')).toHaveLength(1);
+    expect(sidebar.find('.top-nav a')).toHaveLength(1);
   });
 
   it('does not render the logout, settings, selfreflections button', () => {

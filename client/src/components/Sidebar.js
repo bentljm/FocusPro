@@ -34,10 +34,7 @@ export class Sidebar extends React.Component {
             <li>
                 {!localStorage.id_token && <a href="#" className="btn login" onClick={this.props.auth.login}>Log In</a>}
             </li>
-            {localStorage.profile && <li><div className="divider"></div></li>}
-            {localStorage.profile && <li><a href="#/settings" className="waves-effect"><i className="material-icons icon-white">settings</i>Settings</a></li>}
-            {localStorage.profile && <li><a href="#/selfreflection" className="waves-effect"><i className="material-icons icon-white">perm_identity</i>Self-Reflections</a></li>}
-            <li><div className="divider"></div></li>
+            {localStorage.id_token && <li><div className="divider"></div></li>}
             {localStorage.id_token && <li><a href="#/settings" className="waves-effect"><i className="material-icons icon-white">settings</i>Settings</a></li>}
             {localStorage.id_token && <li><a href="#/selfreflection" className="waves-effect"><i className="material-icons icon-white">perm_identity</i>Self Reflections</a></li>}
           </ul>
