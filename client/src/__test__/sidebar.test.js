@@ -13,12 +13,17 @@ describe('Given the user is logged in, Sidebar', () => {
         on : ()=>'dummy event listener'
       }
     };
-    window.localStorage = {
-     id_token: true
+    window.localStorage = { //see authService.test for proper localStorage setup
+     id_token: true,
+     profile: true
     };
     sidebar = shallow(
       <Sidebar auth={auth} />
     );
+  });
+
+  afterAll(() => {
+     window.localStorage = {};
   });
 
   it('renders the navbar', () => {
@@ -54,11 +59,16 @@ describe('Given the user is NOT logged in, Sidebar', () => {
       }
     };
     window.localStorage = {
-     id_token: false
+     id_token: false,
+     profile: false
     };
     sidebar = shallow(
       <Sidebar auth={auth} />
     );
+  });
+
+  afterAll(() => {
+     window.localStorage = {};
   });
 
   it('renders the navbar', () => {
