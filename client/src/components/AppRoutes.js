@@ -3,11 +3,11 @@ import { Router, Route } from 'react-router'
 import App from './App.js'
 import LandingPage from './LandingPage.js';
 import Motivational from './Motivational.js';
-import SelfReflection from './Selfreflection.js';
+import SelfReflection from './SelfReflection.js';
 
 const clientRoutes = (
-  <Route path="/api/users" component={App}/>
-  
+  <Route path="/api/users" component={LandingPage}/>
+
   <Route path="/api/users/:username" component={Dashboard}/>
 
   <Route path="/api/users/:username/setting" component={Settings}/>
@@ -22,6 +22,8 @@ const clientRoutes = (
 
   <Route path="/api/users/:username/goals/:goal_id/reflections" component={SelfReflection}/>
   <Route path="/api/users/:username/goals/:goal_id/reflections/:reflection_id" component={SelfReflection}/>
+
+  <Route path="*" component={Layout}
 );
 
 export default class AppRoutes extends React.Component {
