@@ -67,6 +67,8 @@ var Friendship = db.define('Friendship', {
 User.hasMany(Goal);
 User.hasOne(Setting);
 User.hasMany(Extension);
+User.hasMany(Subgoal);
+User.hasMany(Reflection);
 Goal.hasMany(Subgoal);
 Goal.hasMany(Reflection);
 Reflection.hasOne(Question);
