@@ -24,7 +24,7 @@ export class Sidebar extends React.Component {
         </nav>
 
           <ul id="slide-out" className="side-nav fixed theme-color">
-            {localStorage.id_token && <li><div className="userView">
+            {localStorage.profile && <li><div className="userView">
               <a href="#"><img className="circle" src={this.state.profile.picture}/></a>
               <a href="#"><span className="name">{this.state.profile.nickname}</span></a>
               <a href="#"><span className="email">{this.state.profile.email}</span></a>
