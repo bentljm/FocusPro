@@ -3,20 +3,21 @@
   "manifest_version": 2,
   "name": "FocusPro Extension",
   "version": "0.1",
+  "default_locale":"en",
   "description": "Website time tracker and companion to FocusPro web app",
   "homepage_url": "http://focuspro.herokuapp.com/",
   "background": {
     "scripts": ["background.js"]
   },
   "permissions": [
-          "tabs",
           "activeTab",
+          "alarms",
           "history",
-          "storage",
-          "unlimitedStorage",
-          "webNavigation",
           "idle",
-          "alarms"
+          "storage",
+          "tabs",
+          "unlimitedStorage",
+          "webNavigation"
         ],
   "content_scripts": [
     {
@@ -30,3 +31,18 @@
     "default_icon": "icon.png"
   }
 }
+
+
+/*
+Notes:
+Permissions:
+-activeTab is used to get information about active tab
+-alarms is used to send information at set times
+-history is used to record visited pages
+-idle is used to track idle times, when the user has not generated input for a specified time, locked is when screensaver activates
+  -Use this to avoid tracking idle time aka when user is away from keyboard or not actively on website
+-storage is used to store user data for the extension
+-tabs is used to create and modify tabs
+-unlimitedStorage is used to give more storage space
+-webNavigation is used to receive notifications about status of navigation requests
+*/
