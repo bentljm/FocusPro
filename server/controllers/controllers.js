@@ -66,11 +66,11 @@ function getBlackList(req, res, next) { // Get blacklisted websites for specific
   });
 }
 
-function getExtension(req, res, next) { // Get blacklisted websites for specific user.
-  var username = req.params.username;
-  db.User.find({where: {username: username}}).then(function (user) {
-    db.Extension.findAll({}).then(function (data) {
-      res.status(200).json({
+function getExtension(req, res, next) { // Get extensions for specific user.
+  var username = req.params.username; // Obtain specific username.
+  db.User.find({where: {username: username}}).then(function (user) { // Find user with the given username.
+    db.Extension.findAll({}).then(function (data) { // Get all extension data.
+      res.status(200).json({ // Send 200 status upon success.
         status: 'success',
         data: data,
         message: 'OBTAINED EXTENSIONS'
@@ -83,11 +83,12 @@ function getExtension(req, res, next) { // Get blacklisted websites for specific
   });
 }
 
-function getReflections(req, res, next) { // Get blacklisted websites for specific user.
-  var username = req.params.username;
-  db.User.find({where: {username: username}}).then(function (user) {
-    db.Reflection.findAll({}).then(function (data) {
-      res.status(200).json({
+function getReflections(req, res, next) { // Get all reflections for specific user.
+  var username = req.params.username; // Obtain specific username.
+  db.User.find({where: {username: username}}).then(function (user) { // Find user with the given username.
+    db.Reflection.findAll({}).then(function (data) { // Get all reflection data.
+      res.status(200).json({ // Send 200 status upon success.
+        status: 'success', 
         status: 'success',
         data: data,
         message: 'OBTAINED REFLECTIONS'
@@ -100,12 +101,12 @@ function getReflections(req, res, next) { // Get blacklisted websites for specif
   });
 }
 
-function getReflectionId(req, res, next) { // Get blacklisted websites for specific user.
-  var username = req.params.username;
-  db.User.find({where: {username: username}}).then(function (user) {
+function getReflectionId(req, res, next) { // Get individual reflection for specific user.
+  var username = req.params.username; // Obtain specific username.
+  db.User.find({where: {username: username}}).then(function (user) { // Find user with the given username.
     var id = req.params.reflection_id;
     db.Reflection.find({where: {id: id}}).then(function (data) {
-      res.status(200).json({
+      res.status(200).json({ // Send 200 status upon success.
         status: 'success',
         data: data,
         message: 'GOT REFLECTION FROM DATABASE: id ' + id
@@ -118,11 +119,11 @@ function getReflectionId(req, res, next) { // Get blacklisted websites for speci
   });
 }
 
-function getAllGoals(req, res, next) {
-  var user = req.params.user;
-  db.User.find({where: {username: user}}).then(function (data) {
+function getAllGoals(req, res, next) { // Get all goals for specific user.
+  var username = req.params.username; // Obtain specific username.
+  db.User.find({where: {username: user}}).then(function (data) { // Find user with the given username.
     db.Goal.findAll({}).then(function (data) {
-      res.status(200).json({
+      res.status(200).json({ // Send 200 status upon success.
         status: 'success',
         data: data,
         message: 'RETREIVED ALL GOALS'
@@ -135,37 +136,37 @@ function getAllGoals(req, res, next) {
   });  
 }
 
-function getSingleGoal(req, res, next) {
-  var user = req.params.user;
-  db.User.find({where: {username: user}}).then(function (data) {
+function getSingleGoal(req, res, next) { // Get individual goal for specific user.
+  var username = req.params.username; // Obtain specific username.
+  db.User.find({where: {username: username}}).then(function (data) { // Find user with the given username.
     var goal = req.params.goal;
-    db.Goal.find({where: {goal: goal}}).then(function (data) {
-      res.status(200).json({
+    db.Goal.find({where: {goal:  oal}}).then(function (data) {
+      res.status(200).json({ // Send 200 status upon success.
         status: 'success',
         data: data,
         message: 'RETREIVED ALL GOALS'
       });
-    }).catch(function (err) {
+    }).catch(function (err) { // Error handling for inner callback find.
       return next(err);
     });
-  }).catch(function (err) {
+  }).catch(function (err) { // Error handling for outback callback find.
     return next(err);
   });
 }
 
-function getSubGoals(req, res, next) {
-  var user = req.params.user;
-  db.User.find({where: {username: user}}).then(function (data) {
+function getSubGoals(req, res, next) { // Get all subgoals for specific user.
+  var username = req.params.username; // Obtain specific username.
+  db.User.find({where: {username: username}}).then(function (data) { // Find user with the given username.
     db.Subgoal.findAll({}).then(function(data) {
-      res.status(200).json({
+      res.status(200).json({ // Send 200 status upon success.
         status: 'success', 
         data: data, 
         message: 'RETREIVED ALL SUBGOALS'
       });
-    }).catch(function (err) {
+    }).catch(function (err) { // Error handling for inner callback findAll.
       return next(err);
     });
-  }).catch(function (err) {
+  }).catch(function (err) { // Error handling for outer callback find.
     return next(err);
   });
 }
