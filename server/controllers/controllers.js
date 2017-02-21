@@ -3,6 +3,7 @@ var parser  = require('body-parser');
 var express = require('express');
 var app = express();
 
+// GETTERS
 
 function getAllUsers(req, res, next) { // Get all the users
   db.User.findAll({}).then(function(data) { // Find all users
@@ -29,7 +30,7 @@ function getSingleUser(req, res, next) { // Get specific user
   });
 }
 
-function getSetting(req, res, next) { // Get settings for specific user
+function getSettings(req, res, next) { // Get settings for specific user
   var username = req.params.username; // Obtain specific username
   db.User.find({where: {username: username}}).then(function (user) { // Find user...
     db.Setting.findAll({}).then(function (data) { // Grab settings data for user...
@@ -45,31 +46,31 @@ function getSetting(req, res, next) { // Get settings for specific user
 }
 
 
+// SETTERS
 
-function postSetting(req, res, next) { // add all fields
-  var username = req.params.username;
-  db.User.find({where: {username: username}}).then(function (user) {
-      var setting = req.params.id;
-      var picture = req.body.picture;
-      var reflection_freq = req.body.reflection_freq;
-      var reminder = req.body.reminder;
-      var reminder_type = req.body.reminder_type;
-      var reminder_freq = req.body.reminder_freq;
-      var reminder_address = req.body.reminder_address;
-      db.Setting.create({picture: picture, reflection_freq: reflection_freq, reminder: reminder,
-        reminder_type: reminder_type, reminder_freq: reminder_freq, reminder_address: reminder_address}).then(function (data) {
-        res.status(201).json({
+function postSettings(req, res, next) { // Post settings for specific user
+  var username = req.params.username; // Obtain specific username
+  db.User.find({where: {username: username}}).then(function (user) { // Grab settings data for user...
+    var setting = req.params.id; // Find settings parameters
+    var picture = req.body.picture;
+    var reflection_freq = req.body.reflection_freq;
+    var reminder = req.body.reminder;
+    var reminder_type = req.body.reminder_type;
+    var reminder_freq = req.body.reminder_freq;
+    var reminder_address = req.body.reminder_address;
+    // Create entry in Settings with above parameters
+    db.Setting.create({picture: picture, reflection_freq: reflection_freq, reminder: reminder, reminder_type: reminder_type, reminder_freq: reminder_freq, reminder_address: reminder_address}).then(function (data) {
+      res.status(201).json({ // Send 201 status
         status: 'success',
         data: data,
         message: 'GOT ALL SETTINGS FOR USER   ' + username
       });
-    }).catch(function (err) {
+    }).catch(function (err) { // Error handling for create
       return next(err);
-  }).catch(function (err) {
+    });
+  }).catch(function (err) { // Error handling for find
     return next(err);
-  });
- 
-});
+  })
 }
 
 function getBlackList(req, res, next) {
@@ -284,8 +285,8 @@ function postSubGoal(req, res, next) {
 module.exports = {
 	getAllUsers: getAllUsers,
 	getSingleUser: getSingleUser,
-  getSetting: getSetting,
-  postSetting: postSetting,
+  getSettings: getSettings,
+  postSettings: postSettings,
   getBlackList: getBlackList,
   postBlackList: postBlackList,
   getExtension: getExtension,
