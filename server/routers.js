@@ -9,7 +9,7 @@ module.exports = function(app, express) {
 
   app.get('/api/users/:username/setting', controller.getSetting); // Get individual settings
 
-  app.post('/api/users/:username/setting', controller.postSetting);
+  app.post('/api/users/:username/setting', controller.postSetting); // Post individual settings
 
   app.get('/api/users/:username/setting/blacklist', controller.getBlackList); // Get individual blacklist
 

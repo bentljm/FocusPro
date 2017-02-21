@@ -4,27 +4,27 @@ var express = require('express');
 var app = express();
 
 
-function getAllUsers(req, res, next) {
-  db.User.findAll({}).then(function(data) {
-    res.status(200).json({
+function getAllUsers(req, res, next) { // Get all the users
+  db.User.findAll({}).then(function(data) { // Find all users
+    res.status(200).json({ // Send 200 status
       status: 'success', 
       data: data, 
       message: 'RETREIVED ALL USERS'
     });
-  }).catch(function (err) {
+  }).catch(function (err) { // Error handling
     return next(err);
   });
 }
 
-function getSingleUser(req, res, next) {
-  var username = req.params.username;
-  db.User.find({where: {username: username}}).then(function (data) {
-    res.status(200).json({
+function getSingleUser(req, res, next) { // Get specific user
+  var username = req.params.username; // Obtain specific username
+  db.User.find({where: {username: username}}).then(function (data) { // Find the user with the username...
+    res.status(200).json({ // Send 200 status
       status: 'success',
       data: data,
       message: 'GOT USER FROM DATABASE: username' + username
     })
-  }).catch(function (err) {
+  }).catch(function (err) { // Error handling
     return next(err);
   });
 }
