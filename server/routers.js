@@ -9,6 +9,8 @@ module.exports = function(app, express) {
 
   app.get('/api/users/:username/setting', controller.getSetting); // Get individual settings
 
+  app.post('/api/users/:username/setting', controller.postSetting);
+
   app.get('/api/users/:username/setting/blacklist', controller.getBlackList); // Get individual blacklist
 
   app.post('/api/users/:username/setting/blacklist', controller.postBlackList); // Post or update individual blacklist
