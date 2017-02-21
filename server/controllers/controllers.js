@@ -120,7 +120,7 @@ function getReflectionId(req, res, next) { // Get individual reflection for spec
 
 function getAllGoals(req, res, next) { // Get all goals for specific user.
   var username = req.params.username; // Obtain specific username.
-  db.User.find({where: {username: user}}).then(function (data) { // Find user with the given username.
+  db.User.find({where: {username: username}}).then(function (data) { // Find user with the given username.
     db.Goal.findAll({}).then(function (data) {  // Obtain all goal data for user.
       res.status(200).json({ // Send 200 status upon success.
         status: 'success',
@@ -139,7 +139,7 @@ function getSingleGoal(req, res, next) { // Get individual goal for specific use
   var username = req.params.username; // Obtain specific username.
   db.User.find({where: {username: username}}).then(function (data) { // Find user with the given username.
     var goal = req.params.goal; // Get the specific goal.
-    db.Goal.find({where: {goal:  oal}}).then(function (data) { // Find goal with aforementioned goal name.
+    db.Goal.find({where: {goal: goal}}).then(function (data) { // Find goal with aforementioned goal name.
       res.status(200).json({ // Send 200 status upon success.
         status: 'success',
         data: data,
@@ -156,22 +156,27 @@ function getSingleGoal(req, res, next) { // Get individual goal for specific use
 function getSubGoals(req, res, next) { // Get all subgoals for specific user.
   var username = req.params.username; // Obtain specific username.
   db.User.find({where: {username: username}}).then(function (data) { // Find user with the given username.
-    db.Subgoal.findAll({}).then(function(data) { // Get all subgoal data for user.
-      res.status(200).json({ // Send 200 status upon success.
-        status: 'success', 
-        data: data, 
-        message: 'RETREIVED ALL SUBGOALS'
+    var goal = req.params.goal; // Get specific goal.
+    db.Goal.find({where: {goal: goal}}).then(function (data) { // Look up goal.
+      db.Subgoal.findAll({}).then(function(data) { // Get all subgoal data of goal..
+        res.status(200).json({ // Send 200 status upon success.
+          status: 'success', 
+          data: data, 
+          message: 'RETREIVED ALL SUBGOALS'
+        });
+      }).catch(function (err) { // Error handling for inner callback findAll.
+        return next(err);
       });
-    }).catch(function (err) { // Error handling for inner callback findAll.
+    }).catch(function (err) { // Error handling for middle callback find.
       return next(err);
     });
   }).catch(function (err) { // Error handling for outer callback find.
     return next(err);
-  });
+  });  
 }
   
 
-  
+
 // SETTERS
 
 
@@ -271,17 +276,23 @@ function postSingleGoal(req, res, next) { // Post individual goal for specific u
 function postSubGoal(req, res, next) { // Post individual subgoal for specific user.
   var user = req.params.user; // Obtain specific username.
   db.User.find({where: {username: user}}).then(function (data) { // Find user with the given username.
-    var subgoal = req.body.subgoal; // Post individual goal for specific user.
-    var status = req.body.status;
+    var goal = req.body.goal; // Get goal that contains subgoal.
 
-    // Create entry in Subgoal with above parameters.
+    db.Goal.find({where: {goal: goal}}).then(function (data) { // Find goal.
+      var subgoal = req.body.subgoal; // Subgoal parameters.
+      var status = req.body.status; 
 
-    db.Subgoal.create({subgoal: req.body.subgoal, status: req.body.status}).then(function () {
-      res.status(201).json({ // Send 201 status upon success.
-        status: 'success', 
-        message: 'INSERTED NEW SUBGOAL'
+      // Create entry in Subgoal with above parameters.
+
+      db.Subgoal.create({subgoal: req.body.subgoal, status: req.body.status}).then(function () {
+        res.status(201).json({ // Send 201 status upon success.
+          status: 'success', 
+          message: 'INSERTED NEW SUBGOAL'
+        });
+      }).catch(function (err) { // Error handling for inner callback find.
+        return next(err);
       });
-    }).catch(function (err) { // Error handling for inner callback create.
+    }).catch(function (err) { // Error handling for middle callback find.
       return next(err);
     });
   }).catch(function (err) { // Error handling for outer callback find.
