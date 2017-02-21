@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1487651633999" clover="3.2.0">
+  <project timestamp="1487651634000" name="All files">
+    <metrics statements="22" coveredstatements="19" conditionals="10" coveredconditionals="9" methods="16" coveredmethods="14" elements="48" coveredelements="42" complexity="0" loc="22" ncloc="22" packages="2" files="12" classes="12">
+      <package name="__test__">
+        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <file name="sum.js" path="/Users/sherryh/Personal/w9-thesis/FocusPro/client/src/__test__/sum.js">
+          <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+          <line num="2" count="1" type="stmt"/>
+          <line num="4" count="1" type="stmt"/>
+        </file>
+      </package>
+      <package name="components">
+        <metrics statements="20" coveredstatements="17" conditionals="10" coveredconditionals="9" methods="15" coveredmethods="13"/>
+        <file name="App.js" path="/Users/sherryh/Personal/w9-thesis/FocusPro/client/src/components/App.js">
+          <metrics statements="5" coveredstatements="4" conditionals="2" coveredconditionals="1" methods="2" coveredmethods="2"/>
+          <line num="9" count="2" type="stmt"/>
+          <line num="14" count="2" type="stmt"/>
+          <line num="15" count="2" type="stmt"/>
+          <line num="17" count="0" type="stmt"/>
+          <line num="21" count="2" type="stmt"/>
+        </file>
+        <file name="Dashboard.js" path="/Users/sherryh/Personal/w9-thesis/FocusPro/client/src/components/Dashboard.js">
+          <metrics statements="2" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="1"/>
+          <line num="10" count="1" type="stmt"/>
+          <line num="36" count="0" type="stmt"/>
+        </file>
+        <file name="Goal.js" path="/Users/sherryh/Personal/w9-thesis/FocusPro/client/src/components/Goal.js">
+          <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+          <line num="8" count="2" type="stmt"/>
+        </file>
+        <file name="Landingpage.js" path="/Users/sherryh/Personal/w9-thesis/FocusPro/client/src/components/Landingpage.js">
+          <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+          <line num="8" count="1" type="stmt"/>
+        </file>
+        <file name="Motivational.js" path="/Users/sherryh/Personal/w9-thesis/FocusPro/client/src/components/Motivational.js">
+          <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+          <line num="6" count="1" type="stmt"/>
+        </file>
+        <file name="Selfreflection.js" path="/Users/sherryh/Personal/w9-thesis/FocusPro/client/src/components/Selfreflection.js">
+          <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+          <line num="6" count="1" type="stmt"/>
+        </file>
+        <file name="Settings.js" path="/Users/sherryh/Personal/w9-thesis/FocusPro/client/src/components/Settings.js">
+          <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+          <line num="7" count="1" type="stmt"/>
+        </file>
+        <file name="Sidebar.js" path="/Users/sherryh/Personal/w9-thesis/FocusPro/client/src/components/Sidebar.js">
+          <metrics statements="5" coveredstatements="4" conditionals="8" coveredconditionals="8" methods="3" coveredmethods="2"/>
+          <line num="8" count="2" type="stmt"/>
+          <line num="9" count="2" type="stmt"/>
+          <line num="13" count="2" type="stmt"/>
+          <line num="14" count="0" type="stmt"/>
+          <line num="19" count="2" type="stmt"/>
+        </file>
+        <file name="Site.js" path="/Users/sherryh/Personal/w9-thesis/FocusPro/client/src/components/Site.js">
+          <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+          <line num="6" count="3" type="stmt"/>
+        </file>
+        <file name="Stat.js" path="/Users/sherryh/Personal/w9-thesis/FocusPro/client/src/components/Stat.js">
+          <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+          <line num="6" count="3" type="stmt"/>
+        </file>
+        <file name="Subgoal.js" path="/Users/sherryh/Personal/w9-thesis/FocusPro/client/src/components/Subgoal.js">
+          <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+          <line num="6" count="3" type="stmt"/>
+        </file>
+      </package>
+    </metrics>
+  </project>
+</coverage>
