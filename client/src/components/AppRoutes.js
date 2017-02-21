@@ -7,15 +7,21 @@ import SelfReflection from './Selfreflection.js';
 
 const clientRoutes = (
   <Route path="/api/users" component={App}/>
-  <Route path="/api/users/:username" component={App}/>
-  <Route path="/api/users/:username/setting" component={App}/>
-  <Route path="/api/users/:username/setting/blacklist" component={App}/>
+  
+  <Route path="/api/users/:username" component={Dashboard}/>
+
+  <Route path="/api/users/:username/setting" component={Settings}/>
+  <Route path="/api/users/:username/setting/blacklist" component={Settings}/>
+
   <Route path="/api/users/:username/extension_data" component={App}/>
-  <Route path="/api/users/:username/goals/:goal_id/reflections" component={App}/>
-  <Route path="/api/users/:username/goals/:goal_id/reflections/:reflection_id" component={App}/>
+  
   <Route path="/api/users/:username/goals" component={App}/>
-  <Route path="/api/users/:username/goals/:goal_id" component={App}/>
-  <Route path="api/users/:username/goals/:goal_id/subgoals" component={App}/>
+  <Route path="/api/users/:username/goals/:goal_id" component={Goal}/>
+  <Route path="api/users/:username/goals/:goal_id/subgoals" component={Subgoal}/>
+
+
+  <Route path="/api/users/:username/goals/:goal_id/reflections" component={SelfReflection}/>
+  <Route path="/api/users/:username/goals/:goal_id/reflections/:reflection_id" component={SelfReflection}/>
 );
 
 export default class AppRoutes extends React.Component {
