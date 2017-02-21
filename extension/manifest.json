@@ -45,4 +45,9 @@ Permissions:
 -tabs is used to create and modify tabs
 -unlimitedStorage is used to give more storage space
 -webNavigation is used to receive notifications about status of navigation requests
+
+Pseudo-code:
+-Track the time spent on websites, subtract idle time
+-Use history to track frequency in which user navigates to site
+-Send information stored in storage using alarms to web app at certain time e.g. midnight
 */
