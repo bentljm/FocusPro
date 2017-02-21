@@ -55,3 +55,7 @@ ul#slide-out.side-nav.fixed.theme-color {
 .questionDate{
   margin-right: 25px;
 }
+
+a.btn.login{
+  padding-left:10px;
+}
