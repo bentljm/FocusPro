@@ -36,7 +36,7 @@ export class Sidebar extends React.Component {
             </li>
             {localStorage.profile && <li><div className="divider"></div></li>}
             {localStorage.profile && <li><a href="#/settings" className="waves-effect"><i className="material-icons icon-white">settings</i>Settings</a></li>}
-            {localStorage.profile && <li><a href="#/selfreflection" className="waves-effect"><i className="material-icons icon-white">perm_identity</i>Self Reflections</a></li>}
+            {localStorage.profile && <li><a href="#/selfreflection" className="waves-effect"><i className="material-icons icon-white">perm_identity</i>Self-Reflections</a></li>}
           </ul>
       </header>
     );

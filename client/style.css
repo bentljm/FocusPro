@@ -59,3 +59,9 @@ ul#slide-out.side-nav.fixed.theme-color {
 a.btn.login{
   padding-left:10px;
 }
+span.email{
+  font-size: smaller !important;
+}
+span.name{
+  font-size: large !important;
+}
