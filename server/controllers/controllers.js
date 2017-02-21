@@ -22,27 +22,26 @@ function getSingleUser(req, res, next) { // Get specific user
     res.status(200).json({ // Send 200 status
       status: 'success',
       data: data,
-      message: 'GOT USER FROM DATABASE: username' + username
+      message: 'GOT USER FROM DATABASE: ' + username
     })
   }).catch(function (err) { // Error handling
     return next(err);
   });
 }
 
-function getSetting(req, res, next) {
-  var username = req.params.username;
-  db.User.find({where: {username: username}}).then(function (user) {
-      db.Setting.findAll({}).then(function (data) {
-      res.status(200).json({
-      status: 'success',
-      data: data,
-      message: 'GOT ALL SETTINGS FOR USER   ' + username
+function getSetting(req, res, next) { // Get settings for specific user
+  var username = req.params.username; // Obtain specific username
+  db.User.find({where: {username: username}}).then(function (user) { // Find user...
+    db.Setting.findAll({}).then(function (data) { // Grab settings data for user...
+      res.status(200).json({ // Send 200 status
+        status: 'success',
+        data: data,
+        message: 'GOT ALL SETTINGS FOR USER:  ' + username
+      });
+    }).catch(function (err) { // Error handling
+      return next(err);
     });
-  }).catch(function (err) {
-    return next(err);
   });
-  })
- 
 }
 
 
