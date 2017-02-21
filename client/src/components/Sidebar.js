@@ -19,10 +19,8 @@ export class Sidebar extends React.Component {
     return (
       <header>
         <nav className="top-nav full hide-on-large-only"> 
-          <div className="nav-wrapper">
             <a href="#" data-activates="slide-out" className="button-collapse top-nav full hide-on-large-only"><i className="material-icons">menu</i>
             </a>
-          </div> 
         </nav>
 
           <ul id="slide-out" className="side-nav fixed theme-color">
