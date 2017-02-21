@@ -371,4 +371,4 @@ module.exports = {
   postSingleGoal: postSingleGoal,
   getSubGoals: getSubGoals,
   postSubGoal: postSubGoal
-}
+};
