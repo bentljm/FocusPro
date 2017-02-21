@@ -75,10 +75,10 @@ function getExtension(req, res, next) { // Get extensions for specific user.
         data: data,
         message: 'OBTAINED EXTENSIONS'
       });
-    }).catch(function (err) {
+    }).catch(function (err) { // Error handling for inner callback findAll.
       return next(err);
     });
-  }).catch(function (err) {
+  }).catch(function (err) { // Error handling for outer callback find.
     return next(err);
   });
 }
@@ -88,15 +88,14 @@ function getReflections(req, res, next) { // Get all reflections for specific us
   db.User.find({where: {username: username}}).then(function (user) { // Find user with the given username.
     db.Reflection.findAll({}).then(function (data) { // Get all reflection data.
       res.status(200).json({ // Send 200 status upon success.
-        status: 'success', 
         status: 'success',
         data: data,
         message: 'OBTAINED REFLECTIONS'
       });
-    }).catch(function (err) {
+    }).catch(function (err) { // Error handling for inner callback findAll.
       return next(err);
     });
-  }).catch(function (err) {
+  }).catch(function (err) { // Error handling for outer callback find.
     return next(err);
   });
 }
@@ -104,17 +103,17 @@ function getReflections(req, res, next) { // Get all reflections for specific us
 function getReflectionId(req, res, next) { // Get individual reflection for specific user.
   var username = req.params.username; // Obtain specific username.
   db.User.find({where: {username: username}}).then(function (user) { // Find user with the given username.
-    var id = req.params.reflection_id;
-    db.Reflection.find({where: {id: id}}).then(function (data) {
+    var id = req.params.reflection_id; // Get id of requested reflection.
+    db.Reflection.find({where: {id: id}}).then(function (data) { // Find reflection with aforementioned id.
       res.status(200).json({ // Send 200 status upon success.
         status: 'success',
         data: data,
         message: 'GOT REFLECTION FROM DATABASE: id ' + id
       });
-    }).catch(function (err) {
+    }).catch(function (err) { // Error handling for inner callback find.
       return next(err);
     });
-  }).catch(function (err) {
+  }).catch(function (err) { // Error handling for outer callback find.
     return next(err);
   });
 }
@@ -122,16 +121,16 @@ function getReflectionId(req, res, next) { // Get individual reflection for spec
 function getAllGoals(req, res, next) { // Get all goals for specific user.
   var username = req.params.username; // Obtain specific username.
   db.User.find({where: {username: user}}).then(function (data) { // Find user with the given username.
-    db.Goal.findAll({}).then(function (data) {
+    db.Goal.findAll({}).then(function (data) {  // Obtain all goal data for user.
       res.status(200).json({ // Send 200 status upon success.
         status: 'success',
         data: data,
         message: 'RETREIVED ALL GOALS'
       });
-    }).catch(function (err) {
+    }).catch(function (err) { // Error handling for inner callback findAll.
       return next(err);
     });
-  }).catch(function (err) {
+  }).catch(function (err) { // Error handling for outer callback find.
     return next(err);
   });  
 }
@@ -139,8 +138,8 @@ function getAllGoals(req, res, next) { // Get all goals for specific user.
 function getSingleGoal(req, res, next) { // Get individual goal for specific user.
   var username = req.params.username; // Obtain specific username.
   db.User.find({where: {username: username}}).then(function (data) { // Find user with the given username.
-    var goal = req.params.goal;
-    db.Goal.find({where: {goal:  oal}}).then(function (data) {
+    var goal = req.params.goal; // Get the specific goal.
+    db.Goal.find({where: {goal:  oal}}).then(function (data) { // Find goal with aforementioned goal name.
       res.status(200).json({ // Send 200 status upon success.
         status: 'success',
         data: data,
@@ -157,7 +156,7 @@ function getSingleGoal(req, res, next) { // Get individual goal for specific use
 function getSubGoals(req, res, next) { // Get all subgoals for specific user.
   var username = req.params.username; // Obtain specific username.
   db.User.find({where: {username: username}}).then(function (data) { // Find user with the given username.
-    db.Subgoal.findAll({}).then(function(data) {
+    db.Subgoal.findAll({}).then(function(data) { // Get all subgoal data for user.
       res.status(200).json({ // Send 200 status upon success.
         status: 'success', 
         data: data, 
@@ -170,7 +169,9 @@ function getSubGoals(req, res, next) { // Get all subgoals for specific user.
     return next(err);
   });
 }
+  
 
+  
 // SETTERS
 
 
