@@ -3,7 +3,6 @@
   "manifest_version": 2,
   "name": "FocusPro Extension",
   "version": "0.1",
-  "default_locale":"en",
   "description": "Website time tracker and companion to FocusPro web app",
   "homepage_url": "http://focuspro.herokuapp.com/",
   "background": {
@@ -14,6 +13,7 @@
           "alarms",
           "history",
           "idle",
+          "notifications",
           "storage",
           "tabs",
           "unlimitedStorage",
@@ -41,6 +41,7 @@ Permissions:
 -history is used to record visited pages
 -idle is used to track idle times, when the user has not generated input for a specified time, locked is when screensaver activates
   -Use this to avoid tracking idle time aka when user is away from keyboard or not actively on website
+-notifications is used to send notifications
 -storage is used to store user data for the extension
 -tabs is used to create and modify tabs
 -unlimitedStorage is used to give more storage space
