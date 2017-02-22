@@ -6,7 +6,7 @@
   "description": "Website time tracker and companion to FocusPro web app",
   "homepage_url": "http://focuspro.herokuapp.com/",
   "background": {
-    "scripts": ["background.js"]
+    "scripts": ["config.js", "sites.js", "tracker.js", "background.js"]
   },
   "permissions": [
           "activeTab",
@@ -28,8 +28,14 @@
     }
   ],
   "browser_action": {
-    "default_icon": "icon.png"
-  }
+    "default_icon": "icon.png",
+    "default_title": "Time Tracker",
+    "default_popup": "popup.html"
+  },
+  "options_page": "options.html",
+  "externally_connectable": {
+  "matches": ["*://focuspro.herokuapp.com/*"]
+}
 }
 
 
@@ -46,9 +52,4 @@ Permissions:
 -tabs is used to create and modify tabs
 -unlimitedStorage is used to give more storage space
 -webNavigation is used to receive notifications about status of navigation requests
-
-Pseudo-code:
--Track the time spent on websites, subtract idle time
--Use history to track frequency in which user navigates to site
--Send information stored in storage using alarms to web app at certain time e.g. midnight
 */
