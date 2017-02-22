@@ -3,6 +3,8 @@ node_js:
   - "node"
 env:
   - NODE_ENV=production
+install:
+  - npm install
 # deploy:
 #   provider: heroku
 #   api_key:
