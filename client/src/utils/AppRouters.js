@@ -57,10 +57,13 @@ function getSettings () {
   })
 }
 
-function postSettings () {
+
+function postSettings (picture, quote, reflection_freq, reminder, reminder_type, reminder_freq, reminder_address) {
   $.ajax({
     type: 'POST',
     url: '/api/users/:username/setting',
+    data: ({picture: picture, quote: quote, reflection_freq: reflection_freq, reminder: reminder
+    	reminder_type: reminder_type, reminder_freq: reflection_freq, reminder_address: reminder_address})
     success: function(data) {
       console.log("SUCCESS: OBTAINED ALL USERS: " + data)
     };
@@ -83,10 +86,11 @@ function getBlackList () {
   })
 }
 
-function postBlackList (blacklist) {
+function postBlackList (url, blacklist_type, blacklist_time) {
   $.ajax({
     type: 'POST',
     url: '/api/users/:username/setting/blacklist',
+    data: ({url: url, blacklist_type: blacklist_type, blacklist_time: blacklist_time}),
     success: function(data) {
       console.log("SUCCESS: OBTAINED ALL USERS: " + data)
     };
@@ -136,10 +140,11 @@ function getReflectionId () {
 
 
 
-function postReflectionId (id) {
+function postReflectionId (answer) {
   $.ajax({
     type: 'POST',
     url: '/api/users/:username/goals/:goal_id/reflections/:reflection_id,
+    data: ({answer: answer}),
     success: function(data) {
       console.log("SUCCESS: OBTAINED ALL USERS: " + data)
     };
@@ -155,7 +160,7 @@ function postReflectionId (id) {
 function getAllGoals () {
   $.ajax({
     type: 'GET',
-    url: '/api/users',
+    url: '/api/users/:username/goals/:goal_id',
     success: function(data) {
       console.log("SUCCESS: OBTAINED ALL USERS: " + data)
     };
