@@ -18,8 +18,8 @@ console.log('Successfully connected to PostgreSQL database');
 
 //User schema
 var User = db.define('User', {
-  username: {type: Sequelize.STRING, unique: true},
-  password: Sequelize.STRING,
+  username: Sequelize.STRING,
+  auth0_id: {type: Sequelize.STRING, unique: true},
   daily_goal: Sequelize.STRING
 });
 
