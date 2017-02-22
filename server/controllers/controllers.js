@@ -20,12 +20,12 @@ function getAllUsers(req, res, next) { // Get all the users.
 }
 
 function getSingleUser(req, res, next) { // Get specific user.
-  var username = req.params.username; // Obtain specific username.
-  db.User.find({where: {username: username}}).then(function (data) { // Find the user with the given username.
+  var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
+  db.User.findOrCreate({where: {auth0_id: auth0_id}}).then(function (data) { // Find the user with the given auth0_id.
     res.status(200).json({ // Send 200 status upon success.
       status: 'success',
       data: data,
-      message: 'GOT USER FROM DATABASE: ' + username
+      message: 'GOT USER FROM DATABASE: ' + auth0_id
     });
   }).catch(function (err) { // Error handling for callback find.
     return next(err);

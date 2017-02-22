@@ -13,7 +13,7 @@ if(process.env.NODE_ENV === 'production') {
 
 //connect to new sequelize database
 pg.defaults.ssl = true;
-var db = new Sequelize(DB_URL + '?&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory');
+var db = new Sequelize(DB_URL + '?&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory',{logging:false});
 console.log('Successfully connected to PostgreSQL database');
 
 //User schema
