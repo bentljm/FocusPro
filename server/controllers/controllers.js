@@ -26,7 +26,7 @@ function getSingleUser(req, res, next) { // Get specific user.
       status: 'success',
       data: data,
       message: 'GOT USER FROM DATABASE: ' + username
-    })
+    });
   }).catch(function (err) { // Error handling for callback find.
     return next(err);
   });
@@ -60,7 +60,7 @@ function getBlackList(req, res, next) { // Get blacklisted websites for specific
         status: 'success',
         data: data,
         message: 'BLACKLISTED URLS'
-      })
+      });
       }).catch(function (err) { // Error handling for inner callback findAll.
         return next(err);
       });
@@ -240,7 +240,7 @@ function postSettings(req, res, next) { // Post settings for specific user.
     });
   }).catch(function (err) { // Error handling for outer callback find
     return next(err);
-  })
+  });
 }
 
 
@@ -250,7 +250,7 @@ function postBlackList(req, res, next) { // Post blacklisted websites for specif
     var UserId = user.id; // Get user id from find
     var url = req.body.url; // Use input blacklist url parameters, defined in schema.
     var blacklist_type = req.body.blacklist_type;
-    var blacklist_time = req.body.blacklist_time
+    var blacklist_time = req.body.blacklist_time;
 
     // Create entry in Url with above parameters.
     db.Setting.find({where: {UserId: UserId}}).then(function (setting) {
@@ -265,10 +265,10 @@ function postBlackList(req, res, next) { // Post blacklisted websites for specif
         });
       }).catch(function (err) { // Error handling for outer callback find.
         return next(err);
-      })
+      });
     }).catch(function (err) {
       return next(err);
-    })
+    });
 }
 
 function postReflectionId(req, res, next) { // Post individual reflection for specific user.
@@ -276,7 +276,6 @@ function postReflectionId(req, res, next) { // Post individual reflection for sp
   db.User.find({where: {username: username}}).then(function (user) { // Find user with the given username.
     var UserId = user.id; // Get id of requested reflection.
     db.Goal.find({where: {UserId: UserId}}).then(function(goal) {
-      console.log("GOAL", goal)
       var GoalId = req.params.goal_id; // Get goal id from parameters
       var answer = req.body.answer; // Get answer from req body
       db.Reflection.create({answer: answer, GoalId: GoalId, UserId: UserId}).then(function (data) {//Find reflection with aforementioned id.

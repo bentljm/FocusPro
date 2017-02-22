@@ -1,9 +1,9 @@
 //import routes
-var db = require('./databases/Schema.js')
+var db = require('./databases/Schema.js');
 var express = require('express');
 var bodyparser = require('body-parser');
 var path = require('path');
-var router = require('./routers.js')
+var router = require('./routers.js');
 var app = express();
 
 app.use(bodyparser.json());

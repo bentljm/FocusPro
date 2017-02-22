@@ -21,18 +21,18 @@ module.exports = function(app, express) {
 
   app.get('/api/users/:username/goals/:goal_id/reflections', controller.getReflections); // Get individual reflection data
 
-  app.get('/api/users/:username/goals/:goal_id/reflections/:reflection_id', controller.getReflectionId) // Get individual reflection id
+  app.get('/api/users/:username/goals/:goal_id/reflections/:reflection_id', controller.getReflectionId); // Get individual reflection id
 
-  app.post('/api/users/:username/goals/:goal_id/reflections', controller.postReflectionId) // Post individual reflection id
+  app.post('/api/users/:username/goals/:goal_id/reflections', controller.postReflectionId); // Post individual reflection id
 
-  app.get('/api/users/:username/goals', controller.getAllGoals) //Get all goals
+  app.get('/api/users/:username/goals', controller.getAllGoals); //Get all goals
 
-  app.get('/api/users/:username/goals/:goal_id', controller.getSingleGoal) //Get single goal
+  app.get('/api/users/:username/goals/:goal_id', controller.getSingleGoal); //Get single goal
 
-  app.post('/api/users/:username/goals', controller.postSingleGoal) //Post single goal
+  app.post('/api/users/:username/goals', controller.postSingleGoal); //Post single goal
 
-  app.get('/api/users/:username/goals/:goal_id/subgoals', controller.getSubGoals) //Get all subgoals of a single goal
+  app.get('/api/users/:username/goals/:goal_id/subgoals', controller.getSubGoals); //Get all subgoals of a single goal
 
-  app.post('/api/users/:username/goals/:goal_id/subgoals', controller.postSubGoal) //Post all subgoals of a single goal
+  app.post('/api/users/:username/goals/:goal_id/subgoals', controller.postSubGoal); //Post all subgoals of a single goal
 
-}
+};
