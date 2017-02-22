@@ -25,7 +25,6 @@ before((done)=>{
 beforeEach((done)=>{
   var user1 = {username: 'dummy1', auth0_id: 'auth_id1', daily_goal: 'wakeup early'};
   var user2 = {username: 'dummy2', auth0_id: 'auth_id2', daily_goal: 'sleep early'};
-  console.log('before db');
   db.User.create(user2).then(function(user){
     db.User.create(user1).then(function(user){
       done();
@@ -42,7 +41,6 @@ after(()=>{
 afterEach((done)=>{
   //delete all users in db
   db.User.destroy({where:{}}).then((num)=> {
-    console.log('num',num);
     done();
   });
 });
@@ -76,8 +74,40 @@ describe('GET', ()=>{
       }
       expect(res.statusCode).to.equal(200);
       expect(res.body.data.length).to.equal(2);
+      expect(res.body.data.some((user)=>user.username==='dummy1')).to.be.true;
+      expect(res.body.data.some((user)=>user.username==='dummy2')).to.be.true;
+      done();
+    });
+  });
+
+  it('/api/users/:auth0_id fetches a user given user exists',(done)=>{
+    request(app)
+    .get('/api/users/auth_id1')
+    .end((err,res)=>{
+      if(err) {
+        console.error('GET /api/users \n',err);
+      }
+      expect(res.statusCode).to.equal(200);
+      expect(res.body.data[1]).to.equal.false;
+      expect(res.body.data[0].username).to.equal('dummy1');
+      done();
+    });
+  });
+
+  it('/api/users/:auth0_id creates a user given user does not exist',(done)=>{
+    request(app)
+    .get('/api/users/auth_id_NA')
+    .end((err,res)=>{
+      if(err) {
+        console.error('GET /api/users \n',err);
+      }
+      expect(res.statusCode).to.equal(200);
+      expect(res.body.data[1]).to.equal.true;
+      expect(res.body.data[0].auth0_id).to.equal('auth_id_NA');
       done();
     });
   });
 });
+
+
 //create a set daily_goal route
