@@ -11,7 +11,7 @@ var db = new Sequelize(DB_URL + '?&ssl=true&sslfactory=org.postgresql.ssl.NonVal
 console.log('Successfully connected to PostgreSQL database');
 
 //User schema
-var User = db.define('user', {
+var User = db.define('User', {
   username: Sequelize.STRING,
   auth0_id: {type: Sequelize.STRING, unique: true},
   daily_goal: Sequelize.STRING
