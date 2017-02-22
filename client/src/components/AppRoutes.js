@@ -5,6 +5,14 @@ import LandingPage from './LandingPage.js';
 import Motivational from './Motivational.js';
 import SelfReflection from './SelfReflection.js';
 
+function getAllGoals () {
+	var context = this;
+	$.ajax({
+		type: 'GET',
+		
+	})
+}
+
 const clientRoutes = (
   <Route path="/api/users" component={LandingPage}/>
 
@@ -34,3 +42,5 @@ export default class AppRoutes extends React.Component {
 	)
   }
 }
+
+
