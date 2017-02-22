@@ -56,10 +56,8 @@ function getBlackList () {
   $.ajax({
     type: 'GET',
     url: '/api/users/:username/setting/blacklist',
-    success: function(data) {
-      console.log("SUCCESS: OBTAINED ALL USERS: " + data)
-    };
-    error: function(err) {console.log("ERROR: ")})
+    success: function(data) {console.log("SUCCESS: OBTAINED BLACKLISTED WEBSITES:  " + data)},
+    error: function(err) {console.log("ERROR: COULD NOT GET BLACKLISTED WEBSITES   ")})
 }
 
 function postBlackList (url, blacklist_type, blacklist_time) {
@@ -67,20 +65,16 @@ function postBlackList (url, blacklist_type, blacklist_time) {
     type: 'POST',
     url: '/api/users/:username/setting/blacklist',
     data: ({url: url, blacklist_type: blacklist_type, blacklist_time: blacklist_time}),
-    success: function(data) {
-      console.log("SUCCESS: OBTAINED ALL USERS: " + data)
-    };
-    error: function(err) {console.log("ERROR: ")})
+    success: function(data) {console.log("SUCCESS: POSTED BLACKLISTED WEBSITE:  " + data)},
+    error: function(err) {console.log("ERROR: COULD NOT POST BLACKLISTED WEBSITES   ")})
 }
 
 function getExtension () {
   $.ajax({
     type: 'GET',
     url: '/api/users/:username/extension_data',
-    success: function(data) {
-      console.log("SUCCESS: OBTAINED ALL USERS: " + data)
-    };
-    error: function(err) {console.log("ERROR: ")})
+    success: function(data) {console.log("SUCCESS: OBTAINED ALL EXTENSION DATA: " + data)},
+    error: function(err) {console.log("ERROR: COULD NOT GET EXTESION DATA   ")})
 }
 function getReflections () {
   $.ajax({
@@ -96,10 +90,8 @@ function getReflectionId () {
   $.ajax({
     type: 'GET',
     url: '/api/users/:username/goals/:goal_id/reflections/:reflection_id,
-    success: function(data) {
-      console.log("SUCCESS: OBTAINED ALL USERS: " + data)
-    };
-    error: function(err) {console.log("ERROR: ")})
+    success: function(data) {console.log("SUCCESS: OBTAINED INDIVIDUAL REFLECTION ID:  " + data)},
+    error: function(err) {console.log("ERROR: COULD NOT GET INDIVIDUAL REFLECTION ID   ")})
 }
 
 
@@ -109,10 +101,8 @@ function postReflectionId (answer) {
     type: 'POST',
     url: '/api/users/:username/goals/:goal_id/reflections/:reflection_id,
     data: ({answer: answer}),
-    success: function(data) {
-      console.log("SUCCESS: OBTAINED ALL USERS: " + data)
-    };
-    error: function(err) {console.log("ERROR: ")})
+    success: function(data) {console.log("SUCCESS: POSTED INDIVIDUAL REFLECTION ID:   " + data)},
+    error: function(err) {console.log("ERROR: COULD NOT POST INDIVIDUAL REFLECTION ID   ")})
 }
 
 
@@ -122,10 +112,8 @@ function getAllGoals () {
   $.ajax({
     type: 'GET',
     url: '/api/users/:username/goals/:goal_id',
-    success: function(data) {
-      console.log("SUCCESS: OBTAINED ALL USERS: " + data)
-    };
-    error: function(err) {console.log("ERROR: ")})
+    success: function(data) {console.log("SUCCESS: OBTAINED ALL GOALS:  " + data)},
+    error: function(err) {console.log("ERROR: COULD NOT GET ALL GOALS   ")})
 }
 
 
