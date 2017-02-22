@@ -1,6 +1,8 @@
 /**
  * Responsible for detecting focus change from tabs and windows.
  */
+ //Note: Can probable use as is with no changes
+
 function Tracker(config, sites) {
   this._sites = sites;
   var self = this;

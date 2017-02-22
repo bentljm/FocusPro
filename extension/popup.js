@@ -1,6 +1,7 @@
 var config = new Config();
 var gsites = new Sites(config);
 
+//Add to ignored sites
 function addIgnoredSite(new_site) {
   return function() {
     chrome.extension.sendRequest(
@@ -11,6 +12,7 @@ function addIgnoredSite(new_site) {
   };
 }
 
+//Convert seconds to time in string format
 function secondsToString(seconds) {
   if (config.timeDisplayFormat == Config.timeDisplayFormatEnum.MINUTES) {
     return (seconds/60).toFixed(2);
@@ -39,6 +41,7 @@ function secondsToString(seconds) {
   return s;
 }
 
+//Creates the table display in the popup
 function addLocalDisplay() {
   var old_tbody = document.getElementById("stats_tbody");
   var tbody = document.createElement("tbody");
@@ -47,9 +50,9 @@ function addLocalDisplay() {
 
   /* Sort sites by time spent */
   var sites = gsites.sites;
-  var sortedSites = new Array();
+  var sortedSites = [];
   var totalTime = 0;
-  for (site in sites) {
+  for (var site in sites) {
    sortedSites.push([site, sites[site]]);
    totalTime += sites[site];
   }

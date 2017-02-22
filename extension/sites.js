@@ -3,6 +3,7 @@
  *
  * The primary interface to this class is through setCurrentFocus.
  */
+ //Note: Can probable use as is with no changes
 function Sites(config) {
   this._config = config;
   if (!localStorage.sites) {
@@ -68,7 +69,7 @@ Sites.prototype._updateTime = function() {
 Sites.prototype.setCurrentFocus = function(url) {
   console.log("setCurrentFocus: " + url);
   this._updateTime();
-  if (url == null) {
+  if (url === null) {
     this._currentSite = null;
     this._startTime = null;
   } else {
