@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Landingpage from './LandingPage.js';
+import Landingpage from './Landingpage.js';
 import {Sidebar} from './Sidebar.js';
 import {Grid, Row, Col} from 'react-materialize';
 
