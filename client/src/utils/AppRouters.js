@@ -135,10 +135,9 @@ function getSingleGoal () {
   $.ajax({
     type: 'GET',
     url: '/api/users/:username/goals/:goal_id',
-    success: function(data) {
-      console.log("SUCCESS: OBTAINED ALL USERS: " + data)
-    };
-    error: function(err) {console.log("ERROR: ")})
+    success: function(data) {console.log("SUCCESS: OBTAINED INDIVIDUAL GOAL: " + data)},
+    error: function(err) {console.log("ERROR: COULD NOT GET INDIVIDUAL GOAL ")})
+  });
 }
 
 
@@ -148,11 +147,9 @@ function postSingleGoal (goal, progress, goal_picture) {
     type: 'POST',
     url: '/api/users/:username/:goal_id',
     data: ({goal: goal, progress: progress, goal_picture: goal_picture}),
-    success: function(data) {
-      console.log("SUCCESS: OBTAINED INDIVIDUAL GOAL: " + data)
-    };
+    success: function(data) {console.log("SUCCESS: POSTED INDIVIDUAL GOAL: " + data)},
     error: function(err) {console.log("ERROR: COULD NOT POST INDIVIDUAL GOAL   ")})
-  })
+  });
 }
 
 
