@@ -1,3 +1,9 @@
+//
+// username: {type: Sequelize.STRING, unique: true},
+ // password: Sequelize.STRING,
+ // daily_goal: Sequelize.STRING
+//
+
 function getAllUsers () {
   $.ajax({
     type: 'GET',
@@ -11,10 +17,11 @@ function getAllUsers () {
   })
 }
 
-function postUser (user) {
+function postUser (username, password, daily_goal) {
 	$.ajax({
 		type: 'POST',
-		url: '/api/users'
+		url: '/api/users',
+		data: JSON.parse({username: username, password: password, daily_goal: daily_goal})
 		success: function (data) {
           console.log("SUCCESS: POSTED ALL USERS: " + data)
 		}
@@ -24,11 +31,10 @@ function postUser (user) {
 	})
 }
 
-function getSingleUser (user) {
+function getSingleUser () {
   $.ajax({
     type: 'GET',
     url: '/api/users/:username',
-    data: user,
     success: function(data) {
       console.log("SUCCESS: OBTAINED ALL USERS: " + data)
     };
@@ -177,10 +183,11 @@ function getSingleGoal () {
 
 
 
-function postSingleGoal (goal) {
+function postSingleGoal (goal, progress, goal_picture) {
   $.ajax({
     type: 'POST',
     url: '/api/users/:username/:goal_id',
+    data: ({goal: goal, progress: progress, goal_picture: goal_picture}),
     success: function(data) {
       console.log("SUCCESS: OBTAINED ALL USERS: " + data)
     };
@@ -208,13 +215,14 @@ function getSubGoals () {
 
 
 
-function postSubGoals (subgoals) {
+function postSubGoals (subgoal, status) {
   $.ajax({
     type: 'POST',
     url: '/api/users/:username/goals/:goal_id/subgoals',
+    data: JSON.parse({ subgoal: subgoal, status: status }),
     success: function(data) {
       console.log("SUCCESS: OBTAINED ALL SUBGOALS: " + data)
-    };
+    },
     error: function(err) {
     	throw err;
     }
