@@ -47,11 +47,9 @@ function postSettings (picture, quote, reflection_freq, reminder, reminder_type,
     type: 'POST',
     url: '/api/users/:username/setting',
     data: ({picture: picture, quote: quote, reflection_freq: reflection_freq, reminder: reminder
-    	reminder_type: reminder_type, reminder_freq: reflection_freq, reminder_address: reminder_address})
-    success: function(data) {
-      console.log("SUCCESS: OBTAINED ALL USERS: " + data)
-    };
-    error: function(errconsole.log("ERROR: ")})
+    	reminder_type: reminder_type, reminder_freq: reflection_freq, reminder_address: reminder_address}),
+    success: function(data) {console.log("SUCCESS: OBTAINED ALL SETTINGS: " + data)},
+    error: function(err) {console.log("ERROR: ")})
 }
 
 function getBlackList () {
@@ -61,7 +59,7 @@ function getBlackList () {
     success: function(data) {
       console.log("SUCCESS: OBTAINED ALL USERS: " + data)
     };
-    error: function(errconsole.log("ERROR: ")})
+    error: function(err) {console.log("ERROR: ")})
 }
 
 function postBlackList (url, blacklist_type, blacklist_time) {
@@ -72,7 +70,7 @@ function postBlackList (url, blacklist_type, blacklist_time) {
     success: function(data) {
       console.log("SUCCESS: OBTAINED ALL USERS: " + data)
     };
-    error: function(errconsole.log("ERROR: ")})
+    error: function(err) {console.log("ERROR: ")})
 }
 
 function getExtension () {
@@ -82,7 +80,7 @@ function getExtension () {
     success: function(data) {
       console.log("SUCCESS: OBTAINED ALL USERS: " + data)
     };
-    error: function(errconsole.log("ERROR: ")})
+    error: function(err) {console.log("ERROR: ")})
 }
 function getReflections () {
   $.ajax({
@@ -91,7 +89,7 @@ function getReflections () {
     success: function(data) {
       console.log("SUCCESS: OBTAINED ALL USERS: " + data)
     };
-    error: function(errconsole.log("ERROR: ")})
+    error: function(err) {console.log("ERROR: ")})
 }
 
 function getReflectionId () {
@@ -101,7 +99,7 @@ function getReflectionId () {
     success: function(data) {
       console.log("SUCCESS: OBTAINED ALL USERS: " + data)
     };
-    error: function(errconsole.log("ERROR: ")})
+    error: function(err) {console.log("ERROR: ")})
 }
 
 
@@ -114,7 +112,7 @@ function postReflectionId (answer) {
     success: function(data) {
       console.log("SUCCESS: OBTAINED ALL USERS: " + data)
     };
-    error: function(errconsole.log("ERROR: ")})
+    error: function(err) {console.log("ERROR: ")})
 }
 
 
@@ -127,7 +125,7 @@ function getAllGoals () {
     success: function(data) {
       console.log("SUCCESS: OBTAINED ALL USERS: " + data)
     };
-    error: function(errconsole.log("ERROR: ")})
+    error: function(err) {console.log("ERROR: ")})
 }
 
 
@@ -140,7 +138,7 @@ function getSingleGoal () {
     success: function(data) {
       console.log("SUCCESS: OBTAINED ALL USERS: " + data)
     };
-    error: function(errconsole.log("ERROR: ")})
+    error: function(err) {console.log("ERROR: ")})
 }
 
 
@@ -151,9 +149,10 @@ function postSingleGoal (goal, progress, goal_picture) {
     url: '/api/users/:username/:goal_id',
     data: ({goal: goal, progress: progress, goal_picture: goal_picture}),
     success: function(data) {
-      console.log("SUCCESS: OBTAINED ALL USERS: " + data)
+      console.log("SUCCESS: OBTAINED INDIVIDUAL GOAL: " + data)
     };
-    error: function(errconsole.log("ERROR: ")})
+    error: function(err) {console.log("ERROR: COULD NOT POST INDIVIDUAL GOAL   ")})
+  })
 }
 
 
@@ -163,10 +162,9 @@ function getSubGoals () {
   $.ajax({
     type: 'GET',
     url: '/api/users/:username/goals/:goal_id/subgoals',
-    success: function(data) {
-      console.log("SUCCESS: OBTAINED ALL SUBGOALS: " + data)
-    };
-    error: function(errconsole.log("ERROR: ")})
+    success: function(data) {console.log("SUCCESS: OBTAINED ALL SUBGOALS: " + data)},
+    error: function(err) {console.log("ERROR: COULD NOT GET SUBGOALS   ")})
+  });
 }
 
 
@@ -176,8 +174,7 @@ function postSubGoals (subgoal, status) {
     type: 'POST',
     url: '/api/users/:username/goals/:goal_id/subgoals',
     data: JSON.parse({ subgoal: subgoal, status: status }),
-    success: function(data) {
-      console.log("SUCCESS: OBTAINED ALL SUBGOALS: " + data)
-    },
-    error: function(errconsole.log("ERROR: ")})
+    success: function(data) {console.log("SUCCESS: POSTED SUBGOALS: " + data)},
+    error: function(err) {console.log("ERROR: COULD NOT POST SUBGOALS   ")})
+  });
 }
