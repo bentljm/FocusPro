@@ -9,7 +9,7 @@ function getAllUsers () {
     type: 'GET',
     url: '/api/users',
     success: function(data) {console.log("SUCCESS: OBTAINED ALL USERS: " + data)},
-    error: function(err) {throw err;}
+    error: function(err) {console.log("ERROR: COULD NOT GET ALL USERS   ")}
   });
 }
 
@@ -18,8 +18,8 @@ function postUser (username, password, daily_goal) {
     type: 'POST',
 	url: '/api/users',
 	data: JSON.parse({username: username, password: password, daily_goal: daily_goal}),
-	success: function (data) {console.log("SUCCESS: POSTED ALL USERS: " + data)},
-    error: function(err) {throw err;} 
+	success: function (data) {console.log("SUCCESS: POSTED USER: " + data)},
+    error: function(err) {console.log("ERROR: COULD NOT POST USER   ")} 
   });
 }
 
@@ -27,8 +27,8 @@ function getSingleUser () {
   $.ajax({
     type: 'GET',
     url: '/api/users/:username',
-    success: function(data) { console.log("SUCCESS: OBTAINED ALL USERS: " + data)},
-    error: function(err) {throw err;}
+    success: function(data) { console.log("SUCCESS: OBTAINED INDIVIDUAL USER: " + data)},
+    error: function(err) {console.log("ERROR: COULD NOT GET INDIVIDUAL USER   ")}
   });
 }
 
@@ -36,8 +36,8 @@ function getSettings () {
   $.ajax({
     type: 'GET',
     url: '/api/users/:username/setting',
-    success: function(data) {console.log("SUCCESS: OBTAINED ALL USERS: " + data)},
-    error: function(err) {throw err;}
+    success: function(data) {console.log("SUCCESS: OBTAINED ALL SETTINGS: " + data)},
+    error: function(err) {console.log("ERROR: COULD NOT GET SETTINGS  ")}
  });
 }
 
@@ -51,7 +51,7 @@ function postSettings (picture, quote, reflection_freq, reminder, reminder_type,
     success: function(data) {
       console.log("SUCCESS: OBTAINED ALL USERS: " + data)
     };
-    error: function(errthrow err;})
+    error: function(errconsole.log("ERROR: ")})
 }
 
 function getBlackList () {
@@ -61,7 +61,7 @@ function getBlackList () {
     success: function(data) {
       console.log("SUCCESS: OBTAINED ALL USERS: " + data)
     };
-    error: function(errthrow err;})
+    error: function(errconsole.log("ERROR: ")})
 }
 
 function postBlackList (url, blacklist_type, blacklist_time) {
@@ -72,7 +72,7 @@ function postBlackList (url, blacklist_type, blacklist_time) {
     success: function(data) {
       console.log("SUCCESS: OBTAINED ALL USERS: " + data)
     };
-    error: function(errthrow err;})
+    error: function(errconsole.log("ERROR: ")})
 }
 
 function getExtension () {
@@ -82,7 +82,7 @@ function getExtension () {
     success: function(data) {
       console.log("SUCCESS: OBTAINED ALL USERS: " + data)
     };
-    error: function(errthrow err;})
+    error: function(errconsole.log("ERROR: ")})
 }
 function getReflections () {
   $.ajax({
@@ -91,7 +91,7 @@ function getReflections () {
     success: function(data) {
       console.log("SUCCESS: OBTAINED ALL USERS: " + data)
     };
-    error: function(errthrow err;})
+    error: function(errconsole.log("ERROR: ")})
 }
 
 function getReflectionId () {
@@ -101,7 +101,7 @@ function getReflectionId () {
     success: function(data) {
       console.log("SUCCESS: OBTAINED ALL USERS: " + data)
     };
-    error: function(errthrow err;})
+    error: function(errconsole.log("ERROR: ")})
 }
 
 
@@ -114,7 +114,7 @@ function postReflectionId (answer) {
     success: function(data) {
       console.log("SUCCESS: OBTAINED ALL USERS: " + data)
     };
-    error: function(errthrow err;})
+    error: function(errconsole.log("ERROR: ")})
 }
 
 
@@ -127,7 +127,7 @@ function getAllGoals () {
     success: function(data) {
       console.log("SUCCESS: OBTAINED ALL USERS: " + data)
     };
-    error: function(errthrow err;})
+    error: function(errconsole.log("ERROR: ")})
 }
 
 
@@ -140,7 +140,7 @@ function getSingleGoal () {
     success: function(data) {
       console.log("SUCCESS: OBTAINED ALL USERS: " + data)
     };
-    error: function(errthrow err;})
+    error: function(errconsole.log("ERROR: ")})
 }
 
 
@@ -153,7 +153,7 @@ function postSingleGoal (goal, progress, goal_picture) {
     success: function(data) {
       console.log("SUCCESS: OBTAINED ALL USERS: " + data)
     };
-    error: function(errthrow err;})
+    error: function(errconsole.log("ERROR: ")})
 }
 
 
@@ -166,7 +166,7 @@ function getSubGoals () {
     success: function(data) {
       console.log("SUCCESS: OBTAINED ALL SUBGOALS: " + data)
     };
-    error: function(errthrow err;})
+    error: function(errconsole.log("ERROR: ")})
 }
 
 
@@ -179,5 +179,5 @@ function postSubGoals (subgoal, status) {
     success: function(data) {
       console.log("SUCCESS: OBTAINED ALL SUBGOALS: " + data)
     },
-    error: function(errthrow err;})
+    error: function(errconsole.log("ERROR: ")})
 }
