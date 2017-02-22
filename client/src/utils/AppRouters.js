@@ -24,10 +24,11 @@ function postUser (user) {
 	})
 }
 
-function getSingleUser () {
+function getSingleUser (user) {
   $.ajax({
     type: 'GET',
-    url: '/api/users',
+    url: '/api/users/:username',
+    data: user,
     success: function(data) {
       console.log("SUCCESS: OBTAINED ALL USERS: " + data)
     };
@@ -40,7 +41,7 @@ function getSingleUser () {
 function getSettings () {
   $.ajax({
     type: 'GET',
-    url: '/api/users',
+    url: '/api/users/:username/setting',
     success: function(data) {
       console.log("SUCCESS: OBTAINED ALL USERS: " + data)
     };
@@ -52,8 +53,8 @@ function getSettings () {
 
 function postSettings () {
   $.ajax({
-    type: 'GET',
-    url: '/api/users',
+    type: 'POST',
+    url: '/api/users/:username/setting',
     success: function(data) {
       console.log("SUCCESS: OBTAINED ALL USERS: " + data)
     };
@@ -66,7 +67,7 @@ function postSettings () {
 function getBlackList () {
   $.ajax({
     type: 'GET',
-    url: '/api/users',
+    url: '/api/users/:username/setting/blacklist',
     success: function(data) {
       console.log("SUCCESS: OBTAINED ALL USERS: " + data)
     };
@@ -76,10 +77,10 @@ function getBlackList () {
   })
 }
 
-function postBlackList () {
+function postBlackList (blacklist) {
   $.ajax({
-    type: 'GET',
-    url: '/api/users',
+    type: 'POST',
+    url: '/api/users/:username/setting/blacklist',
     success: function(data) {
       console.log("SUCCESS: OBTAINED ALL USERS: " + data)
     };
@@ -92,7 +93,7 @@ function postBlackList () {
 function getExtension () {
   $.ajax({
     type: 'GET',
-    url: '/api/users',
+    url: '/api/users/:username/extension_data',
     success: function(data) {
       console.log("SUCCESS: OBTAINED ALL USERS: " + data)
     };
@@ -104,7 +105,7 @@ function getExtension () {
 function getReflections () {
   $.ajax({
     type: 'GET',
-    url: '/api/users',
+    url: '/api/users/:username/goals/:goal_id/reflections',
     success: function(data) {
       console.log("SUCCESS: OBTAINED ALL USERS: " + data)
     };
@@ -117,7 +118,7 @@ function getReflections () {
 function getReflectionId () {
   $.ajax({
     type: 'GET',
-    url: '/api/users',
+    url: '/api/users/:username/goals/:goal_id/reflections/:reflection_id,
     success: function(data) {
       console.log("SUCCESS: OBTAINED ALL USERS: " + data)
     };
@@ -129,10 +130,10 @@ function getReflectionId () {
 
 
 
-function postReflectionId () {
+function postReflectionId (id) {
   $.ajax({
-    type: 'GET',
-    url: '/api/users',
+    type: 'POST',
+    url: '/api/users/:username/goals/:goal_id/reflections/:reflection_id,
     success: function(data) {
       console.log("SUCCESS: OBTAINED ALL USERS: " + data)
     };
@@ -164,7 +165,7 @@ function getAllGoals () {
 function getSingleGoal () {
   $.ajax({
     type: 'GET',
-    url: '/api/users',
+    url: '/api/users/:username/goals/:goal_id',
     success: function(data) {
       console.log("SUCCESS: OBTAINED ALL USERS: " + data)
     };
@@ -176,10 +177,10 @@ function getSingleGoal () {
 
 
 
-function postSingleGoal () {
+function postSingleGoal (goal) {
   $.ajax({
-    type: 'GET',
-    url: '/api/users',
+    type: 'POST',
+    url: '/api/users/:username/:goal_id',
     success: function(data) {
       console.log("SUCCESS: OBTAINED ALL USERS: " + data)
     };
@@ -195,9 +196,9 @@ function postSingleGoal () {
 function getSubGoals () {
   $.ajax({
     type: 'GET',
-    url: '/api/users',
+    url: '/api/users/:username/goals/:goal_id/subgoals',
     success: function(data) {
-      console.log("SUCCESS: OBTAINED ALL USERS: " + data)
+      console.log("SUCCESS: OBTAINED ALL SUBGOALS: " + data)
     };
     error: function(err) {
     	throw err;
@@ -207,12 +208,12 @@ function getSubGoals () {
 
 
 
-function postSubGoals () {
+function postSubGoals (subgoals) {
   $.ajax({
-    type: 'GET',
-    url: '/api/users',
+    type: 'POST',
+    url: '/api/users/:username/goals/:goal_id/subgoals',
     success: function(data) {
-      console.log("SUCCESS: OBTAINED ALL USERS: " + data)
+      console.log("SUCCESS: OBTAINED ALL SUBGOALS: " + data)
     };
     error: function(err) {
     	throw err;
