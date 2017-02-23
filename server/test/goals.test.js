@@ -30,9 +30,15 @@ describe('GET and POST requests to /api/users/username/goals', () => {
     //load dummy data
   beforeEach((done) =>{
     var user1 = {username: 'dummy3', auth0_id: 'auth_id3', daily_goal: 'wakeup earlier than yesterday'};
+    var user2 = {username: 'dummy2', auth0_id: 'auth_id4', daily_goal: 'wakeup before noon'};
     db.User.create(user1).then(function(user){
       global.UserId = user.id;
+      db.User.create(user2).then(function(user){
+        var goal = {goal: 'Mow Lawn', progress: 10, goal_picture: "Picture", UserId: UserId};
+        db.Goal.create(goal).then(function(goal){
           done();
+        });
+      });
     });
   });
 
@@ -46,7 +52,7 @@ describe('GET and POST requests to /api/users/username/goals', () => {
 
   describe('POST a new goal', () =>{
     it('/api/users/:auth0_id/goals creates a goal',(done) =>{
-      console.log('POST in goals',UserId);
+      console.log('POST in goals', UserId);
       const goalA = {goal: 'Mow Lawn', progress: 10, goal_picture: "Picture", UserId: UserId};
       request(app)
       .post('/api/users/auth_id3/goals')
@@ -84,7 +90,7 @@ describe('GET and POST requests to /api/users/username/goals', () => {
   describe('GET all goals', () =>{
     it('/api/users/:auth0_id/goals fetches no goal given user has no goals',(done) =>{
       request(app)
-      .get('/api/users/auth_id3/goals')
+      .get('/api/users/auth_id4/goals')
       .end((err,res) =>{
         if(err) {
           console.error('GET /api/users \n',err);
@@ -95,4 +101,4 @@ describe('GET and POST requests to /api/users/username/goals', () => {
       });
     });
   });
-});
+})
