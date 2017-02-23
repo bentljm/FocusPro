@@ -17,6 +17,8 @@ module.exports = function(app, express) {
 
   app.post('/api/users/:auth0_id/setting/blacklist', controller.postBlackList); // Post or update individual blacklist
 
+  app.delete('/api/users/:auth0_id/setting/blacklist/:url_id', controller.removeBlackList); // Get individual blacklist
+
   app.get('/api/users/:auth0_id/extension_data', controller.getExtension); // Get individual extention data
 
   app.get('/api/users/:auth0_id/goals/:goal_id/reflections', controller.getReflections); // Get individual reflection data
@@ -30,6 +32,8 @@ module.exports = function(app, express) {
   app.get('/api/users/:auth0_id/goals/:goal_id', controller.getSingleGoal); //Get single goal
 
   app.post('/api/users/:auth0_id/goals', controller.postSingleGoal); //Post single goal
+
+  app.delete('/api/users/:auth0_id/goals/:goal_id', controller.removeSingleGoal); //Delete single goal
 
   app.get('/api/users/:auth0_id/goals/:goal_id/subgoals', controller.getSubGoals); //Get all subgoals of a single goal
 

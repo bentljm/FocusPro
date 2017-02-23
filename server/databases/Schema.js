@@ -83,7 +83,7 @@ Setting.hasMany(Url);
 User.belongsToMany(User, {as: 'user1', through: 'Friendship', foreignKey: 'user1_id' });
 User.belongsToMany(User, {as: 'user2', through: 'Friendship', foreignKey: 'user2_id' });
 
-//create new database if it doens't already exist
+//create new database if it doesn't already exist
 db.sync();
 
 //Export schemas

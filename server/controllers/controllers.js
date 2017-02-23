@@ -373,6 +373,48 @@ function removeSubGoal(req, res, next) { // Delete individual subgoal for specif
  });
 }
 
+function removeSingleGoal(req, res, next) { // Delete individual goal for specific user.
+  var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
+  db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
+    var UserId = user.id; // Get the specific user
+    var id = req.params.goal_id; // Get the specific goal from parameters
+    db.Goal.destroy({where: {UserId: UserId, id: id}}).then(function (data) { // Delete goal with aforementioned goal id.
+      res.status(200).json({ // Send 200 status upon success.
+        status: 'success',
+        data: data,
+        message: 'RETRIEVED SPECIFIC GOAL ' + id
+      });
+    }).catch(function (err) { // Error handling for inner callback find.
+      return next(err);
+    });
+  }).catch(function (err) { // Error handling for outback callback find.
+    return next(err);
+  });
+}
+
+function removeBlackList(req, res, next) { // Remove a blacklisted website for specific user.
+  var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
+  db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
+    var UserId = user.id; // Get specific user id from find
+    db.Setting.find({where: {UserId: UserId}}).then(function(setting) {
+      var SettingId = setting.id;
+      db.Url.destroy({where: {SettingId: SettingId, id: url_id}}).then(function (data) { // Delete blacklist url.
+      res.status(200).json({ // Send 200 status upon success.
+        status: 'success',
+        data: data,
+        message: 'BLACKLISTED URLS'
+      });
+      }).catch(function (err) { // Error handling for inner callback findAll.
+        return next(err);
+      });
+    }).catch(function (err) { // Error handling for outer callback find.
+      return next(err);
+    });
+  }).catch(function (err) { // Error handling for outer callback find.
+    return next(err);
+  });
+}
+
 //UPDATE
 
 
@@ -394,5 +436,8 @@ module.exports = {
   getSingleGoal: getSingleGoal,
   postSingleGoal: postSingleGoal,
   getSubGoals: getSubGoals,
-  postSubGoal: postSubGoal
+  postSubGoal: postSubGoal,
+  removeSubGoal: removeSubGoal,
+  removeSingleGoal: removeSingleGoal,
+  removeBlackList: removeBlackList
 };
