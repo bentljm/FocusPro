@@ -7,13 +7,13 @@ var DB_URL = process.env.DATABASE_URL || require('../config/config.js').LOCAL_DA
 
 //connect to new sequelize database
 pg.defaults.ssl = true;
-var db = new Sequelize(DB_URL + '?&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory',{logging:false});
+var db = new Sequelize(DB_URL + '?&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory', {logging: false});
 console.log('Successfully connected to PostgreSQL database');
 
 //User schema
 var User = db.define('User', {
-  username: {type: Sequelize.STRING, unique: true},
-  auth0_id: Sequelize.STRING,
+  username: Sequelize.STRING,
+  auth0_id: {type: Sequelize.STRING, unique: true},
   daily_goal: Sequelize.STRING
 });
 
