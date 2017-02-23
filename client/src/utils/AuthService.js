@@ -29,6 +29,8 @@ export default class AuthService {
         console.log('Error loading the Profile', error);
       } else {
         this.setProfile(profile);
+        console.log(profile);
+        //Save user in db
         $.ajax({
           type: 'POST', // POST REQUEST
           url: '/api/users', // Endpoint
@@ -36,6 +38,29 @@ export default class AuthService {
           data: JSON.stringify({username: profile.given_name, auth0_id: profile.user_id, daily_goal: ''}),
           success: function (data) {console.log("SUCCESS: POSTED USER: " + JSON.stringify(data));},
           error: function(err) {console.log("ERROR: COULD NOT POST USER   ");}
+        });
+        //Get the userId
+        var userId = 0;
+        $.ajax({
+          type: 'GET',
+          url: 'api/users/' + profile.user_id,
+          success: function (data) {
+            console.log("SUCCESS: GOT USERID", data.data[0].id);
+            userId = data.data[0].id;
+          },
+          error: function (err) {
+            console.log('ERROR: COULD NOT GET USERID', err);
+          }
+        });
+
+        //Create settings for user
+        $.ajax({
+          type: 'POST',
+          url: '/api/users/' + profile.user_id + '/setting',
+          contentType: 'application/json',
+          data: JSON.stringify({picture: profile.picture, reflection_freq: 0, reminder: false, reminder_type: '', reminder_freq: 0, reminder_address: '', UserId: userId}),
+          success: function(data) {console.log("SUCCESS: POSTED SETTING: ", data);},
+          error: function(err) {console.log("ERROR: COULD NOT POST SETTING", err);}
         });
       }
     });

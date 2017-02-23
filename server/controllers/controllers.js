@@ -351,8 +351,6 @@ function postSubGoal(req, res, next) { // Post individual subgoal for specific u
 
 // Export functions to routers...
 
-
-
 module.exports = {
 	getAllUsers: getAllUsers,
   postUser: postUser,
