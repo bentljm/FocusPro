@@ -21,6 +21,8 @@ before((done)=>{
   done();
 });
 
+
+
 //load dummy data
 beforeEach((done)=>{
   var setting1 = {picture: 'picture1', quote: 'ian', reflection_freq: '1', reminder: 'false',
@@ -30,6 +32,9 @@ beforeEach((done)=>{
 
   var user1 = {username: 'dummy1', auth0_id: 'auth_id1', daily_goal: 'wakeup early'}; // blacklisted websites
   var user2 = {username: 'dummy2', auth0_id: 'auth_id2', daily_goal: 'sleep early'};
+   
+  var url1 = {url: 'www.der.com', blacklist_type: "forever", blacklist_time: 30} // extensions
+  var url1 = {url: 'www.dur.com', blacklist_type: "short-term", blacklist_time: 10} // extensions
 
   var extension1 = {url: 'www.blah.com', time_spent: 2, freq: 30} // extensions
   var extension2 = {url: 'www.bloh.com', time_spent: 3, freq: 15}
@@ -37,23 +42,28 @@ beforeEach((done)=>{
   db.User.create(user2).then(function(user){ // Url is located within settings within username
   	db.Setting.create(setting2).then(function (setting) {
   		db.Url.create(url2).then(function (site) {
-  			done();
+          console.log("CREATED URL");
   		});
+  		console.log("DONE WITH SETTING");
     });
-    db.Extension.create(url2).then(function(site) { // extension under uesrname but not setting
-    	done();
+    db.Extension.create(extension2).then(function(site) { // extension under uesrname but not setting
+    	console.log("CREATED EXTENSION");
     });
+    console.log("DONE WITH HALF");
   });
     db.User.create(user1).then(function(user){
      	db.Setting.create(setting1).then(function (setting) {
   		db.Url.create(url1).then(function (site) {
-  			done();
+  		  console.log("CREATED URL");
   		});
+  		console.log("DONE WITH SETTING");
     });
-    db.Extension.create(url1).then(function(site) {
-    	done();
+    db.Extension.create(extension1).then(function(site) {
+    	console.log("CREATED EXTENSION");
   	});
+  	console.log("DONE WITH FULL");
   });
+    done();
 });
 
 // close global DB
