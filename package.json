@@ -41,12 +41,14 @@
     "babel-jest": "^18.0.0",
     "babel-plugin-dynamic-import-node": "^1.0.0",
     "chai": "^3.5.0",
+    "chai-http": "^2.0.1",
     "enzyme": "^2.7.1",
     "jest": "^18.1.0",
     "jest-cli": "^18.1.0",
     "mocha": "^3.2.0",
     "react-addons-test-utils": "^15.4.2",
     "react-test-renderer": "^15.4.2",
-    "supertest": "^3.0.0"
+    "supertest": "^3.0.0",
+    "webpack-dev-server": "^1.14.0"
   }
 }
