@@ -58,24 +58,24 @@ export default class Landingpage extends React.Component {
       <br />
       <h5 className="center"> Meet the Team </h5>
       <Row>
-      <Col s={3}>
-        <Card key={0} className='white' title='Jeff Bentler' actions={[<a href='#'>GitHub</a>]}>
-        Image and blurb goes here
+      <Col>
+        <Card key={'card0'} className='white' title='Jeff Bentler' actions={[<a href='https://github.com/bentljm'>GitHub</a>]}>
+        <img src="../../assets/jeff_img.jpeg" className="circle" />
         </Card>
       </Col>
-      <Col s={3}>
-        <Card key={1} className='white' title='Josephine Chen' actions={[<a href='#'>GitHub</a>]}>
-        Image and blurb goes here
+      <Col>
+        <Card key={'card1'} className='white' title='Josephine Chen' actions={[<a href='https://github.com/Josephine-Chen'>GitHub</a>]}>
+        <img src="../../assets/josephine_img.jpeg" className="circle" />
         </Card>
       </Col>
-      <Col s={3}>
-        <Card key={2} className='white' title='Ian George' actions={[<a href='#'>GitHub</a>]}>
-        Image and blurb goes here
+      <Col>
+        <Card key={'card2'} className='white' title='Ian George' actions={[<a href='https://github.com/OppenheimerAndTheMartians'>GitHub</a>]}>
+        <img src="../../assets/ian_img.jpeg" className="circle" />
         </Card>
       </Col>
-       <Col s={3}>
-        <Card key={3} className='white' title='Sherry Hsu' actions={[<a href='#'>GitHub</a>]}>
-        Image and blurb goes here
+      <Col>
+        <Card key={'card3'} className='white' title='Sherry Hsu' actions={[<a href='https://github.com/SherryH'>GitHub</a>]}>
+        <img src="../../assets/sherry_img.jpeg" className="circle" />
         </Card>
       </Col>
       </Row>

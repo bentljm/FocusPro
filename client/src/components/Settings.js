@@ -1,8 +1,86 @@
 import React from 'react';
 import {Table, Input, Row, Col} from 'react-materialize';
 
-
+//TODO: Create setting with placeholders in db
 export default class Settings extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      profile: this.props.auth.getProfile(),
+      setting:{},
+      userId: '',
+      blacklist: {}
+    };
+  }
+
+  componentDidMount(){
+    this.getUserId();
+    this.getSetting();
+  }
+
+  getSetting() {
+    var that = this;
+    $.ajax({
+      type: 'GET', // GET REQUEST
+      url: '/api/users/'+this.props.user_id+'/setting',
+      success: function(data) {
+        console.log("SUCCESS: OBTAINED SETTINGS: ", data.data);
+        that.setState({setting: data.data});
+      },
+      error: function(err) {console.log("ERROR: COULD NOT GET SETTINGS", err)}
+    });
+  }
+
+  postSetting() {
+    $.ajax({
+      type: 'POST',
+      url: '/api/users/'+this.props.user_id+'/setting',
+      contentType: 'application/json',
+      data: JSON.stringify({picture: '', reflection_freq: '', reminder: '', reminder_type: '', reminder_freq: '', reminder_address: '', UserId: this.state.userId}),
+      success: function(data) {console.log("SUCCESS: POSTED SETTING: ", data);},
+      error: function(err) {console.log("ERROR: COULD NOT POST SETTING", err);}
+    });
+  }
+
+  getBlacklist() {
+    var that = this;
+    $.ajax({
+      type: 'GET', // GET REQUEST
+      url: '/api/users/'+this.props.user_id+'/setting/blacklist',
+      success: function(data) {
+        console.log("SUCCESS: OBTAINED BLACKLIST: ", data);
+        that.setState({blacklist: data});
+      },
+      error: function(err) {console.log("ERROR: COULD NOT GET BLACKLIST", err)}
+    });
+  }
+
+  postBlacklist() {
+    $.ajax({
+      type: 'POST',
+      url: '/api/users/'+this.props.user_id+'/setting/blacklist',
+      contentType: 'application/json',
+      data: JSON.stringify({url: req.body.url, blacklist_type: req.body.blacklist_type, blacklist_time: req.body.blacklist_time, SettingId: SettingId}),
+      success: function(data) {console.log("SUCCESS: POSTED BLACKLIST: ", data);},
+      error: function(err) {console.log("ERROR: COULD NOT POST BLACKLIST", err);}
+    });
+  }
+
+  getUserId() {
+    var that = this;
+    $.ajax({
+      type: 'GET',
+      url: 'api/users/' + this.state.profile.user_id,
+      success: function (data) {
+        console.log("SUCCESS: GOT USERID", data.data[0].id);
+        that.setState({userId: data.data[0].id});
+      },
+      error: function (err) {
+        console.log('ERROR: COULD NOT GET USERID', err);
+      }
+    });
+  }
+
   render() {
     return (
       <div>

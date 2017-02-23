@@ -65,3 +65,16 @@ span.email{
 span.name{
   font-size: large !important;
 }
+
+img.circle {
+  max-height: 150px;
+  max-width: 150px;
+}
+
+div.white.card {
+  max-width: 250px;
+}
+
+div.card-content {
+  text-align: center;
+}

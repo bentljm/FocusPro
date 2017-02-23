@@ -33,15 +33,15 @@ function getSingleUser(req, res, next) { // Get specific user.
 }
 
 function getSettings(req, res, next) { // Get settings for specific user.
-  var username = req.params.username; // Obtain specific username.
-  db.User.find({where: {username: username}}).then(function (user) { // Find user with the given username.
+  var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
+  db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
     console.log("USER FROM GET SETTINGS ", + user.id);
     var UserId = user.id; // Get specific user id from find
     db.Setting.find({where: {UserId: UserId}}).then(function (data) { // Grab settings data for user.
       res.status(200).json({ // Send 200 status upon success.
         status: 'success',
         data: data,
-        message: 'GOT SETTINGS FOR USER: ' + username
+        message: 'GOT SETTINGS FOR USER: ' + UserId
       });
     }).catch(function (err) { // Error handling for callback findAll.
       return next(err);
@@ -50,8 +50,8 @@ function getSettings(req, res, next) { // Get settings for specific user.
 }
 
 function getBlackList(req, res, next) { // Get blacklisted websites for specific user.
-  var username = req.params.username; // Obtain specific username.
-  db.User.find({where: {username: username}}).then(function (user) { // Find user with the given username.
+  var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
+  db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
     var UserId = user.id; // Get specific user id from find
     db.Setting.find({where: {UserId: UserId}}).then(function(setting) {
       var SettingId = setting.id;
@@ -74,8 +74,8 @@ function getBlackList(req, res, next) { // Get blacklisted websites for specific
 }
 
 function getExtension(req, res, next) { // Get extensions for specific user.
-  var username = req.params.username; // Obtain specific username.
-  db.User.find({where: {username: username}}).then(function (user) { // Find user with the given username.
+  var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
+  db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
     var UserId = user.id; // Get specific user id from find
     db.Extension.findAll({where: {UserId: UserId}}).then(function (data) { // Get all extension data.
       res.status(200).json({ // Send 200 status upon success.
@@ -92,8 +92,8 @@ function getExtension(req, res, next) { // Get extensions for specific user.
 }
 
 function getReflections(req, res, next) { // Get all reflections for specific user.
-  var username = req.params.username; // Obtain specific username.
-  db.User.find({where: {username: username}}).then(function (user) { // Find user with the given username.
+  var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
+  db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
     var UserId = user.id; // Get specific user id from find
     var GoalId = req.params.goal_id; // Get goal id from parameters
     db.Reflection.findAll({where: {GoalId: GoalId, UserId: UserId}}).then(function (data) { // Get all reflection data.
@@ -111,8 +111,8 @@ function getReflections(req, res, next) { // Get all reflections for specific us
 }
 
 function getReflectionId(req, res, next) { // Get individual reflection for specific user.
-  var username = req.params.username; // Obtain specific username.
-  db.User.find({where: {username: username}}).then(function (user) { // Find user with the given username.
+  var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
+  db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
     var UserId = user.id; // Get id of requested reflection.
     db.Goal.find({where: {UserId: UserId}}).then(function(goal) {
       var GoalId = req.params.goal_id; // Get goal id from parameters
@@ -135,8 +135,8 @@ function getReflectionId(req, res, next) { // Get individual reflection for spec
 }
 
 function getAllGoals(req, res, next) { // Get all goals for specific user.
-  var username = req.params.username; // Obtain specific username.
-  db.User.find({where: {username: username}}).then(function (user) { // Find user with the given username.
+  var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
+  db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
     var UserId = user.id; // Get specifc user id from find
     db.Goal.findAll({where: {UserId: UserId}}).then(function (data) {  // Obtain all goal data for user.
       res.status(200).json({ // Send 200 status upon success.
@@ -153,8 +153,8 @@ function getAllGoals(req, res, next) { // Get all goals for specific user.
 }
 
 function getSingleGoal(req, res, next) { // Get individual goal for specific user.
-  var username = req.params.username; // Obtain specific username.
-  db.User.find({where: {username: username}}).then(function (user) { // Find user with the given username.
+  var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
+  db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
     var UserId = user.id; // Get the specific user
     var id = req.params.goal_id; // Get the specific goal from parameters
     db.Goal.find({where: {UserId: UserId, id: id}}).then(function (data) { // Find goal with aforementioned goal name.
@@ -172,8 +172,8 @@ function getSingleGoal(req, res, next) { // Get individual goal for specific use
 }
 
 function getSubGoals(req, res, next) { // Get all subgoals for specific user.
-  var username = req.params.username; // Obtain specific username.
-  db.User.find({where: {username: username}}).then(function (user) { // Find user with the given username.
+  var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
+  db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
     var UserId = user.id; // Get specific user id from find
     var id = req.params.goal_id; // Get specific goal from parameters
     db.Goal.find({where: {UserId: UserId, id: id}}).then(function (goal) { // Look up goal.
@@ -216,8 +216,8 @@ function postUser(req, res, next) {
 }
 
 function postSettings(req, res, next) { // Post settings for specific user.
-  var username = req.params.username; // Obtain specific username from parameters
-  db.User.find({where: {username: username}}).then(function (user) { // Find user with the given username.
+  var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
+  db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
     var setting = req.params.id; // Use input settings parameters, defined in schema.
     var picture = req.body.picture;
     var reflection_freq = req.body.reflection_freq;
@@ -245,8 +245,8 @@ function postSettings(req, res, next) { // Post settings for specific user.
 
 
 function postBlackList(req, res, next) { // Post blacklisted websites for specific user.
-   var username = req.params.username; // Obtain specific username.
-   db.User.find({where: {username: username}}).then(function (user) { // Find user with the given username.
+   var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
+   db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
     var UserId = user.id; // Get user id from find
     var url = req.body.url; // Use input blacklist url parameters, defined in schema.
     var blacklist_type = req.body.blacklist_type;
@@ -272,8 +272,8 @@ function postBlackList(req, res, next) { // Post blacklisted websites for specif
 }
 
 function postReflectionId(req, res, next) { // Post individual reflection for specific user.
-  var username = req.params.username; // Obtain specific username.
-  db.User.find({where: {username: username}}).then(function (user) { // Find user with the given username.
+  var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
+  db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
     var UserId = user.id; // Get id of requested reflection.
     db.Goal.find({where: {UserId: UserId}}).then(function(goal) {
       var GoalId = req.params.goal_id; // Get goal id from parameters
@@ -296,8 +296,8 @@ function postReflectionId(req, res, next) { // Post individual reflection for sp
 }
 
 function postSingleGoal(req, res, next) { // Post individual goal for specific user.
-  var username = req.params.username; // Obtain specific username.
-  db.User.find({where: {username: username}}).then(function (user) { // Find user with the given username.
+  var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
+  db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
     var goal = req.body.goal; // Use input goal parameters, defined in schema
     var progress = req.body.progress;
     var goal_picture = req.body.goal_picture;
@@ -320,8 +320,8 @@ function postSingleGoal(req, res, next) { // Post individual goal for specific u
 }
 
 function postSubGoal(req, res, next) { // Post individual subgoal for specific user.
-  var username = req.params.username; // Obtain specific username.
-  db.User.find({where: {username: username}}).then(function (user) { // Find user with the given username.
+  var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
+  db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
     var UserId = user.id; // Get specific user from find
     var id = req.params.goal_id; // Get goal that contains subgoal.
 
@@ -347,11 +347,78 @@ function postSubGoal(req, res, next) { // Post individual subgoal for specific u
  });
 }
 
+//DESTROY
+function removeSubGoal(req, res, next) { // Delete individual subgoal for specific user.
+  var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
+  db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
+    var UserId = user.id; // Get specific user from find
+    var GoalId = req.params.goal_id; // Get goal that contains subgoal.
+
+    db.Goal.find({where: {UserId: UserId, id: GoalId}}).then(function (data) { // Find goal.
+      // Delete entry in Subgoal with above parameters.
+      var id = req.params.subgoal_id;
+      db.Subgoal.destroy({where: {GoalId: GoalId, UserId: UserId, id: id}}).then(function (destroyed) {
+        res.status(200).json({ // Send 201 status upon success.
+          status: 'success',
+          message: 'Deleted ' + destroyed
+        });
+      }).catch(function (err) { // Error handling for inner callback find.
+        return next(err);
+      });
+    }).catch(function (err) { // Error handling for middle callback find.
+      return next(err);
+    });
+  }).catch(function (err) { // Error handling for outer callback find.
+    return next(err);
+ });
+}
+
+function removeSingleGoal(req, res, next) { // Delete individual goal for specific user.
+  var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
+  db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
+    var UserId = user.id; // Get the specific user
+    var id = req.params.goal_id; // Get the specific goal from parameters
+    db.Goal.destroy({where: {UserId: UserId, id: id}}).then(function (data) { // Delete goal with aforementioned goal id.
+      res.status(200).json({ // Send 200 status upon success.
+        status: 'success',
+        data: data,
+        message: 'RETRIEVED SPECIFIC GOAL ' + id
+      });
+    }).catch(function (err) { // Error handling for inner callback find.
+      return next(err);
+    });
+  }).catch(function (err) { // Error handling for outback callback find.
+    return next(err);
+  });
+}
+
+function removeBlackList(req, res, next) { // Remove a blacklisted website for specific user.
+  var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
+  db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
+    var UserId = user.id; // Get specific user id from find
+    db.Setting.find({where: {UserId: UserId}}).then(function(setting) {
+      var SettingId = setting.id;
+      db.Url.destroy({where: {SettingId: SettingId, id: url_id}}).then(function (data) { // Delete blacklist url.
+      res.status(200).json({ // Send 200 status upon success.
+        status: 'success',
+        data: data,
+        message: 'BLACKLISTED URLS'
+      });
+      }).catch(function (err) { // Error handling for inner callback findAll.
+        return next(err);
+      });
+    }).catch(function (err) { // Error handling for outer callback find.
+      return next(err);
+    });
+  }).catch(function (err) { // Error handling for outer callback find.
+    return next(err);
+  });
+}
+
+//UPDATE
 
 
 // Export functions to routers...
-
-
 
 module.exports = {
 	getAllUsers: getAllUsers,
@@ -369,5 +436,8 @@ module.exports = {
   getSingleGoal: getSingleGoal,
   postSingleGoal: postSingleGoal,
   getSubGoals: getSubGoals,
-  postSubGoal: postSubGoal
+  postSubGoal: postSubGoal,
+  removeSubGoal: removeSubGoal,
+  removeSingleGoal: removeSingleGoal,
+  removeBlackList: removeBlackList
 };
