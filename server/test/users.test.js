@@ -34,11 +34,7 @@ describe('GET and POST requests to /api/users', () =>{
     var user2 = {username: 'dummy2', auth0_id: 'auth_id2', daily_goal: 'sleep early'};
     db.User.create(user2).then(function(user){
       db.User.create(user1).then(function(user){
-        global.UserId = user.id;
-        var goal = {goal: 'Mow Lawn', progress: 10, goal_picture: "Picture", UserId: UserId};
-        db.Goal.create(goal).then(function(goal){
           done();
-        });
       });
     });
   });
