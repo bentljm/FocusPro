@@ -20,8 +20,6 @@ export default class Selfreflection extends React.Component {
     });
   }
 
-  //TODO: Get goals, for each goal, get reflections, get reflections/reflectionId
-
   getAllGoals () {
     var that = this;
     $.ajax({
