@@ -21,15 +21,6 @@ before((done)=>{
   done();
 });
 
-/*
- quote: Sequelize.STRING,
-  reflection_freq: Sequelize.INTEGER,
-  reminder: Sequelize.BOOLEAN,
-  reminder_type: Sequelize.STRING,
-  reminder_freq: Sequelize.INTEGER,
-  reminder_address: Sequelize.STRING
-  */
-
 //load dummy data
 beforeEach((done)=>{
   var setting1 = {picture: 'picture1', quote: 'ian', reflection_freq: '1', reminder: 'false',
@@ -76,9 +67,30 @@ describe('POST', ()=>{
         console.error('POST /api/users \n',err);
       }
       expect(res.statusCode).to.equal(201);
-      expect(res.body.data.username).to.equal(userA.username);
-      expect(res.body.data.auth0_id).to.equal(userA.auth0_id);
-      expect(res.body.data.daily_goal).to.equal(userA.daily_goal);
+      expect(res.body.data.picture).to.equal(userA.picture);
+      expect(res.body.data.quote).to.equal(userA.quote);
+      expect(res.body.data.reflection_freq).to.equal(userA.reflection_freq);
+      expect(res.body.data.reminder).to.equal(userA.reminder);
+      expect(res.body.data.reminder_freq).to.equal(userA.reminder_freq);
+      expect(res.body.data.reminder_address).to.equal(userA.reminder_address);
+      done();
+    });
+  });
+});
+
+
+describe('GET', ()=>{
+  it('/api/users fetches all settings',(done)=>{
+    request(app)
+    .post('/api/users/:username/setting')
+    .end((err,res)=>{
+      if(err) {
+        console.error('GET /api/users \n',err);
+      }
+      expect(res.statusCode).to.equal(200);
+      expect(res.body.data.length).to.equal(2);
+      expect(res.body.data.some((user)=>user.username==='setting1')).to.be.true;
+      expect(res.body.data.some((user)=>user.username==='setting2')).to.be.true;
       done();
     });
   });
