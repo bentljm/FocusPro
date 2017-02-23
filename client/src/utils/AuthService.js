@@ -23,11 +23,20 @@ export default class AuthService {
   _doAuthentication(authResult) {
     // Saves the user token
     this.setToken(authResult.idToken);
+    console.log('idToken is', authResult.idToken);
     this.lock.getUserInfo(authResult.accessToken,(error, profile)=>{
       if (error) {
         console.log('Error loading the Profile', error);
       } else {
         this.setProfile(profile);
+        $.ajax({
+          type: 'POST', // POST REQUEST
+          url: '/api/users', // Endpoint
+          contentType: 'application/json',
+          data: JSON.stringify({username: profile.given_name, auth0_id: profile.user_id, daily_goal: ''}),
+          success: function (data) {console.log("SUCCESS: POSTED USER: " + JSON.stringify(data));},
+          error: function(err) {console.log("ERROR: COULD NOT POST USER   ");}
+        });
       }
     });
     // navigate to the dashboard route
