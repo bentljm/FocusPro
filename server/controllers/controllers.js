@@ -233,7 +233,7 @@ function postSettings(req, res, next) { // Post settings for specific user.
       res.status(201).json({ // Send 201 status upon success.
         status: 'success',
         data: data,
-        message: 'GOT ALL SETTINGS FOR USER ' + username
+        message: 'GOT ALL SETTINGS FOR USER ' + auth0_id
       });
     }).catch(function (err) { // Error handling for inner callback create
       return next(err);
@@ -417,7 +417,7 @@ function removeBlackList(req, res, next) { // Remove a blacklisted website for s
 
 function updateUser(req, res, next) {
   var daily_goal = req.body.daily_goal; // Grab daily goal from req body
-  db.User.update({daily_goal: daily_goal}).then(function (data) {
+  db.User.update({daily_goal: daily_goal}, {where: {auth0_id: req.params.auth0_id}}).then(function (data) {
       res.status(201).json({ // Send 201 status upon success.
         status: 'success',
         data: data,
@@ -438,10 +438,10 @@ function updateSettings(req, res, next) {
     var reminder_type = req.body.reminder_type || '';
     var reminder_freq = req.body.reminder_freq || 0;
     var reminder_address = req.body.reminder_address || '';
+    var UserId = user.id;
 
     // Update entry in Settings with above parameters.
-
-    db.Setting.update({picture: picture, reflection_freq: reflection_freq, reminder: reminder, reminder_type: reminder_type, reminder_freq: reminder_freq, reminder_address: reminder_address}).then(function (data) {
+    db.Setting.update({picture: picture, reflection_freq: reflection_freq, reminder: reminder, reminder_type: reminder_type, reminder_freq: reminder_freq, reminder_address: reminder_address}, {where: {UserId: UserId}}).then(function (data) {
       res.status(201).json({ // Send 201 status upon success.
         status: 'success',
         data: data,

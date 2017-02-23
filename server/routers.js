@@ -6,11 +6,11 @@ module.exports = function(app, express) {
   app.get('/api/users', controller.getAllUsers); // Get all user info
   app.post('/api/users', controller.postUser); //Post a user
   app.get('/api/users/:auth0_id', controller.getSingleUser); // Get individual name
-  app.set('/api/users/:auth0_id', controller.updateUser); //Update individual user
+  app.put('/api/users/:auth0_id', controller.updateUser); //Update individual user
 
   app.get('/api/users/:auth0_id/setting', controller.getSettings); // Get individual settings
   app.post('/api/users/:auth0_id/setting', controller.postSettings); // Post individual settings
-  app.set('/api/users/:auth0_id/setting', controller.updateSettings); //Update settings
+  app.put('/api/users/:auth0_id/setting', controller.updateSettings); //Update settings
   app.get('/api/users/:auth0_id/setting/blacklist', controller.getBlackList); // Get individual blacklist
   app.post('/api/users/:auth0_id/setting/blacklist', controller.postBlackList); // Post or update individual blacklist
   app.delete('/api/users/:auth0_id/setting/blacklist/:url_id', controller.removeBlackList); // Get individual blacklist
