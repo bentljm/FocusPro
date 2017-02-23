@@ -347,6 +347,33 @@ function postSubGoal(req, res, next) { // Post individual subgoal for specific u
  });
 }
 
+//DESTROY
+function removeSubGoal(req, res, next) { // Delete individual subgoal for specific user.
+  var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
+  db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
+    var UserId = user.id; // Get specific user from find
+    var GoalId = req.params.goal_id; // Get goal that contains subgoal.
+
+    db.Goal.find({where: {UserId: UserId, id: GoalId}}).then(function (data) { // Find goal.
+      // Delete entry in Subgoal with above parameters.
+      var id = req.params.subgoal_id;
+      db.Subgoal.destroy({where: {GoalId: GoalId, UserId: UserId, id: id}}).then(function (destroyed) {
+        res.status(200).json({ // Send 201 status upon success.
+          status: 'success',
+          message: 'Deleted ' + destroyed
+        });
+      }).catch(function (err) { // Error handling for inner callback find.
+        return next(err);
+      });
+    }).catch(function (err) { // Error handling for middle callback find.
+      return next(err);
+    });
+  }).catch(function (err) { // Error handling for outer callback find.
+    return next(err);
+ });
+}
+
+//UPDATE
 
 
 // Export functions to routers...
