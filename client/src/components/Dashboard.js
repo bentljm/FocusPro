@@ -18,6 +18,7 @@ export default class Dashboard extends React.Component {
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.postGoal = this.postGoal.bind(this);
+    this.handleDayGoalChange = this.handleDayGoalChange.bind(this);
   }
 
   componentDidMount(){
@@ -31,8 +32,9 @@ export default class Dashboard extends React.Component {
       type: 'GET',
       url: 'api/users/' + this.state.profile.user_id,
       success: function (data) {
-        console.log("SUCCESS: GOT USERID", data.data[0].id);
+        console.log("SUCCESS: GOT USER INFO", data.data[0]);
         that.setState({userId: data.data[0].id});
+        that.setState({dayGoalInput: data.data[0].daily_goal || ''});
       },
       error: function (err) {
         console.log('ERROR: COULD NOT GET USERID', err);
@@ -61,12 +63,20 @@ export default class Dashboard extends React.Component {
 
   handleDayGoalChange(event) {
     this.setState({dayGoalInput: event.target.value});
+    $.ajax({
+      type: 'PUT',
+      url: '/api/users/' + this.state.profile.user_id,
+      contentType: 'application/json',
+      data: JSON.stringify({daily_goal: event.target.value}),
+      success: function(data) {console.log("Update daily goal to", data);},
+      error: function(err) {console.log("Error updating daily goal", err);}
+      });
   }
 
   postGoal() {
     $.ajax({
       type: 'POST',
-      url: '/api/users/'+this.state.profile.user_id+'/goals',
+      url: '/api/users/' + this.state.profile.user_id + '/goals',
       contentType: 'application/json',
       data: JSON.stringify({goal: this.state.goalInput, progress: 0, goal_picture: '', UserId: this.state.userId}),
       success: function(data) {console.log("SUCCESS: POSTED INDIVIDUAL GOAL: ", data);},
@@ -76,6 +86,7 @@ export default class Dashboard extends React.Component {
   }
 
   render() {
+    var currentDaily = this.state.dayValue;
     return (
       <div>
         <h1> Welcome, {this.state.profile.given_name} </h1>
@@ -84,7 +95,7 @@ export default class Dashboard extends React.Component {
         <br />
         <h3> Goal of the Day: </h3>
         <Row>
-          <Input s={12} value={this.state.dayValue}/>
+          <Input s={12} value={this.state.dayValue} defaultValue="Work on Chrome Extension" onChange={this.handleDayGoalChange} />
         </Row>
         <h3> Main Goals: </h3>
           <ul className="collapsible" data-collapsible="expandable">
