@@ -84,7 +84,7 @@ export default class Dashboard extends React.Component {
         <br />
         <h3> Goal of the Day: </h3>
         <Row>
-          <Input s={12} value={this.state.value}/>
+          <Input s={12} value={this.state.dayValue}/>
         </Row>
         <h3> Main Goals: </h3>
           <ul className="collapsible" data-collapsible="expandable">

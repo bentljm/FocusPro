@@ -3,6 +3,7 @@ import {Input, Button} from 'react-materialize';
 import Subgoal from './Subgoal.js';
 
 //Todo: Replace with better slider
+//Todo: Fix so that subgoals will show before adding a new subgoal
 export default class Goal extends React.Component {
   constructor(props) {
     super(props);
@@ -14,7 +15,7 @@ export default class Goal extends React.Component {
     this.postSubgoal = this.postSubgoal.bind(this);
   }
 
-  componentDidMount(){
+  componentdidMount(){
     this.getSubgoals();
   }
   getSubgoals() {
@@ -59,7 +60,7 @@ export default class Goal extends React.Component {
       {this.state.subgoals.map((subgoal, index) => (
         <Subgoal key = {'sub' + index} subgoal = {subgoal} />
         ))}
-      <Input s={8} label="New Subgoal" value={this.state.value} onChange={this.handleChange} /> <Button className="subgoalButton" waves='light' onClick={this.postSubgoal}>Set Subgoal</Button>
+      <Input s={8} label="New Subgoal" onChange={this.handleChange} /> <Button className="subgoalButton" waves='light' onClick={this.postSubgoal}>Set Subgoal</Button>
       </div>
     );
   }
