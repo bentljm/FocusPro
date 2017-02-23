@@ -34,21 +34,24 @@ beforeEach((done)=>{
   var extension1 = {url: 'www.blah.com', time_spent: 2, freq: 30}
   var extension2 = {url: 'www.bloh.com', time_spent: 3, freq: 15}
 
-  var url1 =
-  var url2 =  
-
   db.User.create(user2).then(function(user){
   	db.Setting.create(setting2).then(function (setting) {
-  		done();
+  		db.Url.create(url2).then(function (site) {
+  			done();
+  		});
     });
-    db.Url.create(url2).then(function(site) {
+    db.Extension.create(url2).then(function(site) {
     	done();
     });
-    db.Extension
   });
     db.User.create(user1).then(function(user){
-     	db.Setting.create(setting2).then(function (setting) {
-  		done();
+     	db.Setting.create(setting1).then(function (setting) {
+  		db.Url.create(url1).then(function (site) {
+  			done();
+  		});
+    });
+    db.Extension.create(url1).then(function(site) {
+    	done();
   	});
   });
 });
@@ -78,12 +81,12 @@ describe('POST New Settings', ()=>{
         console.error('POST /api/users/:username/setting \n',err);
       }
       expect(res.statusCode).to.equal(201);
-      expect(res.body.data.picture).to.equal(userA.picture);
-      expect(res.body.data.quote).to.equal(userA.quote);
-      expect(res.body.data.reflection_freq).to.equal(userA.reflection_freq);
-      expect(res.body.data.reminder).to.equal(userA.reminder);
-      expect(res.body.data.reminder_freq).to.equal(userA.reminder_freq);
-      expect(res.body.data.reminder_address).to.equal(userA.reminder_address);
+      expect(res.body.data.picture).to.equal(dummySetting.picture);
+      expect(res.body.data.quote).to.equal(dummySetting.quote);
+      expect(res.body.data.reflection_freq).to.equal(dummySetting.reflection_freq);
+      expect(res.body.data.reminder).to.equal(dummySetting.reminder);
+      expect(res.body.data.reminder_freq).to.equal(dummySetting.reminder_freq);
+      expect(res.body.data.reminder_address).to.equal(dummySetting.reminder_address);
       done();
     });
   });
@@ -100,8 +103,8 @@ describe('GET All Settings', ()=>{
       }
       expect(res.statusCode).to.equal(200);
       expect(res.body.data.length).to.equal(2);
-      expect(res.body.data.some((user)=>user.username==='setting1')).to.be.true;
-      expect(res.body.data.some((user)=>user.username==='setting2')).to.be.true;
+      expect(res.body.data.some((user)=>user.username.setting==='setting1')).to.be.true;
+      expect(res.body.data.some((user)=>user.username.setting==='setting2')).to.be.true;
       done();
     });
   });
@@ -111,22 +114,18 @@ describe('GET All Settings', ()=>{
 
 describe('POST New Blacklist Websites', ()=>{
   it('/api/users/:username/setting/blacklist creates a new blacklisted website',(done)=>{
-    const dummySetting = {picture: 'picture2', quote: 'ian', reflection_freq: '1', reminder: 'true',
-  reminder_freq: '2', reminder_address: 'applestreet'};
+    const dummyBlacklist = {url: 'www.lwlwl.com', blacklist_type: "done", blacklist_time: 10};
     request(app)
-    .post('/api/users/:username/setting')
-    .send(dummySetting)
+    .post('/api/users/:username/setting/blacklist')
+    .send(dummyBlacklist)
     .end((err,res)=>{
       if(err) {
-        console.error('POST /api/users/:username/setting \n',err);
+        console.error('POST /api/users/:username/setting/blacklist \n',err);
       }
       expect(res.statusCode).to.equal(201);
-      expect(res.body.data.picture).to.equal(userA.picture);
-      expect(res.body.data.quote).to.equal(userA.quote);
-      expect(res.body.data.reflection_freq).to.equal(userA.reflection_freq);
-      expect(res.body.data.reminder).to.equal(userA.reminder);
-      expect(res.body.data.reminder_freq).to.equal(userA.reminder_freq);
-      expect(res.body.data.reminder_address).to.equal(userA.reminder_address);
+      expect(res.body.data.url).to.equal(dummyBlacklist.url);
+      expect(res.body.data.blacklist_type).to.equal(dummyBlacklist.blacklist_type)
+      expect(res.body.data.blacklist_time).to.equal(dummyBlacklist.blacklist_time);
       done();
     });
   });
@@ -134,17 +133,17 @@ describe('POST New Blacklist Websites', ()=>{
 
 
 describe('GET All Blacklisted Websites', ()=>{
-  it('/api/users/:username/setting fetches all blacklisted websites',(done)=>{
+  it('/api/users/:username/setting/blacklist fetches blacklisted websites',(done)=>{
     request(app)
-    .post('/api/users/:username/setting')
+    .post('/api/users/:username/setting/blacklist')
     .end((err,res)=>{
       if(err) {
-        console.error('GET /api/users/:username/setting \n',err);
+        console.error('POST /api/users/:username/setting/blacklist \n',err);
       }
       expect(res.statusCode).to.equal(200);
       expect(res.body.data.length).to.equal(2);
-      expect(res.body.data.some((user)=>user.username==='setting1')).to.be.true;
-      expect(res.body.data.some((user)=>user.username==='setting2')).to.be.true;
+      expect(res.body.data.some((user)=>user.username.setting.blacklist==='url1')).to.be.true;
+      expect(res.body.data.some((user)=>user.username.setting.blacklist==='url2')).to.be.true;
       done();
     });
   });
@@ -153,15 +152,15 @@ describe('GET All Blacklisted Websites', ()=>{
 describe('GET All Extension Data', ()=>{
   it('/api/users/:username/extension_data fetches all extension data',(done)=>{
     request(app)
-    .post('/api/users/:username/setting')
+    .post('/api/users/:username/extension_data')
     .end((err,res)=>{
       if(err) {
-        console.error('GET /api/users/:username/setting \n',err);
+        console.error('GET /api/users/:username/extension_data \n',err);
       }
       expect(res.statusCode).to.equal(200);
       expect(res.body.data.length).to.equal(2);
-      expect(res.body.data.some((user)=>user.username==='setting1')).to.be.true;
-      expect(res.body.data.some((user)=>user.username==='setting2')).to.be.true;
+      expect(res.body.data.some((user)=>user.username.extension_data==='extension1')).to.be.true;
+      expect(res.body.data.some((user)=>user.username.extension_data==='extension2')).to.be.true;
       done();
     });
   });

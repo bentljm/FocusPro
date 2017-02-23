@@ -88,6 +88,7 @@ describe('GET and POST requests to /api/users/username/goals', () => {
     });
   });
 
+<<<<<<< HEAD
   describe('GET all goals', () =>{
     it('/api/users/:auth0_id/goals fetches no goal given user has no goals',(done) =>{
       request(app)
@@ -103,3 +104,6 @@ describe('GET and POST requests to /api/users/username/goals', () => {
     });
   });
 })
+=======
+});
+>>>>>>> Finish tests for settings
