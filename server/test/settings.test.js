@@ -32,9 +32,11 @@ beforeEach((done)=>{
 
   var user1 = {username: 'dummy1', auth0_id: 'auth_id1', daily_goal: 'wakeup early'}; // blacklisted websites
   var user2 = {username: 'dummy2', auth0_id: 'auth_id2', daily_goal: 'sleep early'};
+  var user3 = {username: 'dummy1', auth0_id: 'auth_id1', daily_goal: 'wakeup early'}; // blacklisted websites
+  var user4 = {username: 'dummy2', auth0_id: 'auth_id2', daily_goal: 'sleep early'};
    
   var url1 = {url: 'www.der.com', blacklist_type: "forever", blacklist_time: 30} // extensions
-  var url1 = {url: 'www.dur.com', blacklist_type: "short-term", blacklist_time: 10} // extensions
+  var url2 = {url: 'www.dur.com', blacklist_type: "short-term", blacklist_time: 10} // extensions
 
   var extension1 = {url: 'www.blah.com', time_spent: 2, freq: 30} // extensions
   var extension2 = {url: 'www.bloh.com', time_spent: 3, freq: 15}
@@ -43,27 +45,30 @@ beforeEach((done)=>{
   	db.Setting.create(setting2).then(function (setting) {
   		db.Url.create(url2).then(function (site) {
           console.log("CREATED URL");
+          done();
   		});
-  		console.log("DONE WITH SETTING");
     });
-    db.Extension.create(extension2).then(function(site) { // extension under uesrname but not setting
-    	console.log("CREATED EXTENSION");
-    });
-    console.log("DONE WITH HALF");
   });
-    db.User.create(user1).then(function(user){
-     	db.Setting.create(setting1).then(function (setting) {
+  db.User.create(user3).then(function(user){ // Ur
+   db.Extension.create(extension2).then(function(site) { // extension under uesrname but not setting
+    	console.log("CREATED EXTENSION");
+    	done();
+    });
+  });
+  db.User.create(user1).then(function(user){ // Url is located within settings within username
+  	db.Setting.create(setting1).then(function (setting) {
   		db.Url.create(url1).then(function (site) {
-  		  console.log("CREATED URL");
+          console.log("CREATED URL");
+          done();
   		});
-  		console.log("DONE WITH SETTING");
     });
-    db.Extension.create(extension1).then(function(site) {
-    	console.log("CREATED EXTENSION");
-  	});
-  	console.log("DONE WITH FULL");
   });
-    done();
+  db.User.create(user4).then(function(user){ // Ur
+   db.Extension.create(extension1).then(function(site) { // extension under uesrname but not setting
+    	console.log("CREATED EXTENSION");
+    	done();
+    });
+  });
 });
 
 // close global DB
