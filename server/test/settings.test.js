@@ -28,19 +28,19 @@ beforeEach((done)=>{
   var setting2 = {picture: 'picture2', quote: 'ian', reflection_freq: '1', reminder: 'true',
   reminder_freq: '2', reminder_address: 'applestreet'};
 
-  var user1 = {username: 'dummy1', auth0_id: 'auth_id1', daily_goal: 'wakeup early'};
+  var user1 = {username: 'dummy1', auth0_id: 'auth_id1', daily_goal: 'wakeup early'}; // blacklisted websites
   var user2 = {username: 'dummy2', auth0_id: 'auth_id2', daily_goal: 'sleep early'};
 
-  var extension1 = {url: 'www.blah.com', time_spent: 2, freq: 30}
+  var extension1 = {url: 'www.blah.com', time_spent: 2, freq: 30} // extensions
   var extension2 = {url: 'www.bloh.com', time_spent: 3, freq: 15}
 
-  db.User.create(user2).then(function(user){
+  db.User.create(user2).then(function(user){ // Url is located within settings within username
   	db.Setting.create(setting2).then(function (setting) {
   		db.Url.create(url2).then(function (site) {
   			done();
   		});
     });
-    db.Extension.create(url2).then(function(site) {
+    db.Extension.create(url2).then(function(site) { // extension under uesrname but not setting
     	done();
     });
   });
@@ -56,7 +56,7 @@ beforeEach((done)=>{
   });
 });
 
-
+// close global DB
 after(()=>{
   global.client.end();
 });
