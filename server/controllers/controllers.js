@@ -41,7 +41,7 @@ function getSettings(req, res, next) { // Get settings for specific user.
       res.status(200).json({ // Send 200 status upon success.
         status: 'success',
         data: data,
-        message: 'GOT SETTINGS FOR USER: ' + username
+        message: 'GOT SETTINGS FOR USER: ' + UserId
       });
     }).catch(function (err) { // Error handling for callback findAll.
       return next(err);
