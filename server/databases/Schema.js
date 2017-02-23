@@ -1,15 +1,9 @@
 //Import sequelize and postgres
 var Sequelize = require('sequelize');
 var pg = require('pg');
-var DB_URL = '';
 
 //set environment variables
-if(process.env.NODE_ENV === 'production') {
-  DB_URL = process.env.DATABASE_URL;
-} else {
-  var config = require('../config/config.js');
-  DB_URL = config.LOCAL_DATABASE_URL;
-}
+var DB_URL = process.env.DATABASE_URL || require('../config/config.js').LOCAL_DATABASE_URL;
 
 //connect to new sequelize database
 pg.defaults.ssl = true;
