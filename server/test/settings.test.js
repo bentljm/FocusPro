@@ -30,16 +30,27 @@ beforeEach((done)=>{
 
   var user1 = {username: 'dummy1', auth0_id: 'auth_id1', daily_goal: 'wakeup early'};
   var user2 = {username: 'dummy2', auth0_id: 'auth_id2', daily_goal: 'sleep early'};
+
+  var extension1 = {url: 'www.blah.com', time_spent: 2, freq: 30}
+  var extension2 = {url: 'www.bloh.com', time_spent: 3, freq: 15}
+
+  var url1 =
+  var url2 =  
+
   db.User.create(user2).then(function(user){
   	db.Setting.create(setting2).then(function (setting) {
   		done();
-  	});
+    });
+    db.Url.create(url2).then(function(site) {
+    	done();
+    });
+    db.Extension
   });
     db.User.create(user1).then(function(user){
      	db.Setting.create(setting2).then(function (setting) {
   		done();
-  	})
-     });
+  	});
+  });
 });
 
 
@@ -55,7 +66,7 @@ afterEach((done)=>{
   });
 });
 
-describe('POST', ()=>{
+describe('POST New Settings', ()=>{
   it('/api/users/:username/setting creates a user',(done)=>{
     const dummySetting = {picture: 'picture2', quote: 'ian', reflection_freq: '1', reminder: 'true',
   reminder_freq: '2', reminder_address: 'applestreet'};
@@ -64,7 +75,7 @@ describe('POST', ()=>{
     .send(dummySetting)
     .end((err,res)=>{
       if(err) {
-        console.error('POST /api/users \n',err);
+        console.error('POST /api/users/:username/setting \n',err);
       }
       expect(res.statusCode).to.equal(201);
       expect(res.body.data.picture).to.equal(userA.picture);
@@ -79,13 +90,73 @@ describe('POST', ()=>{
 });
 
 
-describe('GET', ()=>{
-  it('/api/users fetches all settings',(done)=>{
+describe('GET All Settings', ()=>{
+  it('/api/users/:username/setting fetches all settings',(done)=>{
     request(app)
     .post('/api/users/:username/setting')
     .end((err,res)=>{
       if(err) {
-        console.error('GET /api/users \n',err);
+        console.error('GET /api/users/:username/setting \n',err);
+      }
+      expect(res.statusCode).to.equal(200);
+      expect(res.body.data.length).to.equal(2);
+      expect(res.body.data.some((user)=>user.username==='setting1')).to.be.true;
+      expect(res.body.data.some((user)=>user.username==='setting2')).to.be.true;
+      done();
+    });
+  });
+});
+
+
+
+describe('POST New Blacklist Websites', ()=>{
+  it('/api/users/:username/setting/blacklist creates a new blacklisted website',(done)=>{
+    const dummySetting = {picture: 'picture2', quote: 'ian', reflection_freq: '1', reminder: 'true',
+  reminder_freq: '2', reminder_address: 'applestreet'};
+    request(app)
+    .post('/api/users/:username/setting')
+    .send(dummySetting)
+    .end((err,res)=>{
+      if(err) {
+        console.error('POST /api/users/:username/setting \n',err);
+      }
+      expect(res.statusCode).to.equal(201);
+      expect(res.body.data.picture).to.equal(userA.picture);
+      expect(res.body.data.quote).to.equal(userA.quote);
+      expect(res.body.data.reflection_freq).to.equal(userA.reflection_freq);
+      expect(res.body.data.reminder).to.equal(userA.reminder);
+      expect(res.body.data.reminder_freq).to.equal(userA.reminder_freq);
+      expect(res.body.data.reminder_address).to.equal(userA.reminder_address);
+      done();
+    });
+  });
+});
+
+
+describe('GET All Blacklisted Websites', ()=>{
+  it('/api/users/:username/setting fetches all blacklisted websites',(done)=>{
+    request(app)
+    .post('/api/users/:username/setting')
+    .end((err,res)=>{
+      if(err) {
+        console.error('GET /api/users/:username/setting \n',err);
+      }
+      expect(res.statusCode).to.equal(200);
+      expect(res.body.data.length).to.equal(2);
+      expect(res.body.data.some((user)=>user.username==='setting1')).to.be.true;
+      expect(res.body.data.some((user)=>user.username==='setting2')).to.be.true;
+      done();
+    });
+  });
+});
+
+describe('GET All Extension Data', ()=>{
+  it('/api/users/:username/extension_data fetches all extension data',(done)=>{
+    request(app)
+    .post('/api/users/:username/setting')
+    .end((err,res)=>{
+      if(err) {
+        console.error('GET /api/users/:username/setting \n',err);
       }
       expect(res.statusCode).to.equal(200);
       expect(res.body.data.length).to.equal(2);

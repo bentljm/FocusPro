@@ -87,6 +87,7 @@ describe('GET and POST requests to /api/users/username/goals', () => {
       });
     });
   });
+
   describe('GET all goals', () =>{
     it('/api/users/:auth0_id/goals fetches no goal given user has no goals',(done) =>{
       request(app)
