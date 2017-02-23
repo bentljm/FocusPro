@@ -114,7 +114,6 @@ describe('GET and POST requests to /api/users', () =>{
       });
     });
   });
-
 });
 
 
