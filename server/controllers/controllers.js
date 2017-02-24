@@ -205,8 +205,9 @@ function getSubGoals(req, res, next) { // Get all subgoals for specific user.
 function postUser(req, res, next) {
   var username = req.body.username; // Grab username from req body
   var auth0_id = req.body.auth0_id; // Grab password from req body
+  var email = req.body.email;
   var daily_goal = req.body.daily_goal; // Grab daily goal from req body
-  db.User.create({username: username, auth0_id: auth0_id, daily_goal: daily_goal}).then(function (data) {
+  db.User.create({username: username, auth0_id: auth0_id, daily_goal: daily_goal, email: email}).then(function (data) {
       res.status(201).json({ // Send 201 status upon success.
         status: 'success',
         data: data,
