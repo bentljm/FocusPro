@@ -29,7 +29,7 @@ after(() =>{
 describe('GET and POST and DELETE requests to /api/users/:auth0_id/goals', () => {
     //load dummy data
   beforeEach((done) =>{
-    var user1 = {username: 'dummy3', auth0_id: 'auth_id3', daily_goal: 'wakeup earlier than yesterday'};
+    var user1 = {username: 'dummy3', email: 'example@gmail.com', auth0_id: 'auth_id3', daily_goal: 'wakeup earlier than yesterday'};
     db.User.create(user1).then(function(user) {
       global.UserId = user.id;
       global.authId = user.auth0_id;
