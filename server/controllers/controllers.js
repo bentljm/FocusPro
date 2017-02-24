@@ -93,48 +93,44 @@ function getExtension(req, res, next) { // Get extensions for specific user.
   });
 }
 
-function getReflections(req, res, next) { // Get all reflections for specific user.
+
+
+function getReflections(req, res) {
   var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
-  db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
-    var UserId = user.id; // Get specific user id from find
-    var GoalId = req.params.goal_id; // Get goal id from parameters
-    db.Reflection.findAll({where: {GoalId: GoalId, UserId: UserId}}).then(function (data) { // Get all reflection data.
-      res.status(200).json({ // Send 200 status upon success.
-        status: 'success',
-        data: data,
-        message: 'OBTAINED REFLECTIONS'
-      });
-    }).catch(function (err) { // Error handling for inner callback findAll.
-      return next(err);
+  db.Reflection.findAll({where: {auth0_id: auth0_id}})
+  .then((data)=>{
+    res.status(200).json({
+      data: data
     });
-  }).catch(function (err) { // Error handling for outer callback find.
-    return next(err);
+  })
+  .catch((err)=>{
+    res.send(err);
   });
 }
 
-function getReflectionId(req, res, next) { // Get individual reflection for specific user.
-  var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
-  db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
-    var UserId = user.id; // Get id of requested reflection.
-    db.Goal.find({where: {UserId: UserId}}).then(function(goal) {
-      var GoalId = req.params.goal_id; // Get goal id from parameters
-      var id = req.params.reflection_id; // Get reflection id from parameters
-      db.Reflection.find({where: {GoalId: GoalId, id: id, UserId: UserId}}).then(function (data) { // Find reflection with aforementioned id.
-        res.status(200).json({ // Send 200 status upon success.
-        status: 'success',
-        data: data,
-        message: 'GOT REFLECTION FROM DATABASE: GOALID ' + GoalId + ' REFLECTIONID ' + id
-      });
-      }).catch(function (err) { // Error handling for inner callback find.
-        return next(err);
-      });
-    }).catch(function (err) { // Error handling for outer callback find.
-      return next(err);
-  }).catch(function (err) { // Error handling from outer callback find
-    return next(err);
-  });
-  });
-}
+// function getReflectionId(req, res, next) { // Get individual reflection for specific user.
+//   var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
+//   db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
+//     var UserId = user.id; // Get id of requested reflection.
+//     db.Goal.find({where: {UserId: UserId}}).then(function(goal) {
+//       var GoalId = req.params.goal_id; // Get goal id from parameters
+//       var id = req.params.reflection_id; // Get reflection id from parameters
+//       db.Reflection.find({where: {GoalId: GoalId, id: id, UserId: UserId}}).then(function (data) { // Find reflection with aforementioned id.
+//         res.status(200).json({ // Send 200 status upon success.
+//         status: 'success',
+//         data: data,
+//         message: 'GOT REFLECTION FROM DATABASE: GOALID ' + GoalId + ' REFLECTIONID ' + id
+//       });
+//       }).catch(function (err) { // Error handling for inner callback find.
+//         return next(err);
+//       });
+//     }).catch(function (err) { // Error handling for outer callback find.
+//       return next(err);
+//   }).catch(function (err) { // Error handling from outer callback find
+//     return next(err);
+//   });
+//   });
+// }
 
 function getAllGoals(req, res, next) { // Get all goals for specific user.
   var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
@@ -173,13 +169,13 @@ function getSingleGoal(req, res, next) { // Get individual goal for specific use
   });
 }
 
-function getSubGoals(req, res, next) { // Get all subgoals for specific user.
+function getSubGoals2(req, res, next) { // Get all subgoals for specific user.
   var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
   db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
     var UserId = user.id; // Get specific user id from find
     var id = req.params.goal_id; // Get specific goal from parameters
     db.Goal.find({where: {UserId: UserId, id: id}}).then(function (goal) { // Look up goal.
-      db.Subgoal.findAll({where: {GoalId: id,  UserId: UserId}}).then(function(data) { // Get all subgoal data of goal..
+      db.Subgoal.findAll({where: {GoalId: id}}).then(function(data) { // Get all subgoal data of goal..
         res.status(200).json({ // Send 200 status upon success.
           status: 'success',
           data: data,
@@ -196,6 +192,18 @@ function getSubGoals(req, res, next) { // Get all subgoals for specific user.
   });
 }
 
+function getSubGoals (req, res) {
+  var goalId = req.params.goal_id;
+  db.Subgoal.findAll({where: { GoalId: goalId}})
+  .then((data)=>{
+    res.json({
+      data: data
+    });
+  })
+  .catch((err)=>{
+    res.send(err);
+  });
+}
 
 
 // SETTERS
@@ -274,29 +282,25 @@ function postBlackList(req, res, next) { // Post blacklisted websites for specif
     });
 }
 
-function postReflectionId(req, res, next) { // Post individual reflection for specific user.
+
+
+function postReflectionId (req,res,next) {
   var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
-  db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
-    var UserId = user.id; // Get id of requested reflection.
-    db.Goal.find({where: {UserId: UserId}}).then(function(goal) {
-      var GoalId = req.params.goal_id; // Get goal id from parameters
-      var answer = req.body.answer; // Get answer from req body
-      db.Reflection.create({answer: answer, GoalId: GoalId, UserId: UserId}).then(function (data) {//Find reflection with aforementioned id.
-        res.status(200).json({ // Send 200 status upon success.
-        status: 'success',
-        data: data,
-        message: 'POSTED REFLECTION TO DATABASE: GOALID ' + GoalId + ' REFLECTIONID ' + data.id
-      });
-      }).catch(function (err) { // Error handling for inner callback find.
-        return next(err);
-      });
-    }).catch(function (err) { // Error handling for inner callback find.
-      return next(err);
-  }).catch(function (err) { // Error handling for outer callback find.
-    return next(err);
+  var answer = req.body.answer; // Get answer from req body
+  var question = req.body.question; // Get question from parameters
+  db.Reflection.create({answer: answer, question: question, auth0_id: auth0_id})
+  .then(function(data) {
+    res.status(201).json({
+      data: data,
+      message: 'success' + data
+    });
+  })
+  .catch(function(err) {
+    res.send(err);
   });
-  });
+
 }
+
 
 function postSingleGoal(req, res, next) { // Post individual goal for specific user.
   var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
@@ -322,7 +326,7 @@ function postSingleGoal(req, res, next) { // Post individual goal for specific u
  });
 }
 
-function postSubGoal(req, res, next) { // Post individual subgoal for specific user.
+function postSubGoal2(req, res, next) { // Post individual subgoal for specific user.
   var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
   db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
     var UserId = user.id; // Get specific user from find
@@ -334,7 +338,7 @@ function postSubGoal(req, res, next) { // Post individual subgoal for specific u
 
       // Create entry in Subgoal with above parameters.
 
-      db.Subgoal.create({subgoal: subgoal, status: status, GoalId: id, UserId: UserId}).then(function () {
+      db.Subgoal.create({subgoal: subgoal, status: status, GoalId: id}).then(function () {
         res.status(201).json({ // Send 201 status upon success.
           status: 'success',
           message: 'INSERTED NEW SUBGOAL ' + subgoal + ' GOALID ' + id
@@ -347,7 +351,24 @@ function postSubGoal(req, res, next) { // Post individual subgoal for specific u
     });
   }).catch(function (err) { // Error handling for outer callback find.
     return next(err);
- });
+  });
+}
+
+function postSubGoal(req, res) {
+  var goalId = req.params.goal_id;
+  var status = req.body.status;
+  var subgoal = req.body.subgoal;
+  //create subGoal for userA's goal1
+  console.log('subGoal GoalID',subgoal, goalId);
+  db.Subgoal.create({subgoal: subgoal, status: status, GoalId: goalId})
+  .then((data)=>{
+    res.status(201).json({
+      data: data
+    });
+  })
+  .catch((err)=>{
+    res.send(err);
+  });
 }
 
 //DESTROY
@@ -507,7 +528,7 @@ module.exports = {
   getExtension: getExtension,
   getAllGoals: getAllGoals,
   getReflections: getReflections,
-  getReflectionId: getReflectionId,
+  // getReflectionId: getReflectionId,
   postReflectionId: postReflectionId,
   getSingleGoal: getSingleGoal,
   postSingleGoal: postSingleGoal,

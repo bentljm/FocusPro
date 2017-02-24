@@ -7,7 +7,7 @@
     "start": "node server/server.js",
     "test": "jest client/* && mocha server/test/*.js",
     "test:frontend": "jest client/*",
-    "test:backend": "mocha server/test/*.js",
+    "test:backend": "mocha server/test/goals.test.js",
     "cover:frontend": "jest client/* --coverage",
     "cover:backend": "istanbul cover _mocha -- server/test/*.js -R spec ",
     "devstart": "nodemon server/server.js",

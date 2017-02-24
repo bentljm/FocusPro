@@ -51,13 +51,14 @@ var Extension = db.define('Extension', {
 
 //Reflection schema
 var Reflection = db.define('Reflection', {
-  answer: Sequelize.STRING
+  answer: Sequelize.STRING,
+  question: Sequelize.STRING
 });
 
 //Question schema
-var Question = db.define('Question', {
-  question: Sequelize.STRING
-});
+// var Question = db.define('Question', {
+//   question: Sequelize.STRING
+// });
 
 //Url schema
 var Url = db.define('Url', {
@@ -75,17 +76,23 @@ var Friendship = db.define('Friendship', {
 User.hasMany(Goal);
 User.hasOne(Setting);
 User.hasMany(Extension);
-User.hasMany(Subgoal);
-User.hasMany(Reflection);
-Goal.hasMany(Subgoal);
-Goal.hasMany(Reflection);
-Reflection.hasOne(Question);
+User.hasMany(Reflection, {foreignKey: 'auth0_id', sourceKey: 'auth0_id', constraints: false});
+Reflection.belongsTo(User, {foreignKey: 'auth0_id', targetKey: 'auth0_id', constraints: false});
+Goal.hasMany(Subgoal, {constraints: false});
 Setting.hasMany(Url);
-User.belongsToMany(User, {as: 'user1', through: 'Friendship', foreignKey: 'user1_id' });
-User.belongsToMany(User, {as: 'user2', through: 'Friendship', foreignKey: 'user2_id' });
+// Reflection.hasOne(Question);
+
 
 //create new database if it doesn't already exist
-db.sync();
+db.sync()
+.then(()=>User.sync())
+.then(()=>Goal.sync())
+.then(()=>Reflection.sync())
+.then(()=>Setting.sync())
+.then(()=>Subgoal.sync());
+
+User.belongsToMany(User, {as: 'user1', through: 'Friendship', foreignKey: 'user1_id' });
+User.belongsToMany(User, {as: 'user2', through: 'Friendship', foreignKey: 'user2_id' });
 
 //Export schemas
 exports.Sequelize = db;
@@ -95,7 +102,7 @@ exports.Subgoal = Subgoal;
 exports.Setting = Setting;
 exports.Extension = Extension;
 exports.Reflection = Reflection;
-exports.Question = Question;
+// exports.Question = Question;
 exports.Friendship = Friendship;
 exports.Url = Url;
 

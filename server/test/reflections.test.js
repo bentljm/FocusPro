@@ -41,6 +41,7 @@ after((done)=>{
     done();
   });
   global.client.end();
+  done();
 });
 
 describe('GET and POST requests to /api/users/:auth0_id/reflections',()=>{

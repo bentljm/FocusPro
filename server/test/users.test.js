@@ -26,7 +26,7 @@ after(() =>{
   global.client.end();
 });
 
-describe('GET and POST requests to /api/users', () =>{
+xdescribe('GET and POST requests to /api/users', () =>{
 
   //load dummy data
   beforeEach((done) =>{
@@ -47,7 +47,7 @@ describe('GET and POST requests to /api/users', () =>{
     });
   });
 
-  describe('POST a new user', () =>{
+  xdescribe('POST a new user', () =>{
     it('/api/users creates a user',(done) =>{
       const userA = {username: 'dummyA', email: 'example@gmail.com', auth0_id: 'auth_idA', daily_goal: 'pushup x10'};
       request(app)
@@ -66,7 +66,7 @@ describe('GET and POST requests to /api/users', () =>{
     });
   });
 
-  describe('GET all users', () =>{
+  xdescribe('GET all users', () =>{
     it('/api/users fetches all users',(done)=>{
       request(app)
       .get('/api/users')
