@@ -78,3 +78,7 @@ div.white.card {
 div.card-content {
   text-align: center;
 }
+
+i.material-icons.right {
+  color: red;
+}

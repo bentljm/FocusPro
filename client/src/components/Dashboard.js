@@ -1,5 +1,5 @@
 import React from 'react';
-import {Row, Input, Col, Button} from 'react-materialize';
+import {Row, Input, Col, Button, Icon} from 'react-materialize';
 import Goal from './Goal.js';
 import Site from './Site.js';
 import Stat from './Stat.js';
@@ -21,12 +21,16 @@ export default class Dashboard extends React.Component {
     this.postGoal = this.postGoal.bind(this);
     this.handleDayGoalChange = this.handleDayGoalChange.bind(this);
     this.handleDayGoalSubmission = this.handleDayGoalSubmission.bind(this);
+    this.removeGoal = this.removeGoal.bind(this);
+  }
+
+  componentWillMount() {
+    this.getUserId();
+    this.getSetting();
   }
 
   componentDidMount(){
-    this.getUserId();
     this.getAllGoals();
-    this.getSetting();
     this.getBlacklist();
   }
 
@@ -108,15 +112,35 @@ export default class Dashboard extends React.Component {
   }
 
   postGoal() {
+    var that = this;
     $.ajax({
       type: 'POST',
       url: '/api/users/' + this.state.profile.user_id + '/goals',
       contentType: 'application/json',
       data: JSON.stringify({goal: this.state.goalInput, progress: 0, goal_picture: '', UserId: this.state.userId}),
-      success: function(data) {console.log("SUCCESS: POSTED INDIVIDUAL GOAL: ", data);},
+      success: function(data) {
+        console.log("SUCCESS: POSTED INDIVIDUAL GOAL: ", data);
+        that.setState({goalInput: ''}); //Not clearing input...
+        that.getAllGoals();
+      },
       error: function(err) {console.log("ERROR: COULD NOT POST INDIVIDUAL GOAL", err);}
     });
-    this.getAllGoals();
+
+  }
+
+  removeGoal (goal_id) {
+    var that = this;
+    $.ajax({
+      type: 'DELETE',
+      url: '/api/users/' + this.state.profile.user_id + '/goals/' + goal_id,
+      success: function(data) {
+        console.log("Remove goal:", data);
+        that.getAllGoals();
+      },
+      error: function(err) {
+        console.log("ERROR: COULD NOT GET ALL GOALS", err);
+      }
+    });
   }
 
   render() {
@@ -135,7 +159,7 @@ export default class Dashboard extends React.Component {
           <ul className="collapsible" data-collapsible="expandable">
           {this.state.goals.map((goal, index) => (
             <li key = {index}>
-            <div className="collapsible-header">{goal.goal}</div>
+            <div className="collapsible-header">{goal.goal} <a href = '#/dashboard' onClick = {()=>this.removeGoal(goal.id)}><Icon right>delete</Icon></a></div>
             <Goal key = {'goal' + index} goal = {goal.id} user_id = {this.state.profile.user_id} userID = {this.state.userId}/>
           </li>
             ))}

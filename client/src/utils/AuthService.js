@@ -61,21 +61,12 @@ export default class AuthService {
           url: '/api/users', // Endpoint
           contentType: 'application/json',
           data: JSON.stringify({username: profile.given_name, auth0_id: profile.user_id, daily_goal: '', email: profile.email}),
-          success: function (data) {console.log("SUCCESS: POSTED USER: " + JSON.stringify(data));},
-          error: function(err) {console.log("ERROR: COULD NOT POST USER   ");}
-        });
-        //Get the userId
-        var userId = 0;
-        $.ajax({
-          type: 'GET',
-          url: 'api/users/' + profile.user_id,
           success: function (data) {
             console.log("SUCCESS: POSTED USER: " + JSON.stringify(data));
             createSettings(profile);
           },
           error: function(err) {console.log("ERROR: COULD NOT POST USER   ");}
         });
-
       }
     });
     // navigate to the dashboard route
