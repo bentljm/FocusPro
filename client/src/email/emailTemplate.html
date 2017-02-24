@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Simple Email</title>
+    <title>Simple Transactional Email</title>
     <style>
       /* -------------------------------------
           GLOBAL RESETS
@@ -109,6 +109,76 @@
         color: #3498db;
         text-decoration: underline; }
       /* -------------------------------------
+          BUTTONS
+      ------------------------------------- */
+      .btn {
+        box-sizing: border-box;
+        width: 100%; }
+        .btn > tbody > tr > td {
+          padding-bottom: 15px; }
+        .btn table {
+          width: auto; }
+        .btn table td {
+          background-color: #ffffff;
+          border-radius: 5px;
+          text-align: center; }
+        .btn a {
+          background-color: #ffffff;
+          border: solid 1px #3498db;
+          border-radius: 5px;
+          box-sizing: border-box;
+          color: #3498db;
+          cursor: pointer;
+          display: inline-block;
+          font-size: 14px;
+          font-weight: bold;
+          margin: 0;
+          padding: 12px 25px;
+          text-decoration: none;
+          text-transform: capitalize; }
+      .btn-primary table td {
+        background-color: #3498db; }
+      .btn-primary a {
+        background-color: #3498db;
+        border-color: #3498db;
+        color: #ffffff; }
+      /* -------------------------------------
+          OTHER STYLES THAT MIGHT BE USEFUL
+      ------------------------------------- */
+      .last {
+        margin-bottom: 0; }
+      .first {
+        margin-top: 0; }
+      .align-center {
+        text-align: center; }
+      .align-right {
+        text-align: right; }
+      .align-left {
+        text-align: left; }
+      .clear {
+        clear: both; }
+      .mt0 {
+        margin-top: 0; }
+      .mb0 {
+        margin-bottom: 0; }
+      .preheader {
+        color: transparent;
+        display: none;
+        height: 0;
+        max-height: 0;
+        max-width: 0;
+        opacity: 0;
+        overflow: hidden;
+        mso-hide: all;
+        visibility: hidden;
+        width: 0; }
+      .powered-by a {
+        text-decoration: none; }
+      hr {
+        border: 0;
+        border-bottom: 1px solid #f6f6f6;
+        Margin: 20px 0; }
+      /* -------------------------------------
           RESPONSIVE AND MOBILE FRIENDLY STYLES
       ------------------------------------- */
       @media only screen and (max-width: 620px) {
@@ -177,7 +247,6 @@
           <div class="content">
 
             <!-- START CENTERED WHITE CONTAINER -->
-            <span class="preheader">This is preheader text. Some clients will show this text as a preview.</span>
             <table class="main">
 
               <!-- START MAIN CONTENT AREA -->
@@ -187,13 +256,10 @@
                     <tr>
                       <td>
                         <p>Hi there,</p>
-                        <p>I hope you are making excellent progress towards your goal today!<br>
-                        You've asked us to check in on you from time to time to ask you a few questions about your work...
-                        </p>
-                        <p>First of all, how well do you think you stayed on task?</p>
-                        <p>Did you find anything to be particularly distracting today? If so, what actions can you take tomorrow to limit those distractions?</p>
-                        <p>How much time do you think you spent on social media sites?</p><br>
-                        <p>Overall, we think you're doing a great job! Keep up the great work!</p>
+                        <p>Welcome to FocusPro</p>
+                        <p>Here are some questions to get you thinking about how you spent
+                        your time today</p>
+                        <p>We think you are doing great. Keep up the good work!</p>
                       </td>
                     </tr>
                   </table>
@@ -208,7 +274,7 @@
               <table border="0" cellpadding="0" cellspacing="0">
                 <tr>
                   <td class="content-block">
-                    <span class="apple-link">FocusPro, 3 Focus Road, Seattle, WA 99117</span>
+                    <span class="apple-link">FocusPro, 3 Focus Road, Seattle, WA 98117</span>
                   </td>
                 </tr>
                 <tr>

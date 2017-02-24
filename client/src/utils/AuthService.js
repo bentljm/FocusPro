@@ -35,7 +35,7 @@ export default class AuthService {
           type: 'POST', // POST REQUEST
           url: '/api/users', // Endpoint
           contentType: 'application/json',
-          data: JSON.stringify({username: profile.given_name, auth0_id: profile.user_id, daily_goal: ''}),
+          data: JSON.stringify({username: profile.given_name, auth0_id: profile.user_id, daily_goal: '', email: ''}),
           success: function (data) {console.log("SUCCESS: POSTED USER: " + JSON.stringify(data));},
           error: function(err) {console.log("ERROR: COULD NOT POST USER   ");}
         });
