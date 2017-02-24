@@ -30,8 +30,8 @@ describe('GET and POST requests to /api/users', () =>{
 
   //load dummy data
   beforeEach((done) =>{
-    var user1 = {username: 'dummy1', auth0_id: 'auth_id1', daily_goal: 'wakeup early'};
-    var user2 = {username: 'dummy2', auth0_id: 'auth_id2', daily_goal: 'sleep early'};
+    var user1 = {username: 'dummy1', email: 'example@gmail.com', auth0_id: 'auth_id1', daily_goal: 'wakeup early'};
+    var user2 = {username: 'dummy2', email: 'example1@gmail.com', auth0_id: 'auth_id2', daily_goal: 'sleep early'};
     db.User.create(user2).then(function(user){
       db.User.create(user1).then(function(user){
           done();
@@ -49,7 +49,7 @@ describe('GET and POST requests to /api/users', () =>{
 
   describe('POST a new user', () =>{
     it('/api/users creates a user',(done) =>{
-      const userA = {username: 'dummyA', auth0_id: 'auth_idA', daily_goal: 'pushup x10'};
+      const userA = {username: 'dummyA', email: 'example@gmail.com', auth0_id: 'auth_idA', daily_goal: 'pushup x10'};
       request(app)
       .post('/api/users')
       .send(userA)
