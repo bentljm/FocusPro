@@ -37,7 +37,6 @@ function getSingleUser(req, res, next) { // Get specific user.
 function getSettings(req, res, next) { // Get settings for specific user.
   var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
   db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
-    console.log("USER FROM GET SETTINGS ", + user.id);
     var UserId = user.id; // Get specific user id from find
     db.Setting.find({where: {UserId: UserId}}).then(function (data) { // Grab settings data for user.
       res.status(200).json({ // Send 200 status upon success.
@@ -214,7 +213,7 @@ function postSettings(req, res, next) { // Post settings for specific user.
 
     // Create entry in Settings with above parameters.
 
-    db.Setting.create({picture: picture, reflection_freq: reflection_freq, reminder: reminder, reminder_type: reminder_type, reminder_freq: reminder_freq, reminder_address: reminder_address, UserId: UserId}).then(function (data) {
+    db.Setting.create({picture: picture, quote: quote, reflection_freq: reflection_freq, reminder: reminder, reminder_type: reminder_type, reminder_freq: reminder_freq, reminder_address: reminder_address, UserId: UserId}).then(function (data) {
       res.status(201).json({ // Send 201 status upon success.
         status: 'success',
         data: data,

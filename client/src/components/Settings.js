@@ -22,21 +22,27 @@ export default class Settings extends React.Component {
     var that = this;
     $.ajax({
       type: 'GET', // GET REQUEST
-      url: '/api/users/'+this.props.user_id+'/setting',
+      url: '/api/users/' + this.state.profile.user_id + '/setting',
       success: function(data) {
-        console.log("SUCCESS: OBTAINED SETTINGS: ", data.data);
+        console.log("SUCCESS: OBTAINED SETTINGS: ", data);
         that.setState({setting: data.data});
       },
-      error: function(err) {console.log("ERROR: COULD NOT GET SETTINGS", err)}
+      error: function(err) {console.log("ERROR: COULD NOT GET SETTINGS", err);}
     });
   }
 
-  postSetting() {
+  updateSetting(pic, quote, refl_freq, remind, remind_type, remind_freq, remind_addr) {
     $.ajax({
-      type: 'POST',
-      url: '/api/users/'+this.props.user_id+'/setting',
+      type: 'PUT',
+      url: '/api/users/' + this.state.profile.user_id + '/setting',
       contentType: 'application/json',
-      data: JSON.stringify({picture: '', reflection_freq: '', reminder: '', reminder_type: '', reminder_freq: '', reminder_address: '', UserId: this.state.userId}),
+      data: JSON.stringify({picture: pic || this.state.setting.picture,
+        quote: quote || this.state.setting.quote,
+        reflection_freq: refl_freq || this.state.setting.reflection_freq,
+        reminder: remind || this.state.setting.reminder,
+        reminder_type: remind_type || this.state.setting.reminder_type,
+        reminder_freq: remind_freq || this.state.setting.reminder_freq,
+        reminder_address: remind_addr || this.state.setting.reminder_address}),
       success: function(data) {console.log("SUCCESS: POSTED SETTING: ", data);},
       error: function(err) {console.log("ERROR: COULD NOT POST SETTING", err);}
     });
@@ -46,23 +52,34 @@ export default class Settings extends React.Component {
     var that = this;
     $.ajax({
       type: 'GET', // GET REQUEST
-      url: '/api/users/'+this.props.user_id+'/setting/blacklist',
+      url: '/api/users/' + this.state.profile.user_id + '/setting/blacklist',
       success: function(data) {
         console.log("SUCCESS: OBTAINED BLACKLIST: ", data);
         that.setState({blacklist: data});
       },
-      error: function(err) {console.log("ERROR: COULD NOT GET BLACKLIST", err)}
+      error: function(err) {console.log("ERROR: COULD NOT GET BLACKLIST", err);}
     });
   }
 
   postBlacklist() {
     $.ajax({
       type: 'POST',
-      url: '/api/users/'+this.props.user_id+'/setting/blacklist',
+      url: '/api/users/' + this.state.profile.user_id + '/setting/blacklist',
       contentType: 'application/json',
       data: JSON.stringify({url: req.body.url, blacklist_type: req.body.blacklist_type, blacklist_time: req.body.blacklist_time, SettingId: SettingId}),
       success: function(data) {console.log("SUCCESS: POSTED BLACKLIST: ", data);},
       error: function(err) {console.log("ERROR: COULD NOT POST BLACKLIST", err);}
+    });
+  }
+
+  deleteBlacklist(url_id) {
+    $.ajax({
+      type: 'DELETE',
+      url: '/api/users/' + this.state.profile.user_id + '/setting/blacklist/' + url_id,
+      success: function(data) {
+        console.log("Sucessfully deleted", data);
+      },
+      error: function(err) {console.log("Error deleting", err);}
     });
   }
 
