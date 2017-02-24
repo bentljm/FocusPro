@@ -16,9 +16,10 @@ export default class Goal extends React.Component {
     this.getSubgoals = this.getSubgoals.bind(this);
   }
 
-  componentdidMount(){
+  componentDidMount(){
     this.getSubgoals();
   }
+
   getSubgoals() {
     var that = this;
     $.ajax({
