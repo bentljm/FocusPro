@@ -91,7 +91,7 @@ describe('GET and POST requests FOR SETTINGS', () => {
 
   describe('POST NEW SETTINGS', () =>{
     it('/api/users/:auth0_id/setting creates settings',(done) =>{
-      console.log('POST in goals', UserId);
+      console.log('POST in SETTINGS', UserId);
       const dummySetting = {picture: "Dumb", quote: "Laconic", reflection_freq: 10, reminder: false, reminder_type: "Regular", reminder_freq: 10, reminder_address: "Apple Street",
       UserId: UserId};
       request(app)
@@ -113,26 +113,27 @@ describe('GET and POST requests FOR SETTINGS', () => {
       });
     });
   });
-  /*
+  
 
   describe('GET all settings', () =>{
-    it('/api/users/:username/setting fetches all goals given user has goals',(done) =>{
-      var goal = {goal: 'Mow Lawn', progress: 10, goal_picture: "Picture", UserId: UserId};
-        db.Goal.create(goal).then(function(goal){
+    it('/api/users/:auth0_id/setting fetches all goals given user has goals',(done) =>{
+      var dummySetting = {picture: "Dumb", quote: "Laconic", reflection_freq: 10, reminder: false, reminder_type: "Regular", reminder_freq: 10, reminder_address: "Apple Street",
+      UserId: UserId};
+        db.Setting.create(dummySetting).then(function(goal){
       });
       request(app)
-      .get('/api/users/:username/setting')
+      .get('/api/users/auth_id3/setting')
       .end((err,res) =>{
         if(err) {
           console.error('GETTING SETTINGS ERROR: \n',err);
         }
         expect(res.statusCode).to.equal(200);
-        expect(res.body.data.some((goal) =>goal.goal==='Mow Lawn')).to.be.true;
+        console.log(res.body.data);
         done();
       });
     });
   });
-
+/*
   describe('POST new blacklisted websites', () =>{
     it('/api/users/:username/setting creates settings',(done) =>{
       console.log('POST in goals', UserId);
