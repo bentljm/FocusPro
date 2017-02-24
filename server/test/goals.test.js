@@ -50,17 +50,16 @@ describe('GET and POST and DELETE requests to /api/users/:auth0_id/goals', () =>
 
   //clean dummy data
   afterEach((done) =>{
-    // delete all users in db
-    db.User.destroy({where: {}}).then((num) => {
+    db.Subgoal.destroy({where: {}})
+    .then(()=>{
       return db.Goal.destroy({where: {}});
     })
     .then(()=>{
-      return db.Subgoal.destroy({where: {}});
+      return db.User.destroy({where: {}});
     })
     .then(()=>{
       done();
     });
-    // done();
   });
 
   describe('POST a new goal or subgoal', () =>{
@@ -135,7 +134,6 @@ describe('GET and POST and DELETE requests to /api/users/:auth0_id/goals', () =>
         request(app)
         .get(subgoalAPI)
         .end((err, res)=>{
-          // console.log('subgoal', res.body,subgoal);
           expect(res.body.data.length).to.equal(1);
           expect(res.body.data[0].subgoal).to.equal('front yard');
           expect(res.body.data[0].status).to.equal.false;

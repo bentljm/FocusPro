@@ -38,10 +38,9 @@ before((done)=>{
 after((done)=>{
   //delete all users in db
   db.User.destroy({where: {}}).then((num) => {
+    global.client.end();
     done();
   });
-  global.client.end();
-  done();
 });
 
 describe('GET and POST requests to /api/users/:auth0_id/reflections', ()=>{
