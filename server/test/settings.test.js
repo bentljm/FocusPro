@@ -106,4 +106,79 @@ describe('GET and POST requests to /api/users/username/goals', () => {
       });
     });
   });
+
+
+  describe('POST new blacklisted websites', () =>{
+    it('/api/users/:username/setting creates settings',(done) =>{
+      console.log('POST in goals', UserId);
+      const goalA = {goal: 'Mow Lawn', progress: 10, goal_picture: "Picture", UserId: UserId};
+      request(app)
+      .post('/api/users/auth_id3/goals')
+      .send(goalA)
+      .end((err,res) =>{
+        if(err) {
+          console.error('POST /api/users/username/goals \n',err);
+        }
+        expect(res.statusCode).to.equal(201);
+        expect(res.body.data.goal).to.equal(goalA.goal);
+        expect(res.body.data.progress).to.equal(goalA.progress);
+        expect(res.body.data.goal_picture).to.equal(goalA.goal_picture);
+        done();
+      });
+    });
+  });
+
+  describe('GET all blacklisted urls', () =>{
+    it('/api/users/:auth0_id/goals fetches all goals given user has goals',(done) =>{
+      var goal = {goal: 'Mow Lawn', progress: 10, goal_picture: "Picture", UserId: UserId};
+        db.Goal.create(goal).then(function(goal){
+      });
+      request(app)
+      .get('/api/users/auth_id3/goals')
+      .end((err,res) =>{
+        if(err) {
+          console.error('GET /api/users \n',err);
+        }
+        expect(res.statusCode).to.equal(200);
+        expect(res.body.data.some((goal) =>goal.goal==='Mow Lawn')).to.be.true;
+        done();
+      });
+    });
+  });
+
+  describe('GET all extended data', () =>{
+    it('/api/users/:auth0_id/goals fetches all goals given user has goals',(done) =>{
+      var goal = {goal: 'Mow Lawn', progress: 10, goal_picture: "Picture", UserId: UserId};
+        db.Goal.create(goal).then(function(goal){
+      });
+      request(app)
+      .get('/api/users/auth_id3/goals')
+      .end((err,res) =>{
+        if(err) {
+          console.error('GET /api/users \n',err);
+        }
+        expect(res.statusCode).to.equal(200);
+        expect(res.body.data.some((goal) =>goal.goal==='Mow Lawn')).to.be.true;
+        done();
+      });
+    });
+  });
+
+  describe('GET all settings', () =>{
+    it('/api/users/:auth0_id/goals fetches all goals given user has goals',(done) =>{
+      var goal = {goal: 'Mow Lawn', progress: 10, goal_picture: "Picture", UserId: UserId};
+        db.Goal.create(goal).then(function(goal){
+      });
+      request(app)
+      .get('/api/users/auth_id3/goals')
+      .end((err,res) =>{
+        if(err) {
+          console.error('GET /api/users \n',err);
+        }
+        expect(res.statusCode).to.equal(200);
+        expect(res.body.data.some((goal) =>goal.goal==='Mow Lawn')).to.be.true;
+        done();
+      });
+    });
+  });
 })
