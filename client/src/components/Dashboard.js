@@ -97,7 +97,6 @@ export default class Dashboard extends React.Component {
 
   handleDayGoalChange(event) {
     this.setState({dayGoalInput: event.target.value});
-
   }
 
   handleDayGoalSubmission() {
@@ -144,7 +143,6 @@ export default class Dashboard extends React.Component {
   }
 
   render() {
-    var currentDaily = this.state.dayValue;
     return (
       <div>
         <h1> Welcome, {this.state.profile.given_name} </h1>
@@ -160,7 +158,7 @@ export default class Dashboard extends React.Component {
           {this.state.goals.map((goal, index) => (
             <li key = {index}>
             <div className="collapsible-header">{goal.goal} <a href = '#/dashboard' onClick = {()=>this.removeGoal(goal.id)}><Icon right>delete</Icon></a></div>
-            <Goal key = {'goal' + index} goal = {goal.id} user_id = {this.state.profile.user_id} userID = {this.state.userId}/>
+            <Goal key = {'goal' + index} goal = {goal.id} user_id = {this.state.profile.user_id} userID = {this.state.userId} />
           </li>
             ))}
         </ul>

@@ -54,7 +54,6 @@ export default class AuthService {
         console.log('Error loading the Profile', error);
       } else {
         this.setProfile(profile);
-        console.log(profile);
         //Save user in db
         $.ajax({
           type: 'POST', // POST REQUEST

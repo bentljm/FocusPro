@@ -3,7 +3,6 @@ import {Input, Button, Icon} from 'react-materialize';
 import Subgoal from './Subgoal.js';
 
 //Todo: Replace with better slider
-//Todo: Fix so that subgoals will show before adding a new subgoal
 export default class Goal extends React.Component {
   constructor(props) {
     super(props);
