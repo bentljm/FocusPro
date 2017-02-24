@@ -31,6 +31,7 @@ describe('GET and POST requests to /api/users/username/goals', () => {
   beforeEach((done) =>{
     var user1 = {username: 'dummy3', email: 'example@gmail.com', auth0_id: 'auth_id3', daily_goal: 'wakeup earlier than yesterday'};
     var user2 = {username: 'dummy2', email: 'example1@gmail.com', auth0_id: 'auth_id4', daily_goal: 'wakeup before noon'};
+
     db.User.create(user1).then(function(user){
       global.UserId = user.id;
       db.User.create(user2).then(function(user){
@@ -87,6 +88,7 @@ describe('GET and POST requests to /api/users/username/goals', () => {
       });
     });
   });
+
   describe('GET all goals', () =>{
     it('/api/users/:auth0_id/goals fetches no goal given user has no goals',(done) =>{
       request(app)

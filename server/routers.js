@@ -15,6 +15,7 @@ module.exports = function(app, express) {
   app.post('/api/users/:auth0_id/setting/blacklist', controller.postBlackList); // Post or update individual blacklist
   app.delete('/api/users/:auth0_id/setting/blacklist/:url_id', controller.removeBlackList); // Get individual blacklist
 
+
   app.get('/api/users/:auth0_id/extension_data', controller.getExtension); // Get individual extention data
 
   app.get('/api/users/:auth0_id/goals/:goal_id/reflections', controller.getReflections); // Get individual reflection data
