@@ -13,7 +13,7 @@ const chai = require('chai');
 const expect = chai.expect;
 
 //set up DB connection
-before((done)=>{
+before((done) =>{
   //more on connection: http://mherman.org/blog/2015/02/12/postgresql-and-nodejs/#.WKyhjBIrInU
   const connectionString = process.env.DATABASE_URL || require('../config/config.js').LOCAL_DATABASE_URL;
   global.client = new pg.Client(connectionString);
@@ -21,162 +21,84 @@ before((done)=>{
   done();
 });
 
-
-
-//load dummy data
-beforeEach((done)=>{
-  var setting1 = {picture: 'picture1', quote: 'ian', reflection_freq: '1', reminder: 'false',
-  reminder_freq: '2', reminder_address: 'maplestreet'};
-  var setting2 = {picture: 'picture2', quote: 'ian', reflection_freq: '1', reminder: 'true',
-  reminder_freq: '2', reminder_address: 'applestreet'};
-
-  var user1 = {username: 'dummy1', auth0_id: 'auth_id1', daily_goal: 'wakeup early'}; // blacklisted websites
-  var user2 = {username: 'dummy2', auth0_id: 'auth_id2', daily_goal: 'sleep early'};
-  var user3 = {username: 'dummy1', auth0_id: 'auth_id1', daily_goal: 'wakeup early'}; // blacklisted websites
-  var user4 = {username: 'dummy2', auth0_id: 'auth_id2', daily_goal: 'sleep early'};
-   
-  var url1 = {url: 'www.der.com', blacklist_type: "forever", blacklist_time: 30} // extensions
-  var url2 = {url: 'www.dur.com', blacklist_type: "short-term", blacklist_time: 10} // extensions
-
-  var extension1 = {url: 'www.blah.com', time_spent: 2, freq: 30} // extensions
-  var extension2 = {url: 'www.bloh.com', time_spent: 3, freq: 15}
-
-  db.User.create(user2).then(function(user){ // Url is located within settings within username
-  	db.Setting.create(setting2).then(function (setting) {
-  		db.Url.create(url2).then(function (site) {
-          console.log("CREATED URL");
-          done();
-  		});
-    });
-  });
-  db.User.create(user3).then(function(user){ // Ur
-   db.Extension.create(extension2).then(function(site) { // extension under uesrname but not setting
-    	console.log("CREATED EXTENSION");
-    	done();
-    });
-  });
-  db.User.create(user1).then(function(user){ // Url is located within settings within username
-  	db.Setting.create(setting1).then(function (setting) {
-  		db.Url.create(url1).then(function (site) {
-          console.log("CREATED URL");
-          done();
-  		});
-    });
-  });
-  db.User.create(user4).then(function(user){ // Ur
-   db.Extension.create(extension1).then(function(site) { // extension under uesrname but not setting
-    	console.log("CREATED EXTENSION");
-    	done();
-    });
-  });
-});
-
-// close global DB
-after(()=>{
+//close DB connection
+after(() =>{
   global.client.end();
 });
 
-//clean dummy data
-afterEach((done)=>{
-  //delete all users in db
-  db.User.destroy({where:{}}).then((num)=> {
-    done();
+describe('GET and POST requests to /api/users/username/goals', () => {
+    //load dummy data
+  beforeEach((done) =>{
+    var user1 = {username: 'dummy3', auth0_id: 'auth_id3', daily_goal: 'wakeup earlier than yesterday'};
+    var user2 = {username: 'dummy2', auth0_id: 'auth_id4', daily_goal: 'wakeup before noon'};
+    db.User.create(user1).then(function(user){
+      global.UserId = user.id;
+      db.User.create(user2).then(function(user){
+        var goal = {goal: 'Mow Lawn', progress: 10, goal_picture: "Picture", UserId: UserId};
+        db.Goal.create(goal).then(function(goal){
+          done();
+        });
+      });
+    });
   });
-});
 
-describe('POST New Settings', ()=>{
-  it('/api/users/:username/setting creates a user',(done)=>{
-    const dummySetting = {picture: 'picture2', quote: 'ian', reflection_freq: '1', reminder: 'true',
-  reminder_freq: '2', reminder_address: 'applestreet'};
-    request(app)
-    .post('/api/users/:username/setting')
-    .send(dummySetting)
-    .end((err,res)=>{
-      if(err) {
-        console.error('POST /api/users/:username/setting \n',err);
-      }
-      expect(res.statusCode).to.equal(201);
-      expect(res.body.data.picture).to.equal(dummySetting.picture);
-      expect(res.body.data.quote).to.equal(dummySetting.quote);
-      expect(res.body.data.reflection_freq).to.equal(dummySetting.reflection_freq);
-      expect(res.body.data.reminder).to.equal(dummySetting.reminder);
-      expect(res.body.data.reminder_freq).to.equal(dummySetting.reminder_freq);
-      expect(res.body.data.reminder_address).to.equal(dummySetting.reminder_address);
+  //clean dummy data
+  afterEach((done) =>{
+    //delete all users in db
+    db.User.destroy({where:{}}).then((num) => {
       done();
     });
   });
-});
 
-
-describe('GET All Settings', ()=>{
-  it('/api/users/:username/setting fetches all settings',(done)=>{
-    request(app)
-    .post('/api/users/:username/setting')
-    .end((err,res)=>{
-      if(err) {
-        console.error('GET /api/users/:username/setting \n',err);
-      }
-      expect(res.statusCode).to.equal(200);
-      expect(res.body.data.length).to.equal(2);
-      expect(res.body.data.some((user)=>user.username.setting==='setting1')).to.be.true;
-      expect(res.body.data.some((user)=>user.username.setting==='setting2')).to.be.true;
-      done();
+  describe('POST a new goal', () =>{
+    it('/api/users/:auth0_id/goals creates a goal',(done) =>{
+      console.log('POST in goals', UserId);
+      const goalA = {goal: 'Mow Lawn', progress: 10, goal_picture: "Picture", UserId: UserId};
+      request(app)
+      .post('/api/users/auth_id3/goals')
+      .send(goalA)
+      .end((err,res) =>{
+        if(err) {
+          console.error('POST /api/users/username/goals \n',err);
+        }
+        expect(res.statusCode).to.equal(201);
+        expect(res.body.data.goal).to.equal(goalA.goal);
+        expect(res.body.data.progress).to.equal(goalA.progress);
+        expect(res.body.data.goal_picture).to.equal(goalA.goal_picture);
+        done();
+      });
     });
   });
-});
 
-
-
-describe('POST New Blacklist Websites', ()=>{
-  it('/api/users/:username/setting/blacklist creates a new blacklisted website',(done)=>{
-    const dummyBlacklist = {url: 'www.lwlwl.com', blacklist_type: "done", blacklist_time: 10};
-    request(app)
-    .post('/api/users/:username/setting/blacklist')
-    .send(dummyBlacklist)
-    .end((err,res)=>{
-      if(err) {
-        console.error('POST /api/users/:username/setting/blacklist \n',err);
-      }
-      expect(res.statusCode).to.equal(201);
-      expect(res.body.data.url).to.equal(dummyBlacklist.url);
-      expect(res.body.data.blacklist_type).to.equal(dummyBlacklist.blacklist_type)
-      expect(res.body.data.blacklist_time).to.equal(dummyBlacklist.blacklist_time);
-      done();
+  describe('GET all goals', () =>{
+    it('/api/users/:auth0_id/goals fetches all goals given user has goals',(done) =>{
+      var goal = {goal: 'Mow Lawn', progress: 10, goal_picture: "Picture", UserId: UserId};
+        db.Goal.create(goal).then(function(goal){
+      });
+      request(app)
+      .get('/api/users/auth_id3/goals')
+      .end((err,res) =>{
+        if(err) {
+          console.error('GET /api/users \n',err);
+        }
+        expect(res.statusCode).to.equal(200);
+        expect(res.body.data.some((goal) =>goal.goal==='Mow Lawn')).to.be.true;
+        done();
+      });
     });
   });
-});
-
-
-describe('GET All Blacklisted Websites', ()=>{
-  it('/api/users/:username/setting/blacklist fetches blacklisted websites',(done)=>{
-    request(app)
-    .post('/api/users/:username/setting/blacklist')
-    .end((err,res)=>{
-      if(err) {
-        console.error('POST /api/users/:username/setting/blacklist \n',err);
-      }
-      expect(res.statusCode).to.equal(200);
-      expect(res.body.data.length).to.equal(2);
-      expect(res.body.data.some((user)=>user.username.setting.blacklist==='url1')).to.be.true;
-      expect(res.body.data.some((user)=>user.username.setting.blacklist==='url2')).to.be.true;
-      done();
+  describe('GET all goals', () =>{
+    it('/api/users/:auth0_id/goals fetches no goal given user has no goals',(done) =>{
+      request(app)
+      .get('/api/users/auth_id4/goals')
+      .end((err,res) =>{
+        if(err) {
+          console.error('GET /api/users \n',err);
+        }
+        expect(res.statusCode).to.equal(200);
+        expect(res.body.data.length).to.equal(0);
+        done();
+      });
     });
   });
-});
-
-describe('GET All Extension Data', ()=>{
-  it('/api/users/:username/extension_data fetches all extension data',(done)=>{
-    request(app)
-    .post('/api/users/:username/extension_data')
-    .end((err,res)=>{
-      if(err) {
-        console.error('GET /api/users/:username/extension_data \n',err);
-      }
-      expect(res.statusCode).to.equal(200);
-      expect(res.body.data.length).to.equal(2);
-      expect(res.body.data.some((user)=>user.username.extension_data==='extension1')).to.be.true;
-      expect(res.body.data.some((user)=>user.username.extension_data==='extension2')).to.be.true;
-      done();
-    });
-  });
-});
+})
