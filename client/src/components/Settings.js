@@ -8,13 +8,32 @@ export default class Settings extends React.Component {
       profile: this.props.auth.getProfile(),
       setting:{},
       userId: '',
-      blacklist: {}
+      blacklist: [],
+      siteURL: '',
+      siteType: '',
+      siteLimit: 0,
+      image: '',
+      quote: '',
+      reminderType: '',
+      reminderFreq: 0,
+      reminderAddress: ''
     };
+    this.handleSiteChange = this.handleSiteChange.bind(this);
+    this.handleSiteTypeChange = this.handleSiteTypeChange.bind(this);
+    this.handleSiteLimitChange = this.handleSiteLimitChange.bind(this);
+    this.handleSiteSubmission = this.handleSiteSubmission.bind(this);
+    this.handleImageChange = this.handleImageChange.bind(this);
+    this.handleQuoteChange = this.handleQuoteChange.bind(this);
+    this.handleReminderSubmission = this.handleReminderSubmission.bind(this);
+    this.handleReminderTypeChange = this.handleReminderTypeChange.bind(this);
+    this.handleReminderAddressChange = this.handleReminderAddressChange.bind(this);
+    this.handleReminderFreqChange = this.handleReminderFreqChange.bind(this);
   }
 
   componentDidMount(){
     this.getUserId();
     this.getSetting();
+    this.getBlacklist();
   }
 
   getSetting() {
@@ -25,6 +44,8 @@ export default class Settings extends React.Component {
       success: function(data) {
         console.log("SUCCESS: OBTAINED SETTINGS: ", data);
         that.setState({setting: data.data});
+        that.setState({image: data.data.picture});
+        that.setState({quote: data.data.quote});
       },
       error: function(err) {console.log("ERROR: COULD NOT GET SETTINGS", err);}
     });
@@ -53,22 +74,23 @@ export default class Settings extends React.Component {
       type: 'GET', // GET REQUEST
       url: '/api/users/' + this.state.profile.user_id + '/setting/blacklist',
       success: function(data) {
-        console.log("SUCCESS: OBTAINED BLACKLIST: ", data);
-        that.setState({blacklist: data});
+        console.log("SUCCESS: OBTAINED BLACKLIST: ", data.data);
+        that.setState({blacklist: data.data});
       },
       error: function(err) {console.log("ERROR: COULD NOT GET BLACKLIST", err);}
     });
   }
 
-  postBlacklist() {
+  postBlacklist(siteURL, siteType, siteTime) {
     $.ajax({
       type: 'POST',
       url: '/api/users/' + this.state.profile.user_id + '/setting/blacklist',
       contentType: 'application/json',
-      data: JSON.stringify({url: req.body.url, blacklist_type: req.body.blacklist_type, blacklist_time: req.body.blacklist_time, SettingId: SettingId}),
+      data: JSON.stringify({url: siteURL, blacklist_type: siteType, blacklist_time: siteTime, SettingId: this.state.setting.id}),
       success: function(data) {console.log("SUCCESS: POSTED BLACKLIST: ", data);},
       error: function(err) {console.log("ERROR: COULD NOT POST BLACKLIST", err);}
     });
+    this.getBlacklist();
   }
 
   deleteBlacklist(url_id) {
@@ -97,12 +119,43 @@ export default class Settings extends React.Component {
     });
   }
 
-  handleSiteAdd() {
-
+  handleSiteChange(event) {
+    this.setState({siteURL: event.target.value});
+  }
+  handleSiteTypeChange(event) {
+    this.setState({siteType: event.target.value});
+  }
+  handleSiteLimitChange(event) {
+    this.setState({siteLimit: event.target.value});
+  }
+  handleSiteSubmission() {
+    this.postBlacklist(this.state.siteURL, this.state.siteType, this.state.siteLimit);
+  }
+  handleImageChange(event) {
+    this.setState({image: event.target.value});
+  }
+  handleQuoteChange(event) {
+    this.setState({quote: event.target.value});
+  }
+  handleReminderTypeChange(event) {
+    this.setState({reminderType: event.target.value});
+  }
+  handleReminderAddressChange(event) {
+    this.setState({reminderAddress: event.target.value});
+  }
+  handleReminderFreqChange(event) {
+    this.setState({reminderFreq: event.target.value});
+  }
+  handleReminderSubmission() {
+    this.updateSetting(null, null, null, true, this.state.reminderType, this.state.reminderFreq, this.state.reminderAddress);
   }
 
-
   render() {
+    const {siteURL, siteLimit, siteType} = this.state;
+    const siteSubmitEnabled = siteURL.length > 0 && siteLimit.length > 0 && siteType.length > 0;
+    const {reminderType, reminderAddress, reminderFreq} = this.state;
+    const reminderSubmitEnabled = reminderType.length > 0 && reminderAddress.length > 0 && reminderFreq.length > 0;
+    console.log(reminderType.length, reminderAddress.length, reminderFreq.length);
     return (
       <div>
         <h1> Settings </h1>
@@ -117,46 +170,49 @@ export default class Settings extends React.Component {
           </thead>
 
           <tbody>
-            <tr>
-              <td>www.facebook.com</td>
-              <td>Blackout</td>
-              <td>N/A</td>
+            {this.state.blacklist.map((site, index)=>(
+              <tr key = {index}>
+              <td>{site.url}</td>
+              <td>{site.blacklist_type}</td>
+              <td>{site.blacklist_time}</td>
             </tr>
+            ))}
+
           </tbody>
 
         </Table>
         <br />
         <Row>
-          <Input s={5} label="Site" name = "siteURL" />
-          <Input s={3} type='select' label="Type" name = "siteType" defaultValue='1'>
+          <Input s={5} label="Site" value = {this.state.siteURL} onChange = {this.handleSiteChange} />
+          <Input s={3} type='select' label="Type" defaultValue='1' value = {this.state.siteType} onChange = {this.handleSiteTypeChange}>
             <option value='1'>Blackout</option>
             <option value='2'>Block after exceeding</option>
             <option value='3'>Warn after exceeding</option>
           </Input>
-          <Input s={2} label="Time Limit (min)" name = "siteLimit" />
-          <Button className="blacklistButton" waves='light' onClick={console.log('add site')}>Add Site</Button>
+          <Input s={2} label="Time Limit (min)" value = {this.state.siteLimit} onChange = {this.handleSiteLimitChange}/>
+          <Button disabled={!siteSubmitEnabled} className="blacklistButton" waves='light' onClick={this.handleSiteSubmission}>Add Site</Button>
         </Row>
         <h3> Personalization: </h3>
         <Row>
-        <Input s={10} label="Image" />
-        <Button className="picButton" waves='light' onClick={console.log('add img')}>Set Image</Button>
+        <Input s={10} label="Image" value = {this.state.image} onChange = {this.state.handleImageChange} />
+        <Button className="picButton" waves='light' onClick={this.updateSetting(this.state.image)}>Set Image</Button>
         </Row>
         <Row>
-        <Input s={10} label="Quote" />
-        <Button className="quoteButton" waves='light' onClick={console.log('add quote')}>Set Quote</Button>
+        <Input s={10} label="Quote" value = {this.state.quote} onChange = {this.state.handleQuoteChange} />
+        <Button className="quoteButton" waves='light' onClick={this.updateSetting(null, this.state.quote)}>Set Quote</Button>
         </Row>
         <Row>
-        <Input s={2} type='select' label="Reminder Type" defaultValue='1'>
+        <Input s={2} type='select' label="Reminder Type" defaultValue='1' value = {this.state.reminderType} onChange = {this.handleReminderTypeChange}>
           <option value='1'>No Reminder</option>
           <option value='2'>Text</option>
           <option value='3'>Email</option>
         </Input>
-        <Input s={6} label="Number/Email Address" />
-        <Input s={2} type='select' label="Frequency" defaultValue='1'>
+        <Input s={6} label="Number/Email Address" value = {this.state.reminderAddress} onChange = {this.handleReminderAddressChange}/>
+        <Input s={2} type='select' label="Frequency" defaultValue='1' value = {this.state.reminderFreq} onChange = {this.handleReminderFreqChange}>
           <option value='1'>Daily</option>
           <option value='2'>Weekly</option>
         </Input>
-        <Button className="reminderButton" waves='light' onClick={console.log('add reminder')}>Set Reminder</Button>
+        <Button disabled={!reminderSubmitEnabled} className="reminderButton" waves='light' onClick={this.handleReminderSubmission}>Set Reminder</Button>
         </Row>
         <h3> Chrome Extension: </h3>
         Forgot to download the extension? Download it here: ___________
