@@ -52,19 +52,21 @@ var Url = db.define('Url', {
 });
 */
 
-describe('GET and POST requests to /api/users/username/goals', () => {
+describe('GET and POST requests to /api/users/username/settings', () => {
     //load dummy data
   beforeEach((done) =>{
     var user1 = {username: 'dummy1', auth0_id: 'auth_0', daily_goal: 'wakeup earlier than yesterday'};
     var user2 = {username: 'dummy2', auth0_id: 'auth_1', daily_goal: 'wakeup before noon'};
     
-    var setting1 = {}
-    var setting2 = {}
-
+    
+    var blacklist = {url: "www.gmail@com", blacklist_type: "Infrequent", "blacklist_time": 10}
+    var extension = {url: "www.yahoo.com", time_spent: 20, freq: 30}
 
     db.User.create(user1).then(function(user) {
       global.UserId1 = user.id;
-      db.Setting.create(setting).then(function(setting) {
+      var setting1 = {UserId: UserId1, picture: "Dumb", quote: "Laconic", reflection_freq: 10, reminder: false, reminder_type: "Regular", reminder_freq: 10, reminder_address: "Apple Street"}
+      db.Setting.create(setting1).then(function(setting) {
+           var blacklist = {UserId: UserId1, url: "www.gmail@com", blacklist_type: "Infrequent", "blacklist_time": 10}
           db.Url.create(blacklist).then(function(site) {
             done();
           })
@@ -72,7 +74,7 @@ describe('GET and POST requests to /api/users/username/goals', () => {
     });
 
     db.User.create(user2).then(function(user) {
-      global.UserId1 = user.id;
+      global.UserId2 = user.id;
       db.Extension.create(extension).then(function(extension) {
         done();
       })
@@ -90,23 +92,45 @@ describe('GET and POST requests to /api/users/username/goals', () => {
   describe('POST new settings', () =>{
     it('/api/users/:username/setting creates settings',(done) =>{
       console.log('POST in goals', UserId);
-      const goalA = {goal: 'Mow Lawn', progress: 10, goal_picture: "Picture", UserId: UserId};
+      const dummySetting = {User: UserId1, picture: "Dumb", quote: "Laconic", reflection_freq: 10, reminder: false, reminder_type: "Regular", reminder_freq: 10, reminder_address: "Apple Street"};
       request(app)
-      .post('/api/users/auth_id3/goals')
-      .send(goalA)
+      .post('/api/users/User/setting')
+      .send(dummySetting)
       .end((err,res) =>{
         if(err) {
-          console.error('POST /api/users/username/goals \n',err);
+          console.error('POSTING TO SETTINGS ERROR: \n',err);
         }
         expect(res.statusCode).to.equal(201);
-        expect(res.body.data.goal).to.equal(goalA.goal);
-        expect(res.body.data.progress).to.equal(goalA.progress);
-        expect(res.body.data.goal_picture).to.equal(goalA.goal_picture);
+        expect(res.body.data.picture).to.equal(dummySetting.picture);
+        expect(res.body.data.quote).to.equal(dummySetting.quote);
+        expect(res.body.data.reflection_freq).to.equal(dummySetting.reflection_freq);
+        expect(res.body.data.reminder).to.equal(dummySetting.reminder);
+        expect(res.body.data.reminder_address).to.equal(dummySetting.reminder_address);
+        expect(res.body.data.reminder_freq).to.equal(dummySetting.reminder_freq);
+        expect(res.body.data.reminder_type).to.equal(dummySetting.reminder_type);
         done();
       });
     });
   });
+  /*
 
+  describe('GET all settings', () =>{
+    it('/api/users/:username/setting fetches all goals given user has goals',(done) =>{
+      var goal = {goal: 'Mow Lawn', progress: 10, goal_picture: "Picture", UserId: UserId};
+        db.Goal.create(goal).then(function(goal){
+      });
+      request(app)
+      .get('/api/users/:username/setting')
+      .end((err,res) =>{
+        if(err) {
+          console.error('GETTING SETTINGS ERROR: \n',err);
+        }
+        expect(res.statusCode).to.equal(200);
+        expect(res.body.data.some((goal) =>goal.goal==='Mow Lawn')).to.be.true;
+        done();
+      });
+    });
+  });
 
   describe('POST new blacklisted websites', () =>{
     it('/api/users/:username/setting creates settings',(done) =>{
@@ -163,22 +187,5 @@ describe('GET and POST requests to /api/users/username/goals', () => {
       });
     });
   });
-
-  describe('GET all settings', () =>{
-    it('/api/users/:auth0_id/goals fetches all goals given user has goals',(done) =>{
-      var goal = {goal: 'Mow Lawn', progress: 10, goal_picture: "Picture", UserId: UserId};
-        db.Goal.create(goal).then(function(goal){
-      });
-      request(app)
-      .get('/api/users/auth_id3/goals')
-      .end((err,res) =>{
-        if(err) {
-          console.error('GET /api/users \n',err);
-        }
-        expect(res.statusCode).to.equal(200);
-        expect(res.body.data.some((goal) =>goal.goal==='Mow Lawn')).to.be.true;
-        done();
-      });
-    });
-  });
+  */
 })
