@@ -2,6 +2,8 @@ var db = require('../databases/Schema.js');
 var parser  = require('body-parser');
 var express = require('express');
 var app = express();
+// const nodemailer = require('nodemailer');
+// var emailTemplate = './emailTemplate.html';
 
 
 // GETTERS
@@ -203,8 +205,9 @@ function getSubGoals(req, res, next) { // Get all subgoals for specific user.
 function postUser(req, res, next) {
   var username = req.body.username; // Grab username from req body
   var auth0_id = req.body.auth0_id; // Grab password from req body
+  var email = req.body.email;
   var daily_goal = req.body.daily_goal; // Grab daily goal from req body
-  db.User.create({username: username, auth0_id: auth0_id, daily_goal: daily_goal}).then(function (data) {
+  db.User.create({username: username, auth0_id: auth0_id, daily_goal: daily_goal, email: email}).then(function (data) {
       res.status(201).json({ // Send 201 status upon success.
         status: 'success',
         data: data,
@@ -455,6 +458,42 @@ function updateSettings(req, res, next) {
   });
 }
 
+
+// function sendEmail(req, res, next) {
+//   var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
+//   db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
+//     var userEmail = user.email;
+//     //set up transporter with focuspro email credentials
+//     var transporter = nodemailer.createTransport({
+//       service: 'Gmail',
+//       auth: {
+//           user: 'focusproalert@gmail.com', // Your email id
+//           pass: 'soccer01' // Your password
+//       }
+//     });
+//     //set up mail options with sender/reciever emails, subject, and html email template
+//     var mailOptions = {
+//       from: 'focusproalert@gmail.com', // sender address
+//       to: userEmail, // list of receivers
+//       subject: 'FocusPro Notification', // Subject line
+//       //text: "You have veered off task! " ,//, // plaintext body INPUT REFLECTION QUESTIONS HERE
+//       html: emailTemplate // You can choose to send an HTML body instead
+//     };
+//     //send email!
+//     transporter.sendMail(mailOptions, function(error, info){
+//       if(error){
+//           console.log(error);
+//           res.json({yo: 'error'});
+//       }else{
+//           console.log('Message sent: ' + info.response);
+//           res.json({yo: info.response});
+//       }
+//     });
+//   });
+// }
+
+
+
 // Export functions to routers...
 
 module.exports = {
@@ -478,5 +517,7 @@ module.exports = {
   removeSingleGoal: removeSingleGoal,
   removeBlackList: removeBlackList,
   updateSettings: updateSettings,
-  updateUser: updateUser
+  updateUser: updateUser,
+  //sendEmail: sendEmail
 };
+

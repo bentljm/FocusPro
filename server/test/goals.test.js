@@ -29,8 +29,8 @@ after(() =>{
 describe('GET and POST requests to /api/users/username/goals', () => {
     //load dummy data
   beforeEach((done) =>{
-    var user1 = {username: 'dummy3', auth0_id: 'auth_id3', daily_goal: 'wakeup earlier than yesterday'};
-    var user2 = {username: 'dummy2', auth0_id: 'auth_id4', daily_goal: 'wakeup before noon'};
+    var user1 = {username: 'dummy3', email: 'example@gmail.com', auth0_id: 'auth_id3', daily_goal: 'wakeup earlier than yesterday'};
+    var user2 = {username: 'dummy2', email: 'example1@gmail.com', auth0_id: 'auth_id4', daily_goal: 'wakeup before noon'};
     db.User.create(user1).then(function(user){
       global.UserId = user.id;
       db.User.create(user2).then(function(user){
