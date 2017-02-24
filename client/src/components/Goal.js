@@ -24,7 +24,7 @@ export default class Goal extends React.Component {
       type: 'GET', // GET REQUEST
       url: '/api/users/'+this.props.user_id+'/goals/'+this.props.goal+'/subgoals',
       success: function(data) {
-        console.log("SUCCESS: OBTAINED ALL SUBGOALS: " + data.data);
+        console.log("SUCCESS: OBTAINED ALL SUBGOALS: " + JSON.stringify(data.data));
         that.setState({subgoals: data.data});
       },
       error: function(err) {console.log("ERROR: COULD NOT GET SUBGOALS   ")}
@@ -58,7 +58,7 @@ export default class Goal extends React.Component {
       </form>
       Subgoals: <br />
       {this.state.subgoals.map((subgoal, index) => (
-        <Subgoal key = {'sub' + index} subgoal = {subgoal} />
+        <Subgoal key = {'sub' + index} subgoal = {subgoal} status = {subgoal.status} id = {subgoal.id} user_id = {this.props.user_id} goal = {subgoal.GoalId}/>
         ))}
       <Input s={8} label="New Subgoal" onChange={this.handleChange} /> <Button className="subgoalButton" waves='light' onClick={this.postSubgoal}>Set Subgoal</Button>
       </div>

@@ -5,7 +5,6 @@ import Site from './Site.js';
 import Stat from './Stat.js';
 import Motivational from './Motivational.js';
 
-//TODO: Store goal of the day
 export default class Dashboard extends React.Component {
   constructor(props) {
     super(props);
@@ -15,17 +14,20 @@ export default class Dashboard extends React.Component {
       goalInput: '',
       dayGoalInput: '',
       userId: '',
-      setting: {}
+      setting: {},
+      blacklist: []
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.postGoal = this.postGoal.bind(this);
     this.handleDayGoalChange = this.handleDayGoalChange.bind(this);
+    this.handleDayGoalSubmission = this.handleDayGoalSubmission.bind(this);
   }
 
   componentDidMount(){
     this.getUserId();
     this.getAllGoals();
     this.getSetting();
+    this.getBlacklist();
   }
 
   getUserId() {
@@ -57,6 +59,19 @@ export default class Dashboard extends React.Component {
     });
   }
 
+  getBlacklist() {
+    var that = this;
+    $.ajax({
+      type: 'GET', // GET REQUEST
+      url: '/api/users/' + this.state.profile.user_id + '/setting/blacklist',
+      success: function(data) {
+        console.log("SUCCESS: OBTAINED BLACKLIST: ", data.data);
+        that.setState({blacklist: data.data});
+      },
+      error: function(err) {console.log("ERROR: COULD NOT GET BLACKLIST", err);}
+    });
+  }
+
   getAllGoals () {
     var that = this;
     $.ajax({
@@ -78,14 +93,18 @@ export default class Dashboard extends React.Component {
 
   handleDayGoalChange(event) {
     this.setState({dayGoalInput: event.target.value});
+
+  }
+
+  handleDayGoalSubmission() {
     $.ajax({
       type: 'PUT',
       url: '/api/users/' + this.state.profile.user_id,
       contentType: 'application/json',
-      data: JSON.stringify({daily_goal: event.target.value}),
+      data: JSON.stringify({daily_goal: this.state.dayGoalInput}),
       success: function(data) {console.log("Update daily goal to", data);},
       error: function(err) {console.log("Error updating daily goal", err);}
-      });
+    });
   }
 
   postGoal() {
@@ -110,7 +129,7 @@ export default class Dashboard extends React.Component {
         <br />
         <h3> Goal of the Day: </h3>
         <Row>
-          <Input s={12} value={this.state.dayValue} defaultValue="Work on Chrome Extension" onChange={this.handleDayGoalChange} />
+          <Input s={10} value={this.state.dayGoalInput} onChange={this.handleDayGoalChange} /> <Button className="dayGoalButton" waves='light' onClick={this.handleDayGoalSubmission}>Save</Button>
         </Row>
         <h3> Main Goals: </h3>
           <ul className="collapsible" data-collapsible="expandable">
@@ -127,18 +146,12 @@ export default class Dashboard extends React.Component {
         <br />
         <h3> Sites: </h3>
         <ul className="collapsible" data-collapsible="expandable">
-          <li>
-            <div className="collapsible-header">Site 1</div>
-            <div className="collapsible-body"><span><Site /></span></div>
-          </li>
-          <li>
-            <div className="collapsible-header">Site 2</div>
-            <div className="collapsible-body"><span><Site /></span></div>
-          </li>
-          <li>
-            <div className="collapsible-header">Site 3</div>
-            <div className="collapsible-body"><span><Site /></span></div>
-          </li>
+          {this.state.blacklist.map((site, index) => (
+            <li key = {'sites ' + index}>
+              <div className="collapsible-header">{site.url}</div>
+              <div className="collapsible-body"><span><Site url = {site.url} siteId = {site.id}/></span></div>
+            </li>
+            ))}
         </ul>
         <br />
         <br />
