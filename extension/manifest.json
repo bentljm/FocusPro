@@ -9,6 +9,7 @@
     "scripts": ["config.js", "sites.js", "tracker.js", "background.js"]
   },
   "permissions": [
+          "http://localhost:7777/*",
           "activeTab",
           "alarms",
           "history",
