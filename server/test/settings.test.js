@@ -26,20 +26,57 @@ after(() =>{
   global.client.end();
 });
 
+/*
+var Setting = db.define('Setting', {
+  picture: Sequelize.STRING,
+  quote: Sequelize.STRING,
+  reflection_freq: Sequelize.INTEGER,
+  reminder: Sequelize.BOOLEAN,
+  reminder_type: Sequelize.STRING,
+  reminder_freq: Sequelize.INTEGER,
+  reminder_address: Sequelize.STRING
+});
+
+//Extension schema
+var Extension = db.define('Extension', {
+  url: {type: Sequelize.STRING, unique: true},
+  time_spent: Sequelize.INTEGER,
+  freq: Sequelize.INTEGER
+});
+
+//Url schema
+var Url = db.define('Url', {
+  url: {type: Sequelize.STRING, unique: true},
+  blacklist_type: Sequelize.STRING,
+  blacklist_time: Sequelize.INTEGER
+});
+*/
+
 describe('GET and POST requests to /api/users/username/goals', () => {
     //load dummy data
   beforeEach((done) =>{
-    var user1 = {username: 'dummy3', auth0_id: 'auth_id3', daily_goal: 'wakeup earlier than yesterday'};
-    var user2 = {username: 'dummy2', auth0_id: 'auth_id4', daily_goal: 'wakeup before noon'};
-    db.User.create(user1).then(function(user){
-      global.UserId = user.id;
-      db.User.create(user2).then(function(user){
-        var goal = {goal: 'Mow Lawn', progress: 10, goal_picture: "Picture", UserId: UserId};
-        db.Goal.create(goal).then(function(goal){
-          done();
-        });
+    var user1 = {username: 'dummy1', auth0_id: 'auth_0', daily_goal: 'wakeup earlier than yesterday'};
+    var user2 = {username: 'dummy2', auth0_id: 'auth_1', daily_goal: 'wakeup before noon'};
+    
+    var setting1 = {}
+    var setting2 = {}
+
+
+    db.User.create(user1).then(function(user) {
+      global.UserId1 = user.id;
+      db.Setting.create(setting).then(function(setting) {
+          db.Url.create(blacklist).then(function(site) {
+            done();
+          })
       });
     });
+
+    db.User.create(user2).then(function(user) {
+      global.UserId1 = user.id;
+      db.Extension.create(extension).then(function(extension) {
+        done();
+      })
+    })
   });
 
   //clean dummy data
@@ -50,8 +87,8 @@ describe('GET and POST requests to /api/users/username/goals', () => {
     });
   });
 
-  describe('POST a new goal', () =>{
-    it('/api/users/:auth0_id/goals creates a goal',(done) =>{
+  describe('POST new settings', () =>{
+    it('/api/users/:username/setting creates settings',(done) =>{
       console.log('POST in goals', UserId);
       const goalA = {goal: 'Mow Lawn', progress: 10, goal_picture: "Picture", UserId: UserId};
       request(app)
