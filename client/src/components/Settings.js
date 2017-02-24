@@ -1,7 +1,6 @@
 import React from 'react';
-import {Table, Input, Row, Col} from 'react-materialize';
+import {Table, Input, Row, Col, Button} from 'react-materialize';
 
-//TODO: Create setting with placeholders in db
 export default class Settings extends React.Component {
   constructor(props) {
     super(props);
@@ -98,6 +97,11 @@ export default class Settings extends React.Component {
     });
   }
 
+  handleSiteAdd() {
+
+  }
+
+
   render() {
     return (
       <div>
@@ -123,20 +127,23 @@ export default class Settings extends React.Component {
         </Table>
         <br />
         <Row>
-          <Input s={6} label="Add Site" />
-          <Input s={3} type='select' label="Type" defaultValue='1'>
+          <Input s={5} label="Site" name = "siteURL" />
+          <Input s={3} type='select' label="Type" name = "siteType" defaultValue='1'>
             <option value='1'>Blackout</option>
             <option value='2'>Block after exceeding</option>
             <option value='3'>Warn after exceeding</option>
           </Input>
-          <Input s={3} label="Time Limit (min)" />
+          <Input s={2} label="Time Limit (min)" name = "siteLimit" />
+          <Button className="blacklistButton" waves='light' onClick={console.log('add site')}>Add Site</Button>
         </Row>
         <h3> Personalization: </h3>
         <Row>
-        <Input s={12} label="Image" />
+        <Input s={10} label="Image" />
+        <Button className="picButton" waves='light' onClick={console.log('add img')}>Set Image</Button>
         </Row>
         <Row>
-        <Input s={12} label="Quote" />
+        <Input s={10} label="Quote" />
+        <Button className="quoteButton" waves='light' onClick={console.log('add quote')}>Set Quote</Button>
         </Row>
         <Row>
         <Input s={2} type='select' label="Reminder Type" defaultValue='1'>
@@ -144,11 +151,12 @@ export default class Settings extends React.Component {
           <option value='2'>Text</option>
           <option value='3'>Email</option>
         </Input>
-        <Input s={8} label="Number/Email Address" />
+        <Input s={6} label="Number/Email Address" />
         <Input s={2} type='select' label="Frequency" defaultValue='1'>
           <option value='1'>Daily</option>
           <option value='2'>Weekly</option>
         </Input>
+        <Button className="reminderButton" waves='light' onClick={console.log('add reminder')}>Set Reminder</Button>
         </Row>
         <h3> Chrome Extension: </h3>
         Forgot to download the extension? Download it here: ___________
