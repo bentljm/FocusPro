@@ -3,6 +3,8 @@ var parser  = require('body-parser');
 var express = require('express');
 var app = express();
 
+var emailTemplate = './emailTemplate.html';
+
 
 // GETTERS
 
@@ -460,6 +462,7 @@ function sendEmail(req, res, next) {
   var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
   db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
     var email = user.email;
+    //set up transporter with focuspro email credentials
     var transporter = nodemailer.createTransport({
       service: 'Gmail',
       auth: {
@@ -467,15 +470,15 @@ function sendEmail(req, res, next) {
           pass: 'soccer01' // Your password
       }
     });
-
+    //set up mail options with sender/reciever emails, subject, and html email template
     var mailOptions = {
       from: 'focusproalert@gmail.com', // sender address
       to: email, // list of receivers
-      subject: 'FocusPro Alert', // Subject line
-      text: "You have veered off task! " //, // plaintext body
-      // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
+      subject: 'FocusPro Notification', // Subject line
+      //text: "You have veered off task! " ,//, // plaintext body INPUT REFLECTION QUESTIONS HERE
+      html: emailTemplate // You can choose to send an HTML body instead
     };
-
+    //send email!
     transporter.sendMail(mailOptions, function(error, info){
       if(error){
           console.log(error);
@@ -516,3 +519,4 @@ module.exports = {
   updateUser: updateUser,
   sendEmail: sendEmail
 };
+
