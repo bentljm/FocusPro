@@ -14,7 +14,8 @@ export default class Dashboard extends React.Component {
       goals: [],
       goalInput: '',
       dayGoalInput: '',
-      userId: ''
+      userId: '',
+      setting: {}
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.postGoal = this.postGoal.bind(this);
@@ -24,6 +25,7 @@ export default class Dashboard extends React.Component {
   componentDidMount(){
     this.getUserId();
     this.getAllGoals();
+    this.getSetting();
   }
 
   getUserId() {
@@ -39,6 +41,19 @@ export default class Dashboard extends React.Component {
       error: function (err) {
         console.log('ERROR: COULD NOT GET USERID', err);
       }
+    });
+  }
+
+  getSetting() {
+    var that = this;
+    $.ajax({
+      type: 'GET', // GET REQUEST
+      url: '/api/users/' + this.state.profile.user_id + '/setting',
+      success: function(data) {
+        console.log("SUCCESS: OBTAINED SETTINGS: ", data);
+        that.setState({setting: data.data});
+      },
+      error: function(err) {console.log("ERROR: COULD NOT GET SETTINGS", err);}
     });
   }
 
@@ -90,7 +105,7 @@ export default class Dashboard extends React.Component {
     return (
       <div>
         <h1> Welcome, {this.state.profile.given_name} </h1>
-        "The way to get started is to quit talking and begin doing." - Walt Disney
+        {this.state.setting.quote}
         <br />
         <br />
         <h3> Goal of the Day: </h3>

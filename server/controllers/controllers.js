@@ -204,6 +204,7 @@ function postSettings(req, res, next) { // Post settings for specific user.
   db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
     var setting = req.params.id; // Use input settings parameters, defined in schema.
     var picture = req.body.picture;
+    var quote = req.body.quote;
     var reflection_freq = req.body.reflection_freq;
     var reminder = req.body.reminder;
     var reminder_type = req.body.reminder_type;
