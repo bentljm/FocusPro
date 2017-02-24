@@ -455,6 +455,41 @@ function updateSettings(req, res, next) {
   });
 }
 
+
+function sendEmail(req, res, next) {
+  var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
+  db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
+    var email = user.email;
+    var transporter = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+          user: 'focusproalert@gmail.com', // Your email id
+          pass: 'soccer01' // Your password
+      }
+    });
+
+    var mailOptions = {
+      from: 'focusproalert@gmail.com', // sender address
+      to: email, // list of receivers
+      subject: 'FocusPro Alert', // Subject line
+      text: "You have veered off task! " //, // plaintext body
+      // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
+    };
+
+    transporter.sendMail(mailOptions, function(error, info){
+      if(error){
+          console.log(error);
+          res.json({yo: 'error'});
+      }else{
+          console.log('Message sent: ' + info.response);
+          res.json({yo: info.response});
+      }
+    });
+  });
+}
+
+
+
 // Export functions to routers...
 
 module.exports = {
@@ -478,5 +513,6 @@ module.exports = {
   removeSingleGoal: removeSingleGoal,
   removeBlackList: removeBlackList,
   updateSettings: updateSettings,
-  updateUser: updateUser
+  updateUser: updateUser,
+  sendEmail: sendEmail
 };
