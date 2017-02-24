@@ -69,36 +69,4 @@ describe('GET and POST requests to /api/users/username/goals', () => {
       });
     });
   });
-
-  describe('GET all goals', () =>{
-    it('/api/users/:auth0_id/goals fetches all goals given user has goals',(done) =>{
-      var goal = {goal: 'Mow Lawn', progress: 10, goal_picture: "Picture", UserId: UserId};
-        db.Goal.create(goal).then(function(goal){
-      });
-      request(app)
-      .get('/api/users/auth_id3/goals')
-      .end((err,res) =>{
-        if(err) {
-          console.error('GET /api/users \n',err);
-        }
-        expect(res.statusCode).to.equal(200);
-        expect(res.body.data.some((goal) =>goal.goal==='Mow Lawn')).to.be.true;
-        done();
-      });
-    });
-  });
-  describe('GET all goals', () =>{
-    it('/api/users/:auth0_id/goals fetches no goal given user has no goals',(done) =>{
-      request(app)
-      .get('/api/users/auth_id4/goals')
-      .end((err,res) =>{
-        if(err) {
-          console.error('GET /api/users \n',err);
-        }
-        expect(res.statusCode).to.equal(200);
-        expect(res.body.data.length).to.equal(0);
-        done();
-      });
-    });
-  });
 })
