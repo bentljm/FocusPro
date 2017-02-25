@@ -171,7 +171,7 @@ export default class Dashboard extends React.Component {
           {this.state.blacklist.map((site, index) => (
             <li key = {'sites ' + index}>
               <div className="collapsible-header">{site.url}</div>
-              <div className="collapsible-body"><span><Site url = {site.url} siteId = {site.id}/></span></div>
+              <div className="collapsible-body"><Site url = {site.url} siteId = {site.id}/></div>
             </li>
             ))}
         </ul>
