@@ -52,6 +52,8 @@ export default class Settings extends React.Component {
   }
 
   updateSetting(pic, quote, refl_freq, remind, remind_type, remind_freq, remind_addr) {
+    console.log('update setting', this.state.setting);
+    console.log('quote is', quote);
     $.ajax({
       type: 'PUT',
       url: '/api/users/' + this.state.profile.user_id + '/setting',
@@ -155,7 +157,6 @@ export default class Settings extends React.Component {
     const siteSubmitEnabled = siteURL.length > 0 && siteLimit.length > 0 && siteType.length > 0;
     const {reminderType, reminderAddress, reminderFreq} = this.state;
     const reminderSubmitEnabled = reminderType.length > 0 && reminderAddress.length > 0 && reminderFreq.length > 0;
-    console.log(reminderType.length, reminderAddress.length, reminderFreq.length);
     return (
       <div>
         <h1> Settings </h1>
@@ -194,12 +195,12 @@ export default class Settings extends React.Component {
         </Row>
         <h3> Personalization: </h3>
         <Row>
-        <Input s={10} label="Image" value = {this.state.image} onChange = {this.state.handleImageChange} />
-        <Button className="picButton" waves='light' onClick={this.updateSetting(this.state.image)}>Set Image</Button>
+        <Input s={10} label="Image" value = {this.state.image} onChange = {this.handleImageChange} />
+        <Button className="picButton" waves='light' onClick={()=>this.updateSetting(this.state.image)}>Set Image</Button>
         </Row>
         <Row>
-        <Input s={10} label="Quote" value = {this.state.quote} onChange = {this.state.handleQuoteChange} />
-        <Button className="quoteButton" waves='light' onClick={this.updateSetting(null, this.state.quote)}>Set Quote</Button>
+        <Input s={10} label="Quote" value = {this.state.quote} onChange = {this.handleQuoteChange} />
+        <Button className="quoteButton" waves='light' onClick={()=>this.updateSetting(null, this.state.quote)}>Set Quote</Button>
         </Row>
         <Row>
         <Input s={2} type='select' label="Reminder Type" defaultValue='1' value = {this.state.reminderType} onChange = {this.handleReminderTypeChange}>

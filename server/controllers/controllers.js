@@ -305,7 +305,6 @@ function postSubGoal(req, res) {
   var status = req.body.status;
   var subgoal = req.body.subgoal;
   //create subGoal for userA's goal1
-  console.log('subGoal GoalID',subgoal, goalId);
   db.Subgoal.create({subgoal: subgoal, status: status, GoalId: goalId})
   .then((data)=>{
     res.status(201).json({
@@ -323,7 +322,6 @@ function removeSubGoal(req, res, next) { // Delete individual subgoal for specif
   db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
     var UserId = user.id; // Get specific user from find
     var GoalId = req.params.goal_id; // Get goal that contains subgoal.
-
     db.Goal.find({where: {UserId: UserId, id: GoalId}}).then(function (data) { // Find goal.
       // Delete entry in Subgoal with above parameters.
       var id = req.params.subgoal_id;
@@ -403,6 +401,7 @@ function updateSettings(req, res, next) {
   var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
   db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
     var picture = req.body.picture || '';
+    var quote = req.body.quote || '';
     var reflection_freq = req.body.reflection_freq || 0;
     var reminder = req.body.reminder || false;
     var reminder_type = req.body.reminder_type || '';
@@ -411,7 +410,7 @@ function updateSettings(req, res, next) {
     var UserId = user.id;
 
     // Update entry in Settings with above parameters.
-    db.Setting.update({picture: picture, reflection_freq: reflection_freq, reminder: reminder, reminder_type: reminder_type, reminder_freq: reminder_freq, reminder_address: reminder_address}, {where: {UserId: UserId}}).then(function (data) {
+    db.Setting.update({picture: picture, quote: quote, reflection_freq: reflection_freq, reminder: reminder, reminder_type: reminder_type, reminder_freq: reminder_freq, reminder_address: reminder_address}, {where: {UserId: UserId}}).then(function (data) {
       res.status(201).json({ // Send 201 status upon success.
         status: 'success',
         data: data,
