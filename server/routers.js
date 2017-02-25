@@ -18,17 +18,20 @@ module.exports = function(app, express) {
 
   app.get('/api/users/:auth0_id/extension_data', controller.getExtension); // Get individual extention data
 
-  app.get('/api/users/:auth0_id/goals/:goal_id/reflections', controller.getReflections); // Get individual reflection data
-  app.get('/api/users/:auth0_id/goals/:goal_id/reflections/:reflection_id', controller.getReflectionId); // Get individual reflection id
-  app.post('/api/users/:auth0_id/goals/:goal_id/reflections', controller.postReflectionId); // Post individual reflection id
+
+  app.get('/api/users/:auth0_id/reflections', controller.getReflections); // Get all reflection data
+  app.post('/api/users/:auth0_id/reflections', controller.postReflectionId); // Post individual reflection id
+  // app.get('/api/users/:auth0_id/reflections/:reflection_id', controller.getReflectionId); // Get individual reflection id
 
   app.get('/api/users/:auth0_id/goals', controller.getAllGoals); //Get all goals
   app.get('/api/users/:auth0_id/goals/:goal_id', controller.getSingleGoal); //Get single goal
   app.post('/api/users/:auth0_id/goals', controller.postSingleGoal); //Post single goal
   app.delete('/api/users/:auth0_id/goals/:goal_id', controller.removeSingleGoal); //Delete single goal
 
-  app.get('/api/users/:auth0_id/goals/:goal_id/subgoals', controller.getSubGoals); //Get all subgoals of a single goal
-  app.post('/api/users/:auth0_id/goals/:goal_id/subgoals', controller.postSubGoal); //Post all subgoals of a single goal
+  app.get('/api/goals/:goal_id/subgoals', controller.getSubGoals); //Get all subgoals of a single goal
+
+  app.post('/api/goals/:goal_id/subgoals', controller.postSubGoal); //Post all subgoals of a single goal
+
   app.delete('/api/users/:auth0_id/goals/:goal_id/subgoals/:subgoal_id', controller.removeSubGoal); //Delete a subgoal of a single goal
 
   // app.post('/api/users/:auth0_id/sendMail', controller.sendEmail); // Send email

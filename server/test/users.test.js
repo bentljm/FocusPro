@@ -31,10 +31,11 @@ describe('GET and POST requests to /api/users', () =>{
   //load dummy data
   beforeEach((done) =>{
     var user1 = {username: 'dummy1', email: 'example@gmail.com', auth0_id: 'auth_id1', daily_goal: 'wakeup early'};
-    var user2 = {username: 'dummy2', email: 'example1@gmail.com', auth0_id: 'auth_id2', daily_goal: 'sleep early'};
-    db.User.create(user2).then(function(user){
-      db.User.create(user1).then(function(user){
-          done();
+    var user2 = {username: 'dummy2', email: 'example2@gmail.com', auth0_id: 'auth_id2', daily_goal: 'sleep early'};
+    db.User.create(user2).then(function(user) {
+      db.User.create(user1).then(function(user) {
+        global.UserId = user.id;
+        done();
       });
     });
   });
@@ -42,20 +43,20 @@ describe('GET and POST requests to /api/users', () =>{
   //clean dummy data
   afterEach((done) =>{
     //delete all users in db
-    db.User.destroy({where:{}}).then((num) => {
+    db.User.destroy({where: {}}).then((num) => {
       done();
     });
   });
 
   describe('POST a new user', () =>{
-    it('/api/users creates a user',(done) =>{
+    it('/api/users creates a user', (done) =>{
       const userA = {username: 'dummyA', email: 'example@gmail.com', auth0_id: 'auth_idA', daily_goal: 'pushup x10'};
       request(app)
       .post('/api/users')
       .send(userA)
-      .end((err,res) =>{
-        if(err) {
-          console.error('POST /api/users \n',err);
+      .end((err, res) =>{
+        if (err) {
+          console.error('POST /api/users \n', err);
         }
         expect(res.statusCode).to.equal(201);
         expect(res.body.data.username).to.equal(userA.username);
@@ -67,26 +68,26 @@ describe('GET and POST requests to /api/users', () =>{
   });
 
   describe('GET all users', () =>{
-    it('/api/users fetches all users',(done)=>{
+    it('/api/users fetches all users', (done)=>{
       request(app)
       .get('/api/users')
-      .end((err,res) =>{
-        if(err) {
-          console.error('GET /api/users \n',err);
+      .end((err, res) =>{
+        if (err) {
+          console.error('GET /api/users \n', err);
         }
         expect(res.statusCode).to.equal(200);
-        expect(res.body.data.some((user) =>user.username==='dummy1')).to.be.true;
-        expect(res.body.data.some((user) =>user.username==='dummy2')).to.be.true;
+        expect(res.body.data.some((user) =>user.username === 'dummy1')).to.be.true;
+        expect(res.body.data.some((user) =>user.username === 'dummy2')).to.be.true;
         done();
       });
     });
 
-    it('/api/users/:auth0_id fetches a user given user exists',(done) =>{
+    it('/api/users/:auth0_id fetches a user given user exists', (done) =>{
       request(app)
       .get('/api/users/auth_id1')
-      .end((err,res) =>{
-        if(err) {
-          console.error('GET /api/users \n',err);
+      .end((err, res) =>{
+        if (err) {
+          console.error('GET /api/users \n', err);
         }
         expect(res.statusCode).to.equal(200);
         expect(res.body.data[1]).to.equal.false;
@@ -95,12 +96,12 @@ describe('GET and POST requests to /api/users', () =>{
       });
     });
 
-    it('/api/users/:auth0_id creates a user given user does not exist',(done) =>{
+    it('/api/users/:auth0_id creates a user given user does not exist', (done) =>{
       request(app)
       .get('/api/users/auth_id_NA')
-      .end((err,res) =>{
-        if(err) {
-          console.error('GET /api/users \n',err);
+      .end((err, res) =>{
+        if (err) {
+          console.error('GET /api/users \n', err);
         }
         expect(res.statusCode).to.equal(200);
         expect(res.body.data.length).to.equal(2);
