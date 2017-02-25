@@ -23,7 +23,7 @@ export default class Goal extends React.Component {
     var that = this;
     $.ajax({
       type: 'GET', // GET REQUEST
-      url: '/api/users/'+this.props.user_id+'/goals/'+this.props.goal+'/subgoals',
+      url: '/api/goals/'+this.props.goal+'/subgoals',
       success: function(data) {
         console.log("SUCCESS: OBTAINED ALL SUBGOALS: " + JSON.stringify(data.data));
         that.setState({subgoals: data.data});
@@ -40,9 +40,9 @@ export default class Goal extends React.Component {
     var that = this;
     $.ajax({
       type: 'POST',
-      url: '/api/users/' + this.props.user_id + '/goals/' + this.props.goal + '/subgoals',
+      url: '/api/goals/' + this.props.goal + '/subgoals',
       contentType: 'application/json',
-      data: JSON.stringify({subgoal: this.state.subgoal, status: false, GoalId: this.props.goal, UserId: this.props.userId}),
+      data: JSON.stringify({subgoal: this.state.subgoal, status: false, GoalId: this.props.goal}),
       success: function(data) {
         console.log("SUCCESS: POSTED INDIVIDUAL GOAL: ", data);
         that.getSubgoals();

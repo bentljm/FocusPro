@@ -327,7 +327,7 @@ function removeSubGoal(req, res, next) { // Delete individual subgoal for specif
     db.Goal.find({where: {UserId: UserId, id: GoalId}}).then(function (data) { // Find goal.
       // Delete entry in Subgoal with above parameters.
       var id = req.params.subgoal_id;
-      db.Subgoal.destroy({where: {GoalId: GoalId, UserId: UserId, id: id}}).then(function (destroyed) {
+      db.Subgoal.destroy({where: {GoalId: GoalId, id: id}}).then(function (destroyed) {
         res.status(200).json({ // Send 201 status upon success.
           status: 'success',
           message: 'Deleted ' + destroyed
@@ -435,7 +435,7 @@ function updateSubgoal(req, res, next) { // Update individual subgoal for specif
       // Update entry in Subgoal with above parameters.
       var id = req.params.subgoal_id;
       var status = req.body.status;
-      db.Subgoal.update({status: status}, {where: {GoalId: GoalId, UserId: UserId, id: id}}).then(function (data) {
+      db.Subgoal.update({status: status}, {where: {GoalId: GoalId, id: id}}).then(function (data) {
         res.status(200).json({ // Send 201 status upon success.
           status: 'success',
           data: data,

@@ -158,7 +158,7 @@ export default class Dashboard extends React.Component {
           {this.state.goals.map((goal, index) => (
             <li key = {index}>
             <div className="collapsible-header">{goal.goal} <a href = '#/dashboard' onClick = {()=>this.removeGoal(goal.id)}><Icon right>delete</Icon></a></div>
-            <Goal key = {'goal' + index} goal = {goal.id} user_id = {this.state.profile.user_id} userID = {this.state.userId} />
+            <Goal key = {'goal' + index} goal = {goal.id} user_id = {this.state.profile.user_id} />
           </li>
             ))}
         </ul>
