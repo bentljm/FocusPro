@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table, Input, Row, Col, Button} from 'react-materialize';
+import {Table, Input, Row, Col, Button, Icon} from 'react-materialize';
 
 export default class Settings extends React.Component {
   constructor(props) {
@@ -28,6 +28,7 @@ export default class Settings extends React.Component {
     this.handleReminderTypeChange = this.handleReminderTypeChange.bind(this);
     this.handleReminderAddressChange = this.handleReminderAddressChange.bind(this);
     this.handleReminderFreqChange = this.handleReminderFreqChange.bind(this);
+    this.deleteBlacklist = this.deleteBlacklist.bind(this);
   }
 
   componentDidMount(){
@@ -52,8 +53,6 @@ export default class Settings extends React.Component {
   }
 
   updateSetting(pic, quote, refl_freq, remind, remind_type, remind_freq, remind_addr) {
-    console.log('update setting', this.state.setting);
-    console.log('quote is', quote);
     $.ajax({
       type: 'PUT',
       url: '/api/users/' + this.state.profile.user_id + '/setting',
@@ -84,25 +83,33 @@ export default class Settings extends React.Component {
   }
 
   postBlacklist(siteURL, siteType, siteTime) {
+    var that = this;
     $.ajax({
       type: 'POST',
       url: '/api/users/' + this.state.profile.user_id + '/setting/blacklist',
       contentType: 'application/json',
       data: JSON.stringify({url: siteURL, blacklist_type: siteType, blacklist_time: siteTime, SettingId: this.state.setting.id}),
-      success: function(data) {console.log("SUCCESS: POSTED BLACKLIST: ", data);},
+      success: function(data) {
+        console.log("SUCCESS: POSTED BLACKLIST: ", data);
+        that.getBlacklist();
+      },
       error: function(err) {console.log("ERROR: COULD NOT POST BLACKLIST", err);}
     });
-    this.getBlacklist();
+
   }
 
   deleteBlacklist(url_id) {
+    var that = this;
     $.ajax({
       type: 'DELETE',
-      url: '/api/users/' + this.state.profile.user_id + '/setting/blacklist/' + url_id,
+      url: '/api/users/' + that.state.profile.user_id + '/setting/blacklist/' + url_id,
       success: function(data) {
         console.log("Sucessfully deleted", data);
+        that.getBlacklist();
       },
-      error: function(err) {console.log("Error deleting", err);}
+      error: function(err) {
+        console.log("Error deleting", err);
+      }
     });
   }
 
@@ -176,6 +183,7 @@ export default class Settings extends React.Component {
               <td>{site.url}</td>
               <td>{site.blacklist_type}</td>
               <td>{site.blacklist_time}</td>
+              <td><a href = '#/settings' onClick = {()=>this.deleteBlacklist(site.id)}><Icon right>delete</Icon></a></td>
             </tr>
             ))}
 

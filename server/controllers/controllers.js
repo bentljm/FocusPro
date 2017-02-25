@@ -365,6 +365,7 @@ function removeBlackList(req, res, next) { // Remove a blacklisted website for s
     var UserId = user.id; // Get specific user id from find
     db.Setting.find({where: {UserId: UserId}}).then(function(setting) {
       var SettingId = setting.id;
+      var url_id = req.params.url_id;
       db.Url.destroy({where: {SettingId: SettingId, id: url_id}}).then(function (destroyed) { // Delete blacklist url.
       res.status(200).json({ // Send 200 status upon success.
         status: 'success',
