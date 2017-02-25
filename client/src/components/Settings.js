@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table, Input, Row, Col, Button} from 'react-materialize';
+import {Table, Input, Row, Col, Button, Icon} from 'react-materialize';
 
 export default class Settings extends React.Component {
   constructor(props) {
@@ -28,6 +28,7 @@ export default class Settings extends React.Component {
     this.handleReminderTypeChange = this.handleReminderTypeChange.bind(this);
     this.handleReminderAddressChange = this.handleReminderAddressChange.bind(this);
     this.handleReminderFreqChange = this.handleReminderFreqChange.bind(this);
+    this.deleteBlacklist = this.deleteBlacklist.bind(this);
   }
 
   componentDidMount(){
@@ -82,25 +83,33 @@ export default class Settings extends React.Component {
   }
 
   postBlacklist(siteURL, siteType, siteTime) {
+    var that = this;
     $.ajax({
       type: 'POST',
       url: '/api/users/' + this.state.profile.user_id + '/setting/blacklist',
       contentType: 'application/json',
       data: JSON.stringify({url: siteURL, blacklist_type: siteType, blacklist_time: siteTime, SettingId: this.state.setting.id}),
-      success: function(data) {console.log("SUCCESS: POSTED BLACKLIST: ", data);},
+      success: function(data) {
+        console.log("SUCCESS: POSTED BLACKLIST: ", data);
+        that.getBlacklist();
+      },
       error: function(err) {console.log("ERROR: COULD NOT POST BLACKLIST", err);}
     });
-    this.getBlacklist();
+
   }
 
   deleteBlacklist(url_id) {
+    var that = this;
     $.ajax({
       type: 'DELETE',
-      url: '/api/users/' + this.state.profile.user_id + '/setting/blacklist/' + url_id,
+      url: '/api/users/' + that.state.profile.user_id + '/setting/blacklist/' + url_id,
       success: function(data) {
         console.log("Sucessfully deleted", data);
+        that.getBlacklist();
       },
-      error: function(err) {console.log("Error deleting", err);}
+      error: function(err) {
+        console.log("Error deleting", err);
+      }
     });
   }
 
@@ -155,7 +164,6 @@ export default class Settings extends React.Component {
     const siteSubmitEnabled = siteURL.length > 0 && siteLimit.length > 0 && siteType.length > 0;
     const {reminderType, reminderAddress, reminderFreq} = this.state;
     const reminderSubmitEnabled = reminderType.length > 0 && reminderAddress.length > 0 && reminderFreq.length > 0;
-    console.log(reminderType.length, reminderAddress.length, reminderFreq.length);
     return (
       <div>
         <h1> Settings </h1>
@@ -175,6 +183,7 @@ export default class Settings extends React.Component {
               <td>{site.url}</td>
               <td>{site.blacklist_type}</td>
               <td>{site.blacklist_time}</td>
+              <td><a href = '#/settings' onClick = {()=>this.deleteBlacklist(site.id)}><Icon right>delete</Icon></a></td>
             </tr>
             ))}
 
@@ -194,12 +203,12 @@ export default class Settings extends React.Component {
         </Row>
         <h3> Personalization: </h3>
         <Row>
-        <Input s={10} label="Image" value = {this.state.image} onChange = {this.state.handleImageChange} />
-        <Button className="picButton" waves='light' onClick={this.updateSetting(this.state.image)}>Set Image</Button>
+        <Input s={10} label="Image" value = {this.state.image} onChange = {this.handleImageChange} />
+        <Button className="picButton" waves='light' onClick={()=>this.updateSetting(this.state.image)}>Set Image</Button>
         </Row>
         <Row>
-        <Input s={10} label="Quote" value = {this.state.quote} onChange = {this.state.handleQuoteChange} />
-        <Button className="quoteButton" waves='light' onClick={this.updateSetting(null, this.state.quote)}>Set Quote</Button>
+        <Input s={10} label="Quote" value = {this.state.quote} onChange = {this.handleQuoteChange} />
+        <Button className="quoteButton" waves='light' onClick={()=>this.updateSetting(null, this.state.quote)}>Set Quote</Button>
         </Row>
         <Row>
         <Input s={2} type='select' label="Reminder Type" defaultValue='1' value = {this.state.reminderType} onChange = {this.handleReminderTypeChange}>
