@@ -150,22 +150,35 @@ function getAllGoals(req, res, next) { // Get all goals for specific user.
   });
 }
 
-function getSingleGoal(req, res, next) { // Get individual goal for specific user.
-  var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
-  db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
-    var UserId = user.id; // Get the specific user
-    var id = req.params.goal_id; // Get the specific goal from parameters
-    db.Goal.find({where: {UserId: UserId, id: id}}).then(function (data) { // Find goal with aforementioned goal name.
-      res.status(200).json({ // Send 200 status upon success.
-        status: 'success',
-        data: data,
-        message: 'RETRIEVED SPECIFIC GOAL ' + id
-      });
-    }).catch(function (err) { // Error handling for inner callback find.
-      return next(err);
+// function getSingleGoal2(req, res, next) { // Get individual goal for specific user.
+//   var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
+//   db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
+//     var UserId = user.id; // Get the specific user
+//     var id = req.params.goal_id; // Get the specific goal from parameters
+//     db.Goal.find({where: {id: id}}).then(function (data) { // Find goal with aforementioned goal name.
+//       res.status(200).json({ // Send 200 status upon success.
+//         status: 'success',
+//         data: data,
+//         message: 'RETRIEVED SPECIFIC GOAL ' + id
+//       });
+//     }).catch(function (err) { // Error handling for inner callback find.
+//       return next(err);
+//     });
+//   }).catch(function (err) { // Error handling for outback callback find.
+//     return next(err);
+//   });
+// }
+
+function getSingleGoal(req, res) {
+  var id = req.params.goal_id;
+  db.Goal.find({where: {id: id}})
+  .then((data)=>{
+    res.status(200).json({
+      data: data
     });
-  }).catch(function (err) { // Error handling for outback callback find.
-    return next(err);
+  })
+  .catch((err)=>{
+    res.send(err);
   });
 }
 
@@ -318,45 +331,77 @@ function postSubGoal(req, res) {
 }
 
 //DESTROY
-function removeSubGoal(req, res, next) { // Delete individual subgoal for specific user.
-  var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
-  db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
-    var UserId = user.id; // Get specific user from find
-    var GoalId = req.params.goal_id; // Get goal that contains subgoal.
-    db.Goal.find({where: {UserId: UserId, id: GoalId}}).then(function (data) { // Find goal.
-      // Delete entry in Subgoal with above parameters.
-      var id = req.params.subgoal_id;
-      db.Subgoal.destroy({where: {GoalId: GoalId, id: id}}).then(function (destroyed) {
-        res.status(200).json({ // Send 201 status upon success.
-          status: 'success',
-          message: 'Deleted ' + destroyed
-        });
-      }).catch(function (err) { // Error handling for inner callback find.
-        return next(err);
-      });
-    }).catch(function (err) { // Error handling for middle callback find.
-      return next(err);
+
+// function removeSubGoal2(req, res, next) { // Delete individual subgoal for specific user.
+//   var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
+//   db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
+//     var UserId = user.id; // Get specific user from find
+//     var GoalId = req.params.goal_id; // Get goal that contains subgoal.
+
+//     db.Goal.find({where: {UserId: UserId, id: GoalId}}).then(function (data) { // Find goal.
+//       // Delete entry in Subgoal with above parameters.
+//       var id = req.params.subgoal_id;
+//       db.Subgoal.destroy({where: {GoalId: GoalId, id: id}}).then(function (destroyed) {
+//         res.status(200).json({ // Send 201 status upon success.
+//           status: 'success',
+//           message: 'Deleted ' + destroyed
+//         });
+//       }).catch(function (err) { // Error handling for inner callback find.
+//         return next(err);
+//       });
+//     }).catch(function (err) { // Error handling for middle callback find.
+//       return next(err);
+//     });
+//   }).catch(function (err) { // Error handling for outer callback find.
+//     return next(err);
+//   });
+// }
+
+function removeSubGoal(req, res) {
+  var id = req.params.subgoal_id;
+  console.log('controller id',id);
+  db.Subgoal.destroy({where: {id: id}})
+  .then((num)=>{
+    console.log('controller num',num);
+    res.status(200).json({
+      numDeleted: num,
+      message: `number deleted: ${num}`
     });
-  }).catch(function (err) { // Error handling for outer callback find.
-    return next(err);
+  })
+  .catch((err)=>{
+    res.send(err);
   });
 }
 
-function removeSingleGoal(req, res, next) { // Delete individual goal for specific user.
-  var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
-  db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
-    var UserId = user.id; // Get the specific user
-    var id = req.params.goal_id; // Get the specific goal from parameters
-    db.Goal.destroy({where: {UserId: UserId, id: id}}).then(function (destroyed) { // Delete goal with aforementioned goal id.
-      res.status(200).json({ // Send 200 status upon success.
-        status: 'success',
-        message: 'REMOVED SPECIFIC GOAL ' + destroyed
-      });
-    }).catch(function (err) { // Error handling for inner callback find.
-      return next(err);
+// function removeSingleGoal2(req, res, next) { // Delete individual goal for specific user.
+//   var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
+//   db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
+//     var UserId = user.id; // Get the specific user
+//     var id = req.params.goal_id; // Get the specific goal from parameters
+//     db.Goal.destroy({where: {UserId: UserId, id: id}}).then(function (destroyed) { // Delete goal with aforementioned goal id.
+//       res.status(200).json({ // Send 200 status upon success.
+//         status: 'success',
+//         message: 'REMOVED SPECIFIC GOAL ' + destroyed
+//       });
+//     }).catch(function (err) { // Error handling for inner callback find.
+//       return next(err);
+//     });
+//   }).catch(function (err) { // Error handling for outback callback find.
+//     return next(err);
+//   });
+// }
+
+function removeSingleGoal(req, res) {
+  var id = req.params.goal_id;
+  db.Goal.destroy({where: {id: id}})
+  .then((num)=>{
+    res.status(200).json({
+      numDeleted: num,
+      message: `number deleted: ${num}`
     });
-  }).catch(function (err) { // Error handling for outback callback find.
-    return next(err);
+  })
+  .catch((err)=>{
+    res.send(err);
   });
 }
 
@@ -453,6 +498,16 @@ function updateSubgoal(req, res, next) { // Update individual subgoal for specif
  });
 }
 
+function updateSingleGoal(req, res) {
+  var id = req.params.goal_id;
+  db.Goal.update({goal: req.body.goal, progress: req.body.progress, goal_picture: req.body.goal_picture}, {where: {id: id}})
+  .then((count)=>{
+    res.status(200).json({
+      data: count
+    });
+  });
+}
+
 // function sendEmail(req, res, next) {
 //   var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
 //   db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
@@ -513,6 +568,7 @@ module.exports = {
   updateSettings: updateSettings,
   updateSubgoal: updateSubgoal,
   updateUser: updateUser,
+  updateSingleGoal: updateSingleGoal
   //sendEmail: sendEmail
 };
 

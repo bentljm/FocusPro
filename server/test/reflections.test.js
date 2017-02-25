@@ -67,13 +67,14 @@ describe('GET and POST requests to /api/users/:auth0_id/reflections', ()=>{
   });
 
   describe('Get reflections', ()=>{
-    it('/api/users/:auth0_id/reflections fetches user reflections', ()=>{
+    it('/api/users/:auth0_id/reflections fetches user reflections', (done)=>{
       request(app)
       .get('/api/users/auth_id4/reflections')
       .end((err, res)=>{
         expect(res.body.data.length).to.equal(2);
         expect(res.body.data.some((reflection) =>reflection.question === question2)).to.equal.true;
         expect(res.body.data.some((reflection) =>reflection.answer === answer3)).to.equal.true;
+        done();
       });
     });
   });
