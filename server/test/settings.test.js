@@ -31,7 +31,7 @@ describe('GET and POST requests FOR SETTINGS', () => {
     //load dummy data
   beforeEach((done) =>{
     var user1 = {username: 'dummy3', email: 'example@gmail.com', auth0_id: 'auth_id3', daily_goal: 'wakeup earlier than yesterday'};
-    var user2 = {username: 'dummy2', email: 'example1@gmail.com', auth0_id: 'auth_id4', daily_goal: 'wakeup before noon'};
+    var user2 = {username: 'dummy4', email: 'example1@gmail.com', auth0_id: 'auth_id4', daily_goal: 'wakeup before noon'};
     global.authId = 'auth_id3';
     global.authId2 = 'auth_id4';
 
@@ -49,8 +49,11 @@ describe('GET and POST requests FOR SETTINGS', () => {
         db.Setting.create(setting1).then(function(setting) {
           // global.SettingId1 = setting.id;
           db.Setting.create(setting2).then(function(setting2) {
-            // global.SettingId2 = setting2.id;
-            done();
+            global.blacklist.auth0_id = user2.auth0_id;
+            db.Url.create(blacklist).then((blacklist)=>{
+
+              done();
+            });
           //  });
           });
         });
@@ -61,7 +64,14 @@ describe('GET and POST requests FOR SETTINGS', () => {
   //clean dummy data
   afterEach((done) =>{
     //delete all users in db
-    db.User.destroy({where: {}}).then((num) => {
+    db.User.destroy({where: {}})
+    .then((num) => {
+      return db.Setting.destroy({where: {}});
+    })
+    .then(()=>{
+      return db.Url.destroy({where: {}});
+    })
+    .then(()=>{
       done();
     });
   });
@@ -88,21 +98,26 @@ describe('GET and POST requests FOR SETTINGS', () => {
         done();
       });
     });
-    // it('/api/users/:auth0_id/setting/blacklist adds new blacklist url', (done)=>{
-    //   request(app)
-    //   .get(`/api/users/${authId2}/setting`)
-    //   .end((err,res)=>{
-    //     if (err) {
-    //       console.error('GETTING SETTINGS ERROR: \n', err);
-    //     }
-
-    //   });
-    //   done();
-    // });
+    it('/api/users/:auth0_id/blacklist adds new blacklist url', (done)=>{
+      var urlInfo = {url: 'http://facebook.com', blacklist_time: 20, blacklist_type: 'warning'};
+      request(app)
+      .post(`/api/users/${authId2}/blacklist`)
+      .send(urlInfo)
+      .end((err, res)=>{
+        if (err) {
+          console.error('GETTING SETTINGS ERROR: \n', err);
+        }
+        expect(res.body.data.url).to.equal(urlInfo.url);
+        expect(res.body.data.blacklist_time).to.equal(urlInfo.blacklist_time);
+        expect(res.body.data.blacklist_type).to.equal(urlInfo.blacklist_type);
+        expect(res.body.data.auth0_id).to.equal(authId2);
+        done();
+      });
+    });
   });
 
 
-  describe('GET all settings', () =>{
+  describe('GET all settings and Blacklist Urls', () =>{
     it('/api/users/:auth0_id/setting fetches all settings', (done) =>{
       request(app)
       .get(`/api/users/${authId2}/setting`)
@@ -123,6 +138,34 @@ describe('GET and POST requests FOR SETTINGS', () => {
         done();
       });
     });
+
+    it('/api/users/:auth0_id/blacklist adds new blacklist url', (done)=>{
+      var urlInfo = {url: 'http://facebook.com', blacklist_time: 20, blacklist_type: 'warning'};
+      request(app)
+      .post(`/api/users/${authId2}/blacklist`)
+      .send(urlInfo)
+      .end((err, res)=>{
+        if (err) {
+          console.error('GETTING SETTINGS ERROR: \n', err);
+        }
+        request(app)
+        .get(`/api/users/${authId2}/blacklist`)
+        .end((err, res)=>{
+          expect(res.body.data.some((url)=>url.url === urlInfo.url)).to.be.true;
+          expect(res.body.data.some((url)=>url.blacklist_time === urlInfo.blacklist_time)).to.be.true;
+          expect(res.body.data.some((url)=>url.blacklist_type === urlInfo.blacklist_type)).to.be.true;
+          expect(res.body.data.some((url)=>url.url === blacklist.url)).to.be.true;
+          expect(res.body.data.some((url)=>url.blacklist_time === blacklist.blacklist_time)).to.be.true;
+          expect(res.body.data.some((url)=>url.blacklist_type === blacklist.blacklist_type)).to.be.true;
+          expect(res.body.data.every((url)=>url.auth0_id === authId2)).to.be.true;
+        });
+        done();
+      });
+    });
+  });
+
+  describe('PUT a setting or a blacklist url', ()=>{
+    it('/api/users/:auth0_id/setting');
   });
 
 });

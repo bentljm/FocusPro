@@ -50,29 +50,40 @@ function getSettings(req, res, next) { // Get settings for specific user.
   });
 }
 
-function getBlackList(req, res, next) { // Get blacklisted websites for specific user.
-  var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
-  db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
-    var UserId = user.id; // Get specific user id from find
-    db.Setting.find({where: {UserId: UserId}}).then(function(setting) {
-      console.log("SETTINGS BODY", setting.dataValues)
-      var SettingId = setting.id;
-      db.Url.findAll({where: {SettingId: SettingId}}).then(function (data) { // Get all blacklist data.
-      res.status(200).json({ // Send 200 status upon success.
-        status: 'success',
-        data: data,
-        message: 'BLACKLISTED URLS'
-      });
-      }).catch(function (err) { // Error handling for inner callback findAll.
-        return next(err);
-      });
-    }).catch(function (err) { // Error handling for outer callback find.
-      return next(err);
-    });
-  }).catch(function (err) { // Error handling for outer callback find.
-    return next(err);
-  });
+// function getBlackList2(req, res, next) { // Get blacklisted websites for specific user.
+//   var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
+//   db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
+//     var UserId = user.id; // Get specific user id from find
+//     db.Setting.find({where: {UserId: UserId}}).then(function(setting) {
+//       var SettingId = setting.id;
+//       db.Url.findAll({where: {SettingId: SettingId}}).then(function (data) { // Get all blacklist data.
+//       res.status(200).json({ // Send 200 status upon success.
+//         status: 'success',
+//         data: data,
+//         message: 'BLACKLISTED URLS'
+//       });
+//       }).catch(function (err) { // Error handling for inner callback findAll.
+//         return next(err);
+//       });
+//     }).catch(function (err) { // Error handling for outer callback find.
+//       return next(err);
+//     });
+//   }).catch(function (err) { // Error handling for outer callback find.
+//     return next(err);
+//   });
+// }
 
+function getBlackList(req, res) {
+  var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
+  db.Url.findAll({where: {auth0_id: auth0_id}})
+  .then((data)=>{
+    res.status(200).json({
+      data: data
+    });
+  })
+  .catch((err)=>{
+    res.send(err);
+  });
 }
 
 function getExtension(req, res, next) { // Get extensions for specific user.
@@ -243,33 +254,49 @@ function postSettings(req, res, next) { // Post settings for specific user.
 }
 
 
-function postBlackList(req, res, next) { // Post blacklisted websites for specific user.
-   var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
-   db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
-    var UserId = user.id; // Get user id from find
-    var url = req.body.url; // Use input blacklist url parameters, defined in schema.
-    var blacklist_type = req.body.blacklist_type;
-    var blacklist_time = req.body.blacklist_time;
+// function postBlackList2(req, res, next) { // Post blacklisted websites for specific user.
+//    var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
+//    db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
+//     var UserId = user.id; // Get user id from find
+//     var url = req.body.url; // Use input blacklist url parameters, defined in schema.
+//     var blacklist_type = req.body.blacklist_type;
+//     var blacklist_time = req.body.blacklist_time;
 
-    // Create entry in Url with above parameters.
-    db.Setting.find({where: {UserId: UserId}}).then(function (setting) {
-      var SettingId = setting.id;
-      db.Url.create({url: req.body.url, blacklist_type: req.body.blacklist_type, blacklist_time: req.body.blacklist_time, SettingId: SettingId}).then(function () {
-        res.status(201).json({ // Send 201 status upon success.
-          status: 'success',
-          message: 'INSERTED NEW BLACKLIST'
-        });
-        }).catch(function (err) { // Error handling for inner callback create.
-          return next(err);
-        });
-      }).catch(function (err) { // Error handling for outer callback find.
-        return next(err);
-      });
-    }).catch(function (err) {
-      return next(err);
+//     // Create entry in Url with above parameters.
+//     db.Setting.find({where: {UserId: UserId}}).then(function (setting) {
+//       var SettingId = setting.id;
+//       db.Url.create({url: req.body.url, blacklist_type: req.body.blacklist_type, blacklist_time: req.body.blacklist_time, SettingId: SettingId}).then(function () {
+//         res.status(201).json({ // Send 201 status upon success.
+//           status: 'success',
+//           message: 'INSERTED NEW BLACKLIST'
+//         });
+//         }).catch(function (err) { // Error handling for inner callback create.
+//           return next(err);
+//         });
+//       }).catch(function (err) { // Error handling for outer callback find.
+//         return next(err);
+//       });
+//     }).catch(function (err) {
+//       return next(err);
+//     });
+// }
+
+function postBlackList(req, res) {
+  var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
+  var url = req.body.url; // Get url from req body
+  var blacklist_type = req.body.blacklist_type; // Get blacklist_type from req body
+  var blacklist_time = req.body.blacklist_time; // Get blacklist_time from req body
+  db.Url.create({url: url, blacklist_type: blacklist_type, blacklist_time: blacklist_time, auth0_id: auth0_id})
+  .then(function(data) {
+    res.status(201).json({
+      data: data,
+      message: 'success' + data
     });
+  })
+  .catch(function(err) {
+    res.send(err);
+  });
 }
-
 
 
 function postReflectionId (req,res,next) {
