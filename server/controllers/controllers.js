@@ -38,7 +38,7 @@ function getSettings(req, res, next) { // Get settings for specific user.
   var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
   db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
     var UserId = user.id; // Get specific user id from find
-    db.Setting.find({where: {UserId: UserId}}).then(function (data) { // Grab settings data for user.
+    db.Setting.findOrCreate({where: {UserId: UserId}}).then(function (data) { // Grab settings data for user.
       res.status(200).json({ // Send 200 status upon success.
         status: 'success',
         data: data,
@@ -299,7 +299,7 @@ function postBlackList(req, res) {
 }
 
 
-function postReflectionId (req,res,next) {
+function postReflectionId (req, res) {
   var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
   var answer = req.body.answer; // Get answer from req body
   var question = req.body.question; // Get question from parameters
@@ -438,10 +438,10 @@ function removeBlackList(req, res, next) { // Remove a blacklisted website for s
       var SettingId = setting.id;
       var url_id = req.params.url_id;
       db.Url.destroy({where: {SettingId: SettingId, id: url_id}}).then(function (destroyed) { // Delete blacklist url.
-      res.status(200).json({ // Send 200 status upon success.
-        status: 'success',
-        message: 'REMOVE BLACKLISTED URL' + destroyed
-      });
+        res.status(200).json({ // Send 200 status upon success.
+          status: 'success',
+          message: 'REMOVE BLACKLISTED URL' + destroyed
+        });
       }).catch(function (err) { // Error handling for inner callback findAll.
         return next(err);
       });
@@ -472,17 +472,17 @@ function updateUser(req, res, next) {
 function updateSettings(req, res, next) {
   var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
   db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
-    var picture = req.body.picture || '';
-    var quote = req.body.quote || '';
-    var reflection_freq = req.body.reflection_freq || 0;
-    var reminder = req.body.reminder || false;
-    var reminder_type = req.body.reminder_type || '';
-    var reminder_freq = req.body.reminder_freq || 0;
-    var reminder_address = req.body.reminder_address || '';
+    // var picture = req.body.picture || '';
+    // var quote = req.body.quote || '';
+    // var reflection_freq = req.body.reflection_freq || 0;
+    // var reminder = req.body.reminder || false;
+    // var reminder_type = req.body.reminder_type || '';
+    // var reminder_freq = req.body.reminder_freq || 0;
+    // var reminder_address = req.body.reminder_address || '';
     var UserId = user.id;
 
     // Update entry in Settings with above parameters.
-    db.Setting.update({picture: picture, quote: quote, reflection_freq: reflection_freq, reminder: reminder, reminder_type: reminder_type, reminder_freq: reminder_freq, reminder_address: reminder_address}, {where: {UserId: UserId}}).then(function (data) {
+    db.Setting.update({picture: req.body.picture, quote: req.body.quote, reflection_freq: req.body.reflection_freq, reminder: req.body.reminder, reminder_type: req.body.reminder_type, reminder_freq: req.body.reminder_freq, reminder_address: req.body.reminder_address}, {where: {UserId: UserId}}).then(function (data) {
       res.status(201).json({ // Send 201 status upon success.
         status: 'success',
         data: data,
@@ -525,7 +525,6 @@ function updateSettings(req, res, next) {
 
 function updateSubgoal(req, res) {
   var id = req.params.subgoal_id;
-  console.log('here?', req.body, id);
   db.Subgoal.update({subgoal: req.body.subgoal, status: req.body.status}, {where: {id: id}})
   .then((count)=>{
     res.status(200).json({

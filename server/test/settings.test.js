@@ -126,15 +126,13 @@ describe('GET and POST requests FOR SETTINGS', () => {
           console.error('GETTING SETTINGS ERROR: \n', err);
         }
         expect(res.statusCode).to.equal(200);
-        expect(res.body.data.picture).to.equal(setting2.picture);
-        expect(res.body.data.quote).to.equal(setting2.quote);
-        expect(res.body.data.reflection_freq).to.equal(setting2.reflection_freq);
-        expect(res.body.data.reminder).to.equal(setting2.reminder);
-        expect(res.body.data.reminder_address).to.equal(setting2.reminder_address);
-        expect(res.body.data.reminder_address).to.equal(setting2.reminder_address);
-        expect(res.body.data.reminder_address).to.equal(setting2.reminder_address);
-        expect(res.body.data.reminder_freq).to.equal(setting2.reminder_freq);
-        expect(res.body.data.reminder_type).to.equal(setting2.reminder_type);
+        expect(res.body.data[0].picture).to.equal(setting2.picture);
+        expect(res.body.data[0].quote).to.equal(setting2.quote);
+        expect(res.body.data[0].reflection_freq).to.equal(setting2.reflection_freq);
+        expect(res.body.data[0].reminder).to.equal(setting2.reminder);
+        expect(res.body.data[0].reminder_address).to.equal(setting2.reminder_address);
+        expect(res.body.data[0].reminder_freq).to.equal(setting2.reminder_freq);
+        expect(res.body.data[0].reminder_type).to.equal(setting2.reminder_type);
         done();
       });
     });
@@ -158,16 +156,41 @@ describe('GET and POST requests FOR SETTINGS', () => {
           expect(res.body.data.some((url)=>url.blacklist_time === blacklist.blacklist_time)).to.be.true;
           expect(res.body.data.some((url)=>url.blacklist_type === blacklist.blacklist_type)).to.be.true;
           expect(res.body.data.every((url)=>url.auth0_id === authId2)).to.be.true;
+          done();
         });
-        done();
       });
     });
   });
 
-  describe('PUT a setting or a blacklist url', ()=>{
-    it('/api/users/:auth0_id/setting');
+  describe('PUT a setting or a blacklist url ', ()=>{
+    it('/api/users/:auth0_id/setting changes specified fields in an existing setting', (done)=>{
+      const updatedSetting = {picture: 'UpdatePic', quote: 'UpdatedLaconic', reflection_freq: 40};
+      request(app)
+      .put(`/api/users/${authId2}/setting`)
+      .send(updatedSetting)
+      .end((err, res)=>{
+        request(app)
+        .get(`/api/users/${authId2}/setting`)
+        .end((err, res)=>{
+          console.log(res.body);
+          expect(res.body.data[0].picture).to.equal(updatedSetting.picture);
+          expect(res.body.data[0].quote).to.equal(updatedSetting.quote);
+          expect(res.body.data[0].reflection_freq).to.equal(updatedSetting.reflection_freq);
+          expect(res.body.data[0].reminder).to.equal(setting2.reminder);
+          expect(res.body.data[0].reminder_address).to.equal(setting2.reminder_address);
+          expect(res.body.data[0].reminder_freq).to.equal(setting2.reminder_freq);
+          expect(res.body.data[0].reminder_type).to.equal(setting2.reminder_type);
+          expect(res.body.data[0].UserId).to.equal(UserId2);
+          done();
+        });
+      });
+    });
+    it('/api/users/:auth0_id/blacklist/:url_id');
   });
 
+  describe('DELETE a blacklist url', ()=>{
+    it('/api/users/:auth0_id/blacklist/:url_id');
+  });
 });
   /// BLACKLISTS
 // describe('GET and POST Chrome extension data', ()=>{
