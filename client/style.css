@@ -60,7 +60,7 @@ a.btn.login{
   padding-left:10px;
 }
 span.email{
-  text-align: center
+  text-align: center;
   font-size: smaller !important;
 }
 span.name{
@@ -69,6 +69,7 @@ span.name{
 }
 
 img.circle {
+  margin: auto
   max-height: 150px;
   max-width: 150px;
 }
