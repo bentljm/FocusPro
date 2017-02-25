@@ -84,3 +84,13 @@ div.card-content {
 i.material-icons.right {
   color: red;
 }
+
+#container {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 10px;
+  width: 800px;
+  height: 800px;
+  background-color: #fff;
+}
