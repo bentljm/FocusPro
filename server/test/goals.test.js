@@ -35,7 +35,7 @@ describe('GET and POST and DELETE requests to /api/users/:auth0_id/goals', () =>
       global.authId = user.auth0_id;
     })
     .then(()=>{
-      const goalA = {goal: 'Mow Lawn', progress: 5, goal_picture: 'Picture'};
+      const goalA = {goal: 'Mow Lawn', progress: 5, goal_picture: 'Picture', UserId: UserId};
       return db.Goal.create(goalA)
       .then((goal)=>{
         global.goalId = goal.id;
@@ -63,7 +63,7 @@ describe('GET and POST and DELETE requests to /api/users/:auth0_id/goals', () =>
     });
   });
 
-  xdescribe('POST a new goal or subgoal', () =>{
+  describe('POST a new goal or subgoal', () =>{
     it('/api/users/:auth0_id/goals creates a goal', (done) =>{
       const goalA = {goal: 'Mow Lawn', progress: 10, goal_picture: 'Picture'};
       request(app)
@@ -98,7 +98,7 @@ describe('GET and POST and DELETE requests to /api/users/:auth0_id/goals', () =>
     }); //end it
   });
 
-  xdescribe('GET all goals or subgoals', () =>{
+  describe('GET all goals or subgoals', () =>{
     it('/api/users/:auth0_id/goals fetches all goals given user has goals', (done) =>{
       var reqAPI = `/api/users/${authId}/goals`;
       request(app)
@@ -107,7 +107,6 @@ describe('GET and POST and DELETE requests to /api/users/:auth0_id/goals', () =>
         if (err) {
           console.error('GET /api/users \n', err);
         }
-        // console.log('get res', res.body.data);
         expect(res.statusCode).to.equal(200);
         expect(res.body.data.some((goal) =>goal.goal === 'Mow Lawn')).to.be.true;
         done();
@@ -240,9 +239,34 @@ describe('GET and POST and DELETE requests to /api/users/:auth0_id/goals', () =>
       });
     });
     it('/api/subgoals/:subgoal_id updates some fields in a subgoal', (done)=>{
-      done();
+      subgoalPOSTReq.status = true;
+      db.Subgoal.create(subgoalA)
+      .then((subgoal)=>{
+        request(app)
+        .put(`/api/subgoals/${subgoal.id}`)
+        .send(subgoalPOSTReq)
+        .end((err, res)=>{
+          expect(res.body.data[0]).to.equal(1); // one subgoal was updated
+          //no getSingleSubgoal function to verify the exact row was updated. Add later
+          done();
+        });
+      });
     });
-    it('/api/subgoals/:subgoal_id updates all fields in a subgoal');
+    it('/api/subgoals/:subgoal_id updates all fields in a subgoal', (done)=>{
+      subgoalPOSTReq.status = true;
+      subgoalPOSTReq.subgoal = 'back yard';
+      db.Subgoal.create(subgoalA)
+      .then((subgoal)=>{
+        request(app)
+        .put(`/api/subgoals/${subgoal.id}`)
+        .send(subgoalPOSTReq)
+        .end((err, res)=>{
+          expect(res.body.data[0]).to.equal(1); // one subgoal was updated
+          //no getSingleSubgoal function to verify the exact row was updated. Add later
+          done();
+        });
+      });
+    });
   });
 
 });//end describe GET POST DELETE

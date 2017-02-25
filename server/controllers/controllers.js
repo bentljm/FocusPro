@@ -359,10 +359,8 @@ function postSubGoal(req, res) {
 
 function removeSubGoal(req, res) {
   var id = req.params.subgoal_id;
-  console.log('controller id',id);
   db.Subgoal.destroy({where: {id: id}})
   .then((num)=>{
-    console.log('controller num',num);
     res.status(200).json({
       numDeleted: num,
       message: `number deleted: ${num}`
@@ -471,31 +469,45 @@ function updateSettings(req, res, next) {
   });
 }
 
-function updateSubgoal(req, res, next) { // Update individual subgoal for specific user.
-  var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
-  db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
-    var UserId = user.id; // Get specific user from find
-    var GoalId = req.params.goal_id; // Get goal that contains subgoal.
+// function updateSubgoal2(req, res, next) { // Update individual subgoal for specific user.
+//   var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
+//   db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
+//     var UserId = user.id; // Get specific user from find
+//     var GoalId = req.params.goal_id; // Get goal that contains subgoal.
 
-    db.Goal.find({where: {UserId: UserId, id: GoalId}}).then(function (data) { // Find goal.
-      // Update entry in Subgoal with above parameters.
-      var id = req.params.subgoal_id;
-      var status = req.body.status;
-      db.Subgoal.update({status: status}, {where: {GoalId: GoalId, id: id}}).then(function (data) {
-        res.status(200).json({ // Send 201 status upon success.
-          status: 'success',
-          data: data,
-          message: 'Updated SUBGOAL ' + data
-        });
-      }).catch(function (err) { // Error handling for inner callback find.
-        return next(err);
-      });
-    }).catch(function (err) { // Error handling for middle callback find.
-      return next(err);
+//     db.Goal.find({where: {UserId: UserId, id: GoalId}}).then(function (data) { // Find goal.
+//       // Update entry in Subgoal with above parameters.
+//       var id = req.params.subgoal_id;
+//       var status = req.body.status;
+//       db.Subgoal.update({status: status}, {where: {GoalId: GoalId, id: id}}).then(function (data) {
+//         res.status(200).json({ // Send 201 status upon success.
+//           status: 'success',
+//           data: data,
+//           message: 'Updated SUBGOAL ' + data
+//         });
+//       }).catch(function (err) { // Error handling for inner callback find.
+//         return next(err);
+//       });
+//     }).catch(function (err) { // Error handling for middle callback find.
+//       return next(err);
+//     });
+//   }).catch(function (err) { // Error handling for outer callback find.
+//     return next(err);
+//  });
+// }
+
+function updateSubgoal(req, res) {
+  var id = req.params.subgoal_id;
+  console.log('here?', req.body, id);
+  db.Subgoal.update({subgoal: req.body.subgoal, status: req.body.status}, {where: {id: id}})
+  .then((count)=>{
+    res.status(200).json({
+      data: count
     });
-  }).catch(function (err) { // Error handling for outer callback find.
-    return next(err);
- });
+  })
+  .catch((err)=>{
+    res.send(err);
+  });
 }
 
 function updateSingleGoal(req, res) {
