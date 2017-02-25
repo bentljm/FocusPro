@@ -14,7 +14,7 @@ nav {
 }
 .side-nav a {
   color: white;
-  padding-left: 30px;
+  padding-left: 10px;
   padding-right: 10px;
 }
 
@@ -60,9 +60,11 @@ a.btn.login{
   padding-left:10px;
 }
 span.email{
+  text-align: center
   font-size: smaller !important;
 }
 span.name{
+  text-align: center;
   font-size: large !important;
 }
 
