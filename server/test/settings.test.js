@@ -32,24 +32,25 @@ describe('GET and POST requests FOR SETTINGS', () => {
   beforeEach((done) =>{
     var user1 = {username: 'dummy3', email: 'example@gmail.com', auth0_id: 'auth_id3', daily_goal: 'wakeup earlier than yesterday'};
     var user2 = {username: 'dummy2', email: 'example1@gmail.com', auth0_id: 'auth_id4', daily_goal: 'wakeup before noon'};
+    global.authId = 'auth_id3';
+    global.authId2 = 'auth_id4';
 
-      var setting1 = {picture: "Dumb", quote: "Laconic", reflection_freq: 10, 
-          reminder: false, reminder_type: "Regular", reminder_freq: 10, reminder_address: "Apple Street"}
-    var setting2 = {picture: "Dumb", quote: "Laconic", reflection_freq: 10, 
-          reminder: false, reminder_type: "Regular", reminder_freq: 10, reminder_address: "Apple Street"}
-       var blacklist = {url: "www.gmail@com", blacklist_type: "Infrequent", blacklist_time: 10}
-  
+    global.setting1 = {picture: 'Dumb', quote: 'Laconic', reflection_freq: 10, reminder: false, reminder_type: 'Regular', reminder_freq: 10, reminder_address: 'Apple Street'};
+    global.setting2 = {picture: 'Dumb2', quote: 'Laconic2', reflection_freq: 20, reminder: true, reminder_type: 'Regular2', reminder_freq: 20, reminder_address: 'Apple Street'};
+    global.blacklist = {url: 'www.gmail@com', blacklist_type: 'Infrequent', blacklist_time: 10};
+
 
     db.User.create(user1).then(function(user) {
-      global.UserId = user.id;
-      db.User.create(user2).then(function(user){
+      global.UserId1 = user.id;
+      setting1.UserId = UserId1;
+      db.User.create(user2).then(function(user2) {
+        global.UserId2 = user2.id;
+        setting2.UserId = UserId2;
         db.Setting.create(setting1).then(function(setting) {
-          global.SettingId = setting.id;
-          db.Setting.create(setting2).then(function(setting) {
-         
-           // db.Url.create(blacklist).then(function(url) {
-              //console.log("WE'RE DONE")
-              done();   
+          // global.SettingId1 = setting.id;
+          db.Setting.create(setting2).then(function(setting2) {
+            // global.SettingId2 = setting2.id;
+            done();
           //  });
           });
         });
@@ -57,38 +58,28 @@ describe('GET and POST requests FOR SETTINGS', () => {
     });
   });
 
-/*
-    db.User.create(user2).then(function(user) {
-      global.UserId2 = user.id;
-      var extension = {url: "www.yahoo.com", time_spent: 20, freq: 30}
-      db.Extension.create(extension).then(function(extension) {
-        done();
-      })
-    })
-  });
-*/
   //clean dummy data
   afterEach((done) =>{
     //delete all users in db
-    db.User.destroy({where:{}}).then((num) => {
+    db.User.destroy({where: {}}).then((num) => {
       done();
     });
   });
 
-  describe('POST NEW SETTINGS', () =>{
-    it('/api/users/:auth0_id/setting creates settings',(done) =>{
-      //console.log('POST in SETTINGS', UserId);
-      const dummySetting = {UserId: UserId, picture: "Dumb", quote: "Laconic", reflection_freq: 10, reminder: false, reminder_type: "Regular", reminder_freq: 10, reminder_address: "Apple Street"};
+
+  describe('POST NEW SETTINGS and blacklist URL', () =>{
+    it('/api/users/:auth0_id/setting creates settings', (done) =>{
+      const dummySetting = {UserId: UserId, picture: 'Dumb3', quote: 'Laconic3', reflection_freq: 30, reminder: false, reminder_type: 'Regula3r', reminder_freq: 30, reminder_address: 'Apple Street3'};
       request(app)
       .post('/api/users/auth_id3/setting')
       .send(dummySetting)
-      .end((err,res) =>{
-        if(err) {
-          console.error('POSTING TO SETTINGS ERROR: \n',err);
+      .end((err, res) =>{
+        if (err) {
+          console.error('POSTING TO SETTINGS ERROR: \n', err);
         }
         expect(res.statusCode).to.equal(201);
         expect(res.body.data.picture).to.equal(dummySetting.picture);
-        //expect(res.body.data.quote).to.equal(dummySetting.quote);
+        expect(res.body.data.quote).to.equal(dummySetting.quote);
         expect(res.body.data.reflection_freq).to.equal(dummySetting.reflection_freq);
         expect(res.body.data.reminder).to.equal(dummySetting.reminder);
         expect(res.body.data.reminder_address).to.equal(dummySetting.reminder_address);
@@ -97,23 +88,38 @@ describe('GET and POST requests FOR SETTINGS', () => {
         done();
       });
     });
+    // it('/api/users/:auth0_id/setting/blacklist adds new blacklist url', (done)=>{
+    //   request(app)
+    //   .get(`/api/users/${authId2}/setting`)
+    //   .end((err,res)=>{
+    //     if (err) {
+    //       console.error('GETTING SETTINGS ERROR: \n', err);
+    //     }
+
+    //   });
+    //   done();
+    // });
   });
-  
+
 
   describe('GET all settings', () =>{
-    it('/api/users/:auth0_id/setting fetches all goals given user has goals',(done) =>{
-      var dummySetting = {picture: "Dumb", quote: "Laconic", reflection_freq: 10, reminder: false, reminder_type: "Regular", reminder_freq: 10, reminder_address: "Apple Street",
-      UserId: UserId};
-        db.Setting.create(dummySetting).then(function(goal){
-      });
+    it('/api/users/:auth0_id/setting fetches all settings', (done) =>{
       request(app)
-      .get('/api/users/auth_id3/setting')
-      .end((err,res) =>{
-        if(err) {
-          console.error('GETTING SETTINGS ERROR: \n',err);
+      .get(`/api/users/${authId2}/setting`)
+      .end((err, res) =>{
+        if (err) {
+          console.error('GETTING SETTINGS ERROR: \n', err);
         }
         expect(res.statusCode).to.equal(200);
-        //console.log(res.body.data);
+        expect(res.body.data.picture).to.equal(setting2.picture);
+        expect(res.body.data.quote).to.equal(setting2.quote);
+        expect(res.body.data.reflection_freq).to.equal(setting2.reflection_freq);
+        expect(res.body.data.reminder).to.equal(setting2.reminder);
+        expect(res.body.data.reminder_address).to.equal(setting2.reminder_address);
+        expect(res.body.data.reminder_address).to.equal(setting2.reminder_address);
+        expect(res.body.data.reminder_address).to.equal(setting2.reminder_address);
+        expect(res.body.data.reminder_freq).to.equal(setting2.reminder_freq);
+        expect(res.body.data.reminder_type).to.equal(setting2.reminder_type);
         done();
       });
     });
@@ -121,11 +127,16 @@ describe('GET and POST requests FOR SETTINGS', () => {
 
 });
   /// BLACKLISTS
+// describe('GET and POST Chrome extension data', ()=>{
+//   beforeEach();
+//   afterEach();
+// });
+
 /*
     describe('POST NEW BLACKLISTS', () =>{
     it('/api/users/:auth0_id/setting/blacklist creates settings',(done) =>{
       console.log('POST in BLACKLISTS', SettingId);
-      const dummyBlackList = {SettingId: SettingId, url: "www.gmail@com", blacklist_type: "Infrequent", blacklist_time: 10}
+      const dummyBlackList = {SettingId: SettingId, url: 'www.gmail@com', blacklist_type: 'Infrequent', blacklist_time: 10}
       request(app)
       .post('/api/users/auth_id3/setting/blacklist')
       .send(dummyBlacklist)
@@ -145,10 +156,10 @@ describe('GET and POST requests FOR SETTINGS', () => {
 
 });
 
- 
+
   describe('GET all blacklists', () =>{
     it('/api/users/:auth0_id/setting fetches all goals given user has goals',(done) =>{
-      const dummyBlackList = {UserId: UserId, url: "www.gmail@com", blacklist_type: "Infrequent", blacklist_time: 10}
+      const dummyBlackList = {UserId: UserId, url: 'www.gmail@com', blacklist_type: 'Infrequent', blacklist_time: 10}
         db.Url.create(blacklist).then(function(url){
       });
       request(app)
