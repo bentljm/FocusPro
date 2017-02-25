@@ -49,7 +49,7 @@ describe('GET and POST requests to /api/users/:auth0_id/reflections', ()=>{
     db.Reflection.create({auth0_id: 'auth_id4', answer: answer2, question: question2});
     db.Reflection.create({auth0_id: 'auth_id4', answer: answer3, question: question3}).then(()=>{ done(); });
   });
-  describe('POST a new reflection', ()=>{
+  xdescribe('POST a new reflection', ()=>{
     it('/api/users/:auth0_id/reflections creates user reflections', (done)=>{
       var reflection = {auth0_id: 'auth_id4', answer: answer1, question: question1};
       request(app)
@@ -66,7 +66,7 @@ describe('GET and POST requests to /api/users/:auth0_id/reflections', ()=>{
     });
   });
 
-  describe('Get reflections', ()=>{
+  xdescribe('Get reflections', ()=>{
     it('/api/users/:auth0_id/reflections fetches user reflections', ()=>{
       request(app)
       .get('/api/users/auth_id4/reflections')
