@@ -169,29 +169,6 @@ function getSingleGoal(req, res, next) { // Get individual goal for specific use
   });
 }
 
-function getSubGoals2(req, res, next) { // Get all subgoals for specific user.
-  var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
-  db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
-    var UserId = user.id; // Get specific user id from find
-    var id = req.params.goal_id; // Get specific goal from parameters
-    db.Goal.find({where: {UserId: UserId, id: id}}).then(function (goal) { // Look up goal.
-      db.Subgoal.findAll({where: {GoalId: id}}).then(function(data) { // Get all subgoal data of goal..
-        res.status(200).json({ // Send 200 status upon success.
-          status: 'success',
-          data: data,
-          message: 'RETRIEVED ALL SUBGOALS'
-        });
-      }).catch(function (err) { // Error handling for inner callback findAll.
-        return next(err);
-      });
-    }).catch(function (err) { // Error handling for middle callback find.
-      return next(err);
-    });
-  }).catch(function (err) { // Error handling for outer callback find.
-    return next(err);
-  });
-}
-
 function getSubGoals (req, res) {
   var goalId = req.params.goal_id;
   db.Subgoal.findAll({where: { GoalId: goalId}})
@@ -207,23 +184,20 @@ function getSubGoals (req, res) {
 
 
 // SETTERS
-
-
-
 function postUser(req, res, next) {
   var username = req.body.username; // Grab username from req body
   var auth0_id = req.body.auth0_id; // Grab password from req body
   var email = req.body.email;
   var daily_goal = req.body.daily_goal; // Grab daily goal from req body
   db.User.create({username: username, auth0_id: auth0_id, daily_goal: daily_goal, email: email}).then(function (data) {
-      res.status(201).json({ // Send 201 status upon success.
-        status: 'success',
-        data: data,
-        message: 'POSTED USER TO DATABASE ' + username
-      });
-    }).catch(function (err) { // Error handling for inner callback create
-      return next(err);
+    res.status(201).json({ // Send 201 status upon success.
+      status: 'success',
+      data: data,
+      message: 'POSTED USER TO DATABASE ' + username
     });
+  }).catch(function (err) { // Error handling for inner callback create
+    return next(err);
+  });
 }
 
 function postSettings(req, res, next) { // Post settings for specific user.
@@ -323,34 +297,6 @@ function postSingleGoal(req, res, next) { // Post individual goal for specific u
     });
   }).catch(function (err) { // Error handling for outer callback find.
     return next(err);
- });
-}
-
-function postSubGoal2(req, res, next) { // Post individual subgoal for specific user.
-  var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
-  db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
-    var UserId = user.id; // Get specific user from find
-    var id = req.params.goal_id; // Get goal that contains subgoal.
-
-    db.Goal.find({where: {UserId: UserId, id: id}}).then(function (data) { // Find goal.
-      var subgoal = req.body.subgoal; // Subgoal parameters.
-      var status = req.body.status;
-
-      // Create entry in Subgoal with above parameters.
-
-      db.Subgoal.create({subgoal: subgoal, status: status, GoalId: id}).then(function () {
-        res.status(201).json({ // Send 201 status upon success.
-          status: 'success',
-          message: 'INSERTED NEW SUBGOAL ' + subgoal + ' GOALID ' + id
-        });
-      }).catch(function (err) { // Error handling for inner callback find.
-        return next(err);
-      });
-    }).catch(function (err) { // Error handling for middle callback find.
-      return next(err);
-    });
-  }).catch(function (err) { // Error handling for outer callback find.
-    return next(err);
   });
 }
 
@@ -394,7 +340,7 @@ function removeSubGoal(req, res, next) { // Delete individual subgoal for specif
     });
   }).catch(function (err) { // Error handling for outer callback find.
     return next(err);
- });
+  });
 }
 
 function removeSingleGoal(req, res, next) { // Delete individual goal for specific user.
@@ -442,14 +388,14 @@ function removeBlackList(req, res, next) { // Remove a blacklisted website for s
 function updateUser(req, res, next) {
   var daily_goal = req.body.daily_goal; // Grab daily goal from req body
   db.User.update({daily_goal: daily_goal}, {where: {auth0_id: req.params.auth0_id}}).then(function (data) {
-      res.status(201).json({ // Send 201 status upon success.
-        status: 'success',
-        data: data,
-        message: 'Updated daily goal ' + daily_goal
-      });
-    }).catch(function (err) { // Error handling for inner callback create
-      return next(err);
+    res.status(201).json({ // Send 201 status upon success.
+      status: 'success',
+      data: data,
+      message: 'Updated daily goal ' + daily_goal
     });
+  }).catch(function (err) { // Error handling for inner callback create
+    return next(err);
+  });
 }
 
 
@@ -518,9 +464,9 @@ function updateSettings(req, res, next) {
 // Export functions to routers...
 
 module.exports = {
-	getAllUsers: getAllUsers,
+  getAllUsers: getAllUsers,
   postUser: postUser,
-	getSingleUser: getSingleUser,
+  getSingleUser: getSingleUser,
   getSettings: getSettings,
   postSettings: postSettings,
   getBlackList: getBlackList,
