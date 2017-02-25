@@ -1,11 +1,10 @@
 import React from 'react';
-import {Row, Input, Col, Button} from 'react-materialize';
+import {Row, Input, Col, Button, Icon} from 'react-materialize';
 import Goal from './Goal.js';
 import Site from './Site.js';
 import Stat from './Stat.js';
 import Motivational from './Motivational.js';
 
-//TODO: Store goal of the day
 export default class Dashboard extends React.Component {
   constructor(props) {
     super(props);
@@ -14,15 +13,25 @@ export default class Dashboard extends React.Component {
       goals: [],
       goalInput: '',
       dayGoalInput: '',
-      userId: ''
+      userId: '',
+      setting: {},
+      blacklist: []
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.postGoal = this.postGoal.bind(this);
+    this.handleDayGoalChange = this.handleDayGoalChange.bind(this);
+    this.handleDayGoalSubmission = this.handleDayGoalSubmission.bind(this);
+    this.removeGoal = this.removeGoal.bind(this);
+  }
+
+  componentWillMount() {
+    this.getUserId();
+    this.getSetting();
   }
 
   componentDidMount(){
-    this.getUserId();
     this.getAllGoals();
+    this.getBlacklist();
   }
 
   getUserId() {
@@ -31,12 +40,39 @@ export default class Dashboard extends React.Component {
       type: 'GET',
       url: 'api/users/' + this.state.profile.user_id,
       success: function (data) {
-        console.log("SUCCESS: GOT USERID", data.data[0].id);
+        console.log("SUCCESS: GOT USER INFO", data.data[0]);
         that.setState({userId: data.data[0].id});
+        that.setState({dayGoalInput: data.data[0].daily_goal || ''});
       },
       error: function (err) {
         console.log('ERROR: COULD NOT GET USERID', err);
       }
+    });
+  }
+
+  getSetting() {
+    var that = this;
+    $.ajax({
+      type: 'GET', // GET REQUEST
+      url: '/api/users/' + this.state.profile.user_id + '/setting',
+      success: function(data) {
+        console.log("SUCCESS: OBTAINED SETTINGS: ", data);
+        that.setState({setting: data.data});
+      },
+      error: function(err) {console.log("ERROR: COULD NOT GET SETTINGS", err);}
+    });
+  }
+
+  getBlacklist() {
+    var that = this;
+    $.ajax({
+      type: 'GET', // GET REQUEST
+      url: '/api/users/' + this.state.profile.user_id + '/setting/blacklist',
+      success: function(data) {
+        console.log("SUCCESS: OBTAINED BLACKLIST: ", data.data);
+        that.setState({blacklist: data.data});
+      },
+      error: function(err) {console.log("ERROR: COULD NOT GET BLACKLIST", err);}
     });
   }
 
@@ -63,35 +99,66 @@ export default class Dashboard extends React.Component {
     this.setState({dayGoalInput: event.target.value});
   }
 
+  handleDayGoalSubmission() {
+    $.ajax({
+      type: 'PUT',
+      url: '/api/users/' + this.state.profile.user_id,
+      contentType: 'application/json',
+      data: JSON.stringify({daily_goal: this.state.dayGoalInput}),
+      success: function(data) {console.log("Update daily goal to", data);},
+      error: function(err) {console.log("Error updating daily goal", err);}
+    });
+  }
+
   postGoal() {
+    var that = this;
     $.ajax({
       type: 'POST',
-      url: '/api/users/'+this.state.profile.user_id+'/goals',
+      url: '/api/users/' + this.state.profile.user_id + '/goals',
       contentType: 'application/json',
       data: JSON.stringify({goal: this.state.goalInput, progress: 0, goal_picture: '', UserId: this.state.userId}),
-      success: function(data) {console.log("SUCCESS: POSTED INDIVIDUAL GOAL: ", data);},
+      success: function(data) {
+        console.log("SUCCESS: POSTED INDIVIDUAL GOAL: ", data);
+        that.setState({goalInput: ''}); //Not clearing input...
+        that.getAllGoals();
+      },
       error: function(err) {console.log("ERROR: COULD NOT POST INDIVIDUAL GOAL", err);}
     });
-    this.getAllGoals();
+
+  }
+
+  removeGoal (goal_id) {
+    var that = this;
+    $.ajax({
+      type: 'DELETE',
+      url: '/api/users/' + this.state.profile.user_id + '/goals/' + goal_id,
+      success: function(data) {
+        console.log("Remove goal:", data);
+        that.getAllGoals();
+      },
+      error: function(err) {
+        console.log("ERROR: COULD NOT GET ALL GOALS", err);
+      }
+    });
   }
 
   render() {
     return (
       <div>
         <h1> Welcome, {this.state.profile.given_name} </h1>
-        "The way to get started is to quit talking and begin doing." - Walt Disney
+        {this.state.setting.quote}
         <br />
         <br />
         <h3> Goal of the Day: </h3>
         <Row>
-          <Input s={12} value={this.state.dayValue}/>
+          <Input s={10} value={this.state.dayGoalInput} onChange={this.handleDayGoalChange} /> <Button className="dayGoalButton" waves='light' onClick={this.handleDayGoalSubmission}>Save</Button>
         </Row>
         <h3> Main Goals: </h3>
           <ul className="collapsible" data-collapsible="expandable">
           {this.state.goals.map((goal, index) => (
             <li key = {index}>
-            <div className="collapsible-header">{goal.goal}</div>
-            <Goal key = {'goal' + index} goal = {goal.id} user_id = {this.state.profile.user_id} userID = {this.state.userId}/>
+            <div className="collapsible-header">{goal.goal} <a href = '#/dashboard' onClick = {()=>this.removeGoal(goal.id)}><Icon right>delete</Icon></a></div>
+            <Goal key = {'goal' + index} goal = {goal.id} user_id = {this.state.profile.user_id} />
           </li>
             ))}
         </ul>
@@ -101,18 +168,12 @@ export default class Dashboard extends React.Component {
         <br />
         <h3> Sites: </h3>
         <ul className="collapsible" data-collapsible="expandable">
-          <li>
-            <div className="collapsible-header">Site 1</div>
-            <div className="collapsible-body"><span><Site /></span></div>
-          </li>
-          <li>
-            <div className="collapsible-header">Site 2</div>
-            <div className="collapsible-body"><span><Site /></span></div>
-          </li>
-          <li>
-            <div className="collapsible-header">Site 3</div>
-            <div className="collapsible-body"><span><Site /></span></div>
-          </li>
+          {this.state.blacklist.map((site, index) => (
+            <li key = {'sites ' + index}>
+              <div className="collapsible-header">{site.url}</div>
+              <div className="collapsible-body"><span><Site url = {site.url} siteId = {site.id}/></span></div>
+            </li>
+            ))}
         </ul>
         <br />
         <br />

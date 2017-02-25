@@ -1,6 +1,17 @@
 var config = new Config();
 var gsites = new Sites(config);
 
+function test() {
+  var text = "Hi there and greetings!";
+  var newDiv = document.createElement("div");
+  var newContent = document.createTextNode(text);
+  newDiv.appendChild(newContent); //add the text node to the newly created div.
+
+  // add the newly created element and its content into the DOM
+  var currentDiv = document.getElementById("div1");
+  document.body.insertBefore(newDiv, currentDiv);
+}
+
 //Add to ignored sites
 function addIgnoredSite(new_site) {
   return function() {
@@ -161,6 +172,7 @@ function clearStats() {
 
 function initialize() {
   addLocalDisplay();
+  test();
 
   if (config.lastClearTime) {
     var div = document.getElementById("lastClear");

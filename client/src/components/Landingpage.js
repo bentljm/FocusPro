@@ -59,22 +59,22 @@ export default class Landingpage extends React.Component {
       <h5 className="center"> Meet the Team </h5>
       <Row>
       <Col>
-        <Card key={'card0'} className='white' title='Jeff Bentler' actions={[<a href='https://github.com/bentljm'>GitHub</a>]}>
+        <Card key={10} className='white' title='Jeff Bentler' actions={[<a href='https://github.com/bentljm'>GitHub</a>]}>
         <img src="../../assets/jeff_img.jpeg" className="circle" />
         </Card>
       </Col>
-      <Col>
-        <Card key={'card1'} className='white' title='Josephine Chen' actions={[<a href='https://github.com/Josephine-Chen'>GitHub</a>]}>
+            <Col>
+        <Card key={11} className='white' title='Josephine Chen' actions={[<a href='https://github.com/Josephine-Chen'>GitHub</a>]}>
         <img src="../../assets/josephine_img.jpeg" className="circle" />
         </Card>
       </Col>
       <Col>
-        <Card key={'card2'} className='white' title='Ian George' actions={[<a href='https://github.com/OppenheimerAndTheMartians'>GitHub</a>]}>
+        <Card key={12} className='white' title='Ian George' actions={[<a href='https://github.com/OppenheimerAndTheMartians'>GitHub</a>]}>
         <img src="../../assets/ian_img.jpeg" className="circle" />
         </Card>
       </Col>
       <Col>
-        <Card key={'card3'} className='white' title='Sherry Hsu' actions={[<a href='https://github.com/SherryH'>GitHub</a>]}>
+        <Card key={13} className='white' title='Sherry Hsu' actions={[<a href='https://github.com/SherryH'>GitHub</a>]}>
         <img src="../../assets/sherry_img.jpeg" className="circle" />
         </Card>
       </Col>

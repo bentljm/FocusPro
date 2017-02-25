@@ -10,7 +10,7 @@ export default class Selfreflection extends React.Component {
       userId: '',
       reflection: {},
       goals:[]
-    }
+    };
   }
 
   componentdidMount(){

@@ -37,7 +37,6 @@ function getSingleUser(req, res, next) { // Get specific user.
 function getSettings(req, res, next) { // Get settings for specific user.
   var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
   db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
-    console.log("USER FROM GET SETTINGS ", + user.id);
     var UserId = user.id; // Get specific user id from find
     db.Setting.find({where: {UserId: UserId}}).then(function (data) { // Grab settings data for user.
       res.status(200).json({ // Send 200 status upon success.
@@ -205,6 +204,7 @@ function postSettings(req, res, next) { // Post settings for specific user.
   db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
     var setting = req.params.id; // Use input settings parameters, defined in schema.
     var picture = req.body.picture;
+    var quote = req.body.quote;
     var reflection_freq = req.body.reflection_freq;
     var reminder = req.body.reminder;
     var reminder_type = req.body.reminder_type;
@@ -214,7 +214,7 @@ function postSettings(req, res, next) { // Post settings for specific user.
 
     // Create entry in Settings with above parameters.
 
-    db.Setting.create({picture: picture, reflection_freq: reflection_freq, reminder: reminder, reminder_type: reminder_type, reminder_freq: reminder_freq, reminder_address: reminder_address, UserId: UserId}).then(function (data) {
+    db.Setting.create({picture: picture, quote: quote, reflection_freq: reflection_freq, reminder: reminder, reminder_type: reminder_type, reminder_freq: reminder_freq, reminder_address: reminder_address, UserId: UserId}).then(function (data) {
       res.status(201).json({ // Send 201 status upon success.
         status: 'success',
         data: data,
@@ -327,7 +327,7 @@ function removeSubGoal(req, res, next) { // Delete individual subgoal for specif
     db.Goal.find({where: {UserId: UserId, id: GoalId}}).then(function (data) { // Find goal.
       // Delete entry in Subgoal with above parameters.
       var id = req.params.subgoal_id;
-      db.Subgoal.destroy({where: {GoalId: GoalId, UserId: UserId, id: id}}).then(function (destroyed) {
+      db.Subgoal.destroy({where: {GoalId: GoalId, id: id}}).then(function (destroyed) {
         res.status(200).json({ // Send 201 status upon success.
           status: 'success',
           message: 'Deleted ' + destroyed
@@ -425,6 +425,32 @@ function updateSettings(req, res, next) {
   });
 }
 
+function updateSubgoal(req, res, next) { // Update individual subgoal for specific user.
+  var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
+  db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
+    var UserId = user.id; // Get specific user from find
+    var GoalId = req.params.goal_id; // Get goal that contains subgoal.
+
+    db.Goal.find({where: {UserId: UserId, id: GoalId}}).then(function (data) { // Find goal.
+      // Update entry in Subgoal with above parameters.
+      var id = req.params.subgoal_id;
+      var status = req.body.status;
+      db.Subgoal.update({status: status}, {where: {GoalId: GoalId, id: id}}).then(function (data) {
+        res.status(200).json({ // Send 201 status upon success.
+          status: 'success',
+          data: data,
+          message: 'Updated SUBGOAL ' + data
+        });
+      }).catch(function (err) { // Error handling for inner callback find.
+        return next(err);
+      });
+    }).catch(function (err) { // Error handling for middle callback find.
+      return next(err);
+    });
+  }).catch(function (err) { // Error handling for outer callback find.
+    return next(err);
+ });
+}
 
 // function sendEmail(req, res, next) {
 //   var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
@@ -484,6 +510,7 @@ module.exports = {
   removeSingleGoal: removeSingleGoal,
   removeBlackList: removeBlackList,
   updateSettings: updateSettings,
+  updateSubgoal: updateSubgoal,
   updateUser: updateUser,
   //sendEmail: sendEmail
 };

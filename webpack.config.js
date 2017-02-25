@@ -2,6 +2,10 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
+  // target: 'node',
+  node: {
+    fs: "empty"
+  },
   entry: path.join(__dirname, '/client/src/index.js'),
 
   output: {
@@ -26,6 +30,7 @@ module.exports = {
         o[k] = JSON.stringify(process.env[k]);
         return o;
       }, {})
-    })
+    }),
+    new webpack.DefinePlugin({ "global.GENTLY": false })
   ]
 };
