@@ -82,7 +82,7 @@ function getBlackList(req, res) {
     });
   })
   .catch((err)=>{
-    res.send(err);
+    res.send('ERROR: GET BLACKLIST', err);
   });
 }
 
@@ -115,7 +115,7 @@ function getReflections(req, res) {
     });
   })
   .catch((err)=>{
-    res.send(err);
+    res.send('ERROR: GET REFLECTION', err);
   });
 }
 
@@ -189,7 +189,7 @@ function getSingleGoal(req, res) {
     });
   })
   .catch((err)=>{
-    res.send(err);
+    res.send('ERROR: GET SINGLE SUBGOAL', err);
   });
 }
 
@@ -202,7 +202,7 @@ function getSubGoals (req, res) {
     });
   })
   .catch((err)=>{
-    res.send(err);
+    res.send('ERROR: GET SUBGOALS', err);
   });
 }
 
@@ -294,7 +294,7 @@ function postBlackList(req, res) {
     });
   })
   .catch(function(err) {
-    res.send(err);
+    res.send('ERROR: POST BLACKLIST', err);
   });
 }
 
@@ -311,7 +311,7 @@ function postReflectionId (req, res) {
     });
   })
   .catch(function(err) {
-    res.send(err);
+    res.send('ERROR: POST REFLECTION', err);
   });
 
 }
@@ -353,7 +353,7 @@ function postSubGoal(req, res) {
     });
   })
   .catch((err)=>{
-    res.send(err);
+    res.send('ERROR: POST SUBGOAL', err);
   });
 }
 
@@ -394,7 +394,7 @@ function removeSubGoal(req, res) {
     });
   })
   .catch((err)=>{
-    res.send(err);
+    res.send('ERROR: REMOVE SUBGOAL', err);
   });
 }
 
@@ -426,7 +426,7 @@ function removeSingleGoal(req, res) {
     });
   })
   .catch((err)=>{
-    res.send(err);
+    res.send('ERROR: REMOVE SINGLE GOAL', err);
   });
 }
 

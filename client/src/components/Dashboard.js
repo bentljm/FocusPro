@@ -146,7 +146,7 @@ export default class Dashboard extends React.Component {
         that.getAllGoals();
       },
       error: function(err) {
-        console.log("ERROR: COULD NOT REMOVE THE", err);
+        console.log("ERROR: COULD NOT REMOVE THE GOAL", err);
       }
     });
   }
