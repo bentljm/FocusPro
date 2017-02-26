@@ -13,11 +13,16 @@ export default class Selfreflection extends React.Component {
     };
   }
 
-  componentdidMount(){
+  componentDidMount(){
     this.getAllGoals();
+    this.callCustomJQuery();
     this.state.goals.map((goal) => {
       this.getReflections(goal.id);
     });
+  }
+
+  callCustomJQuery() {
+    $('.collapsible').collapsible();
   }
 
   getAllGoals () {

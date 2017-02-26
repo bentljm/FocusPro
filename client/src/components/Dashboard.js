@@ -9,6 +9,7 @@ export default class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      start: true,
       profile: this.props.auth.getProfile(),
       goals: [],
       goalInput: '',
@@ -28,12 +29,14 @@ export default class Dashboard extends React.Component {
     this.getUserId();
     this.getSetting();
     this.callCustomJQuery();
+
   }
 
   componentDidMount(){
     this.getAllGoals();
     this.getBlacklist();
     this.callCustomJQuery();
+
   }
 
   callCustomJQuery() {

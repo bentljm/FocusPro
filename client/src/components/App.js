@@ -8,7 +8,7 @@ export default class App extends React.Component {
   constructor (props) {
     super(props);
   }
-
+  
   render() {
     //pass auth to all children elements
     let children = null;
