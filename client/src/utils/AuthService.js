@@ -22,30 +22,30 @@ export default class AuthService {
 
   _doAuthentication(authResult) {
     var createSettings = function(profile) {
-          //Get the userId
-          var userId = 0;
-          $.ajax({
-            type: 'GET',
-            url: 'api/users/' + profile.user_id,
-            success: function (data) {
-              console.log("SUCCESS: GOT USERID", data.data[0].id);
-              userId = data.data[0].id;
-            },
-            error: function (err) {
-              console.log('ERROR: COULD NOT GET USERID', err);
-            }
-          });
+      //Get the userId
+      var userId = 0;
+      $.ajax({
+        type: 'GET',
+        url: 'api/users/' + profile.user_id,
+        success: function (data) {
+          console.log("SUCCESS: GOT USERID", data.data[0].id);
+          userId = data.data[0].id;
+        },
+        error: function (err) {
+          console.log('ERROR: COULD NOT GET USERID', err);
+        }
+      });
 
-          //findOrCreate settings for user
-          $.ajax({
-            type: 'GET',
-            url: '/api/users/' + profile.user_id + '/setting',
-            contentType: 'application/json',
-            data: JSON.stringify({picture: profile.picture, quote: '"The way to get started is to quit talking and begin doing." - Walt Disney', reflection_freq: 0, reminder: false, reminder_type: '', reminder_freq: 0, reminder_address: '', UserId: userId}),
-            success: function(data) {console.log("SUCCESS: POSTED SETTING: ", data);},
-            error: function(err) {console.log("ERROR: COULD NOT POST SETTING", err);}
-          });
-        };
+      //findOrCreate settings for user
+      $.ajax({
+        type: 'GET',
+        url: '/api/users/' + profile.user_id + '/setting',
+        contentType: 'application/json',
+        data: JSON.stringify({picture: profile.picture, quote: '"The way to get started is to quit talking and begin doing." - Walt Disney', reflection_freq: 0, reminder: false, reminder_type: '', reminder_freq: 0, reminder_address: '', UserId: userId}),
+        success: function(data) {console.log("SUCCESS: POSTED SETTING: ", data);},
+        error: function(err) {console.log("ERROR: COULD NOT POST SETTING", err);}
+      });
+    };
 
     // Saves the user token
     this.setToken(authResult.idToken);

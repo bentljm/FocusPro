@@ -50,8 +50,8 @@ describe('GET and POST requests FOR SETTINGS', () => {
           // global.SettingId1 = setting.id;
           db.Setting.create(setting2).then(function(setting2) {
             global.blacklist.auth0_id = user2.auth0_id;
-            db.Url.create(blacklist).then((blacklist)=>{
-
+            db.Url.create(blacklist).then((list)=>{
+              global.blacklistId = list.id;
               done();
             });
           //  });
@@ -172,7 +172,6 @@ describe('GET and POST requests FOR SETTINGS', () => {
         request(app)
         .get(`/api/users/${authId2}/setting`)
         .end((err, res)=>{
-          console.log(res.body);
           expect(res.body.data[0].picture).to.equal(updatedSetting.picture);
           expect(res.body.data[0].quote).to.equal(updatedSetting.quote);
           expect(res.body.data[0].reflection_freq).to.equal(updatedSetting.reflection_freq);
@@ -189,7 +188,14 @@ describe('GET and POST requests FOR SETTINGS', () => {
   });
 
   describe('DELETE a blacklist url', ()=>{
-    it('/api/users/:auth0_id/blacklist/:url_id');
+    it('/api/blacklist/:url_id', (done)=>{
+      request(app)
+      .delete(`/api/blacklist/${blacklistId}`)
+      .end((err, res)=>{
+        expect(res.body.numDeleted).to.equal(1);
+        done();
+      });
+    });
   });
 });
   /// BLACKLISTS
