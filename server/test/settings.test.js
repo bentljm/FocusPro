@@ -185,7 +185,7 @@ describe('GET POST PUT DELETE requests FOR SETTINGS and BLACKLISTS', () => {
       });
     });
 
-    it('/api/blacklist/:url_id', (done)=>{
+    it('/api/blacklist/:url_id changes specified fields in an existing blacklist url', (done)=>{
       const updatedUrl = {blacklist_type: 'updated type', blacklist_time: 100};
       request(app)
       .put(`/api/blacklist/${blacklistId}`)
@@ -207,7 +207,7 @@ describe('GET POST PUT DELETE requests FOR SETTINGS and BLACKLISTS', () => {
   });
 
   describe('DELETE a blacklist url', ()=>{
-    it('/api/blacklist/:url_id', (done)=>{
+    it('/api/blacklist/:url_id deletes a blacklist url', (done)=>{
       request(app)
       .delete(`/api/blacklist/${blacklistId}`)
       .end((err, res)=>{
@@ -231,7 +231,7 @@ describe('GET request for Chrome extension', ()=>{
   afterEach(()=>{
     //destroy the dummy user and chrome extension
   });
-  it();
+  it('/api/users/:auth0_id/extension_data get data from chrome extension');
 });
 
 /*
