@@ -13,7 +13,7 @@ module.exports = function(app, express) {
   app.put('/api/users/:auth0_id/setting', controller.updateSettings); //Update settings
   app.get('/api/users/:auth0_id/blacklist', controller.getBlackList); // Get individual blacklist
   app.post('/api/users/:auth0_id/blacklist', controller.postBlackList); // Post or update individual blacklist
-  app.delete('/api/users/:auth0_id/blacklist/:url_id', controller.removeBlackList); // Get individual blacklist
+  app.delete('/api/blacklist/:url_id', controller.removeBlackList); // Delete individual blacklist
 
 
   app.get('/api/users/:auth0_id/extension_data', controller.getExtension); // Get individual extention data

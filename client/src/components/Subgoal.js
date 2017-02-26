@@ -30,7 +30,7 @@ export default class Subgoal extends React.Component {
     var that = this;
     $.ajax({
       type: 'DELETE',
-      url: '/api/goals/' + this.props.goal + '/subgoals/' + this.props.id,
+      url: '/api/subgoals/' + this.props.id,
       success: function(data) {
         console.log("Remove subgoal:", data);
         that.props.updateSubgoals();

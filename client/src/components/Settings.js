@@ -73,7 +73,7 @@ export default class Settings extends React.Component {
     var that = this;
     $.ajax({
       type: 'GET', // GET REQUEST
-      url: '/api/users/' + this.state.profile.user_id + '/setting/blacklist',
+      url: '/api/users/' + this.state.profile.user_id + '/blacklist',
       success: function(data) {
         console.log("SUCCESS: OBTAINED BLACKLIST: ", data.data);
         that.setState({blacklist: data.data});
@@ -86,7 +86,7 @@ export default class Settings extends React.Component {
     var that = this;
     $.ajax({
       type: 'POST',
-      url: '/api/users/' + this.state.profile.user_id + '/setting/blacklist',
+      url: '/api/users/' + this.state.profile.user_id + '/blacklist',
       contentType: 'application/json',
       data: JSON.stringify({url: siteURL, blacklist_type: siteType, blacklist_time: siteTime, SettingId: this.state.setting.id}),
       success: function(data) {
@@ -102,7 +102,7 @@ export default class Settings extends React.Component {
     var that = this;
     $.ajax({
       type: 'DELETE',
-      url: '/api/users/' + that.state.profile.user_id + '/setting/blacklist/' + url_id,
+      url: '/api/blacklist/' + url_id,
       success: function(data) {
         console.log("Sucessfully deleted", data);
         that.getBlacklist();

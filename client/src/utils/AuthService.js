@@ -36,9 +36,9 @@ export default class AuthService {
             }
           });
 
-          //Create settings for user
+          //findOrCreate settings for user
           $.ajax({
-            type: 'POST',
+            type: 'GET',
             url: '/api/users/' + profile.user_id + '/setting',
             contentType: 'application/json',
             data: JSON.stringify({picture: profile.picture, quote: '"The way to get started is to quit talking and begin doing." - Walt Disney', reflection_freq: 0, reminder: false, reminder_type: '', reminder_freq: 0, reminder_address: '', UserId: userId}),
@@ -56,7 +56,7 @@ export default class AuthService {
         this.setProfile(profile);
         //Save user in db
         $.ajax({
-          type: 'POST', // POST REQUEST
+          type: 'GET', // findOrCreate
           url: '/api/users', // Endpoint
           contentType: 'application/json',
           data: JSON.stringify({username: profile.given_name, auth0_id: profile.user_id, daily_goal: '', email: profile.email}),

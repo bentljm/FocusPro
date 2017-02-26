@@ -430,26 +430,41 @@ function removeSingleGoal(req, res) {
   });
 }
 
-function removeBlackList(req, res, next) { // Remove a blacklisted website for specific user.
-  var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
-  db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
-    var UserId = user.id; // Get specific user id from find
-    db.Setting.find({where: {UserId: UserId}}).then(function(setting) {
-      var SettingId = setting.id;
-      var url_id = req.params.url_id;
-      db.Url.destroy({where: {SettingId: SettingId, id: url_id}}).then(function (destroyed) { // Delete blacklist url.
-        res.status(200).json({ // Send 200 status upon success.
-          status: 'success',
-          message: 'REMOVE BLACKLISTED URL' + destroyed
-        });
-      }).catch(function (err) { // Error handling for inner callback findAll.
-        return next(err);
-      });
-    }).catch(function (err) { // Error handling for outer callback find.
-      return next(err);
+// function removeBlackList2(req, res, next) { // Remove a blacklisted website for specific user.
+//   var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
+//   db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
+//     var UserId = user.id; // Get specific user id from find
+//     db.Setting.find({where: {UserId: UserId}}).then(function(setting) {
+//       var SettingId = setting.id;
+//       var url_id = req.params.url_id;
+//       db.Url.destroy({where: {SettingId: SettingId, id: url_id}}).then(function (destroyed) { // Delete blacklist url.
+//         res.status(200).json({ // Send 200 status upon success.
+//           status: 'success',
+//           message: 'REMOVE BLACKLISTED URL' + destroyed
+//         });
+//       }).catch(function (err) { // Error handling for inner callback findAll.
+//         return next(err);
+//       });
+//     }).catch(function (err) { // Error handling for outer callback find.
+//       return next(err);
+//     });
+//   }).catch(function (err) { // Error handling for outer callback find.
+//     return next(err);
+//   });
+// }
+
+
+function removeBlackList(req, res) {
+  var url_id = req.params.url_id;
+  db.Url.destroy({where: {id: url_id}})
+  .then((num)=>{
+    res.status(200).json({
+      numDeleted: num,
+      message: `number deleted: ${num}`
     });
-  }).catch(function (err) { // Error handling for outer callback find.
-    return next(err);
+  })
+  .catch((err)=>{
+    res.send('ERROR: REMOVE BLACKLIST', err);
   });
 }
 
@@ -532,7 +547,7 @@ function updateSubgoal(req, res) {
     });
   })
   .catch((err)=>{
-    res.send(err);
+    res.send('ERROR: UPDATE SUBGOAL', err);
   });
 }
 
@@ -543,6 +558,9 @@ function updateSingleGoal(req, res) {
     res.status(200).json({
       data: count
     });
+  })
+  .catch((err)=>{
+    res.send('ERROR: UPDATE SINGLE GOAL', err);
   });
 }
 
