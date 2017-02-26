@@ -48,7 +48,7 @@ describe('GET and POST requests FOR SETTINGS', () => {
           db.Setting.create(setting2).then(function(setting) {
          
            // db.Url.create(blacklist).then(function(url) {
-              console.log("WE'RE DONE")
+              //console.log("WE'RE DONE")
               done();   
           //  });
           });
@@ -77,7 +77,7 @@ describe('GET and POST requests FOR SETTINGS', () => {
 
   describe('POST NEW SETTINGS', () =>{
     it('/api/users/:auth0_id/setting creates settings',(done) =>{
-      console.log('POST in SETTINGS', UserId);
+      //console.log('POST in SETTINGS', UserId);
       const dummySetting = {UserId: UserId, picture: "Dumb", quote: "Laconic", reflection_freq: 10, reminder: false, reminder_type: "Regular", reminder_freq: 10, reminder_address: "Apple Street"};
       request(app)
       .post('/api/users/auth_id3/setting')
@@ -113,7 +113,7 @@ describe('GET and POST requests FOR SETTINGS', () => {
           console.error('GETTING SETTINGS ERROR: \n',err);
         }
         expect(res.statusCode).to.equal(200);
-        console.log(res.body.data);
+        //console.log(res.body.data);
         done();
       });
     });

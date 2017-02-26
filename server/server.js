@@ -1,10 +1,11 @@
 //import routes
 var db = require('./databases/Schema.js');
-var express = require('express');
 var bodyparser = require('body-parser');
-var path = require('path');
 var router = require('./routers.js');
+var express = require('express');
+var path = require('path');
 var app = express();
+
 //var email = require('../client/src/email/emailNotification.js');
 
 app.use(bodyparser.json());
