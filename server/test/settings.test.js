@@ -27,7 +27,7 @@ after(() =>{
 });
 
 
-describe('GET and POST requests FOR SETTINGS', () => {
+describe('GET POST PUT DELETE requests FOR SETTINGS and BLACKLISTS', () => {
     //load dummy data
   beforeEach((done) =>{
     var user1 = {username: 'dummy3', email: 'example@gmail.com', auth0_id: 'auth_id3', daily_goal: 'wakeup earlier than yesterday'};
@@ -137,7 +137,7 @@ describe('GET and POST requests FOR SETTINGS', () => {
       });
     });
 
-    it('/api/users/:auth0_id/blacklist adds new blacklist url', (done)=>{
+    it('/api/users/:auth0_id/blacklist fetches blacklist urls', (done)=>{
       var urlInfo = {url: 'http://facebook.com', blacklist_time: 20, blacklist_type: 'warning'};
       request(app)
       .post(`/api/users/${authId2}/blacklist`)
@@ -184,7 +184,26 @@ describe('GET and POST requests FOR SETTINGS', () => {
         });
       });
     });
-    it('/api/users/:auth0_id/blacklist/:url_id');
+
+    it('/api/blacklist/:url_id', (done)=>{
+      const updatedUrl = {blacklist_type: 'updated type', blacklist_time: 100};
+      request(app)
+      .put(`/api/blacklist/${blacklistId}`)
+      .send(updatedUrl)
+      .end((err, res)=>{
+        expect(res.body.data[0]).to.equal(1);
+        //we dont have a router that verifies a single blacklist, so only verifying 1 row change
+        request(app)
+        .get(`/api/users/${authId2}/blacklist`)
+        .end((err, res)=>{
+          expect(res.body.data[0].url).to.equal(blacklist.url);
+          expect(res.body.data[0].auth0_id).to.equal(blacklist.auth0_id);
+          expect(res.body.data[0].blacklist_time).to.equal(updatedUrl.blacklist_time);
+          expect(res.body.data[0].blacklist_type).to.equal(updatedUrl.blacklist_type);
+        });
+        done();
+      });
+    });
   });
 
   describe('DELETE a blacklist url', ()=>{

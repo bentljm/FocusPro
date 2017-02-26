@@ -538,6 +538,7 @@ function updateSettings(req, res, next) {
 //  });
 // }
 
+
 function updateSubgoal(req, res) {
   var id = req.params.subgoal_id;
   db.Subgoal.update({subgoal: req.body.subgoal, status: req.body.status}, {where: {id: id}})
@@ -561,6 +562,19 @@ function updateSingleGoal(req, res) {
   })
   .catch((err)=>{
     res.send('ERROR: UPDATE SINGLE GOAL', err);
+  });
+}
+
+function updateBlackList(req, res) {
+  var id = req.params.url_id;
+  db.Url.update({url: req.body.url, blacklist_type: req.body.blacklist_type, blacklist_time: req.body.blacklist_time}, {where: { id: id}})
+  .then((count)=>{
+    res.status(200).json({
+      data: count
+    });
+  })
+  .catch((err)=>{
+    res.send('ERROR: UPDATE BLACKLIST', err);
   });
 }
 
@@ -624,7 +638,8 @@ module.exports = {
   updateSettings: updateSettings,
   updateSubgoal: updateSubgoal,
   updateUser: updateUser,
-  updateSingleGoal: updateSingleGoal
+  updateSingleGoal: updateSingleGoal,
+  updateBlackList: updateBlackList
   //sendEmail: sendEmail
 };
 
