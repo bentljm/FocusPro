@@ -217,11 +217,22 @@ describe('GET POST PUT DELETE requests FOR SETTINGS and BLACKLISTS', () => {
     });
   });
 });
-  /// BLACKLISTS
-// describe('GET and POST Chrome extension data', ()=>{
-//   beforeEach();
-//   afterEach();
-// });
+
+//Chrome Extension
+describe('GET request for Chrome extension', ()=>{
+  beforeEach(()=>{
+    //set up a dummy user
+
+    //get dummy user's id
+
+    //insert Chrome extension data to that dummy user {url, time_spent, freq, UserId}
+
+  });
+  afterEach(()=>{
+    //destroy the dummy user and chrome extension
+  });
+  it();
+});
 
 /*
     describe('POST NEW BLACKLISTS', () =>{
