@@ -1,6 +1,6 @@
 import React from 'react';
 import { Row, Col } from 'react-materialize';
-import { Sidebar } from './Sidebar';
+import Sidebar from './Sidebar';
 
 
 export default class App extends React.Component {

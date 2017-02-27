@@ -7,7 +7,8 @@ export default class Modivational extends React.Component {
       <Modal
         header="Motivational Questions"
         fixedFooter
-        trigger={<Button className="goalButton" waves="light">Inspire Me</Button>}>
+        trigger={<Button className="goalButton" waves="light">Inspire Me</Button>}
+      >
         What is your Overarching Goal?
         <br />
         It is best to prioritise, pick ONE goal and stay focused before moving onto the next one.
