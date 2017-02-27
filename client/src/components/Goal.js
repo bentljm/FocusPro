@@ -20,7 +20,7 @@ export default class Goal extends React.Component {
     this.callCustomJQuery();
   }
 
-   callCustomJQuery() {
+  callCustomJQuery() {
     $('.collapsible').collapsible();
   }
 
@@ -28,12 +28,12 @@ export default class Goal extends React.Component {
     var that = this;
     $.ajax({
       type: 'GET', // GET REQUEST
-      url: '/api/goals/'+this.props.goal+'/subgoals',
+      url: '/api/goals/' + this.props.goal + '/subgoals',
       success: function(data) {
-        console.log("SUCCESS: OBTAINED ALL SUBGOALS: " + JSON.stringify(data.data));
+        console.log('SUCCESS: OBTAINED ALL SUBGOALS: ' + JSON.stringify(data.data));
         that.setState({subgoals: data.data});
       },
-      error: function(err) {console.log("ERROR: COULD NOT GET SUBGOALS   ");}
+      error: function(err) { console.log('ERROR: COULD NOT GET SUBGOALS   '); }
     });
   }
 
@@ -49,10 +49,10 @@ export default class Goal extends React.Component {
       contentType: 'application/json',
       data: JSON.stringify({subgoal: this.state.subgoal, status: false, GoalId: this.props.goal}),
       success: function(data) {
-        console.log("SUCCESS: POSTED INDIVIDUAL GOAL: ", data);
+        console.log('SUCCESS: POSTED INDIVIDUAL GOAL: ', data);
         that.getSubgoals();
       },
-      error: function(err) {console.log("ERROR: COULD NOT POST INDIVIDUAL GOAL", err);}
+      error: function(err) { console.log('ERROR: COULD NOT POST INDIVIDUAL GOAL', err); }
     });
   }
 
@@ -66,6 +66,7 @@ export default class Goal extends React.Component {
         </p>
       </form>
       Subgoals: <br />
+      {this.state.subgoals.length === 0 && <div> There is no subgoals set currently. </div>}
       {this.state.subgoals.map((subgoal, index) => (
         <Subgoal key = {'sub' + index} subgoal = {subgoal} status = {subgoal.status} id = {subgoal.id} user_id = {this.props.user_id} goal = {subgoal.GoalId} updateSubgoals = {this.getSubgoals}/>
         ))}

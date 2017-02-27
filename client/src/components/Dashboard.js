@@ -32,7 +32,7 @@ export default class Dashboard extends React.Component {
 
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.getAllGoals();
     this.getBlacklist();
     this.callCustomJQuery();
@@ -49,7 +49,7 @@ export default class Dashboard extends React.Component {
       type: 'GET',
       url: 'api/users/' + this.state.profile.user_id,
       success: function (data) {
-        console.log("SUCCESS: GOT USER INFO", data.data[0]);
+        console.log('SUCCESS: GOT USER INFO', data.data[0]);
         that.setState({userId: data.data[0].id});
         that.setState({dayGoalInput: data.data[0].daily_goal || ''});
       },
@@ -65,10 +65,10 @@ export default class Dashboard extends React.Component {
       type: 'GET', // GET REQUEST
       url: '/api/users/' + this.state.profile.user_id + '/setting',
       success: function(data) {
-        console.log("SUCCESS: OBTAINED SETTINGS: ", data.data[0]);
+        console.log('SUCCESS: OBTAINED SETTINGS: ', data.data[0]);
         that.setState({setting: data.data[0]});
       },
-      error: function(err) {console.log("ERROR: COULD NOT GET SETTINGS", err);}
+      error: function(err) { console.log('ERROR: COULD NOT GET SETTINGS', err); }
     });
   }
 
@@ -78,10 +78,10 @@ export default class Dashboard extends React.Component {
       type: 'GET', // GET REQUEST
       url: '/api/users/' + this.state.profile.user_id + '/blacklist',
       success: function(data) {
-        console.log("SUCCESS: OBTAINED BLACKLIST: ", data.data);
+        console.log('SUCCESS: OBTAINED BLACKLIST: ', data.data);
         that.setState({blacklist: data.data});
       },
-      error: function(err) {console.log("ERROR: COULD NOT GET BLACKLIST", err);}
+      error: function(err) { console.log('ERROR: COULD NOT GET BLACKLIST', err); }
     });
   }
 
@@ -91,11 +91,11 @@ export default class Dashboard extends React.Component {
       type: 'GET', // GET REQUEST
       url: '/api/users/' + this.state.profile.user_id + '/goals/',
       success: function(data) {
-        console.log("SUCCESS: OBTAINED ALL GOALS:", data);
+        console.log('SUCCESS: OBTAINED ALL GOALS:', data);
         that.setState({goals: data.data});
       },
       error: function(err) {
-        console.log("ERROR: COULD NOT GET ALL GOALS", err);
+        console.log('ERROR: COULD NOT GET ALL GOALS', err);
       }
     });
   }
@@ -114,8 +114,8 @@ export default class Dashboard extends React.Component {
       url: '/api/users/' + this.state.profile.user_id,
       contentType: 'application/json',
       data: JSON.stringify({daily_goal: this.state.dayGoalInput}),
-      success: function(data) {console.log("Update daily goal to", data);},
-      error: function(err) {console.log("Error updating daily goal", err);}
+      success: function(data) { console.log('Update daily goal to', data); },
+      error: function(err) { console.log('Error updating daily goal', err); }
     });
   }
 
@@ -127,11 +127,11 @@ export default class Dashboard extends React.Component {
       contentType: 'application/json',
       data: JSON.stringify({goal: this.state.goalInput, progress: 0, goal_picture: '', UserId: this.state.userId}),
       success: function(data) {
-        console.log("SUCCESS: POSTED INDIVIDUAL GOAL: ", data);
+        console.log('SUCCESS: POSTED INDIVIDUAL GOAL: ', data);
         that.setState({goalInput: ''}); //Not clearing input...
         that.getAllGoals();
       },
-      error: function(err) {console.log("ERROR: COULD NOT POST INDIVIDUAL GOAL", err);}
+      error: function(err) { console.log('ERROR: COULD NOT POST INDIVIDUAL GOAL', err); }
     });
 
   }
@@ -142,11 +142,11 @@ export default class Dashboard extends React.Component {
       type: 'DELETE',
       url: '/api/goals/' + goal_id,
       success: function(data) {
-        console.log("Remove goal:", data);
+        console.log('Remove goal:', data);
         that.getAllGoals();
       },
       error: function(err) {
-        console.log("ERROR: COULD NOT REMOVE THE GOAL", err);
+        console.log('ERROR: COULD NOT REMOVE THE GOAL', err);
       }
     });
   }
@@ -160,27 +160,29 @@ export default class Dashboard extends React.Component {
         <br />
         <h3> Goal of the Day: </h3>
         <Row>
-          <Input s={10} value={this.state.dayGoalInput} onChange={this.handleDayGoalChange} /> <Button className="dayGoalButton" waves='light' onClick={this.handleDayGoalSubmission}>Save</Button>
+          <Input s={10} value={this.state.dayGoalInput} onChange={this.handleDayGoalChange} /> <Button className='dayGoalButton' waves='light' onClick={this.handleDayGoalSubmission}>Save</Button>
         </Row>
         <h3> Main Goals: </h3>
-          <ul className="collapsible" data-collapsible="expandable">
+          { console.log('goal num', this.state.goals.length)}
+          {(this.state.goals.length === 0) && <div>You have no goals set currently.</div>}
+          {(this.state.goals.length > 0) && <ul className='collapsible' data-collapsible='expandable'>
           {this.state.goals.map((goal, index) => (
             <li key = {index}>
-            <div className="collapsible-header">{goal.goal} <a href = '#/dashboard' onClick = {()=>this.removeGoal(goal.id)}><Icon right>delete</Icon></a></div>
+            <div className='collapsible-header'>{goal.goal} <a href = '#/dashboard' onClick = {()=>this.removeGoal(goal.id)}><Icon right>delete</Icon></a></div>
             <Goal key = {'goal' + index} goal = {goal.id} user_id = {this.state.profile.user_id} />
           </li>
             ))}
-        </ul>
+        </ul>}
         <Row>
-        <Input s={8} label="New Goal" value={this.state.value} onChange={this.handleInputChange} /> <Button className="goalButton" waves='light' onClick={this.postGoal}>Set Goal</Button> <Motivational />
+        <Input s={8} label='New Goal' value={this.state.value} onChange={this.handleInputChange} /> <Button className='goalButton' waves='light' onClick={this.postGoal}>Set Goal</Button> <Motivational />
         </Row>
         <br />
         <h3> Sites: </h3>
-        <ul className="collapsible" data-collapsible="expandable">
+        <ul className='collapsible' data-collapsible='expandable'>
           {this.state.blacklist.map((site, index) => (
             <li key = {'sites ' + index}>
-              <div className="collapsible-header">{site.url}</div>
-              <div className="collapsible-body"><Site url = {site.url} siteId = {site.id}/></div>
+              <div className='collapsible-header'>{site.url}</div>
+              <div className='collapsible-body'><Site url = {site.url} siteId = {site.id}/></div>
             </li>
             ))}
         </ul>
