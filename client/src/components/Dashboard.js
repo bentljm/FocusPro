@@ -65,8 +65,8 @@ export default class Dashboard extends React.Component {
       type: 'GET', // GET REQUEST
       url: '/api/users/' + this.state.profile.user_id + '/setting',
       success: function(data) {
-        console.log("SUCCESS: OBTAINED SETTINGS: ", data);
-        that.setState({setting: data.data});
+        console.log("SUCCESS: OBTAINED SETTINGS: ", data.data[0]);
+        that.setState({setting: data.data[0]});
       },
       error: function(err) {console.log("ERROR: COULD NOT GET SETTINGS", err);}
     });
@@ -76,7 +76,7 @@ export default class Dashboard extends React.Component {
     var that = this;
     $.ajax({
       type: 'GET', // GET REQUEST
-      url: '/api/users/' + this.state.profile.user_id + '/setting/blacklist',
+      url: '/api/users/' + this.state.profile.user_id + '/blacklist',
       success: function(data) {
         console.log("SUCCESS: OBTAINED BLACKLIST: ", data.data);
         that.setState({blacklist: data.data});
@@ -140,13 +140,13 @@ export default class Dashboard extends React.Component {
     var that = this;
     $.ajax({
       type: 'DELETE',
-      url: '/api/users/' + this.state.profile.user_id + '/goals/' + goal_id,
+      url: '/api/goals/' + goal_id,
       success: function(data) {
         console.log("Remove goal:", data);
         that.getAllGoals();
       },
       error: function(err) {
-        console.log("ERROR: COULD NOT GET ALL GOALS", err);
+        console.log("ERROR: COULD NOT REMOVE THE GOAL", err);
       }
     });
   }

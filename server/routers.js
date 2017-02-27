@@ -11,9 +11,10 @@ module.exports = function(app, express) {
   app.get('/api/users/:auth0_id/setting', controller.getSettings); // Get individual settings
   app.post('/api/users/:auth0_id/setting', controller.postSettings); // Post individual settings
   app.put('/api/users/:auth0_id/setting', controller.updateSettings); //Update settings
-  app.get('/api/users/:auth0_id/setting/blacklist', controller.getBlackList); // Get individual blacklist
-  app.post('/api/users/:auth0_id/setting/blacklist', controller.postBlackList); // Post or update individual blacklist
-  app.delete('/api/users/:auth0_id/setting/blacklist/:url_id', controller.removeBlackList); // Get individual blacklist
+  app.get('/api/users/:auth0_id/blacklist', controller.getBlackList); // Get individual blacklist
+  app.post('/api/users/:auth0_id/blacklist', controller.postBlackList); // Post or update individual blacklist
+  app.delete('/api/blacklist/:url_id', controller.removeBlackList); // Delete individual blacklist
+  app.put('/api/blacklist/:url_id', controller.updateBlackList); // Delete individual blacklist
 
 
   app.get('/api/users/:auth0_id/extension_data', controller.getExtension); // Get individual extention data
@@ -24,16 +25,16 @@ module.exports = function(app, express) {
   // app.get('/api/users/:auth0_id/reflections/:reflection_id', controller.getReflectionId); // Get individual reflection id
 
   app.get('/api/users/:auth0_id/goals', controller.getAllGoals); //Get all goals
-  app.get('/api/users/:auth0_id/goals/:goal_id', controller.getSingleGoal); //Get single goal
+  app.get('/api/goals/:goal_id', controller.getSingleGoal); //Get single goal
   app.post('/api/users/:auth0_id/goals', controller.postSingleGoal); //Post single goal
-  app.delete('/api/users/:auth0_id/goals/:goal_id', controller.removeSingleGoal); //Delete single goal
+  app.delete('/api/goals/:goal_id', controller.removeSingleGoal); //Delete single goal
+  app.put('/api/goals/:goal_id', controller.updateSingleGoal); //Change a subgoal of a single goal
 
   app.get('/api/goals/:goal_id/subgoals', controller.getSubGoals); //Get all subgoals of a single goal
-
   app.post('/api/goals/:goal_id/subgoals', controller.postSubGoal); //Post all subgoals of a single goal
 
-  app.delete('/api/users/:auth0_id/goals/:goal_id/subgoals/:subgoal_id', controller.removeSubGoal); //Delete a subgoal of a single goal
-  app.put('/api/users/:auth0_id/goals/:goal_id/subgoals/:subgoal_id', controller.updateSubgoal); //Delete a subgoal of a single goal
+  app.delete('/api/subgoals/:subgoal_id', controller.removeSubGoal); //Delete a subgoal of a single goal
+  app.put('/api/subgoals/:subgoal_id', controller.updateSubgoal); //Change a subgoal of a single goal
 
   // app.post('/api/users/:auth0_id/sendMail', controller.sendEmail); // Send email
 };

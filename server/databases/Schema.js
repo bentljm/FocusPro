@@ -76,10 +76,10 @@ var Friendship = db.define('Friendship', {
 User.hasMany(Goal);
 User.hasOne(Setting);
 User.hasMany(Extension);
+User.hasMany(Url, {foreignKey: 'auth0_id', sourceKey: 'auth0_id', constraints: false});
 User.hasMany(Reflection, {foreignKey: 'auth0_id', sourceKey: 'auth0_id', constraints: false});
 Reflection.belongsTo(User, {foreignKey: 'auth0_id', targetKey: 'auth0_id', constraints: false});
 Goal.hasMany(Subgoal, {onDelete: 'cascade', hooks: true, constraints: false});
-Setting.hasMany(Url);
 // Reflection.hasOne(Question);
 
 

@@ -38,7 +38,7 @@ function getSettings(req, res, next) { // Get settings for specific user.
   var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
   db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
     var UserId = user.id; // Get specific user id from find
-    db.Setting.find({where: {UserId: UserId}}).then(function (data) { // Grab settings data for user.
+    db.Setting.findOrCreate({where: {UserId: UserId}}).then(function (data) { // Grab settings data for user.
       res.status(200).json({ // Send 200 status upon success.
         status: 'success',
         data: data,
@@ -49,30 +49,17 @@ function getSettings(req, res, next) { // Get settings for specific user.
     });
   });
 }
-
-function getBlackList(req, res, next) { // Get blacklisted websites for specific user.
+function getBlackList(req, res) {
   var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
-  db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
-    var UserId = user.id; // Get specific user id from find
-    db.Setting.find({where: {UserId: UserId}}).then(function(setting) {
-      console.log("SETTINGS BODY", setting.dataValues)
-      var SettingId = setting.id;
-      db.Url.findAll({where: {SettingId: SettingId}}).then(function (data) { // Get all blacklist data.
-      res.status(200).json({ // Send 200 status upon success.
-        status: 'success',
-        data: data,
-        message: 'BLACKLISTED URLS'
-      });
-      }).catch(function (err) { // Error handling for inner callback findAll.
-        return next(err);
-      });
-    }).catch(function (err) { // Error handling for outer callback find.
-      return next(err);
+  db.Url.findAll({where: {auth0_id: auth0_id}})
+  .then((data)=>{
+    res.status(200).json({
+      data: data
     });
-  }).catch(function (err) { // Error handling for outer callback find.
-    return next(err);
+  })
+  .catch((err)=>{
+    res.send({'ERROR: GET BLACKLIST': err});
   });
-
 }
 
 function getExtension(req, res, next) { // Get extensions for specific user.
@@ -104,33 +91,9 @@ function getReflections(req, res) {
     });
   })
   .catch((err)=>{
-    res.send(err);
+    res.send({'ERROR: GET REFLECTION': err});
   });
 }
-
-// function getReflectionId(req, res, next) { // Get individual reflection for specific user.
-//   var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
-//   db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
-//     var UserId = user.id; // Get id of requested reflection.
-//     db.Goal.find({where: {UserId: UserId}}).then(function(goal) {
-//       var GoalId = req.params.goal_id; // Get goal id from parameters
-//       var id = req.params.reflection_id; // Get reflection id from parameters
-//       db.Reflection.find({where: {GoalId: GoalId, id: id, UserId: UserId}}).then(function (data) { // Find reflection with aforementioned id.
-//         res.status(200).json({ // Send 200 status upon success.
-//         status: 'success',
-//         data: data,
-//         message: 'GOT REFLECTION FROM DATABASE: GOALID ' + GoalId + ' REFLECTIONID ' + id
-//       });
-//       }).catch(function (err) { // Error handling for inner callback find.
-//         return next(err);
-//       });
-//     }).catch(function (err) { // Error handling for outer callback find.
-//       return next(err);
-//   }).catch(function (err) { // Error handling from outer callback find
-//     return next(err);
-//   });
-//   });
-// }
 
 function getAllGoals(req, res, next) { // Get all goals for specific user.
   var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
@@ -150,22 +113,16 @@ function getAllGoals(req, res, next) { // Get all goals for specific user.
   });
 }
 
-function getSingleGoal(req, res, next) { // Get individual goal for specific user.
-  var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
-  db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
-    var UserId = user.id; // Get the specific user
-    var id = req.params.goal_id; // Get the specific goal from parameters
-    db.Goal.find({where: {UserId: UserId, id: id}}).then(function (data) { // Find goal with aforementioned goal name.
-      res.status(200).json({ // Send 200 status upon success.
-        status: 'success',
-        data: data,
-        message: 'RETRIEVED SPECIFIC GOAL ' + id
-      });
-    }).catch(function (err) { // Error handling for inner callback find.
-      return next(err);
+function getSingleGoal(req, res) {
+  var id = req.params.goal_id;
+  db.Goal.find({where: {id: id}})
+  .then((data)=>{
+    res.status(200).json({
+      data: data
     });
-  }).catch(function (err) { // Error handling for outback callback find.
-    return next(err);
+  })
+  .catch((err)=>{
+    res.send({'ERROR: GET SINGLE SUBGOAL': err});
   });
 }
 
@@ -178,7 +135,7 @@ function getSubGoals (req, res) {
     });
   })
   .catch((err)=>{
-    res.send(err);
+    res.send({'ERROR: GET SUBGOALS': err});
   });
 }
 
@@ -230,36 +187,25 @@ function postSettings(req, res, next) { // Post settings for specific user.
 }
 
 
-function postBlackList(req, res, next) { // Post blacklisted websites for specific user.
-   var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
-   db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
-    var UserId = user.id; // Get user id from find
-    var url = req.body.url; // Use input blacklist url parameters, defined in schema.
-    var blacklist_type = req.body.blacklist_type;
-    var blacklist_time = req.body.blacklist_time;
-
-    // Create entry in Url with above parameters.
-    db.Setting.find({where: {UserId: UserId}}).then(function (setting) {
-      var SettingId = setting.id;
-      db.Url.create({url: req.body.url, blacklist_type: req.body.blacklist_type, blacklist_time: req.body.blacklist_time, SettingId: SettingId}).then(function () {
-        res.status(201).json({ // Send 201 status upon success.
-          status: 'success',
-          message: 'INSERTED NEW BLACKLIST'
-        });
-        }).catch(function (err) { // Error handling for inner callback create.
-          return next(err);
-        });
-      }).catch(function (err) { // Error handling for outer callback find.
-        return next(err);
-      });
-    }).catch(function (err) {
-      return next(err);
+function postBlackList(req, res) {
+  var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
+  var url = req.body.url; // Get url from req body
+  var blacklist_type = req.body.blacklist_type; // Get blacklist_type from req body
+  var blacklist_time = req.body.blacklist_time; // Get blacklist_time from req body
+  db.Url.create({url: url, blacklist_type: blacklist_type, blacklist_time: blacklist_time, auth0_id: auth0_id})
+  .then(function(data) {
+    res.status(201).json({
+      data: data,
+      message: 'success' + data
     });
+  })
+  .catch(function(err) {
+    res.send({'ERROR: POST BLACKLIST': err});
+  });
 }
 
 
-
-function postReflectionId (req,res,next) {
+function postReflectionId (req, res) {
   var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
   var answer = req.body.answer; // Get answer from req body
   var question = req.body.question; // Get question from parameters
@@ -271,7 +217,7 @@ function postReflectionId (req,res,next) {
     });
   })
   .catch(function(err) {
-    res.send(err);
+    res.send({'ERROR: POST REFLECTION': err});
   });
 
 }
@@ -313,73 +259,52 @@ function postSubGoal(req, res) {
     });
   })
   .catch((err)=>{
-    res.send(err);
+    res.send({'ERROR: POST SUBGOAL': err});
   });
 }
 
 //DESTROY
-function removeSubGoal(req, res, next) { // Delete individual subgoal for specific user.
-  var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
-  db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
-    var UserId = user.id; // Get specific user from find
-    var GoalId = req.params.goal_id; // Get goal that contains subgoal.
-    db.Goal.find({where: {UserId: UserId, id: GoalId}}).then(function (data) { // Find goal.
-      // Delete entry in Subgoal with above parameters.
-      var id = req.params.subgoal_id;
-      db.Subgoal.destroy({where: {GoalId: GoalId, id: id}}).then(function (destroyed) {
-        res.status(200).json({ // Send 201 status upon success.
-          status: 'success',
-          message: 'Deleted ' + destroyed
-        });
-      }).catch(function (err) { // Error handling for inner callback find.
-        return next(err);
-      });
-    }).catch(function (err) { // Error handling for middle callback find.
-      return next(err);
+
+function removeSubGoal(req, res) {
+  var id = req.params.subgoal_id;
+  db.Subgoal.destroy({where: {id: id}})
+  .then((num)=>{
+    res.status(200).json({
+      numDeleted: num,
+      message: `number deleted: ${num}`
     });
-  }).catch(function (err) { // Error handling for outer callback find.
-    return next(err);
+  })
+  .catch((err)=>{
+    res.send({'ERROR: REMOVE SUBGOAL': err});
   });
 }
 
-function removeSingleGoal(req, res, next) { // Delete individual goal for specific user.
-  var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
-  db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
-    var UserId = user.id; // Get the specific user
-    var id = req.params.goal_id; // Get the specific goal from parameters
-    db.Goal.destroy({where: {UserId: UserId, id: id}}).then(function (destroyed) { // Delete goal with aforementioned goal id.
-      res.status(200).json({ // Send 200 status upon success.
-        status: 'success',
-        message: 'REMOVED SPECIFIC GOAL ' + destroyed
-      });
-    }).catch(function (err) { // Error handling for inner callback find.
-      return next(err);
+
+function removeSingleGoal(req, res) {
+  var id = req.params.goal_id;
+  db.Goal.destroy({where: {id: id}})
+  .then((num)=>{
+    res.status(200).json({
+      numDeleted: num,
+      message: `number deleted: ${num}`
     });
-  }).catch(function (err) { // Error handling for outback callback find.
-    return next(err);
+  })
+  .catch((err)=>{
+    res.send({'ERROR: REMOVE SINGLE GOAL': err});
   });
 }
 
-function removeBlackList(req, res, next) { // Remove a blacklisted website for specific user.
-  var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
-  db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
-    var UserId = user.id; // Get specific user id from find
-    db.Setting.find({where: {UserId: UserId}}).then(function(setting) {
-      var SettingId = setting.id;
-      var url_id = req.params.url_id;
-      db.Url.destroy({where: {SettingId: SettingId, id: url_id}}).then(function (destroyed) { // Delete blacklist url.
-      res.status(200).json({ // Send 200 status upon success.
-        status: 'success',
-        message: 'REMOVE BLACKLISTED URL' + destroyed
-      });
-      }).catch(function (err) { // Error handling for inner callback findAll.
-        return next(err);
-      });
-    }).catch(function (err) { // Error handling for outer callback find.
-      return next(err);
+function removeBlackList(req, res) {
+  var url_id = req.params.url_id;
+  db.Url.destroy({where: {id: url_id}})
+  .then((num)=>{
+    res.status(200).json({
+      numDeleted: num,
+      message: `number deleted: ${num}`
     });
-  }).catch(function (err) { // Error handling for outer callback find.
-    return next(err);
+  })
+  .catch((err)=>{
+    res.send({'ERROR: REMOVE BLACKLIST': err});
   });
 }
 
@@ -402,17 +327,10 @@ function updateUser(req, res, next) {
 function updateSettings(req, res, next) {
   var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
   db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
-    var picture = req.body.picture || '';
-    var quote = req.body.quote || '';
-    var reflection_freq = req.body.reflection_freq || 0;
-    var reminder = req.body.reminder || false;
-    var reminder_type = req.body.reminder_type || '';
-    var reminder_freq = req.body.reminder_freq || 0;
-    var reminder_address = req.body.reminder_address || '';
     var UserId = user.id;
 
     // Update entry in Settings with above parameters.
-    db.Setting.update({picture: picture, quote: quote, reflection_freq: reflection_freq, reminder: reminder, reminder_type: reminder_type, reminder_freq: reminder_freq, reminder_address: reminder_address}, {where: {UserId: UserId}}).then(function (data) {
+    db.Setting.update({picture: req.body.picture, quote: req.body.quote, reflection_freq: req.body.reflection_freq, reminder: req.body.reminder, reminder_type: req.body.reminder_type, reminder_freq: req.body.reminder_freq, reminder_address: req.body.reminder_address}, {where: {UserId: UserId}}).then(function (data) {
       res.status(201).json({ // Send 201 status upon success.
         status: 'success',
         data: data,
@@ -426,31 +344,43 @@ function updateSettings(req, res, next) {
   });
 }
 
-function updateSubgoal(req, res, next) { // Update individual subgoal for specific user.
-  var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
-  db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
-    var UserId = user.id; // Get specific user from find
-    var GoalId = req.params.goal_id; // Get goal that contains subgoal.
-
-    db.Goal.find({where: {UserId: UserId, id: GoalId}}).then(function (data) { // Find goal.
-      // Update entry in Subgoal with above parameters.
-      var id = req.params.subgoal_id;
-      var status = req.body.status;
-      db.Subgoal.update({status: status}, {where: {GoalId: GoalId, id: id}}).then(function (data) {
-        res.status(200).json({ // Send 201 status upon success.
-          status: 'success',
-          data: data,
-          message: 'Updated SUBGOAL ' + data
-        });
-      }).catch(function (err) { // Error handling for inner callback find.
-        return next(err);
-      });
-    }).catch(function (err) { // Error handling for middle callback find.
-      return next(err);
+function updateSubgoal(req, res) {
+  var id = req.params.subgoal_id;
+  db.Subgoal.update({subgoal: req.body.subgoal, status: req.body.status}, {where: {id: id}})
+  .then((count)=>{
+    res.status(200).json({
+      data: count
     });
-  }).catch(function (err) { // Error handling for outer callback find.
-    return next(err);
- });
+  })
+  .catch((err)=>{
+    res.send({'ERROR: UPDATE SUBGOAL': err});
+  });
+}
+
+function updateSingleGoal(req, res) {
+  var id = req.params.goal_id;
+  db.Goal.update({goal: req.body.goal, progress: req.body.progress, goal_picture: req.body.goal_picture}, {where: {id: id}})
+  .then((count)=>{
+    res.status(200).json({
+      data: count
+    });
+  })
+  .catch((err)=>{
+    res.send({'ERROR: UPDATE SINGLE GOAL': err});
+  });
+}
+
+function updateBlackList(req, res) {
+  var id = req.params.url_id;
+  db.Url.update({url: req.body.url, blacklist_type: req.body.blacklist_type, blacklist_time: req.body.blacklist_time}, {where: { id: id}})
+  .then((count)=>{
+    res.status(200).json({
+      data: count
+    });
+  })
+  .catch((err)=>{
+    res.send({'ERROR: UPDATE BLACKLIST': err});
+  });
 }
 
 // function sendEmail(req, res, next) {
@@ -513,6 +443,8 @@ module.exports = {
   updateSettings: updateSettings,
   updateSubgoal: updateSubgoal,
   updateUser: updateUser,
+  updateSingleGoal: updateSingleGoal,
+  updateBlackList: updateBlackList
   //sendEmail: sendEmail
 };
 

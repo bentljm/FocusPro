@@ -49,6 +49,13 @@ describe('GET and POST requests to /api/users/:auth0_id/reflections', ()=>{
     db.Reflection.create({auth0_id: 'auth_id4', answer: answer2, question: question2});
     db.Reflection.create({auth0_id: 'auth_id4', answer: answer3, question: question3}).then(()=>{ done(); });
   });
+
+  afterEach((done)=>{
+    db.Reflection.destroy({where: {}})
+    .then(()=>{
+      done();
+    });
+  });
   describe('POST a new reflection', ()=>{
     it('/api/users/:auth0_id/reflections creates user reflections', (done)=>{
       var reflection = {auth0_id: 'auth_id4', answer: answer1, question: question1};
@@ -67,13 +74,14 @@ describe('GET and POST requests to /api/users/:auth0_id/reflections', ()=>{
   });
 
   describe('Get reflections', ()=>{
-    it('/api/users/:auth0_id/reflections fetches user reflections', ()=>{
+    it('/api/users/:auth0_id/reflections fetches user reflections', (done)=>{
       request(app)
       .get('/api/users/auth_id4/reflections')
       .end((err, res)=>{
         expect(res.body.data.length).to.equal(2);
         expect(res.body.data.some((reflection) =>reflection.question === question2)).to.equal.true;
         expect(res.body.data.some((reflection) =>reflection.answer === answer3)).to.equal.true;
+        done();
       });
     });
   });
