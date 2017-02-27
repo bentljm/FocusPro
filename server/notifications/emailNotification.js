@@ -1,10 +1,10 @@
 var nodemailer = require('nodemailer');
 var fs = require('fs');
 
-//reusable template to send email
-var template1 = '/emailTemplate.html';
+function sendMail(receiver) {
 
-function sendMail(template, receiver) {
+  //reusable template to send email
+  var template = '/emailTemplate.html';
 
   var transporter = nodemailer.createTransport({
       service: 'Gmail',
@@ -38,6 +38,6 @@ function sendMail(template, receiver) {
   });
 }
 
-//sendMail(template1, "bentljm@gmail.com");
+sendMail("bentljm@gmail.com");
 
 module.exports = sendMail;

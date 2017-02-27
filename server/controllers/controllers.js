@@ -55,6 +55,7 @@ function getBlackList(req, res, next) { // Get blacklisted websites for specific
   db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
     var UserId = user.id; // Get specific user id from find
     db.Setting.find({where: {UserId: UserId}}).then(function(setting) {
+      console.log("SETTINGS BODY", setting.dataValues)
       var SettingId = setting.id;
       db.Url.findAll({where: {SettingId: SettingId}}).then(function (data) { // Get all blacklist data.
       res.status(200).json({ // Send 200 status upon success.

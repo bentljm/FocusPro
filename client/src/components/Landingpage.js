@@ -13,7 +13,7 @@ export default class Landingpage extends React.Component {
       <br /> <br />
       <Row>
         <Col s={7}>
-          <img className="placeholder" />
+          <img className="placeholder" src="../../assets/Landingpage-goals.jpeg"/>
         </Col>
         <Col s={5}>
           <br /> <br /><br /> <br /> <br />
@@ -33,7 +33,7 @@ export default class Landingpage extends React.Component {
       <br /> <br />
       <Row>
         <Col s={7}>
-          <img className="placeholder" />
+          <img className="placeholder" src="../../assets/Landingpage-stats.jpeg" />
         </Col>
         <Col s={5}>
           <br /> <br /><br /> <br /> <br />
@@ -63,7 +63,7 @@ export default class Landingpage extends React.Component {
         <img src="../../assets/jeff_img.jpeg" className="circle" />
         </Card>
       </Col>
-            <Col>
+      <Col>
         <Card key={11} className='white' title='Josephine Chen' actions={[<a href='https://github.com/Josephine-Chen'>GitHub</a>]}>
         <img src="../../assets/josephine_img.jpeg" className="circle" />
         </Card>

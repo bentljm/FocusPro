@@ -15,8 +15,13 @@ export default class Goal extends React.Component {
     this.getSubgoals = this.getSubgoals.bind(this);
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.getSubgoals();
+    this.callCustomJQuery();
+  }
+
+   callCustomJQuery() {
+    $('.collapsible').collapsible();
   }
 
   getSubgoals() {
