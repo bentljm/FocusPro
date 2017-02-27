@@ -47,7 +47,7 @@ export default class AuthService {
 
     // Saves the user token
     this.setToken(authResult.idToken);
-    this.lock.getUserInfo(authResult.accessToken, (error, profile)=>{
+    this.lock.getUserInfo(authResult.accessToken, (error, profile) => {
       if (error) {
         console.log('Error loading the Profile', error);
       } else {
