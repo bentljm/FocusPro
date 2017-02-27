@@ -10,7 +10,7 @@ var sendText = function(recipientNumber) {
 	client.messages.create({ 
 	    to: number, 
 	    from: "+14252303081", 
-	    body: "This is the ship that made the Kessel Run in fourteen parsecs?", 
+	    body: "Welcome to FocusPro!", 
 	}, function(err, message) { 
 	    console.log(err, message); 
 	});

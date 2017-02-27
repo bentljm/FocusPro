@@ -16,7 +16,8 @@ export default class Settings extends React.Component {
       quote: '',
       reminderType: '',
       reminderFreq: 0,
-      reminderAddress: ''
+      reminderAddress: '',
+      reminderClicked: false
     };
     this.handleSiteChange = this.handleSiteChange.bind(this);
     this.handleSiteTypeChange = this.handleSiteTypeChange.bind(this);
@@ -29,6 +30,7 @@ export default class Settings extends React.Component {
     this.handleReminderAddressChange = this.handleReminderAddressChange.bind(this);
     this.handleReminderFreqChange = this.handleReminderFreqChange.bind(this);
     this.deleteBlacklist = this.deleteBlacklist.bind(this);
+    this.sendNotification = this.sendNotification.bind(this);
   }
 
   componentDidMount(){
@@ -128,6 +130,22 @@ export default class Settings extends React.Component {
     });
   }
 
+  sendNotification() {
+    var that = this;
+    $.ajax({
+      type: 'POST',
+      url: 'api/users/' + this.state.profile.user_id + '/sendNotification',
+      contentType: 'application/json',
+      data: JSON.stringify({address: this.state.reminderAddress}),
+      success: function (data) {
+        console.log("SUCCESS: SENT NOTIFICATIONS");
+      },
+      error: function (err) {
+        console.log('ERROR: COULD NOT SEND NOTIFICATIONS', err);
+      }
+    });
+  }
+
   handleSiteChange(event) {
     this.setState({siteURL: event.target.value});
   }
@@ -157,6 +175,7 @@ export default class Settings extends React.Component {
   }
   handleReminderSubmission() {
     this.updateSetting(null, null, null, true, this.state.reminderType, this.state.reminderFreq, this.state.reminderAddress);
+    this.setState({reminderClicked: true});
   }
 
   render() {
@@ -164,6 +183,8 @@ export default class Settings extends React.Component {
     const siteSubmitEnabled = siteURL.length > 0 && siteLimit.length > 0 && siteType.length > 0;
     const {reminderType, reminderAddress, reminderFreq} = this.state;
     const reminderSubmitEnabled = reminderType.length > 0 && reminderAddress.length > 0 && reminderFreq.length > 0;
+    const sendNotificationEnabled = this.state.reminderClicked;
+    
     return (
       <div>
         <h1> Settings </h1>
@@ -222,6 +243,7 @@ export default class Settings extends React.Component {
           <option value='2'>Weekly</option>
         </Input>
         <Button disabled={!reminderSubmitEnabled} className="reminderButton" waves='light' onClick={this.handleReminderSubmission}>Set Reminder</Button>
+        <Button disabled={!sendNotificationEnabled} waves='light' onClick={this.sendNotification}>Send Notification Now</Button>
         </Row>
         <h3> Chrome Extension: </h3>
         Forgot to download the extension? Download it here: ___________
