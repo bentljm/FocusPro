@@ -14,16 +14,25 @@ module.exports = {
   },
 
   module: {
-    loaders: [{
-      test: /\.jsx?$/,
-      include: path.join(__dirname, '/client/src'),
-      loader: 'babel-loader',
-      query: {
-        presets: ["es2015", "react"]
-      }
-    }],
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        enforce: 'pre',
+        use: [{loader: 'eslint-loader'}],
+      },
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {presets: [['es2015', {modules: false}]]},
+          },
+        ],
+      },
+    ],
   },
-
   plugins: [
     new webpack.DefinePlugin({
       'process.env': Object.keys(process.env).reduce(function(o, k) {
