@@ -66,6 +66,7 @@ export default class Goal extends React.Component {
         </p>
       </form>
       Subgoals: <br />
+      {this.state.subgoals.length === 0 && <div> There is no subgoals set currently. </div>}
       {this.state.subgoals.map((subgoal, index) => (
         <Subgoal key = {'sub' + index} subgoal = {subgoal} status = {subgoal.status} id = {subgoal.id} user_id = {this.props.user_id} goal = {subgoal.GoalId} updateSubgoals = {this.getSubgoals}/>
         ))}
