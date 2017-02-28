@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Input, Col, Button, Icon } from 'react-materialize';
+import { Row, Input, Col, Button, Icon, Toast } from 'react-materialize';
 import Goal from './Goal';
 import Site from './Site';
 import Stat from './Stat';
@@ -144,9 +144,10 @@ export default class Dashboard extends React.Component {
 
   removeGoal(goal_id) {
     const that = this;
+    console.log('goal_id', goal_id);
     $.ajax({
       type: 'DELETE',
-      url: `/api/goals/'${goal_id}`,
+      url: `/api/goals/${goal_id}`,
       success: (data) => {
         console.log('Remove goal:', data);
         that.getAllGoals();
@@ -156,7 +157,7 @@ export default class Dashboard extends React.Component {
   }
 
   alertConfirmation() {
-    Materialize.toast('Goal set!', 1000);
+    Materialize.toast('Goal added!', 1000);
   }
 
   render() {
@@ -171,8 +172,8 @@ export default class Dashboard extends React.Component {
           <Input s={10} value={this.state.dayGoalInput} onChange={this.handleDayGoalChange} /> <Button className="dayGoalButton" waves="light" onClick={this.handleDayGoalSubmission}>Save</Button>
         </Row>
         <h3> Main Goals: </h3>
-        {(this.state.goals.length === 0) && <div>You have no goals set currently.</div>}
-        {(this.state.goals.length > 0) && <ul className="collapsible" data-collapsible="expandable">
+        {(this.state.goals.length === 0 || !this.state.profile.user_id) && <div>You have no goals set currently.</div>}
+        {(this.state.goals.length > 0 && this.state.profile.user_id) && <ul className="collapsible" data-collapsible="expandable">
           {this.state.goals.map(goal =>
             <li key={goal.id}>
               <div className="collapsible-header">{goal.goal}
