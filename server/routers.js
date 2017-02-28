@@ -1,4 +1,5 @@
 var controller = require('./controllers/controllers.js');
+var notification = require('./controllers/notificationControllers.js');
 
 // Connect controller methods to their respective routes
 
@@ -36,5 +37,5 @@ module.exports = function(app, express) {
   app.delete('/api/subgoals/:subgoal_id', controller.removeSubGoal); //Delete a subgoal of a single goal
   app.put('/api/subgoals/:subgoal_id', controller.updateSubgoal); //Change a subgoal of a single goal
 
-  // app.post('/api/users/:auth0_id/sendMail', controller.sendEmail); // Send email
+  app.post('/api/users/:auth0_id/sendNotification', notification.sendNotification); // Send email
 };
