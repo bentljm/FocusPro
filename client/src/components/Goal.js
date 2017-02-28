@@ -51,6 +51,7 @@ export default class Goal extends React.Component {
       success: (data) => {
         console.log('SUCCESS: POSTED INDIVIDUAL GOAL: ', data);
         that.getSubgoals();
+        that.cleanInput();
         that.alertConfirmation();
       },
       error: (err) => { console.log('ERROR: COULD NOT POST INDIVIDUAL GOAL', err); },
@@ -59,6 +60,10 @@ export default class Goal extends React.Component {
 
   alertConfirmation() {
     Materialize.toast('Subgoal set!', 1000);
+  }
+
+  cleanInput() {
+    this.setState({ subgoal: '' });
   }
 
   render() {
@@ -72,11 +77,11 @@ export default class Goal extends React.Component {
       </form>
       Subgoals:
       <br />
-        {this.state.subgoals.length === 0 && <div> There is no subgoals set currently. </div>}
+        {this.state.subgoals.length === 0 && <div> There is no subgoal set currently. </div>}
         {this.state.subgoals.map(subgoal =>
           <Subgoal key={`sub ${subgoal.id}`} subgoal={subgoal} status={subgoal.status} id={subgoal.id} user_id={this.props.user_id} goal={subgoal.GoalId} updateSubgoals={this.getSubgoals} />
           )}
-        <Input s={8} label="New Subgoal" onChange={this.handleChange} />
+        <Input s={8} label="New Subgoal" onChange={this.handleChange} value={this.state.subgoal}/>
         <Button className="subgoalButton" waves="light" onClick={this.postSubgoal}>Set Subgoal</Button>
       </div>
     );

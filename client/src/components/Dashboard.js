@@ -135,6 +135,7 @@ export default class Dashboard extends React.Component {
         console.log('SUCCESS: POSTED INDIVIDUAL GOAL: ', data);
         that.setState({ goalInput: '' }); // Not clearing input...
         that.getAllGoals();
+        that.cleanInput();
         that.alertConfirmation();
       },
       error: (err) => { console.log('ERROR: COULD NOT POST INDIVIDUAL GOAL', err); },
@@ -157,6 +158,10 @@ export default class Dashboard extends React.Component {
 
   alertConfirmation() {
     Materialize.toast('Goal added!', 1000);
+  }
+
+  cleanInput() {
+    this.setState({ goalInput: '' });
   }
 
   render() {
@@ -185,7 +190,7 @@ export default class Dashboard extends React.Component {
             )}
         </ul>}
         <Row>
-          <Input s={8} label="New Goal" value={this.state.value} onChange={this.handleInputChange} />
+          <Input s={8} label="New Goal" value={this.state.goalInput} onChange={this.handleInputChange} />
           <Button className="goalButton" waves="light" onClick={this.postGoal}>Set Goal</Button>
           <Motivational />
         </Row>
