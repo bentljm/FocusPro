@@ -15,12 +15,16 @@ export default class Goal extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.postSubgoal = this.postSubgoal.bind(this);
     this.getSubgoals = this.getSubgoals.bind(this);
+    this.getStep = this.getStep.bind(this);
+  }
+
+  componentWillMount() {
+    this.getSubgoals();
   }
 
   componentDidMount() {
     this.getSubgoals();
     this.callCustomJQuery();
-    this.getStep();
   }
 
   getSubgoals() {
@@ -47,9 +51,11 @@ export default class Goal extends React.Component {
   }
 
   getStep() {
-    if(this.state.subgoal.length > 0) {
+    if(this.state.subgoals.length > 0) {
       var step = Math.round(100/this.state.subgoals.length);
       this.setState({step: step});
+    } else {
+      this.setState({step: 1});
     }
   }
 
@@ -89,10 +95,10 @@ export default class Goal extends React.Component {
         behaviour={'tap'}
         format={{
           from: function(value) {
-            return parseInt(value);
+            return parseInt(value) + "%";
           },
           to: function(value) {
-            return parseInt(value);
+            return parseInt(value) + "%";
           }
         }}
         tooltips
