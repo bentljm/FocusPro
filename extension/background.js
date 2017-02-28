@@ -1,3 +1,34 @@
+// (function() {
+//   var httpRequest;
+//   document.getElementById("ajaxButton").onclick = function() { makeRequest('localhost:7777/api/users/'); };
+
+//   function makeRequest(url) {
+//     console.log('making request');
+//     httpRequest = new XMLHttpRequest();
+
+//     if (!httpRequest) {
+//       console.log('Giving up :( Cannot create an XMLHTTP instance');
+//       //alert('Giving up :( Cannot create an XMLHTTP instance');
+//       return false;
+//     }
+//     httpRequest.onreadystatechange = showContents;
+//     httpRequest.open('GET', url);
+//     httpRequest.send();
+//   }
+
+//   function showContents() {
+//     if (httpRequest.readyState === XMLHttpRequest.DONE) {
+//       if (httpRequest.status === 200) {
+//         console.log(httpRequest.responseText);
+//         //alert(httpRequest.responseText);
+//       } else {
+//         console.log('There was a problem with the request.');
+//         //alert('There was a problem with the request.');
+//       }
+//     }
+//   }
+// })();
+
 //Clear stats
 function clearStats() {
   if (config.clearStatsInterval < 3600) {
