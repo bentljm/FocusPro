@@ -1,8 +1,17 @@
 {
-  parser: "babel-eslint",
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true,
+    "jquery": true,
+  },
   "extends": "airbnb",
   "rules": {
     "max-len": [1, 120, 2, {ignoreComments: true}],
-    "prop-types": [2]
+    "react/jsx-filename-extension": ["error", { "extensions": [".js", ".jsx"] }],
+    "react/prop-types": 0,
+    "jsx-a11y/href-no-hash": 0,
+    "class-methods-use-this": 0,
+    "no-underscore-dangle": 0,
+    "linebreak-style": 1,
   }
 }

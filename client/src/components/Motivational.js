@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Button } from 'react-materialize';
 
-export default class Modivational extends React.Component {
+export default class Motivational extends React.Component {
   render() {
     return (
       <Modal

@@ -41,7 +41,7 @@ export default class Dashboard extends React.Component {
     const that = this;
     $.ajax({
       type: 'GET',
-      url: 'api/users/' + this.state.profile.user_id,
+      url: `api/users/${this.state.profile.user_id}`,
       success: (data) => {
         console.log('SUCCESS: GOT USER INFO', data.data[0]);
         that.setState({ userId: data.data[0].id });
@@ -57,7 +57,7 @@ export default class Dashboard extends React.Component {
     const that = this;
     $.ajax({
       type: 'GET', // GET REQUEST
-      url: '/api/users/' + this.state.profile.user_id + '/setting',
+      url: `/api/users/${this.state.profile.user_id}/setting`,
       success: (data) => {
         console.log('SUCCESS: OBTAINED SETTINGS: ', data.data[0]);
         that.setState({ setting: data.data[0] });
@@ -70,7 +70,7 @@ export default class Dashboard extends React.Component {
     const that = this;
     $.ajax({
       type: 'GET', // GET REQUEST
-      url: '/api/users/' + this.state.profile.user_id + '/blacklist',
+      url: `/api/users/${this.state.profile.user_id}/blacklist`,
       success: (data) => {
         console.log('SUCCESS: OBTAINED BLACKLIST: ', data.data);
         that.setState({ blacklist: data.data });
@@ -79,11 +79,11 @@ export default class Dashboard extends React.Component {
     });
   }
 
-  getAllGoals () {
+  getAllGoals() {
     const that = this;
     $.ajax({
       type: 'GET', // GET REQUEST
-      url: '/api/users/' + this.state.profile.user_id + '/goals/',
+      url: `/api/users/${this.state.profile.user_id}/goals/`,
       success: (data) => {
         console.log('SUCCESS: OBTAINED ALL GOALS:', data);
         that.setState({ goals: data.data });
@@ -107,7 +107,7 @@ export default class Dashboard extends React.Component {
   handleDayGoalSubmission() {
     $.ajax({
       type: 'PUT',
-      url: '/api/users/' + this.state.profile.user_id,
+      url: `/api/users/${this.state.profile.user_id}`,
       contentType: 'application/json',
       data: JSON.stringify({ daily_goal: this.state.dayGoalInput }),
       success: (data) => { console.log('Update daily goal to', data); },
@@ -119,7 +119,7 @@ export default class Dashboard extends React.Component {
     const that = this;
     $.ajax({
       type: 'POST',
-      url: '/api/users/' + this.state.profile.user_id + '/goals',
+      url: `/api/users/${this.state.profile.user_id}/goals`,
       contentType: 'application/json',
       data: JSON.stringify({ goal: this.state.goalInput, progress: 0, goal_picture: '', UserId: this.state.userId }),
       success: (data) => {
@@ -131,11 +131,11 @@ export default class Dashboard extends React.Component {
     });
   }
 
-  removeGoal (goal_id) {
+  removeGoal(goal_id) {
     const that = this;
     $.ajax({
       type: 'DELETE',
-      url: '/api/goals/' + goal_id,
+      url: `/api/goals/'${goal_id}`,
       success: (data) => {
         console.log('Remove goal:', data);
         that.getAllGoals();
@@ -156,19 +156,18 @@ export default class Dashboard extends React.Component {
           <Input s={10} value={this.state.dayGoalInput} onChange={this.handleDayGoalChange} /> <Button className="dayGoalButton" waves="light" onClick={this.handleDayGoalSubmission}>Save</Button>
         </Row>
         <h3> Main Goals: </h3>
-        { console.log('goal num', this.state.goals.length)}
         {(this.state.goals.length === 0) && <div>You have no goals set currently.</div>}
         {(this.state.goals.length > 0) && <ul className="collapsible" data-collapsible="expandable">
-        {this.state.goals.map((goal, index) => (
-          <li key={index}>
-            <div className="collapsible-header">{goal.goal}
-              <a href="#/dashboard" onClick={() => this.removeGoal(goal.id)}>
-                <Icon right>delete</Icon>
-              </a>
-            </div>
-            <Goal key={'goal' + index} goal={goal.id} user_id={this.state.profile.user_id} />
-          </li>
-          ))}
+          {this.state.goals.map(goal =>
+            <li key={goal.id}>
+              <div className="collapsible-header">{goal.goal}
+                <a href="#/dashboard" onClick={() => this.removeGoal(goal.id)}>
+                  <Icon right>delete</Icon>
+                </a>
+              </div>
+              <Goal goal={goal.id} user_id={this.state.profile.user_id} />
+            </li>
+            )}
         </ul>}
         <Row>
           <Input s={8} label="New Goal" value={this.state.value} onChange={this.handleInputChange} />
@@ -178,12 +177,12 @@ export default class Dashboard extends React.Component {
         <br />
         <h3> Sites: </h3>
         <ul className="collapsible" data-collapsible="expandable">
-          {this.state.blacklist.map((site, index) => (
-            <li key={'sites ' + index}>
+          {this.state.blacklist.map(site =>
+            <li key={`sites ${site.id}`}>
               <div className="collapsible-header">{site.url}</div>
               <div className="collapsible-body"><Site url={site.url} siteId={site.id} /></div>
             </li>
-            ))}
+            )}
         </ul>
         <br />
         <br />

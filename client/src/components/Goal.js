@@ -20,21 +20,21 @@ export default class Goal extends React.Component {
     this.callCustomJQuery();
   }
 
-  callCustomJQuery() {
-    $('.collapsible').collapsible();
-  }
-
   getSubgoals() {
     const that = this;
     $.ajax({
       type: 'GET', // GET REQUEST
-      url: '/api/goals/' + this.props.goal + '/subgoals',
+      url: `/api/goals/${this.props.goal}/subgoals`,
       success: (data) => {
-        console.log('SUCCESS: OBTAINED ALL SUBGOALS: ' + JSON.stringify(data.data));
+        console.log('SUCCESS: OBTAINED ALL SUBGOALS:', JSON.stringify(data.data));
         that.setState({ subgoals: data.data });
       },
       error: (err) => { console.log('ERROR: COULD NOT GET SUBGOALS', err); },
     });
+  }
+
+  callCustomJQuery() {
+    $('.collapsible').collapsible();
   }
 
   handleChange(event) {
@@ -45,7 +45,7 @@ export default class Goal extends React.Component {
     const that = this;
     $.ajax({
       type: 'POST',
-      url: '/api/goals/' + this.props.goal + '/subgoals',
+      url: `/api/goals/${this.props.goal}/subgoals`,
       contentType: 'application/json',
       data: JSON.stringify({ subgoal: this.state.subgoal, status: false, GoalId: this.props.goal }),
       success: (data) => {
@@ -68,9 +68,9 @@ export default class Goal extends React.Component {
       Subgoals:
       <br />
         {this.state.subgoals.length === 0 && <div> There is no subgoals set currently. </div>}
-        {this.state.subgoals.map((subgoal, index) => (
-          <Subgoal key={'sub' + index} subgoal={subgoal} status={subgoal.status} id={subgoal.id} user_id={this.props.user_id} goal={subgoal.GoalId} updateSubgoals={this.getSubgoals} />
-          ))}
+        {this.state.subgoals.map(subgoal =>
+          <Subgoal key={`sub ${subgoal.id}`} subgoal={subgoal} status={subgoal.status} id={subgoal.id} user_id={this.props.user_id} goal={subgoal.GoalId} updateSubgoals={this.getSubgoals} />
+          )}
         <Input s={8} label="New Subgoal" onChange={this.handleChange} />
         <Button className="subgoalButton" waves="light" onClick={this.postSubgoal}>Set Subgoal</Button>
       </div>
