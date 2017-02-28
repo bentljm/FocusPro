@@ -23,6 +23,7 @@ export default class Dashboard extends React.Component {
     this.handleDayGoalChange = this.handleDayGoalChange.bind(this);
     this.handleDayGoalSubmission = this.handleDayGoalSubmission.bind(this);
     this.removeGoal = this.removeGoal.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
   componentWillMount() {
@@ -168,6 +169,12 @@ export default class Dashboard extends React.Component {
     this.setState({ goalInput: '' });
   }
 
+  handleKeyPress(e){
+    if(e.key == 'Enter'){
+      this.postGoal();
+    }
+  }
+
   render() {
     return (
       <div>
@@ -197,8 +204,8 @@ export default class Dashboard extends React.Component {
             )}
         </ul>}
         <Row>
-          <Input s={8} label="New Goal" value={this.state.goalInput} onChange={this.handleInputChange} />
-          <Button className="goalButton" waves="light" onClick={this.postGoal}>Set Goal</Button>
+          <Input s={8} label="New Goal" value={this.state.goalInput} onChange={this.handleInputChange} onKeyPress={this.handleKeyPress}/>
+          <Button className="goalButton" waves="light" onClick={this.postGoal}> Set Goal</Button>
           <Motivational />
         </Row>
         <br />

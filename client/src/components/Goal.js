@@ -16,6 +16,7 @@ export default class Goal extends React.Component {
     this.postSubgoal = this.postSubgoal.bind(this);
     this.getSubgoals = this.getSubgoals.bind(this);
     this.getStep = this.getStep.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
   componentWillMount() {
@@ -84,6 +85,12 @@ export default class Goal extends React.Component {
     this.setState({ subgoal: '' });
   }
 
+  handleKeyPress(e){
+    if(e.key == 'Enter'){
+      this.postSubgoal();
+    }
+  }
+
   render() {
     return (
       <div className="collapsible-body">Progress:
@@ -106,7 +113,7 @@ export default class Goal extends React.Component {
         {this.state.subgoals.map(subgoal =>
           <Subgoal key={`sub ${subgoal.id}`} subgoal={subgoal} status={subgoal.status} id={subgoal.id} user_id={this.props.user_id} goal={subgoal.GoalId} updateSubgoals={this.getSubgoals} />
           )}
-        <Input s={8} label="New Subgoal" onChange={this.handleChange} value={this.state.subgoal} />
+        <Input s={8} label="New Subgoal" onChange={this.handleChange} value={this.state.subgoal} onKeyPress={this.handleKeyPress}/>
         <Button className="subgoalButton" waves="light" onClick={this.postSubgoal}>Set Subgoal</Button>
       </div>
     );
