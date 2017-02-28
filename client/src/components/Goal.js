@@ -51,9 +51,14 @@ export default class Goal extends React.Component {
       success: (data) => {
         console.log('SUCCESS: POSTED INDIVIDUAL GOAL: ', data);
         that.getSubgoals();
+        that.alertConfirmation();
       },
       error: (err) => { console.log('ERROR: COULD NOT POST INDIVIDUAL GOAL', err); },
     });
+  }
+
+  alertConfirmation() {
+    Materialize.toast('Subgoal set!', 1000);
   }
 
   render() {

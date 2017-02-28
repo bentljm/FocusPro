@@ -32,6 +32,15 @@ export default class Dashboard extends React.Component {
   }
 
   componentDidMount() {
+    this.props.auth.event.on('userId_updated', () => {
+      this.setState({
+        profile: this.props.auth.getProfile(),
+      });
+      this.getUserId();
+      this.getAllGoals();
+      this.getBlacklist();
+      this.getSetting();
+    });
     this.getAllGoals();
     this.getBlacklist();
     this.callCustomJQuery();
@@ -126,6 +135,7 @@ export default class Dashboard extends React.Component {
         console.log('SUCCESS: POSTED INDIVIDUAL GOAL: ', data);
         that.setState({ goalInput: '' }); // Not clearing input...
         that.getAllGoals();
+        that.alertConfirmation();
       },
       error: (err) => { console.log('ERROR: COULD NOT POST INDIVIDUAL GOAL', err); },
     });
@@ -133,15 +143,20 @@ export default class Dashboard extends React.Component {
 
   removeGoal(goal_id) {
     const that = this;
+    console.log('goal_id', goal_id);
     $.ajax({
       type: 'DELETE',
-      url: `/api/goals/'${goal_id}`,
+      url: `/api/goals/${goal_id}`,
       success: (data) => {
         console.log('Remove goal:', data);
         that.getAllGoals();
       },
       error: (err) => { console.log('ERROR: COULD NOT REMOVE THE GOAL', err); },
     });
+  }
+
+  alertConfirmation() {
+    Materialize.toast('Goal added!', 1000);
   }
 
   render() {
@@ -156,8 +171,8 @@ export default class Dashboard extends React.Component {
           <Input s={10} value={this.state.dayGoalInput} onChange={this.handleDayGoalChange} /> <Button className="dayGoalButton" waves="light" onClick={this.handleDayGoalSubmission}>Save</Button>
         </Row>
         <h3> Main Goals: </h3>
-        {(this.state.goals.length === 0) && <div>You have no goals set currently.</div>}
-        {(this.state.goals.length > 0) && <ul className="collapsible" data-collapsible="expandable">
+        {(this.state.goals.length === 0 || !this.state.profile.user_id) && <div>You have no goals set currently.</div>}
+        {(this.state.goals.length > 0 && this.state.profile.user_id) && <ul className="collapsible" data-collapsible="expandable">
           {this.state.goals.map(goal =>
             <li key={goal.id}>
               <div className="collapsible-header">{goal.goal}

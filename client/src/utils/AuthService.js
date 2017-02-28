@@ -20,7 +20,9 @@ export default class AuthService {
     this.event = new EventEmitter();
   }
 
+
   _doAuthentication(authResult) {
+    const that = this;
     const createSettings = function (profile) {
       // Get the userId
       let userId = 0;
@@ -30,6 +32,7 @@ export default class AuthService {
         success: (data) => {
           console.log('SUCCESS: GOT USERID', data.data[0].id);
           userId = data.data[0].id;
+          that.event.emit('userId_updated', userId);
         },
         error: (err) => { console.log('ERROR: COULD NOT GET USERID', err); },
       });

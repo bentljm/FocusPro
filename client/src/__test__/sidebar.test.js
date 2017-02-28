@@ -1,6 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import {Sidebar} from '../components/Sidebar.js';
+import Sidebar from '../components/Sidebar.js';
 import { shallow, mount } from 'enzyme';
 
 describe('Given the user is logged in, Sidebar', () => {
