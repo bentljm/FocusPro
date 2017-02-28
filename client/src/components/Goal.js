@@ -1,6 +1,7 @@
 import React from 'react';
 import { Input, Button } from 'react-materialize';
 import Subgoal from './Subgoal';
+import Nouislider from 'react-nouislider';
 
 // Todo: Replace with better slider
 export default class Goal extends React.Component {
@@ -9,6 +10,7 @@ export default class Goal extends React.Component {
     this.state = {
       subgoals: [],
       subgoal: '',
+      step: 1
     };
     this.handleChange = this.handleChange.bind(this);
     this.postSubgoal = this.postSubgoal.bind(this);
@@ -18,6 +20,7 @@ export default class Goal extends React.Component {
   componentDidMount() {
     this.getSubgoals();
     this.callCustomJQuery();
+    this.getStep();
   }
 
   getSubgoals() {
@@ -28,6 +31,7 @@ export default class Goal extends React.Component {
       success: (data) => {
         console.log('SUCCESS: OBTAINED ALL SUBGOALS:', JSON.stringify(data.data));
         that.setState({ subgoals: data.data });
+        that.getStep();
       },
       error: (err) => { console.log('ERROR: COULD NOT GET SUBGOALS', err); },
     });
@@ -38,7 +42,15 @@ export default class Goal extends React.Component {
   }
 
   handleChange(event) {
-    this.setState({ subgoal: event.target.value });
+    this.setState({ subgoal: event.target.value});
+    this.getStep();
+  }
+
+  getStep() {
+    if(this.state.subgoal.length > 0) {
+      var step = Math.round(100/this.state.subgoals.length);
+      this.setState({step: step});
+    }
   }
 
   postSubgoal() {
@@ -68,13 +80,24 @@ export default class Goal extends React.Component {
 
   render() {
     return (
-      <div className="collapsible-body">
-      Progress:
-      <form action="#">
-        <p className="range-field">
-          <input type="range" id="slider" min="0" max="100" />
-        </p>
-      </form>
+      <div className="collapsible-body">Progress:
+      <br /><br /><br />
+      <Nouislider
+        range={{min: 0, max: 100}}
+        start={[0]}
+        step={this.state.step}
+        behaviour={'tap'}
+        format={{
+          from: function(value) {
+            return parseInt(value);
+          },
+          to: function(value) {
+            return parseInt(value);
+          }
+        }}
+        tooltips
+      />
+      <br />
       Subgoals:
       <br />
         {this.state.subgoals.length === 0 && <div> There is no subgoal set currently. </div>}
