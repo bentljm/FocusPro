@@ -1,6 +1,8 @@
 var nodemailer = require('nodemailer');
 var fs = require('fs');
 var handlebars = require('handlebars');
+var gmailPass = process.env.GMAIL_PASS || require('../config/config.js').GMAIL_PASS;
+
 
 function sendMail(name, receiver, reflections) {
 
@@ -11,7 +13,7 @@ function sendMail(name, receiver, reflections) {
       service: 'Gmail',
       auth: {
           user: 'focusproalert@gmail.com', // Your email id
-          pass: 'soccer01' // Your password
+          pass: gmailPass // Your password
       }
     });
   //read through html template
