@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Input, Col, Button, Icon, Toast } from 'react-materialize';
+import { Row, Input, Col, Button, Icon } from 'react-materialize';
 import Goal from './Goal';
 import Site from './Site';
 import Stat from './Stat';
@@ -23,7 +23,6 @@ export default class Dashboard extends React.Component {
     this.handleDayGoalChange = this.handleDayGoalChange.bind(this);
     this.handleDayGoalSubmission = this.handleDayGoalSubmission.bind(this);
     this.removeGoal = this.removeGoal.bind(this);
-
   }
 
   componentWillMount() {
@@ -33,9 +32,9 @@ export default class Dashboard extends React.Component {
   }
 
   componentDidMount() {
-    this.props.auth.event.on('userId_updated', ()=>{
+    this.props.auth.event.on('userId_updated', () => {
       this.setState({
-        profile: this.props.auth.getProfile()
+        profile: this.props.auth.getProfile(),
       });
       this.getUserId();
       this.getAllGoals();
