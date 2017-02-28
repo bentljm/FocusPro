@@ -2,14 +2,45 @@ var config = new Config();
 var gsites = new Sites(config);
 
 function test() {
+  console.log('hello!');
+// var xhr = new XMLHttpRequest();
+// xhr.open("GET", "http://api.example.com/data.json", true);
+// xhr.onreadystatechange = function() {
+//   if (xhr.readyState === 4) {
+//     // JSON.parse does not evaluate the attacker's scripts.
+//     var resp = JSON.parse(xhr.responseText);
+//   } else {
+//     var resp = 'no';
+//   }
+// };
+// xhr.send();
   var text = "Hi there and greetings!";
+  var testBtn = document.createElement("button");
+  var testBtnTxt = document.createTextNode("get users");
+  testBtn.appendChild(testBtnTxt);
+  document.body.appendChild(testBtn);
+  testBtn.setAttribute("id", "testButton");
   var newDiv = document.createElement("div");
-  var newContent = document.createTextNode(text);
-  newDiv.appendChild(newContent); //add the text node to the newly created div.
+  newDiv.setAttribute("id", "testResult");
+  document.body.appendChild(newDiv);
+  testBtn.onclick = function() {
+    console.log('button clicked');
+    $.ajax({
+      url: "http://localhost:7777/api/users",
+      success: function(data) {
+        console.log('success!', data);
+      },
+      error: function(err) {
+        console.log('errror', err);
+      },
+    });
+  };
+  //newDiv.appendChild(newContent); //add the text node to the newly created div.
 
   // add the newly created element and its content into the DOM
-  var currentDiv = document.getElementById("div1");
-  document.body.insertBefore(newDiv, currentDiv);
+  //var currentDiv = document.getElementById("div1");
+  //document.body.insertBefore(testBtn, currentDiv);
+  //document.body.insertBefore(newDiv, currentDiv);
 }
 
 //Add to ignored sites
@@ -134,7 +165,7 @@ function addLocalDisplay() {
     var showAllLink = document.createElement("a");
     showAllLink.onclick = function() {
      chrome.tabs.create({url: "popup.html?show=all"});
-    }
+    };
     showAllLink.setAttribute("id", "show");
     showAllLink.setAttribute("href", "javascript:void(0)");
     showAllLink.setAttribute("class", "pure-button");

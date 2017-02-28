@@ -6,7 +6,7 @@
   "description": "Website time tracker and companion to FocusPro web app",
   "homepage_url": "http://focuspro.herokuapp.com/",
   "background": {
-    "scripts": ["config.js", "sites.js", "tracker.js", "background.js"]
+    "scripts": ["jquery-3.1.1.min.js", "config.js", "sites.js", "tracker.js", "background.js"]
   },
   "permissions": [
           "http://localhost:7777/*",

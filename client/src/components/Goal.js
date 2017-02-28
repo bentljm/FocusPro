@@ -1,7 +1,7 @@
 import React from 'react';
 import { Input, Button } from 'react-materialize';
-import Subgoal from './Subgoal';
 import Nouislider from 'react-nouislider';
+import Subgoal from './Subgoal';
 
 // Todo: Replace with better slider
 export default class Goal extends React.Component {
@@ -10,7 +10,7 @@ export default class Goal extends React.Component {
     this.state = {
       subgoals: [],
       subgoal: '',
-      step: 1
+      step: 1,
     };
     this.handleChange = this.handleChange.bind(this);
     this.postSubgoal = this.postSubgoal.bind(this);
@@ -41,22 +41,22 @@ export default class Goal extends React.Component {
     });
   }
 
-  callCustomJQuery() {
-    $('.collapsible').collapsible();
+  getStep() {
+    if (this.state.subgoals.length > 0) {
+      const step = Math.round(100 / this.state.subgoals.length);
+      this.setState({ step: step });
+    } else {
+      this.setState({ step: 1 });
+    }
   }
 
   handleChange(event) {
-    this.setState({ subgoal: event.target.value});
+    this.setState({ subgoal: event.target.value });
     this.getStep();
   }
 
-  getStep() {
-    if(this.state.subgoals.length > 0) {
-      var step = Math.round(100/this.state.subgoals.length);
-      this.setState({step: step});
-    } else {
-      this.setState({step: 1});
-    }
+  callCustomJQuery() {
+    $('.collapsible').collapsible();
   }
 
   postSubgoal() {
@@ -87,30 +87,30 @@ export default class Goal extends React.Component {
   render() {
     return (
       <div className="collapsible-body">Progress:
-      <br /><br /><br />
-      <Nouislider
-        range={{min: 0, max: 100}}
-        start={[0]}
-        step={this.state.step}
-        behaviour={'tap'}
-        format={{
-          from: function(value) {
-            return parseInt(value) + "%";
-          },
-          to: function(value) {
-            return parseInt(value) + "%";
-          }
-        }}
-        tooltips
-      />
-      <br />
-      Subgoals:
-      <br />
+        <br /><br /><br />
+        <Nouislider
+          range={{ min: 0, max: 100 }}
+          start={[0]}
+          step={this.state.step}
+          behaviour={'tap'}
+          format={{
+            from: (value) => {
+              return `${parseInt(value, 10)}%`;
+            },
+            to: (value) => {
+              return `${parseInt(value, 10)}%`;
+            },
+          }}
+          tooltips
+        />
+        <br />
+        Subgoals:
+        <br />
         {this.state.subgoals.length === 0 && <div> There is no subgoal set currently. </div>}
         {this.state.subgoals.map(subgoal =>
           <Subgoal key={`sub ${subgoal.id}`} subgoal={subgoal} status={subgoal.status} id={subgoal.id} user_id={this.props.user_id} goal={subgoal.GoalId} updateSubgoals={this.getSubgoals} />
           )}
-        <Input s={8} label="New Subgoal" onChange={this.handleChange} value={this.state.subgoal}/>
+        <Input s={8} label="New Subgoal" onChange={this.handleChange} value={this.state.subgoal} />
         <Button className="subgoalButton" waves="light" onClick={this.postSubgoal}>Set Subgoal</Button>
       </div>
     );

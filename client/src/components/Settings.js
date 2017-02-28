@@ -1,12 +1,12 @@
 import React from 'react';
-import {Table, Input, Row, Col, Button, Icon} from 'react-materialize';
+import { Table, Input, Row, Button, Icon } from 'react-materialize';
 
 export default class Settings extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       profile: this.props.auth.getProfile(),
-      setting:{},
+      setting: {},
       userId: '',
       blacklist: [],
       siteURL: '',
@@ -17,7 +17,7 @@ export default class Settings extends React.Component {
       reminderType: '',
       reminderFreq: 0,
       reminderAddress: '',
-      reminderClicked: false
+      reminderClicked: false,
     };
     this.handleSiteChange = this.handleSiteChange.bind(this);
     this.handleSiteTypeChange = this.handleSiteTypeChange.bind(this);
@@ -33,158 +33,150 @@ export default class Settings extends React.Component {
     this.sendNotification = this.sendNotification.bind(this);
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.getUserId();
     this.getSetting();
     this.getBlacklist();
   }
 
   getSetting() {
-    var that = this;
+    const that = this;
     $.ajax({
       type: 'GET', // GET REQUEST
-      url: '/api/users/' + this.state.profile.user_id + '/setting',
-      success: function(data) {
-        console.log("SUCCESS: OBTAINED SETTINGS: ", data);
-        that.setState({setting: data.data});
-        that.setState({image: data.data.picture});
-        that.setState({quote: data.data.quote});
+      url: `/api/users/${this.state.profile.user_id}/setting`,
+      success: (data) => {
+        console.log('SUCCESS: OBTAINED SETTINGS: ', data);
+        that.setState({ setting: data.data });
+        that.setState({ image: data.data.picture });
+        that.setState({ quote: data.data.quote });
       },
-      error: function(err) {console.log("ERROR: COULD NOT GET SETTINGS", err);}
+      error: (err) => { console.log('ERROR: COULD NOT GET SETTINGS', err); },
     });
   }
 
   updateSetting(pic, quote, refl_freq, remind, remind_type, remind_freq, remind_addr) {
     $.ajax({
       type: 'PUT',
-      url: '/api/users/' + this.state.profile.user_id + '/setting',
+      url: `/api/users/${this.state.profile.user_id}/setting`,
       contentType: 'application/json',
-      data: JSON.stringify({picture: pic || this.state.setting.picture,
+      data: JSON.stringify({ picture: pic || this.state.setting.picture,
         quote: quote || this.state.setting.quote,
         reflection_freq: refl_freq || this.state.setting.reflection_freq,
         reminder: remind || this.state.setting.reminder,
         reminder_type: remind_type || this.state.setting.reminder_type,
         reminder_freq: remind_freq || this.state.setting.reminder_freq,
-        reminder_address: remind_addr || this.state.setting.reminder_address}),
-      success: function(data) {console.log("SUCCESS: POSTED SETTING: ", data);},
-      error: function(err) {console.log("ERROR: COULD NOT POST SETTING", err);}
+        reminder_address: remind_addr || this.state.setting.reminder_address }),
+      success: (data) => { console.log('SUCCESS: POSTED SETTING: ', data); },
+      error: (err) => { console.log('ERROR: COULD NOT POST SETTING', err); },
     });
   }
 
   getBlacklist() {
-    var that = this;
+    const that = this;
     $.ajax({
       type: 'GET', // GET REQUEST
-      url: '/api/users/' + this.state.profile.user_id + '/blacklist',
-      success: function(data) {
-        console.log("SUCCESS: OBTAINED BLACKLIST: ", data.data);
-        that.setState({blacklist: data.data});
+      url: `/api/users/${this.state.profile.user_id}/blacklist`,
+      success: (data) => {
+        console.log('SUCCESS: OBTAINED BLACKLIST: ', data.data);
+        that.setState({ blacklist: data.data });
       },
-      error: function(err) {console.log("ERROR: COULD NOT GET BLACKLIST", err);}
+      error: (err) => { console.log('ERROR: COULD NOT GET BLACKLIST', err); },
     });
   }
 
   postBlacklist(siteURL, siteType, siteTime) {
-    var that = this;
+    const that = this;
     $.ajax({
       type: 'POST',
-      url: '/api/users/' + this.state.profile.user_id + '/blacklist',
+      url: `/api/users/${this.state.profile.user_id}/blacklist`,
       contentType: 'application/json',
-      data: JSON.stringify({url: siteURL, blacklist_type: siteType, blacklist_time: siteTime, SettingId: this.state.setting.id}),
-      success: function(data) {
-        console.log("SUCCESS: POSTED BLACKLIST: ", data);
+      data: JSON.stringify({ url: siteURL, blacklist_type: siteType, blacklist_time: siteTime, SettingId: this.state.setting.id }),
+      success: (data) => {
+        console.log('SUCCESS: POSTED BLACKLIST: ', data);
         that.getBlacklist();
       },
-      error: function(err) {console.log("ERROR: COULD NOT POST BLACKLIST", err);}
+      error: (err) => { console.log('ERROR: COULD NOT POST BLACKLIST', err); },
     });
-
   }
 
   deleteBlacklist(url_id) {
-    var that = this;
+    const that = this;
     $.ajax({
       type: 'DELETE',
-      url: '/api/blacklist/' + url_id,
-      success: function(data) {
-        console.log("Sucessfully deleted", data);
+      url: `/api/blacklist/${url_id}`,
+      success: (data) => {
+        console.log('Sucessfully deleted', data);
         that.getBlacklist();
       },
-      error: function(err) {
-        console.log("Error deleting", err);
-      }
+      error: (err) => { console.log('Error deleting', err); },
     });
   }
 
   getUserId() {
-    var that = this;
+    const that = this;
     $.ajax({
       type: 'GET',
-      url: 'api/users/' + this.state.profile.user_id,
-      success: function (data) {
-        console.log("SUCCESS: GOT USERID", data.data[0].id);
-        that.setState({userId: data.data[0].id});
+      url: `api/users/${this.state.profile.user_id}`,
+      success: (data) => {
+        console.log('SUCCESS: GOT USERID', data.data[0].id);
+        that.setState({ userId: data.data[0].id });
       },
-      error: function (err) {
-        console.log('ERROR: COULD NOT GET USERID', err);
-      }
+      error: (err) => { console.log('ERROR: COULD NOT GET USERID', err); },
     });
   }
 
   sendNotification() {
-    var that = this;
     $.ajax({
       type: 'POST',
-      url: 'api/users/' + this.state.profile.user_id + '/sendNotification',
+      url: `api/users/${this.state.profile.user_id}/sendNotification`,
       contentType: 'application/json',
-      data: JSON.stringify({address: this.state.reminderAddress}),
-      success: function (data) {
-        console.log("SUCCESS: SENT NOTIFICATIONS");
+      data: JSON.stringify({ address: this.state.reminderAddress }),
+      success: (data) => {
+        console.log('SUCCESS: SENT NOTIFICATIONS', data);
       },
-      error: function (err) {
-        console.log('ERROR: COULD NOT SEND NOTIFICATIONS', err);
-      }
+      error: (err) => { console.log('ERROR: COULD NOT SEND NOTIFICATIONS', err); },
     });
   }
 
   handleSiteChange(event) {
-    this.setState({siteURL: event.target.value});
+    this.setState({ siteURL: event.target.value });
   }
   handleSiteTypeChange(event) {
-    this.setState({siteType: event.target.value});
+    this.setState({ siteType: event.target.value });
   }
   handleSiteLimitChange(event) {
-    this.setState({siteLimit: event.target.value});
+    this.setState({ siteLimit: event.target.value });
   }
   handleSiteSubmission() {
     this.postBlacklist(this.state.siteURL, this.state.siteType, this.state.siteLimit);
   }
   handleImageChange(event) {
-    this.setState({image: event.target.value});
+    this.setState({ image: event.target.value });
   }
   handleQuoteChange(event) {
-    this.setState({quote: event.target.value});
+    this.setState({ quote: event.target.value });
   }
   handleReminderTypeChange(event) {
-    this.setState({reminderType: event.target.value});
+    this.setState({ reminderType: event.target.value });
   }
   handleReminderAddressChange(event) {
-    this.setState({reminderAddress: event.target.value});
+    this.setState({ reminderAddress: event.target.value });
   }
   handleReminderFreqChange(event) {
-    this.setState({reminderFreq: event.target.value});
+    this.setState({ reminderFreq: event.target.value });
   }
   handleReminderSubmission() {
     this.updateSetting(null, null, null, true, this.state.reminderType, this.state.reminderFreq, this.state.reminderAddress);
-    this.setState({reminderClicked: true});
+    this.setState({ reminderClicked: true });
   }
 
   render() {
-    const {siteURL, siteLimit, siteType} = this.state;
+    const { siteURL, siteLimit, siteType } = this.state;
     const siteSubmitEnabled = siteURL.length > 0 && siteLimit.length > 0 && siteType.length > 0;
-    const {reminderType, reminderAddress, reminderFreq} = this.state;
+    const { reminderType, reminderAddress, reminderFreq } = this.state;
     const reminderSubmitEnabled = reminderType.length > 0 && reminderAddress.length > 0 && reminderFreq.length > 0;
     const sendNotificationEnabled = this.state.reminderClicked;
-    
+
     return (
       <div>
         <h1> Settings </h1>
@@ -199,51 +191,49 @@ export default class Settings extends React.Component {
           </thead>
 
           <tbody>
-            {this.state.blacklist.map((site, index)=>(
-              <tr key = {index}>
-              <td>{site.url}</td>
-              <td>{site.blacklist_type}</td>
-              <td>{site.blacklist_time}</td>
-              <td><a href = '#/settings' onClick = {()=>this.deleteBlacklist(site.id)}><Icon right>delete</Icon></a></td>
+            {this.state.blacklist.map((site, index) => (
+              <tr key={index}>
+                <td>{site.url}</td>
+                <td>{site.blacklist_type}</td>
+                <td>{site.blacklist_time}</td>
+                <td><a href="#/settings" onClick={() => this.deleteBlacklist(site.id)}><Icon right>delete</Icon></a></td>
             </tr>
             ))}
-
           </tbody>
-
         </Table>
         <br />
         <Row>
-          <Input s={5} label="Site" value = {this.state.siteURL} onChange = {this.handleSiteChange} />
-          <Input s={3} type='select' label="Type" defaultValue='1' value = {this.state.siteType} onChange = {this.handleSiteTypeChange}>
-            <option value='1'>Blackout</option>
-            <option value='2'>Block after exceeding</option>
-            <option value='3'>Warn after exceeding</option>
+          <Input s={5} label="Site" value={this.state.siteURL} onChange={this.handleSiteChange} />
+          <Input s={3} type="select" label="Type" defaultValue="1" value={this.state.siteType} onChange={this.handleSiteTypeChange}>
+            <option value="1">Blackout</option>
+            <option value="2">Block after exceeding</option>
+            <option value="3">Warn after exceeding</option>
           </Input>
-          <Input s={2} label="Time Limit (min)" value = {this.state.siteLimit} onChange = {this.handleSiteLimitChange}/>
-          <Button disabled={!siteSubmitEnabled} className="blacklistButton" waves='light' onClick={this.handleSiteSubmission}>Add Site</Button>
+          <Input s={2} label="Time Limit (min)" value={this.state.siteLimit} onChange={this.handleSiteLimitChange} />
+          <Button disabled={!siteSubmitEnabled} className="blacklistButton" waves="light" onClick={this.handleSiteSubmission}>Add Site</Button>
         </Row>
         <h3> Personalization: </h3>
         <Row>
-        <Input s={10} label="Image" value = {this.state.image} onChange = {this.handleImageChange} />
-        <Button className="picButton" waves='light' onClick={()=>this.updateSetting(this.state.image)}>Set Image</Button>
+          <Input s={10} label="Image" value={this.state.image} onChange={this.handleImageChange} />
+          <Button className="picButton" waves="light" onClick={() => this.updateSetting(this.state.image)}>Set Image</Button>
         </Row>
         <Row>
-        <Input s={10} label="Quote" value = {this.state.quote} onChange = {this.handleQuoteChange} />
-        <Button className="quoteButton" waves='light' onClick={()=>this.updateSetting(null, this.state.quote)}>Set Quote</Button>
+          <Input s={10} label="Quote" value={this.state.quote} onChange={this.handleQuoteChange} />
+          <Button className="quoteButton" waves="light" onClick={() => this.updateSetting(null, this.state.quote)}>Set Quote</Button>
         </Row>
         <Row>
-        <Input s={2} type='select' label="Reminder Type" defaultValue='1' value = {this.state.reminderType} onChange = {this.handleReminderTypeChange}>
-          <option value='1'>No Reminder</option>
-          <option value='2'>Text</option>
-          <option value='3'>Email</option>
-        </Input>
-        <Input s={6} label="Number/Email Address" value = {this.state.reminderAddress} onChange = {this.handleReminderAddressChange}/>
-        <Input s={2} type='select' label="Frequency" defaultValue='1' value = {this.state.reminderFreq} onChange = {this.handleReminderFreqChange}>
-          <option value='1'>Daily</option>
-          <option value='2'>Weekly</option>
-        </Input>
-        <Button disabled={!reminderSubmitEnabled} className="reminderButton" waves='light' onClick={this.handleReminderSubmission}>Set Reminder</Button>
-        <Button disabled={!sendNotificationEnabled} waves='light' onClick={this.sendNotification}>Send Notification Now</Button>
+          <Input s={2} type="select" label="Reminder Type" defaultValue="1" value={this.state.reminderType} onChange={this.handleReminderTypeChange}>
+            <option value="1">No Reminder</option>
+            <option value="2">Text</option>
+            <option value="3">Email</option>
+          </Input>
+          <Input s={6} label="Number/Email Address" value={this.state.reminderAddress} onChange={this.handleReminderAddressChange} />
+          <Input s={2} type="select" label="Frequency" defaultValue="1" value={this.state.reminderFreq} onChange={this.handleReminderFreqChange}>
+            <option value="1">Daily</option>
+            <option value="2">Weekly</option>
+          </Input>
+          <Button disabled={!reminderSubmitEnabled} className="reminderButton" waves="light" onClick={this.handleReminderSubmission}>Set Reminder</Button>
+          <Button disabled={!sendNotificationEnabled} waves="light" onClick={this.sendNotification}>Send Notification Now</Button>
         </Row>
         <h3> Chrome Extension: </h3>
         Forgot to download the extension? Download it here: ___________

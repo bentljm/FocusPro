@@ -11,7 +11,7 @@
     "cover:frontend": "jest client/* --coverage",
     "cover:backend": "istanbul cover _mocha -- server/test/*.js -R spec ",
     "devstart": "nodemon server/server.js",
-    "heroku-postbuild": "webpack -p --config ./webpack.config.js --progress"
+    "heroku-postbuild": "webpack -p --config ./webpack.prod.config.js --progress"
   },
   "repository": {
     "type": "git",
