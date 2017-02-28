@@ -128,13 +128,15 @@ export default class Settings extends React.Component {
   }
 
   sendNotification() {
+    const that = this;
     $.ajax({
       type: 'POST',
       url: `api/users/${this.state.profile.user_id}/sendNotification`,
       contentType: 'application/json',
       data: JSON.stringify({address: this.state.reminderAddress, name: this.state.profile.given_name}),
       success: (data) => {
-        console.log('SUCCESS: SENT NOTIFICATIONS');
+        console.log('SUCCESS: SENT NOTIFICATIONS', data);
+        that.alertUser('Email notification');
       },
       error: (err) => { console.log('ERROR: COULD NOT SEND NOTIFICATIONS', err); },
     });
@@ -151,7 +153,7 @@ export default class Settings extends React.Component {
   }
   handleSiteSubmission() {
     this.postBlacklist(this.state.siteURL, this.state.siteType, this.state.siteLimit);
-    this.alertSettingAdded('Blacklist site');
+    this.alertUser('Blacklist site');
   }
   handleImageChange(event) {
     this.setState({ image: event.target.value });
@@ -161,11 +163,11 @@ export default class Settings extends React.Component {
   }
   handleImageSubmission() {
     this.updateSetting(this.state.image);
-    this.alertSettingAdded('Image');
+    this.alertUser('Image');
   }
   handleQuoteSubmission() {
     this.updateSetting(null, this.state.quote);
-    this.alertSettingAdded('Quote');
+    this.alertUser('Quote');
   }
   handleReminderTypeChange(event) {
     this.setState({ reminderType: event.target.value });
@@ -179,10 +181,10 @@ export default class Settings extends React.Component {
   handleReminderSubmission() {
     this.updateSetting(null, null, null, true, this.state.reminderType, this.state.reminderFreq, this.state.reminderAddress);
     this.setState({ reminderClicked: true });
-    this.alertSettingAdded('Reminder');
+    this.alertUser('Reminder');
   }
 
-  alertSettingAdded(str) {
+  alertUser(str) {
     Materialize.toast(`${str} added!`, 1000);
   }
 
