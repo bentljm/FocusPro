@@ -171,8 +171,8 @@ export default class Dashboard extends React.Component {
   render() {
     return (
       <div>
-        <h1> Welcome, {this.state.profile.given_name} </h1>
-        {this.state.setting.quote}
+        <h1> Welcome, {this.state.profile.nickname} </h1>
+        <blockquote><p>{this.state.setting.quote}</p></blockquote>
         <br />
         <br />
         <h3> Goal of the Day: </h3>
