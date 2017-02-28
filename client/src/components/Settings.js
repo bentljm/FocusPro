@@ -48,9 +48,9 @@ export default class Settings extends React.Component {
       url: `/api/users/${this.state.profile.user_id}/setting`,
       success: (data) => {
         console.log('SUCCESS: OBTAINED SETTINGS: ', data);
-        that.setState({ setting: data.data });
-        that.setState({ image: data.data.picture });
-        that.setState({ quote: data.data.quote });
+        that.setState({ setting: data.data[0] });
+        that.setState({ image: data.data[0].picture });
+        that.setState({ quote: data.data[0].quote });
       },
       error: (err) => { console.log('ERROR: COULD NOT GET SETTINGS', err); },
     });
@@ -61,7 +61,8 @@ export default class Settings extends React.Component {
       type: 'PUT',
       url: `/api/users/${this.state.profile.user_id}/setting`,
       contentType: 'application/json',
-      data: JSON.stringify({ picture: pic || this.state.setting.picture,
+      data: JSON.stringify({
+        picture: pic || this.state.setting.picture,
         quote: quote || this.state.setting.quote,
         reflection_freq: refl_freq || this.state.setting.reflection_freq,
         reminder: remind || this.state.setting.reminder,
