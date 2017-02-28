@@ -13,14 +13,29 @@ export default class Subgoal extends React.Component {
 
   handleClick() {
     const that = this;
-    this.setState({ status: !this.state.status });
     $.ajax({
       type: 'PUT',
       url: `/api/subgoals/${this.props.id}`,
       contentType: 'application/json',
-      data: JSON.stringify({ status: that.state.status }),
-      success: (data) => { console.log('SUCCESS: UPDATED SUBGOAL: ', data); },
+      data: JSON.stringify({ status: !that.state.status }),
+      success: (data) => {
+        console.log('SUCCESS: UPDATED SUBGOAL: ', data);
+        that.getSubgoal();
+      },
       error: (err) => { console.log('ERROR: COULD NOT PUT INDIVIDUAL SUBGOAL', err); },
+    });
+  }
+
+  getSubgoal() {
+    $.ajax({
+      type: 'GET',
+      url: `/api/subgoals/${this.props.id}`,
+      contentType: 'application/json',
+      success: (data) => {
+        console.log('SUCCESS: GET SINGLE SUBGOAL: ', data);
+        this.setState({ status: data.data.status });
+      },
+      error: (err) => { console.log('ERROR: COULD NOT GET SINGLE SUBGOAL', err); },
     });
   }
 

@@ -123,7 +123,7 @@ function getSingleGoal(req, res) {
   });
 }
 
-function getSubGoals (req, res) {
+function getSubGoals(req, res) {
   var goalId = req.params.goal_id;
   db.Subgoal.findAll({where: { GoalId: goalId}})
   .then((data)=>{
@@ -133,6 +133,18 @@ function getSubGoals (req, res) {
   })
   .catch((err)=>{
     res.send({'ERROR: GET SUBGOALS': err});
+  });
+}
+
+function getSingleSubgoal(req, res) {
+  db.Subgoal.find({where: {id: req.params.subgoal_id}})
+  .then((data) => {
+    res.json({
+      data: data
+    });
+  })
+  .catch((err)=>{
+    res.send({'ERROR: GET SINGLE SUBGOAL': err});
   });
 }
 
@@ -397,6 +409,7 @@ module.exports = {
   getSingleGoal: getSingleGoal,
   postSingleGoal: postSingleGoal,
   getSubGoals: getSubGoals,
+  getSingleSubgoal: getSingleSubgoal,
   postSubGoal: postSubGoal,
   removeSubGoal: removeSubGoal,
   removeSingleGoal: removeSingleGoal,
