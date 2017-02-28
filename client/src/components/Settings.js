@@ -130,15 +130,9 @@ export default class Settings extends React.Component {
       type: 'POST',
       url: `api/users/${this.state.profile.user_id}/sendNotification`,
       contentType: 'application/json',
-<<<<<<< HEAD
-      data: JSON.stringify({ address: this.state.reminderAddress }),
-      success: (data) => {
-        console.log('SUCCESS: SENT NOTIFICATIONS', data);
-=======
       data: JSON.stringify({address: this.state.reminderAddress, name: this.state.profile.given_name}),
       success: function (data) {
         console.log("SUCCESS: SENT NOTIFICATIONS");
->>>>>>> Update email/text notifications to accept custom name and reflection questions
       },
       error: (err) => { console.log('ERROR: COULD NOT SEND NOTIFICATIONS', err); },
     });
