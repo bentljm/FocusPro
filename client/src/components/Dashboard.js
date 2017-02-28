@@ -172,11 +172,11 @@ export default class Dashboard extends React.Component {
     return (
       <div>
         <h1> Welcome, {this.state.profile.nickname} </h1>
+        <br />
         <div className="motiPic">
-          <img src="https://i0.wp.com/www.havoca.org/wp-content/uploads/2014/04/havoca-affirmations.jpg?w=900&ssl=1" alt="motivational picture" width="300" height="200" />
+          <img src="https://i0.wp.com/www.havoca.org/wp-content/uploads/2014/04/havoca-affirmations.jpg?w=900&ssl=1" alt="motivational picture"  />
         </div>
         <blockquote><p>{this.state.setting.quote}</p></blockquote>
-        <br />
         <br />
         <h3> Goal of the Day: </h3>
         <Row>
