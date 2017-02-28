@@ -109,76 +109,6 @@
         color: #3498db;
         text-decoration: underline; }
       /* -------------------------------------
-          BUTTONS
-      ------------------------------------- */
-      .btn {
-        box-sizing: border-box;
-        width: 100%; }
-        .btn > tbody > tr > td {
-          padding-bottom: 15px; }
-        .btn table {
-          width: auto; }
-        .btn table td {
-          background-color: #ffffff;
-          border-radius: 5px;
-          text-align: center; }
-        .btn a {
-          background-color: #ffffff;
-          border: solid 1px #3498db;
-          border-radius: 5px;
-          box-sizing: border-box;
-          color: #3498db;
-          cursor: pointer;
-          display: inline-block;
-          font-size: 14px;
-          font-weight: bold;
-          margin: 0;
-          padding: 12px 25px;
-          text-decoration: none;
-          text-transform: capitalize; }
-      .btn-primary table td {
-        background-color: #3498db; }
-      .btn-primary a {
-        background-color: #3498db;
-        border-color: #3498db;
-        color: #ffffff; }
-      /* -------------------------------------
-          OTHER STYLES THAT MIGHT BE USEFUL
-      ------------------------------------- */
-      .last {
-        margin-bottom: 0; }
-      .first {
-        margin-top: 0; }
-      .align-center {
-        text-align: center; }
-      .align-right {
-        text-align: right; }
-      .align-left {
-        text-align: left; }
-      .clear {
-        clear: both; }
-      .mt0 {
-        margin-top: 0; }
-      .mb0 {
-        margin-bottom: 0; }
-      .preheader {
-        color: transparent;
-        display: none;
-        height: 0;
-        max-height: 0;
-        max-width: 0;
-        opacity: 0;
-        overflow: hidden;
-        mso-hide: all;
-        visibility: hidden;
-        width: 0; }
-      .powered-by a {
-        text-decoration: none; }
-      hr {
-        border: 0;
-        border-bottom: 1px solid #f6f6f6;
-        Margin: 20px 0; }
-      /* -------------------------------------
           RESPONSIVE AND MOBILE FRIENDLY STYLES
       ------------------------------------- */
       @media only screen and (max-width: 620px) {
@@ -255,11 +185,11 @@
                   <table border="0" cellpadding="0" cellspacing="0">
                     <tr>
                       <td>
-                        <p>Hi there,</p>
+                        <p>Hi {{ name }},</p>
                         <p>Welcome to FocusPro</p>
-                        <p>Here are some questions to get you thinking about how you spent
-                        your time today</p>
-                        <p>We think you are doing great. Keep up the good work!</p>
+                        <p>Here are the self-reflection questions you added to your profile.</p>
+                        <p>{{ reflections }}</p>
+                        <p>We think you are doing a fantastic job. Keep up the great work!</p>
                       </td>
                     </tr>
                   </table>

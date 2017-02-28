@@ -6,7 +6,7 @@ var express = require('express');
 var path = require('path');
 var app = express();
 
-//var email = require('../client/src/email/emailNotification.js');
+//var email = require('./notifications/emailNotification.js');
 
 app.use(bodyparser.json());
 app.use(express.static(path.join(__dirname, '../client')));
