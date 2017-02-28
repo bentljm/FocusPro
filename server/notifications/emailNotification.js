@@ -24,7 +24,7 @@ function sendMail(name, receiver, reflections) {
       //define name and reflection variables
       var emailTemplateVars = {
         name: name || "Guest",
-        reflections: reflections || "How well do you think you spent your time today?" 
+        reflections: reflections || "How well do you think you spent your time today?"
       };
       //inject variables into email template
       var emailHTML = emailTemplate(emailTemplateVars);

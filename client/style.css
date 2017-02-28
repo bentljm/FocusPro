@@ -95,3 +95,21 @@ i.material-icons.right {
   height: 800px;
   background-color: #fff;
 }
+
+blockquote p{
+  display: inline;
+  font-style: italic;
+  font-size: 205%;
+  font-family: "Baskerville", "Baskerville Old Face", "Hoefler Text", "Garamond", "Times New Roman", serif;
+}
+
+/*.motiPic{
+  margin-left: auto;
+  margin-right: auto;
+}*/
+
+.motiPic img{
+  left: 50%;
+  height: 200px;
+  width: 300px;
+}

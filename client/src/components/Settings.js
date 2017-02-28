@@ -24,6 +24,8 @@ export default class Settings extends React.Component {
     this.handleSiteLimitChange = this.handleSiteLimitChange.bind(this);
     this.handleSiteSubmission = this.handleSiteSubmission.bind(this);
     this.handleImageChange = this.handleImageChange.bind(this);
+    this.handleImageSubmission = this.handleImageSubmission.bind(this);
+    this.handleQuoteSubmission = this.handleQuoteSubmission.bind(this);
     this.handleQuoteChange = this.handleQuoteChange.bind(this);
     this.handleReminderSubmission = this.handleReminderSubmission.bind(this);
     this.handleReminderTypeChange = this.handleReminderTypeChange.bind(this);
@@ -126,13 +128,15 @@ export default class Settings extends React.Component {
   }
 
   sendNotification() {
+    const that = this;
     $.ajax({
       type: 'POST',
       url: `api/users/${this.state.profile.user_id}/sendNotification`,
       contentType: 'application/json',
       data: JSON.stringify({address: this.state.reminderAddress, name: this.state.profile.given_name}),
       success: (data) => {
-        console.log('SUCCESS: SENT NOTIFICATIONS');
+        console.log('SUCCESS: SENT NOTIFICATIONS', data);
+        that.alertUser('Email notification');
       },
       error: (err) => { console.log('ERROR: COULD NOT SEND NOTIFICATIONS', err); },
     });
@@ -149,12 +153,21 @@ export default class Settings extends React.Component {
   }
   handleSiteSubmission() {
     this.postBlacklist(this.state.siteURL, this.state.siteType, this.state.siteLimit);
+    this.alertUser('Blacklist site');
   }
   handleImageChange(event) {
     this.setState({ image: event.target.value });
   }
   handleQuoteChange(event) {
     this.setState({ quote: event.target.value });
+  }
+  handleImageSubmission() {
+    this.updateSetting(this.state.image);
+    this.alertUser('Image');
+  }
+  handleQuoteSubmission() {
+    this.updateSetting(null, this.state.quote);
+    this.alertUser('Quote');
   }
   handleReminderTypeChange(event) {
     this.setState({ reminderType: event.target.value });
@@ -168,6 +181,11 @@ export default class Settings extends React.Component {
   handleReminderSubmission() {
     this.updateSetting(null, null, null, true, this.state.reminderType, this.state.reminderFreq, this.state.reminderAddress);
     this.setState({ reminderClicked: true });
+    this.alertUser('Reminder');
+  }
+
+  alertUser(str) {
+    Materialize.toast(`${str} added!`, 1000);
   }
 
   render() {
@@ -215,11 +233,11 @@ export default class Settings extends React.Component {
         <h3> Personalization: </h3>
         <Row>
           <Input s={10} label="Image" value={this.state.image} onChange={this.handleImageChange} />
-          <Button className="picButton" waves="light" onClick={() => this.updateSetting(this.state.image)}>Set Image</Button>
+          <Button className="picButton" waves="light" onClick={this.handleImageSubmission}>Set Image</Button>
         </Row>
         <Row>
           <Input s={10} label="Quote" value={this.state.quote} onChange={this.handleQuoteChange} />
-          <Button className="quoteButton" waves="light" onClick={() => this.updateSetting(null, this.state.quote)}>Set Quote</Button>
+          <Button className="quoteButton" waves="light" onClick={this.handleQuoteSubmission}>Set Quote</Button>
         </Row>
         <Row>
           <Input s={2} type="select" label="Reminder Type" defaultValue="1" value={this.state.reminderType} onChange={this.handleReminderTypeChange}>

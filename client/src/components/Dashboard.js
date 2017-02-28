@@ -114,12 +114,16 @@ export default class Dashboard extends React.Component {
   }
 
   handleDayGoalSubmission() {
+    const that = this;
     $.ajax({
       type: 'PUT',
       url: `/api/users/${this.state.profile.user_id}`,
       contentType: 'application/json',
       data: JSON.stringify({ daily_goal: this.state.dayGoalInput }),
-      success: (data) => { console.log('Update daily goal to', data); },
+      success: (data) => {
+        console.log('Update daily goal to', data);
+        that.alertGoalAdded('Goal of the Day');
+      },
       error: (err) => { console.log('Error updating daily goal', err); },
     });
   }
@@ -133,10 +137,9 @@ export default class Dashboard extends React.Component {
       data: JSON.stringify({ goal: this.state.goalInput, progress: 0, goal_picture: '', UserId: this.state.userId }),
       success: (data) => {
         console.log('SUCCESS: POSTED INDIVIDUAL GOAL: ', data);
-        that.setState({ goalInput: '' }); // Not clearing input...
         that.getAllGoals();
         that.cleanInput();
-        that.alertConfirmation();
+        that.alertGoalAdded('Goal');
       },
       error: (err) => { console.log('ERROR: COULD NOT POST INDIVIDUAL GOAL', err); },
     });
@@ -156,9 +159,10 @@ export default class Dashboard extends React.Component {
     });
   }
 
-  alertConfirmation() {
-    Materialize.toast('Goal added!', 1000);
+  alertGoalAdded(str) {
+    Materialize.toast(`${str} added!`, 1000);
   }
+
 
   cleanInput() {
     this.setState({ goalInput: '' });
@@ -167,9 +171,12 @@ export default class Dashboard extends React.Component {
   render() {
     return (
       <div>
-        <h1> Welcome, {this.state.profile.given_name} </h1>
-        {this.state.setting.quote}
+        <h1> Welcome, {this.state.profile.nickname} </h1>
         <br />
+        <div className="motiPic">
+          <img src="https://i0.wp.com/www.havoca.org/wp-content/uploads/2014/04/havoca-affirmations.jpg?w=900&ssl=1" alt="motivational picture"  />
+        </div>
+        <blockquote><p>{this.state.setting.quote}</p></blockquote>
         <br />
         <h3> Goal of the Day: </h3>
         <Row>
