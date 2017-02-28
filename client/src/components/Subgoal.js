@@ -16,7 +16,7 @@ export default class Subgoal extends React.Component {
     this.setState({ status: !this.state.status });
     $.ajax({
       type: 'PUT',
-      url: '/api/users/' + this.props.user_id + '/goals/' + this.props.goal + '/subgoals/' + this.props.id,
+      url: `/api/users/${this.props.user_id}/goals/${this.props.goal}/subgoals/${this.props.id}`,
       contentType: 'application/json',
       data: JSON.stringify({ status: that.state.status }),
       success: (data) => { console.log('SUCCESS: UPDATED SUBGOAL: ', data); },
@@ -28,7 +28,7 @@ export default class Subgoal extends React.Component {
     const that = this;
     $.ajax({
       type: 'DELETE',
-      url: '/api/subgoals/' + this.props.id,
+      url: `/api/subgoals/${this.props.id}`,
       success: (data) => {
         console.log('Remove subgoal:', data);
         that.props.updateSubgoals();

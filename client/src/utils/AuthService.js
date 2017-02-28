@@ -13,20 +13,20 @@ export default class AuthService {
       },
     });
     // Add callback for lock `authenticated` event
-    this.lock.on('authenticated', this.doAuthentication.bind(this));
+    this.lock.on('authenticated', this._doAuthentication.bind(this));
     // binds login functions to keep this context
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
     this.event = new EventEmitter();
   }
 
-  doAuthentication(authResult) {
+  _doAuthentication(authResult) {
     const createSettings = function (profile) {
       // Get the userId
       let userId = 0;
       $.ajax({
         type: 'GET',
-        url: 'api/users/' + profile.user_id,
+        url: `api/users/${profile.user_id}`,
         success: (data) => {
           console.log('SUCCESS: GOT USERID', data.data[0].id);
           userId = data.data[0].id;
@@ -37,7 +37,7 @@ export default class AuthService {
       // findOrCreate settings for user
       $.ajax({
         type: 'GET',
-        url: '/api/users/' + profile.user_id + '/setting',
+        url: `/api/users/${profile.user_id}/setting`,
         contentType: 'application/json',
         data: JSON.stringify({ picture: profile.picture, quote: '"The way to get started is to quit talking and begin doing." - Walt Disney', reflection_freq: 0, reminder: false, reminder_type: '', reminder_freq: 0, reminder_address: '', UserId: userId }),
         success: (data) => { console.log('SUCCESS: POSTED SETTING: ', data); },
@@ -59,7 +59,7 @@ export default class AuthService {
           contentType: 'application/json',
           data: JSON.stringify({ username: profile.given_name, auth0_id: profile.user_id, daily_goal: '', email: profile.email }),
           success: (data) => {
-            console.log('SUCCESS: POSTED USER: ' + JSON.stringify(data));
+            console.log('SUCCESS: POSTED USER:', JSON.stringify(data));
             createSettings(profile);
           },
           error: (err) => { console.log('ERROR: COULD NOT POST USER ', err); },
