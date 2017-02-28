@@ -43,9 +43,12 @@ function getSettings(req, res, next) { // Get settings for specific user.
       });
     }).catch(function (err) { // Error handling for callback findAll.
       return next(err);
+    }).catch(function (err) { // Error handling for callback findAll.
+      return next(err);
     });
   });
 }
+
 function getBlackList(req, res) {
   var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
   db.Url.findAll({where: {auth0_id: auth0_id}})

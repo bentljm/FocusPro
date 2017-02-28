@@ -130,9 +130,9 @@ export default class Settings extends React.Component {
       type: 'POST',
       url: `api/users/${this.state.profile.user_id}/sendNotification`,
       contentType: 'application/json',
-      data: JSON.stringify({ address: this.state.reminderAddress }),
+      data: JSON.stringify({address: this.state.reminderAddress, name: this.state.profile.given_name}),
       success: (data) => {
-        console.log('SUCCESS: SENT NOTIFICATIONS', data);
+        console.log('SUCCESS: SENT NOTIFICATIONS');
       },
       error: (err) => { console.log('ERROR: COULD NOT SEND NOTIFICATIONS', err); },
     });
