@@ -23,6 +23,7 @@ export default class Dashboard extends React.Component {
     this.handleDayGoalChange = this.handleDayGoalChange.bind(this);
     this.handleDayGoalSubmission = this.handleDayGoalSubmission.bind(this);
     this.removeGoal = this.removeGoal.bind(this);
+
   }
 
   componentWillMount() {
@@ -32,6 +33,15 @@ export default class Dashboard extends React.Component {
   }
 
   componentDidMount() {
+    this.props.auth.event.on('userId_updated', ()=>{
+      this.setState({
+        profile: this.props.auth.getProfile()
+      });
+      this.getUserId();
+      this.getAllGoals();
+      this.getBlacklist();
+      this.getSetting();
+    });
     this.getAllGoals();
     this.getBlacklist();
     this.callCustomJQuery();
@@ -126,6 +136,7 @@ export default class Dashboard extends React.Component {
         console.log('SUCCESS: POSTED INDIVIDUAL GOAL: ', data);
         that.setState({ goalInput: '' }); // Not clearing input...
         that.getAllGoals();
+        that.alertConfirmation();
       },
       error: (err) => { console.log('ERROR: COULD NOT POST INDIVIDUAL GOAL', err); },
     });
@@ -142,6 +153,10 @@ export default class Dashboard extends React.Component {
       },
       error: (err) => { console.log('ERROR: COULD NOT REMOVE THE GOAL', err); },
     });
+  }
+
+  alertConfirmation() {
+    Materialize.toast('Goal set!', 1000);
   }
 
   render() {
