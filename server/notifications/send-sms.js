@@ -16,6 +16,4 @@ var sendText = function(recipientNumber) {
 	});
 };
 
-//sendText(4257363511);
-
 module.exports = sendText;

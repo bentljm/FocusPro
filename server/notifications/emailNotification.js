@@ -38,6 +38,4 @@ function sendMail(receiver) {
   });
 }
 
-//sendMail("bentljm@gmail.com");
-
 module.exports = sendMail;
