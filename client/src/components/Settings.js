@@ -33,6 +33,9 @@ export default class Settings extends React.Component {
     this.handleReminderFreqChange = this.handleReminderFreqChange.bind(this);
     this.deleteBlacklist = this.deleteBlacklist.bind(this);
     this.sendNotification = this.sendNotification.bind(this);
+    this.handleImageKeyPress = this.handleImageKeyPress.bind(this);
+    this.handleQuoteKeyPress = this.handleQuoteKeyPress.bind(this);
+    this.handleSiteKeyPress = this.handleSiteKeyPress.bind(this);
   }
 
   componentDidMount() {
@@ -185,10 +188,26 @@ export default class Settings extends React.Component {
     this.setState({ reminderClicked: true });
     this.alertUser('Reminder');
   }
+  handleImageKeyPress(e){
+    if(e.key == 'Enter'){
+      this.handleImageSubmission();
+    }
+  }
+  handleQuoteKeyPress(e){
+    if(e.key == 'Enter'){
+      this.handleQuoteSubmission();
+    }
+  }
+  handleSiteKeyPress(e){
+    if(e.key == 'Enter'){
+      this.handleSiteSubmission();
+    }
+  }
 
   alertUser(str) {
     Materialize.toast(`${str} added!`, 1000);
   }
+
 
   render() {
     const { siteURL, siteLimit, siteType } = this.state;
@@ -229,18 +248,20 @@ export default class Settings extends React.Component {
             <option value="2">Block after exceeding</option>
             <option value="3">Warn after exceeding</option>
           </Input>
-          <Input s={2} label="Time Limit (min)" value={this.state.siteLimit} onChange={this.handleSiteLimitChange} />
+          <Input s={2} label="Time Limit (min)" value={this.state.siteLimit} onChange={this.handleSiteLimitChange} onKeyPress={this.handleSiteKeyPress}/>
           <Button disabled={!siteSubmitEnabled} className="blacklistButton" waves="light" onClick={this.handleSiteSubmission}>Add Site</Button>
         </Row>
+        <br />
         <h3> Personalization: </h3>
         <Row>
-          <Input s={10} label="Image" value={this.state.image} onChange={this.handleImageChange} />
+          <Input s={10} label="Image" value={this.state.image} onChange={this.handleImageChange} onKeyPress={this.handleImageKeyPress}/>
           <Button className="picButton" waves="light" onClick={this.handleImageSubmission}>Set Image</Button>
         </Row>
         <Row>
-          <Input s={10} label="Quote" value={this.state.quote} onChange={this.handleQuoteChange} />
+          <Input s={10} label="Quote" value={this.state.quote} onChange={this.handleQuoteChange} onKeyPress={this.handleQuoteKeyPress}/>
           <Button className="quoteButton" waves="light" onClick={this.handleQuoteSubmission}>Set Quote</Button>
         </Row>
+        <br />
         <Row>
           <Input s={2} type="select" label="Reminder Type" defaultValue="1" value={this.state.reminderType} onChange={this.handleReminderTypeChange}>
             <option value="1">No Reminder</option>
@@ -255,6 +276,7 @@ export default class Settings extends React.Component {
           <Button disabled={!reminderSubmitEnabled} className="reminderButton" waves="light" onClick={this.handleReminderSubmission}>Set Reminder</Button>
           <Button disabled={!sendNotificationEnabled} waves="light" onClick={this.sendNotification}>Send Notification Now</Button>
         </Row>
+        <br />
         <h3> Chrome Extension: </h3>
         Forgot to download the extension? Download it here: ___________
         Your id is {this.state.profile.user_id}. Please enter it into the extension to connect.
