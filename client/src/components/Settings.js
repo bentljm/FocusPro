@@ -256,6 +256,7 @@ export default class Settings extends React.Component {
         </Row>
         <h3> Chrome Extension: </h3>
         Forgot to download the extension? Download it here: ___________
+        Your id is {this.state.profile.user_id}. Please enter it into the extension to connect.
       </div>
     );
   }

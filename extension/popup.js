@@ -14,19 +14,21 @@ function test() {
 //   }
 // };
 // xhr.send();
-  var text = "Hi there and greetings!";
+  var newInput = document.createElement("input");
+  newInput.setAttribute("id", "authId");
+  document.body.appendChild(newInput);
   var testBtn = document.createElement("button");
-  var testBtnTxt = document.createTextNode("get users");
+  var testBtnTxt = document.createTextNode("Send Data");
   testBtn.appendChild(testBtnTxt);
   document.body.appendChild(testBtn);
   testBtn.setAttribute("id", "testButton");
-  var newDiv = document.createElement("div");
-  newDiv.setAttribute("id", "testResult");
-  document.body.appendChild(newDiv);
   testBtn.onclick = function() {
-    console.log('button clicked');
+    console.log('button clicked', newInput.value);
     $.ajax({
-      url: "http://localhost:7777/api/users",
+      type: 'POST',
+      url: `http://localhost:7777/api/users/${newInput.value}/extension_data`,
+      contentType: 'application/json',
+      data: JSON.stringify({url: 'www.mangastream.com', time: 60, freq: 0}),
       success: function(data) {
         console.log('success!', data);
       },
@@ -35,12 +37,6 @@ function test() {
       },
     });
   };
-  //newDiv.appendChild(newContent); //add the text node to the newly created div.
-
-  // add the newly created element and its content into the DOM
-  //var currentDiv = document.getElementById("div1");
-  //document.body.insertBefore(testBtn, currentDiv);
-  //document.body.insertBefore(newDiv, currentDiv);
 }
 
 //Add to ignored sites
