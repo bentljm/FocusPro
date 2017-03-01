@@ -216,15 +216,15 @@ export default class Dashboard extends React.Component {
         <h3> Stats: </h3>
         <Row>
           <Col s={4}>
-            <Stat />
+            <Stat profile={this.state.profile} />
             Today's Stats
           </Col>
           <Col s={4}>
-            <Stat />
+            <Stat profile={this.state.profile} />
             Week's Stats
           </Col>
           <Col s={4}>
-            <Stat />
+            <Stat profile={this.state.profile} />
             All Time Stats
           </Col>
         </Row>
