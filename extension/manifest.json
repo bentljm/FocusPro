@@ -5,6 +5,12 @@
   "version": "0.1",
   "description": "Website time tracker and companion to FocusPro web app",
   "homepage_url": "http://focuspro.herokuapp.com/",
+  "icons": {
+            "16": "icon16.png",
+            "19": "icon19.png",
+            "48": "icon48.png",
+            "128": "icon128.png"
+  },
   "background": {
     "scripts": ["jquery-3.1.1.min.js", "config.js", "sites.js", "tracker.js", "background.js"]
   },
@@ -29,7 +35,6 @@
     }
   ],
   "browser_action": {
-    "default_icon": "icon.png",
     "default_title": "Time Tracker",
     "default_popup": "popup.html"
   },
