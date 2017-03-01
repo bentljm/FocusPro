@@ -19,11 +19,10 @@ module.exports = function(app, express) {
 
 
   app.get('/api/users/:auth0_id/extension_data', controller.getExtension); // Get individual extention data
-
+  app.post('/api/users/:auth0_id/extension_data', controller.upsertExtension); // Upsert individual extention data
 
   app.get('/api/users/:auth0_id/reflections', controller.getReflections); // Get all reflection data
   app.post('/api/users/:auth0_id/reflections', controller.postReflectionId); // Post individual reflection id
-  // app.get('/api/users/:auth0_id/reflections/:reflection_id', controller.getReflectionId); // Get individual reflection id
 
   app.get('/api/users/:auth0_id/goals', controller.getAllGoals); // Get all goals
   app.get('/api/goals/:goal_id', controller.getSingleGoal); // Get single goal
