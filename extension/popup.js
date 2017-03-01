@@ -2,18 +2,6 @@ var config = new Config();
 var gsites = new Sites(config);
 
 function test() {
-  console.log('hello!');
-// var xhr = new XMLHttpRequest();
-// xhr.open("GET", "http://api.example.com/data.json", true);
-// xhr.onreadystatechange = function() {
-//   if (xhr.readyState === 4) {
-//     // JSON.parse does not evaluate the attacker's scripts.
-//     var resp = JSON.parse(xhr.responseText);
-//   } else {
-//     var resp = 'no';
-//   }
-// };
-// xhr.send();
   var newInput = document.createElement("input");
   newInput.setAttribute("id", "authId");
   document.body.appendChild(newInput);
@@ -23,12 +11,16 @@ function test() {
   document.body.appendChild(testBtn);
   testBtn.setAttribute("id", "testButton");
   testBtn.onclick = function() {
-    console.log('button clicked', newInput.value);
+    // Get all sites and store in array to be parsed and stored in db
+    var allSites = [];
+    for(var prop in gsites.sites) {
+      allSites.push({url: prop, time: gsites.sites[prop], freq: 0});
+    }
     $.ajax({
       type: 'POST',
       url: `http://localhost:7777/api/users/${newInput.value}/extension_data`,
       contentType: 'application/json',
-      data: JSON.stringify({url: 'www.mangastream.com', time: 60, freq: 0}),
+      data: JSON.stringify({urls:allSites}),
       success: function(data) {
         console.log('success!', data);
       },
