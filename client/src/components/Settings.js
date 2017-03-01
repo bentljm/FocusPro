@@ -6,6 +6,7 @@ export default class Settings extends React.Component {
     super(props);
     this.state = {
       profile: this.props.auth.getProfile(),
+      username: '',
       setting: {},
       userId: '',
       blacklist: [],
@@ -31,13 +32,16 @@ export default class Settings extends React.Component {
     this.handleReminderTypeChange = this.handleReminderTypeChange.bind(this);
     this.handleReminderAddressChange = this.handleReminderAddressChange.bind(this);
     this.handleReminderFreqChange = this.handleReminderFreqChange.bind(this);
+    this.handleUsernameChange = this.handleUsernameChange.bind(this);
+    this.handleUsernameSubmission = this.handleUsernameSubmission.bind(this);
     this.deleteBlacklist = this.deleteBlacklist.bind(this);
     this.sendNotification = this.sendNotification.bind(this);
     this.handleImageKeyPress = this.handleImageKeyPress.bind(this);
     this.handleQuoteKeyPress = this.handleQuoteKeyPress.bind(this);
     this.handleSiteKeyPress = this.handleSiteKeyPress.bind(this);
-    //this.handleReminderKeyPress = this.handleReminderKeyPress.bind(this);
+    this.handleUsernameKeyPress = this.handleUsernameKeyPress.bind(this);
     this.siteFormsFilled = this.siteFormsFilled.bind(this);
+    //this.handleReminderKeyPress = this.handleReminderKeyPress.bind(this);
     //this.reminderFormsFilled = this.reminderFormsFilled.bind(this);
   }
 
@@ -134,6 +138,21 @@ export default class Settings extends React.Component {
     });
   }
 
+  updateUsername(username) {
+    const that = this;
+    $.ajax({
+      type: 'PUT',
+      url: `api/users/${this.state.profile.user_id}/username`,
+      contentType: 'application/json',
+      data: JSON.stringify({username: username}),
+      success: (data) => {
+        console.log('SUCCESS: UPDATED USERNAME');
+        that.alertUser('Username');
+      },
+      error: (err) => { console.log('ERROR: COULD NOT GET USERID', err); },
+    });
+  }
+
   sendNotification() {
     const that = this;
     $.ajax({
@@ -191,6 +210,13 @@ export default class Settings extends React.Component {
     this.setState({ reminderClicked: true });
     this.alertUser('Reminder');
   }
+  handleUsernameChange(event) {
+    this.setState({ username: event.target.value });
+  }
+  handleUsernameSubmission() {
+    this.updateUsername(this.state.username);
+  }
+
   handleImageKeyPress(e){
     if(e.key == 'Enter'){
       this.handleImageSubmission();
@@ -205,6 +231,11 @@ export default class Settings extends React.Component {
     if(e.key == 'Enter'){
       if(this.siteFormsFilled())
       this.handleSiteSubmission();
+    }
+  }
+  handleUsernameKeyPress(e){
+    if(e.key == 'Enter'){
+      this.handleUsernameSubmission();
     }
   }
   // handleReminderKeyPress(e){
@@ -272,6 +303,10 @@ export default class Settings extends React.Component {
         </Row>
         <br />
         <h3> Personalization: </h3>
+        <Row>
+          <Input s={10} label="Username" value={this.state.username} onChange={this.handleUsernameChange} onKeyPress={this.handleUsernameKeyPress}/>
+          <Button className="usernameButton" waves="light" onClick={this.handleUsernameSubmission}>Set Username</Button>
+        </Row>
         <Row>
           <Input s={10} label="Image" value={this.state.image} onChange={this.handleImageChange} onKeyPress={this.handleImageKeyPress}/>
           <Button className="picButton" waves="light" onClick={this.handleImageSubmission}>Set Image</Button>

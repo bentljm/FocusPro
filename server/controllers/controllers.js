@@ -335,6 +335,19 @@ function updateUser(req, res, next) {
   });
 }
 
+function updateUsername(req, res, next) {
+  var username = req.body.username; // Grab daily goal from req body
+  db.User.update({username: username}, {where: {auth0_id: req.params.auth0_id}}).then(function (data) {
+    res.status(201).json({ // Send 201 status upon success.
+      status: 'success',
+      data: data,
+      message: 'Updated daily goal ' + username
+    });
+  }).catch(function (err) { // Error handling for inner callback create
+    return next(err);
+  });
+}
+
 function updateSettings(req, res, next) {
   var auth0_id = req.params.auth0_id; // Obtain specific auth0_id.
   db.User.find({where: {auth0_id: auth0_id}}).then(function (user) { // Find user with the given username.
@@ -436,6 +449,7 @@ module.exports = {
   updateSettings: updateSettings,
   updateSubgoal: updateSubgoal,
   updateUser: updateUser,
+  updateUsername: updateUsername,
   updateSingleGoal: updateSingleGoal,
   updateBlackList: updateBlackList,
   upsertExtension: upsertExtension
