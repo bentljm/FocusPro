@@ -6,6 +6,7 @@ export default class Settings extends React.Component {
     super(props);
     this.state = {
       profile: this.props.auth.getProfile(),
+      username: '',
       setting: {},
       userId: '',
       blacklist: [],
@@ -31,8 +32,17 @@ export default class Settings extends React.Component {
     this.handleReminderTypeChange = this.handleReminderTypeChange.bind(this);
     this.handleReminderAddressChange = this.handleReminderAddressChange.bind(this);
     this.handleReminderFreqChange = this.handleReminderFreqChange.bind(this);
+    this.handleUsernameChange = this.handleUsernameChange.bind(this);
+    this.handleUsernameSubmission = this.handleUsernameSubmission.bind(this);
     this.deleteBlacklist = this.deleteBlacklist.bind(this);
     this.sendNotification = this.sendNotification.bind(this);
+    this.handleImageKeyPress = this.handleImageKeyPress.bind(this);
+    this.handleQuoteKeyPress = this.handleQuoteKeyPress.bind(this);
+    this.handleSiteKeyPress = this.handleSiteKeyPress.bind(this);
+    this.handleUsernameKeyPress = this.handleUsernameKeyPress.bind(this);
+    this.siteFormsFilled = this.siteFormsFilled.bind(this);
+    //this.handleReminderKeyPress = this.handleReminderKeyPress.bind(this);
+    //this.reminderFormsFilled = this.reminderFormsFilled.bind(this);
   }
 
   componentDidMount() {
@@ -128,6 +138,21 @@ export default class Settings extends React.Component {
     });
   }
 
+  updateUsername(username) {
+    const that = this;
+    $.ajax({
+      type: 'PUT',
+      url: `api/users/${this.state.profile.user_id}/username`,
+      contentType: 'application/json',
+      data: JSON.stringify({username: username}),
+      success: (data) => {
+        console.log('SUCCESS: UPDATED USERNAME');
+        that.alertUser('Username');
+      },
+      error: (err) => { console.log('ERROR: COULD NOT GET USERID', err); },
+    });
+  }
+
   sendNotification() {
     const that = this;
     $.ajax({
@@ -138,6 +163,7 @@ export default class Settings extends React.Component {
       success: (data) => {
         console.log('SUCCESS: SENT NOTIFICATIONS', data);
         that.alertUser('Email notification');
+        this.setState({ reminderClicked: false });
       },
       error: (err) => { console.log('ERROR: COULD NOT SEND NOTIFICATIONS', err); },
     });
@@ -184,10 +210,54 @@ export default class Settings extends React.Component {
     this.setState({ reminderClicked: true });
     this.alertUser('Reminder');
   }
+  handleUsernameChange(event) {
+    this.setState({ username: event.target.value });
+  }
+  handleUsernameSubmission() {
+    this.updateUsername(this.state.username);
+  }
+
+  handleImageKeyPress(e){
+    if(e.key == 'Enter'){
+      this.handleImageSubmission();
+    }
+  }
+  handleQuoteKeyPress(e){
+    if(e.key == 'Enter'){
+      this.handleQuoteSubmission();
+    }
+  }
+  handleSiteKeyPress(e){
+    if(e.key == 'Enter'){
+      if(this.siteFormsFilled())
+      this.handleSiteSubmission();
+    }
+  }
+  handleUsernameKeyPress(e){
+    if(e.key == 'Enter'){
+      this.handleUsernameSubmission();
+    }
+  }
+  // handleReminderKeyPress(e){
+  //   if(e.key == 'Enter'){
+  //     console.log('CLICKED')
+  //     if(this.reminderFormsFilled())
+  //       console.log('CLICKED')
+  //       this.handleReminderSubmission();
+  //   }
+  // }
+  siteFormsFilled() {
+    return  this.state.siteURL.length > 0 && this.state.siteLimit.length > 0 && this.state.siteType.length > 0;
+  }
+  // reminderFormsFilled() {
+  //   console.log(this.state.reminderType.length > 0 && this.state.reminderAddress.length > 0 && this.state.reminderFreq.length > 0)
+  //   return  this.state.reminderType.length > 0 && this.state.reminderAddress.length > 0 && this.state.reminderFreq.length > 0;
+  // }
 
   alertUser(str) {
     Materialize.toast(`${str} added!`, 1000);
   }
+
 
   render() {
     const { siteURL, siteLimit, siteType } = this.state;
@@ -222,31 +292,37 @@ export default class Settings extends React.Component {
         </Table>
         <br />
         <Row>
-          <Input s={5} label="Site" value={this.state.siteURL} onChange={this.handleSiteChange} />
-          <Input s={3} type="select" label="Type" defaultValue="1" value={this.state.siteType} onChange={this.handleSiteTypeChange}>
+          <Input s={5} label="Site" value={this.state.siteURL} onChange={this.handleSiteChange} onKeyPress={this.handleSiteKeyPress}/>
+          <Input s={3} type="select" label="Type" defaultValue="1" value={this.state.siteType} onChange={this.handleSiteTypeChange} onKeyPress={this.handleSiteKeyPress}>
             <option value="1">Blackout</option>
             <option value="2">Block after exceeding</option>
             <option value="3">Warn after exceeding</option>
           </Input>
-          <Input s={2} label="Time Limit (min)" value={this.state.siteLimit} onChange={this.handleSiteLimitChange} />
+          <Input s={2} label="Time Limit (min)" value={this.state.siteLimit} onChange={this.handleSiteLimitChange} onKeyPress={this.handleSiteKeyPress}/>
           <Button disabled={!siteSubmitEnabled} className="blacklistButton" waves="light" onClick={this.handleSiteSubmission}>Add Site</Button>
         </Row>
+        <br />
         <h3> Personalization: </h3>
         <Row>
-          <Input s={10} label="Image" value={this.state.image} onChange={this.handleImageChange} />
+          <Input s={10} label="Username" value={this.state.username} onChange={this.handleUsernameChange} onKeyPress={this.handleUsernameKeyPress}/>
+          <Button className="usernameButton" waves="light" onClick={this.handleUsernameSubmission}>Set Username</Button>
+        </Row>
+        <Row>
+          <Input s={10} label="Image" value={this.state.image} onChange={this.handleImageChange} onKeyPress={this.handleImageKeyPress}/>
           <Button className="picButton" waves="light" onClick={this.handleImageSubmission}>Set Image</Button>
         </Row>
         <Row>
-          <Input s={10} label="Quote" value={this.state.quote} onChange={this.handleQuoteChange} />
+          <Input s={10} label="Quote" value={this.state.quote} onChange={this.handleQuoteChange} onKeyPress={this.handleQuoteKeyPress}/>
           <Button className="quoteButton" waves="light" onClick={this.handleQuoteSubmission}>Set Quote</Button>
         </Row>
+        <br />
         <Row>
           <Input s={2} type="select" label="Reminder Type" defaultValue="1" value={this.state.reminderType} onChange={this.handleReminderTypeChange}>
             <option value="1">No Reminder</option>
             <option value="2">Text</option>
             <option value="3">Email</option>
           </Input>
-          <Input s={6} label="Number/Email Address" value={this.state.reminderAddress} onChange={this.handleReminderAddressChange} />
+          <Input s={6} label="Number/Email Address" value={this.state.reminderAddress} onChange={this.handleReminderAddressChange}/>
           <Input s={2} type="select" label="Frequency" defaultValue="1" value={this.state.reminderFreq} onChange={this.handleReminderFreqChange}>
             <option value="1">Daily</option>
             <option value="2">Weekly</option>
@@ -254,6 +330,7 @@ export default class Settings extends React.Component {
           <Button disabled={!reminderSubmitEnabled} className="reminderButton" waves="light" onClick={this.handleReminderSubmission}>Set Reminder</Button>
           <Button disabled={!sendNotificationEnabled} waves="light" onClick={this.sendNotification}>Send Notification Now</Button>
         </Row>
+        <br />
         <h3> Chrome Extension: </h3>
         Forgot to download the extension? Download it here: ___________
         Your id is {this.state.profile.user_id}. Please enter it into the extension to connect.

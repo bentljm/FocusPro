@@ -17,7 +17,6 @@ function sendNotification (req, res, next) {
 		console.log("SENT NOTIFICATIONS TO", userEmail || userText);
     res.status(201).send('Notification sent successfully.');
   });
-
 }
 
 module.exports = {

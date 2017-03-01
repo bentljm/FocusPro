@@ -8,6 +8,7 @@ module.exports = function(app, express) {
   app.post('/api/users', controller.postUser); //Post a user
   app.get('/api/users/:auth0_id', controller.getSingleUser); // Get individual name
   app.put('/api/users/:auth0_id', controller.updateUser); //Update individual user
+  app.put('/api/users/:auth0_id/username', controller.updateUsername); //Update individual user
 
   app.get('/api/users/:auth0_id/setting', controller.getSettings); // Get individual settings
   app.post('/api/users/:auth0_id/setting', controller.postSettings); // Post individual settings
