@@ -398,13 +398,17 @@ function upsertExtension(req, res) {
   var auth0_id = req.params.auth0_id;
   db.User.find({where: {auth0_id: auth0_id}}).then(function (user) {
     var userId = user.id;
-    db.Extension.upsert({url: req.body.url, time_spent: req.body.time, freq: req.body.freq, UserId: user.id}).then((data) => {
+    var urls = req.body.urls;
+    urls.forEach((url) => {
+    db.Extension.upsert({url: url.url, time_spent: url.time, freq: url.freq, UserId: user.id}).then((data) => {
       res.status(200).json({
         data: data,
         success: 'Successfully upserted', userId
       });
     }).catch((err) => { res.send({'ERROR: UPSERT EXTENSION': err}); });
   });
+
+  }).catch((err) => { res.send({'ERROR: UPSERT EXTENSION': err}); });
 }
 
 // Export functions to routers...
@@ -436,4 +440,3 @@ module.exports = {
   updateBlackList: updateBlackList,
   upsertExtension: upsertExtension
 };
-

@@ -18,7 +18,7 @@ module.exports = function(app, express) {
   app.put('/api/blacklist/:url_id', controller.updateBlackList); // Delete individual blacklist
 
 
-  app.get('/api/users/:auth0_id/extension_data', controller.getExtension); // Get individual extention data
+  app.get('/api/users/:auth0_id/extension_data', controller.getExtension); // Get all extention data
   app.post('/api/users/:auth0_id/extension_data', controller.upsertExtension); // Upsert individual extention data
 
   app.get('/api/users/:auth0_id/reflections', controller.getReflections); // Get all reflection data
