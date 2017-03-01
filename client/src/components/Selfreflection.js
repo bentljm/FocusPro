@@ -56,7 +56,7 @@ export default class Selfreflection extends React.Component {
       type: 'POST',
       url: '/api/users/'+ this.props.user_id + '/reflections',
       contentType: 'application/json',
-      data: JSON.stringify({answer: this.state.answer, question: "Did you spend adequate time on your goals today?", reflId: this.props.id}),
+      data: JSON.stringify({answer: this.state.answer, question: question, reflId: this.props.id}),
       success: function(data) {console.log("SUCCESS: POSTED REFLECTIONS: ", data.data);},
       error: function(err) {console.log("ERROR: COULD NOT POST REFLECTION", err);}
     });
