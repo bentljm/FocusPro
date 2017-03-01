@@ -38,14 +38,14 @@ export default class Selfreflection extends React.Component {
     })
   }
 
-  getReflections() {
+  getReflections() { //  Get question here
     var that = this;
     $.ajax({
       type: 'GET', // GET REQUEST
       url: '/api/users/'+ this.props.user_id + '/reflections',
       success: function(data) {
         console.log("SUCCESS: OBTAINED REFLECTIONS: ", data.data);
-        that.setState({reflections: data});
+        that.setState({question: data.data.question});
       },
       error: function(err) {console.log("ERROR: COULD NOT GET REFLECTIONS", err)}
     });
