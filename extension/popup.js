@@ -2,31 +2,25 @@ var config = new Config();
 var gsites = new Sites(config);
 
 function test() {
-  console.log('hello!');
-// var xhr = new XMLHttpRequest();
-// xhr.open("GET", "http://api.example.com/data.json", true);
-// xhr.onreadystatechange = function() {
-//   if (xhr.readyState === 4) {
-//     // JSON.parse does not evaluate the attacker's scripts.
-//     var resp = JSON.parse(xhr.responseText);
-//   } else {
-//     var resp = 'no';
-//   }
-// };
-// xhr.send();
-  var text = "Hi there and greetings!";
+  var newInput = document.createElement("input");
+  newInput.setAttribute("id", "authId");
+  document.body.appendChild(newInput);
   var testBtn = document.createElement("button");
-  var testBtnTxt = document.createTextNode("get users");
+  var testBtnTxt = document.createTextNode("Send Data");
   testBtn.appendChild(testBtnTxt);
   document.body.appendChild(testBtn);
   testBtn.setAttribute("id", "testButton");
-  var newDiv = document.createElement("div");
-  newDiv.setAttribute("id", "testResult");
-  document.body.appendChild(newDiv);
   testBtn.onclick = function() {
-    console.log('button clicked');
+    // Get all sites and store in array to be parsed and stored in db
+    var allSites = [];
+    for(var prop in gsites.sites) {
+      allSites.push({url: prop, time: gsites.sites[prop], freq: 0});
+    }
     $.ajax({
-      url: "http://localhost:7777/api/users",
+      type: 'POST',
+      url: `http://localhost:7777/api/users/${newInput.value}/extension_data`,
+      contentType: 'application/json',
+      data: JSON.stringify({urls:allSites}),
       success: function(data) {
         console.log('success!', data);
       },
@@ -35,12 +29,6 @@ function test() {
       },
     });
   };
-  //newDiv.appendChild(newContent); //add the text node to the newly created div.
-
-  // add the newly created element and its content into the DOM
-  //var currentDiv = document.getElementById("div1");
-  //document.body.insertBefore(testBtn, currentDiv);
-  //document.body.insertBefore(newDiv, currentDiv);
 }
 
 //Add to ignored sites

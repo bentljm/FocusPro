@@ -43,8 +43,8 @@ export default class Goal extends React.Component {
 
   getStep() {
     if (this.state.subgoals.length > 0) {
-      const step = Math.round(100 / this.state.subgoals.length);
-      this.setState({ step: step });
+      const newStep = Math.round(100 / this.state.subgoals.length);
+      this.setState({ step: newStep });
     } else {
       this.setState({ step: 1 });
     }
@@ -94,12 +94,8 @@ export default class Goal extends React.Component {
           step={this.state.step}
           behaviour={'tap'}
           format={{
-            from: (value) => {
-              return `${parseInt(value, 10)}%`;
-            },
-            to: (value) => {
-              return `${parseInt(value, 10)}%`;
-            },
+            from: value => `${parseInt(value, 10)}%`,
+            to: value => `${parseInt(value, 10)}%`,
           }}
           tooltips
         />

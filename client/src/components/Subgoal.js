@@ -11,6 +11,19 @@ export default class Subgoal extends React.Component {
     this.removeSubgoal = this.removeSubgoal.bind(this);
   }
 
+  getSubgoal() {
+    $.ajax({
+      type: 'GET',
+      url: `/api/subgoals/${this.props.id}`,
+      contentType: 'application/json',
+      success: (data) => {
+        console.log('SUCCESS: GET SINGLE SUBGOAL: ', data);
+        this.setState({ status: data.data.status });
+      },
+      error: (err) => { console.log('ERROR: COULD NOT GET SINGLE SUBGOAL', err); },
+    });
+  }
+
   handleClick() {
     const that = this;
     $.ajax({
@@ -23,19 +36,6 @@ export default class Subgoal extends React.Component {
         that.getSubgoal();
       },
       error: (err) => { console.log('ERROR: COULD NOT PUT INDIVIDUAL SUBGOAL', err); },
-    });
-  }
-
-  getSubgoal() {
-    $.ajax({
-      type: 'GET',
-      url: `/api/subgoals/${this.props.id}`,
-      contentType: 'application/json',
-      success: (data) => {
-        console.log('SUCCESS: GET SINGLE SUBGOAL: ', data);
-        this.setState({ status: data.data.status });
-      },
-      error: (err) => { console.log('ERROR: COULD NOT GET SINGLE SUBGOAL', err); },
     });
   }
 

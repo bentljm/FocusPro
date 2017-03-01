@@ -70,7 +70,7 @@ function getExtension(req, res, next) { // Get extensions for specific user.
       res.status(200).json({ // Send 200 status upon success.
         status: 'success',
         data: data,
-        message: 'OBTAINED EXTENSIONS'
+        message: 'OBTAINED EXTENSIONS for User', UserId
       });
     }).catch(function (err) { // Error handling for inner callback findAll.
       return next(err);
@@ -394,6 +394,23 @@ function updateBlackList(req, res) {
   });
 }
 
+function upsertExtension(req, res) {
+  var auth0_id = req.params.auth0_id;
+  db.User.find({where: {auth0_id: auth0_id}}).then(function (user) {
+    var userId = user.id;
+    var urls = req.body.urls;
+    urls.forEach((url) => {
+    db.Extension.upsert({url: url.url, time_spent: url.time, freq: url.freq, UserId: user.id}).then((data) => {
+      res.status(200).json({
+        data: data,
+        success: 'Successfully upserted', userId
+      });
+    }).catch((err) => { res.send({'ERROR: UPSERT EXTENSION': err}); });
+  });
+
+  }).catch((err) => { res.send({'ERROR: UPSERT EXTENSION': err}); });
+}
+
 // Export functions to routers...
 
 module.exports = {
@@ -407,7 +424,6 @@ module.exports = {
   getExtension: getExtension,
   getAllGoals: getAllGoals,
   getReflections: getReflections,
-  // getReflectionId: getReflectionId,
   postReflectionId: postReflectionId,
   getSingleGoal: getSingleGoal,
   postSingleGoal: postSingleGoal,
@@ -421,6 +437,6 @@ module.exports = {
   updateSubgoal: updateSubgoal,
   updateUser: updateUser,
   updateSingleGoal: updateSingleGoal,
-  updateBlackList: updateBlackList
+  updateBlackList: updateBlackList,
+  upsertExtension: upsertExtension
 };
-

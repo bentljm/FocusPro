@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "server/server.js",
+  "engine": {"node": ">= 6.9.0"},
   "scripts": {
     "start": "node server/server.js",
     "test": "jest client/* && mocha server/test/*.js",
