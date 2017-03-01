@@ -14,26 +14,24 @@ export default class Stat extends React.Component {
   }
 
   getExtensionData() {
-    var colors = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+    const colors = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
     const that = this;
     $.ajax({
       type: 'GET',
       url: `api/users/${this.props.profile.user_id}/extension_data`,
       success: (data) => {
         // Get data into useable form
-        var pieData = [];
-        for(var i = 0; i < data.data.length; i++) {
+        let pieData = [];
+        for (let i = 0; i < data.data.length; i++) {
           pieData.push({ name: data.data[i].url, value: Math.round(data.data[i].time_spent / 60), unit: 'min' });
         }
         // Sort the data
-        pieData.sort(function(a, b) {
-          return b.value - a.value;
-        });
-        var max = 10;
+        pieData.sort((a, b) => b.value - a.value);
+        const max = 10;
         // Only show max number of sites
         pieData = pieData.slice(0, max);
         // Add color
-        for(var j = 0; j < pieData.length; j++) {
+        for (let j = 0; j < pieData.length; j++) {
           pieData[j].fill = colors[j % colors.length];
         }
         that.setState({ data: pieData });

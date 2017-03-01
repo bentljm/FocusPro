@@ -1,19 +1,25 @@
 {
   "parser": "babel-eslint",
   "env": {
-    "browser": true,
-    "jquery": true,
+    "browser": true, // Allow window
+    "jquery": true, // Allow $
   },
   "extends": "airbnb",
   "rules": {
-    "max-len": [1, 150, 2, {ignoreComments: true}],
-    "react/jsx-filename-extension": ["error", { "extensions": [".js", ".jsx"] }],
-    "react/prop-types": 0,
-    "jsx-a11y/href-no-hash": 0,
-    "class-methods-use-this": 0,
-    "no-underscore-dangle": 0,
-    "linebreak-style": 1,
-    "camelcase": 1,
-    "react/prefer-stateless-function": 1
+    "max-len": [1, 150, 2, {ignoreComments: true}], // Max length set to 150
+    "react/jsx-filename-extension": ["error", { "extensions": [".js", ".jsx"] }], // Error with this version of webpack not handling jsx
+    "react/prop-types": 0, // Difficult to handle for auth
+    "jsx-a11y/href-no-hash": 0, // Needed for navigation
+    "class-methods-use-this": 0, // Some auth files do not use this
+    "no-underscore-dangle": 0, // Allow hidden files
+    "linebreak-style": 1, // Not a major issue, someone's Sublime may not be configured properly or remnant from copy/paste
+    "camelcase": 1, // Difficult to change all variable names now
+    "react/prefer-stateless-function": 1,
+    "no-plusplus": 1, // Needed for for-loops
+    "comma-dangle": 1, // In-line React conditionals are being caught
+    "no-undef": 1, // Materialize is being caught
+    "react/no-unescaped-entities": 1, // Inconsistent HTML handling
   }
 }
+
+// To handle certain files/rule follow http://eslint.org/docs/user-guide/configuring

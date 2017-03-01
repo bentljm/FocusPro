@@ -174,7 +174,7 @@ export default class Dashboard extends React.Component {
         <h1> Welcome, {this.state.profile.nickname} </h1>
         <br />
         <div className="motiPic">
-          <img src={this.state.setting.picture} alt="motivational picture"  />
+          <img src={this.state.setting.picture} alt="motivational" />
         </div>
         <blockquote><p>{this.state.setting.quote}</p></blockquote>
         <br />
