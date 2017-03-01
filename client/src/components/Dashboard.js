@@ -123,8 +123,6 @@ export default class Dashboard extends React.Component {
       if (e.key === 'Enter') {
         this.postGoal();
       }
-    }
-  }
 
   handleQuoteKeyPress(e) {
     if (this.state.dayGoalEnabled && this.state.dayGoalInput !== '') {
