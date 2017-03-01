@@ -57,7 +57,7 @@ export default class Dashboard extends React.Component {
       success: (data) => {
         console.log('SUCCESS: GOT USER INFO', data.data[0]);
         that.setState({ userId: data.data[0].id });
-        that.setState({ username: data.data[0].username || this.state.profile.nickname});
+        that.setState({ username: data.data[0].username || this.state.profile.nickname });
         that.setState({ dayGoalInput: data.data[0].daily_goal || '' });
       },
       error: (err) => {
@@ -117,14 +117,14 @@ export default class Dashboard extends React.Component {
     this.setState({ dayGoalInput: event.target.value });
   }
 
-  handleKeyPress(e){
-    if(e.key == 'Enter'){
+  handleKeyPress(e) {
+    if (e.key === 'Enter') {
       this.postGoal();
     }
   }
 
-  handleQuoteKeyPress(e){
-    if(e.key == 'Enter'){
+  handleQuoteKeyPress(e) {
+    if (e.key === 'Enter') {
       this.handleDayGoalSubmission();
     }
   }
@@ -195,7 +195,7 @@ export default class Dashboard extends React.Component {
         <br />
         <h3> Goal of the Day: </h3>
         <Row>
-          <Input s={10} value={this.state.dayGoalInput} onChange={this.handleDayGoalChange} onKeyPress={this.handleQuoteKeyPress}/> <Button className="dayGoalButton" waves="light" onClick={this.handleDayGoalSubmission}>Save</Button>
+          <Input s={10} value={this.state.dayGoalInput} onChange={this.handleDayGoalChange} onKeyPress={this.handleQuoteKeyPress} /> <Button className="dayGoalButton" waves="light" onClick={this.handleDayGoalSubmission}>Save</Button>
         </Row>
         <h3> Main Goals: </h3>
         {(this.state.goals.length === 0 || !this.state.profile.user_id) && <div>You have no goals set currently.</div>}
@@ -212,7 +212,7 @@ export default class Dashboard extends React.Component {
             )}
         </ul>}
         <Row>
-          <Input s={8} label="New Goal" value={this.state.goalInput} onChange={this.handleInputChange} onKeyPress={this.handleKeyPress}/>
+          <Input s={8} label="New Goal" value={this.state.goalInput} onChange={this.handleInputChange} onKeyPress={this.handleKeyPress} />
           <Button className="goalButton" waves="light" onClick={this.postGoal}> Set Goal</Button>
           <Motivational />
         </Row>
