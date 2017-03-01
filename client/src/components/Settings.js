@@ -36,6 +36,9 @@ export default class Settings extends React.Component {
     this.handleImageKeyPress = this.handleImageKeyPress.bind(this);
     this.handleQuoteKeyPress = this.handleQuoteKeyPress.bind(this);
     this.handleSiteKeyPress = this.handleSiteKeyPress.bind(this);
+    //this.handleReminderKeyPress = this.handleReminderKeyPress.bind(this);
+    this.siteFormsFilled = this.siteFormsFilled.bind(this);
+    //this.reminderFormsFilled = this.reminderFormsFilled.bind(this);
   }
 
   componentDidMount() {
@@ -200,9 +203,25 @@ export default class Settings extends React.Component {
   }
   handleSiteKeyPress(e){
     if(e.key == 'Enter'){
+      if(this.siteFormsFilled())
       this.handleSiteSubmission();
     }
   }
+  // handleReminderKeyPress(e){
+  //   if(e.key == 'Enter'){
+  //     console.log('CLICKED')
+  //     if(this.reminderFormsFilled())
+  //       console.log('CLICKED')
+  //       this.handleReminderSubmission();
+  //   }
+  // }
+  siteFormsFilled() {
+    return  this.state.siteURL.length > 0 && this.state.siteLimit.length > 0 && this.state.siteType.length > 0;
+  }
+  // reminderFormsFilled() {
+  //   console.log(this.state.reminderType.length > 0 && this.state.reminderAddress.length > 0 && this.state.reminderFreq.length > 0)
+  //   return  this.state.reminderType.length > 0 && this.state.reminderAddress.length > 0 && this.state.reminderFreq.length > 0;
+  // }
 
   alertUser(str) {
     Materialize.toast(`${str} added!`, 1000);
@@ -242,8 +261,8 @@ export default class Settings extends React.Component {
         </Table>
         <br />
         <Row>
-          <Input s={5} label="Site" value={this.state.siteURL} onChange={this.handleSiteChange} />
-          <Input s={3} type="select" label="Type" defaultValue="1" value={this.state.siteType} onChange={this.handleSiteTypeChange}>
+          <Input s={5} label="Site" value={this.state.siteURL} onChange={this.handleSiteChange} onKeyPress={this.handleSiteKeyPress}/>
+          <Input s={3} type="select" label="Type" defaultValue="1" value={this.state.siteType} onChange={this.handleSiteTypeChange} onKeyPress={this.handleSiteKeyPress}>
             <option value="1">Blackout</option>
             <option value="2">Block after exceeding</option>
             <option value="3">Warn after exceeding</option>
@@ -268,7 +287,7 @@ export default class Settings extends React.Component {
             <option value="2">Text</option>
             <option value="3">Email</option>
           </Input>
-          <Input s={6} label="Number/Email Address" value={this.state.reminderAddress} onChange={this.handleReminderAddressChange} />
+          <Input s={6} label="Number/Email Address" value={this.state.reminderAddress} onChange={this.handleReminderAddressChange}/>
           <Input s={2} type="select" label="Frequency" defaultValue="1" value={this.state.reminderFreq} onChange={this.handleReminderFreqChange}>
             <option value="1">Daily</option>
             <option value="2">Weekly</option>
