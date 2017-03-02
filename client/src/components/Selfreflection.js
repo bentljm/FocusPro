@@ -29,7 +29,7 @@ export default class Selfreflection extends React.Component {
     var that = this;
     $.ajax({
       type: 'GET', // GET REQUEST
-      url: '/api/users/'+ this.state.profile.user_id + '/reflections',
+      url: '/api/users/'+ this.state.profile.user_id + '/reflections', // {$state.profile.user_id} 
       success: function(data) {
         console.log(data.data)
         console.log("USER ID: ", that.state.profile.user_id)
@@ -47,7 +47,11 @@ export default class Selfreflection extends React.Component {
       type: 'POST',
       url: '/api/users/'+ this.state.profile.user_id + '/reflections',
       contentType: 'application/json',
-      data: JSON.stringify({answer: this.state.answer, question: this.state.question, auth0_id: this.state.profile.user_id}),
+      data: JSON.stringify({
+        answer: this.state.answer, 
+        question: this.state.question, 
+        auth0_id: this.state.profile.user_id
+      }),
       success: function(data) {console.log("SUCCESS: POSTED REFLECTIONS: ", data);},
       error: function(err) {console.log("ERROR: COULD NOT POST REFLECTION", err);}
     });
@@ -55,34 +59,38 @@ export default class Selfreflection extends React.Component {
   
 
   handleAnswerChange(event) {
-    this.setState({answer: event.target.value})
+    this.setState({
+      answer: event.target.value
+    });
   }
 
-  // format this to Date
+  
 
   render() {
     return ( 
       <div>
         <h1> Self-Reflection </h1>
-        {this.state.reflections.map((reflection) => (
-        <ul className="collapsible" data-collapsible="expandable">
-          <li>
-              <div className="collapsible-header">
-                <span className="questionDate">{reflection.createdAt}</span><span className="questionDate"></span>
-                <span>{reflection.question}</span>
-              </div>
-              <div className="collapsible-body">
-                <span>{reflection.answer}</span>  
-              </div>     
-          </li>
-        </ul>
-        ))}
-         <Row>
-            <Input s={10} label="New Answer" onChange={this.handleAnswerChange}/>
-            <Button className="submitAnswer" onClick={this.postReflections}>Self Reflection</Button>
-          </Row>  
+        {
+          this.state.reflections.map((reflection) => (
+            <ul className="collapsible" data-collapsible="expandable">
+              <li>
+                <div className="collapsible-header">
+                  <span className="questionDate">{reflection.createdAt}</span>
+                  <span className="questionDate"></span>
+                  <span>{reflection.question}</span>
+                </div>
+                <div className="collapsible-body">
+                  <span>{reflection.answer}</span>  
+                </div>     
+              </li>
+            </ul>
+          ))
+        }
+        <Row>
+          <Input s={10} label="New Answer" onChange={this.handleAnswerChange}/>
+          <Button className="submitAnswer" onClick={this.postReflections}>Self Reflection</Button>
+        </Row>  
       </div>
-     
     );
   }
 }
