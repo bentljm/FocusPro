@@ -23,26 +23,9 @@ export default class Settings extends React.Component {
       labelStyle: {},
       inputStyle: {}
     };
-    // this.handleSiteChange = this.handleSiteChange.bind(this);
-    // this.handleSiteTypeChange = this.handleSiteTypeChange.bind(this);
-    // this.handleSiteLimitChange = this.handleSiteLimitChange.bind(this);
-    // this.handleSiteSubmission = this.handleSiteSubmission.bind(this);
-    // this.handleImageChange = this.handleImageChange.bind(this);
-    // this.handleImageSubmission = this.handleImageSubmission.bind(this);
-    // this.handleQuoteSubmission = this.handleQuoteSubmission.bind(this);
-    // this.handleQuoteChange = this.handleQuoteChange.bind(this);
     this.handleReminderSubmission = this.handleReminderSubmission.bind(this);
-    // this.handleReminderTypeChange = this.handleReminderTypeChange.bind(this);
-    // this.handleReminderAddressChange = this.handleReminderAddressChange.bind(this);
-    // this.handleReminderFreqChange = this.handleReminderFreqChange.bind(this);
-    // this.handleUsernameChange = this.handleUsernameChange.bind(this);
-    // this.handleUsernameSubmission = this.handleUsernameSubmission.bind(this);
     this.deleteBlacklist = this.deleteBlacklist.bind(this);
     this.sendNotification = this.sendNotification.bind(this);
-    // this.handleImageKeyPress = this.handleImageKeyPress.bind(this);
-    // this.handleQuoteKeyPress = this.handleQuoteKeyPress.bind(this);
-    // this.handleSiteKeyPress = this.handleSiteKeyPress.bind(this);
-    // this.handleUsernameKeyPress = this.handleUsernameKeyPress.bind(this);
     this.siteFormsFilled = this.siteFormsFilled.bind(this);
     this.editStyle = this.editStyle.bind(this);
     this.viewStyle = this.viewStyle.bind(this);
@@ -139,7 +122,7 @@ export default class Settings extends React.Component {
         that.setState({
           siteURL: '',
           siteType: '',
-          siteLimit: 0
+          siteLimit: 0,
         });
       },
       error: (err) => { console.log('ERROR: COULD NOT POST BLACKLIST', err); },
@@ -191,79 +174,11 @@ export default class Settings extends React.Component {
     });
   }
 
-  // handleChange(event) {
-  //   this.setState({ siteURL: event.target.value });
-  // }
-  // handleSiteTypeChange(event) {
-  //   this.setState({ siteType: event.target.value });
-  // }
-  // handleSiteLimitChange(event) {
-  //   this.setState({ siteLimit: event.target.value });
-  // }
-  // handleSiteSubmission() {
-  //   this.postBlacklist(this.state.siteURL, this.state.siteType, this.state.siteLimit);
-  //   this.alertUser('Blacklist site');
-  // }
-  // handleImageChange(event) {
-  //   this.setState({ image: event.target.value });
-  // }
-  // handleQuoteChange(event) {
-  //   this.setState({ quote: event.target.value });
-  // }
-  // handleImageSubmission() {
-  //   this.updateSetting(this.state.image);
-  //   this.alertUser('Image');
-  // }
-  // handleQuoteSubmission() {
-  //   this.updateSetting(null, this.state.quote);
-  //   this.alertUser('Quote');
-  //   console.log('this.state.setting.quote',this.state.setting.quote);
-  //   // this.setState({ quote: this.state.setting.quote }); // handle case when quote is removed. once quote is set, it cannot be removed
-  // }
-  // handleReminderTypeChange(event) {
-  //   this.setState({ reminderType: event.target.value });
-  // }
-  // handleReminderAddressChange(event) {
-  //   this.setState({ reminderAddress: event.target.value });
-  // }
-  // handleReminderFreqChange(event) {
-  //   this.setState({ reminderFreq: event.target.value });
-  // }
   handleReminderSubmission() {
     this.updateSetting(null, null, null, true, this.state.reminderType, this.state.reminderFreq, this.state.reminderAddress);
     this.setState({ reminderClicked: true });
     this.alertUser('Reminder');
   }
-  // handleUsernameChange(event) {
-  //   this.setState({ username: event.target.value });
-  // }
-  // handleUsernameSubmission() {
-  //   console.log('submission?');
-  //   this.updateUsername(this.state.username.trim());
-  // }
-
-  // handleImageKeyPress(e){
-  //   if(e.key == 'Enter'){
-  //     this.handleImageSubmission();
-  //   }
-  // }
-  // handleQuoteKeyPress(e){
-  //   console.log('key', e.key);
-  //   if(e.key == 'Enter'){
-  //     this.viewStyle('quote');
-  //   }
-  // }
-  // handleSiteKeyPress(e){
-  //   if(e.key == 'Enter'){
-  //     if(this.siteFormsFilled())
-  //     this.handleSubmission('site');
-  //   }
-  // }
-  // handleUsernameKeyPress(e){
-  //   if(e.key == 'Enter'){
-      // this.handleUsernameSubmission();
-  //   }
-  // }
 
   handleChange(event, str) {
     this.setState({ [str]: event.target.value });
@@ -287,7 +202,6 @@ export default class Settings extends React.Component {
         this.postBlacklist(this.state.siteURL, this.state.siteType, this.state.siteLimit);
       },
     };
-    console.log('submit', str);
     delegator[str]();
     that.viewStyle(str);
   }
@@ -315,9 +229,6 @@ export default class Settings extends React.Component {
   }
 
   initialiseSettings() {
-    console.log('initialise?', this.state.setting);
-    const that = this;
-
     const settingList = ['quote'];
     settingList.forEach((item) => {
       if (!this.state.setting[item]) {
@@ -326,14 +237,11 @@ export default class Settings extends React.Component {
         this.viewStyle(item);
       }
     });
-    console.log('input style after quote', this.state.inputStyle);
 
     if (!this.state.setting.picture) {
       this.editStyle('image');
     } else {
       this.viewStyle('image');
-      console.log('inputStyle after image', that.state.inputStyle);
-      console.log('labelStyle after image', that.state.labelStyle);
     }
 
     if (!this.state.username) {
@@ -351,13 +259,10 @@ export default class Settings extends React.Component {
   }
 
   viewStyle(str) {
-    console.log('setting', this.state.setting[str]);
-    console.log('quote', this.state[str]);
     this.setState({
       labelStyle: extend(this.state.labelStyle, { [str]: { display: 'block' } }),
       inputStyle: extend(this.state.inputStyle, { [str]: { display: 'none' } }),
     });
-    // this.handleSubmission(str);
   }
 
   render() {
@@ -366,8 +271,6 @@ export default class Settings extends React.Component {
     const { reminderType, reminderAddress, reminderFreq } = this.state;
     const reminderSubmitEnabled = reminderType.length > 0 && reminderAddress.length > 0 && reminderFreq.length > 0;
     const sendNotificationEnabled = this.state.reminderClicked;
-
-    // this.initialiseSettings();
 
     return (
       <div>
