@@ -119,3 +119,8 @@ blockquote p{
   height: 300px;
   width: auto;
 }
+
+.label-header {
+  font-size: 120%;
+  font-weight: 600;
+}
