@@ -69,7 +69,7 @@ export default class Settings extends React.Component {
       success: (data) => {
         console.log('SUCCESS: GOT USERID', data.data[0].id);
         that.setState({ userId: data.data[0].id });
-        that.setState({username: data.data[0].username || this.state.profile.nickname});
+        that.setState({ username: data.data[0].username || this.state.profile.nickname });
       },
       error: (err) => { console.log('ERROR: COULD NOT GET USERID', err); },
     });
@@ -160,8 +160,8 @@ export default class Settings extends React.Component {
       type: 'PUT',
       url: `api/users/${this.state.profile.user_id}/username`,
       contentType: 'application/json',
-      data: JSON.stringify({username: username}),
-      success: (data) => {
+      data: JSON.stringify({ username }),
+      success: () => {
         console.log('SUCCESS: UPDATED USERNAME');
         that.alertUser('Username');
       },
@@ -301,7 +301,7 @@ export default class Settings extends React.Component {
   }
 
   siteFormsFilled() {
-    return  this.state.siteURL.length > 0 && this.state.siteLimit.length > 0 && this.state.siteType.length > 0;
+    return this.state.siteURL.length > 0 && this.state.siteLimit.length > 0 && this.state.siteType.length > 0;
   }
 
 
@@ -377,25 +377,25 @@ export default class Settings extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.blacklist.map((site, index) => (
-              <tr key={index}>
+            {this.state.blacklist.map(site => (
+              <tr key={`blacklist${site.id}`} >
                 <td>{site.url}</td>
                 <td>{site.blacklist_type}</td>
                 <td>{site.blacklist_time}</td>
                 <td><a href="#/settings" onClick={() => this.deleteBlacklist(site.id)}><Icon right>delete</Icon></a></td>
-            </tr>
+              </tr>
             ))}
           </tbody>
         </Table>
         <br />
         <Row>
-          <Input s={5} label="Site" value={this.state.siteURL} onChange={e=> this.handleChange(e, 'siteURL')} onKeyPress={e => this.handleKeyPress(e, 'site')}/>
+          <Input s={5} label="Site" value={this.state.siteURL} onChange={e => this.handleChange(e, 'siteURL')} onKeyPress={e => this.handleKeyPress(e, 'site')} />
           <Input s={3} type="select" label="Type" defaultValue="1" value={this.state.siteType} onChange={e => this.handleChange(e, 'siteType')}>
             <option value="1">Blackout</option>
             <option value="2">Block after exceeding</option>
             <option value="3">Warn after exceeding</option>
           </Input>
-          <Input s={2} label="Time Limit (min)" value={this.state.siteLimit} onChange={e => this.handleChange(e, 'siteLimit')} onKeyPress={e => this.handleKeyPress(e, 'site')}/>
+          <Input s={2} label="Time Limit (min)" value={this.state.siteLimit} onChange={e => this.handleChange(e, 'siteLimit')} onKeyPress={e => this.handleKeyPress(e, 'site')} />
           <Button disabled={!siteSubmitEnabled} className="blacklistButton" waves="light" onClick={() => this.handleSubmission('site')}>Add Site</Button>
         </Row>
         <br />
@@ -403,17 +403,17 @@ export default class Settings extends React.Component {
         <Row>
           <div onDoubleClick={() => this.editStyle('username')} style={this.state.labelStyle.username}>{this.state.username}
           </div>
-          <Input s={10} placeholder="Enter Username" value={this.state.username} onChange={e => this.handleChange(e, 'username')} onKeyPress={e => this.handleKeyPress(e, 'username')} onBlur={() => this.handleSubmission('username')} style={this.state.inputStyle.username}/>
+          <Input s={10} placeholder="Enter Username" value={this.state.username} onChange={e => this.handleChange(e, 'username')} onKeyPress={e => this.handleKeyPress(e, 'username')} onBlur={() => this.handleSubmission('username')} style={this.state.inputStyle.username} />
         </Row>
         <Row>
           <div onDoubleClick={() => this.editStyle('image')} style={this.state.labelStyle.image}>{this.state.image}
           </div>
-          <Input s={10} placeholder="Enter Image URL" value={this.state.image} onChange={e => this.handleChange(e, 'image')} onBlur={() => this.handleSubmission('image')} onKeyPress={e => this.handleKeyPress(e, 'image')} style={this.state.inputStyle.image}/>
+          <Input s={10} placeholder="Enter Image URL" value={this.state.image} onChange={e => this.handleChange(e, 'image')} onBlur={() => this.handleSubmission('image')} onKeyPress={e => this.handleKeyPress(e, 'image')} style={this.state.inputStyle.image} />
         </Row>
         <Row>
           <div onDoubleClick={() => this.editStyle('quote')} style={this.state.labelStyle.quote}>{this.state.quote}
           </div>
-          <Input s={10} placeholder="Enter Motivational Quote" value={this.state.quote} onChange={e => this.handleChange(e, 'quote')} onBlur={() => this.handleSubmission('quote')} onKeyPress={e => this.handleKeyPress(e, 'quote')} style={this.state.inputStyle.quote}/>
+          <Input s={10} placeholder="Enter Motivational Quote" value={this.state.quote} onChange={e => this.handleChange(e, 'quote')} onBlur={() => this.handleSubmission('quote')} onKeyPress={e => this.handleKeyPress(e, 'quote')} style={this.state.inputStyle.quote} />
         </Row>
         <br />
         <Row>
@@ -422,7 +422,7 @@ export default class Settings extends React.Component {
             <option value="2">Text</option>
             <option value="3">Email</option>
           </Input>
-          <Input s={6} label="Number/Email Address" value={this.state.reminderAddress} onChange={e => this.handleChange(e, 'reminderAddress')}/>
+          <Input s={6} label="Number/Email Address" value={this.state.reminderAddress} onChange={e => this.handleChange(e, 'reminderAddress')} />
           <Input s={2} type="select" label="Frequency" defaultValue="1" value={this.state.reminderFreq} onChange={e => this.handleChange(e, 'reminderFreq')}>
             <option value="1">Daily</option>
             <option value="2">Weekly</option>
