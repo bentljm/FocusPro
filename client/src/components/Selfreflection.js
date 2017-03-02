@@ -1,123 +1,88 @@
 import React from 'react';
-import {} from 'react-materialize';
+import { Row, Input, Col, Button, Icon } from 'react-materialize';
 
 export default class Selfreflection extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      profile: this.props.auth.getProfile(),
+      profile: this.props.auth.getProfile(), // it gets imported here
       reflections: [],
-      userId: '',
-      reflection: {},
-      goals:[]
+      answer: '',
+      question: '',
     };
+    this.getReflections = this.getReflections.bind(this);
+    this.postReflections = this.postReflections.bind(this);
+    this.handleCAnswerhange = this.handleAnswerChange.bind(this);
   }
 
   componentDidMount(){
-    this.getAllGoals();
+    this.getReflections();
+    //this.postReflections(JSON.stringify("what did you do today"));
     this.callCustomJQuery();
-    this.state.goals.map((goal) => {
-      this.getReflections(goal.id);
-    });
   }
 
   callCustomJQuery() {
     $('.collapsible').collapsible();
   }
 
-  getAllGoals () {
+  getReflections() { //  Get question here
     var that = this;
     $.ajax({
       type: 'GET', // GET REQUEST
-      url: '/api/users/' + this.state.profile.user_id + '/goals/',
+      url: '/api/users/'+ this.state.profile.user_id + '/reflections',
       success: function(data) {
-        console.log("SUCCESS: OBTAINED ALL GOALS:", data);
-        that.setState({goals: data.data});
-      },
-      error: function(err) {
-        console.log("ERROR: COULD NOT GET ALL GOALS", err);
-      }
-    });
-  }
-
-  getReflections(goalId) {
-    var that = this;
-    $.ajax({
-      type: 'GET', // GET REQUEST
-      url: '/api/users/'+this.props.user_id + '/goals/' + goalId + '/reflections',
-      success: function(data) {
+        console.log(data.data)
+        console.log("USER ID: ", that.state.profile.user_id)
         console.log("SUCCESS: OBTAINED REFLECTIONS: ", data);
-        that.setState({reflections: data});
+        that.setState({reflections: data.data});
       },
       error: function(err) {console.log("ERROR: COULD NOT GET REFLECTIONS", err)}
     });
   }
 
-  getSingleReflection(goalId, reflId) {
-    var that = this;
-    $.ajax({
-      type: 'GET', // GET REQUEST
-      url: '/api/users/'+this.props.user_id + '/goals/' + goalId + '/reflections/' + reflId,
-      success: function(data) {
-        console.log("SUCCESS: OBTAINED SINGLE REFLECTION: ", data);
-        that.setState({reflection: data});
-      },
-      error: function(err) {console.log("ERROR: COULD NOT GET REFLECTIONS", err)}
-    });
-  }
 
-  postReflections(goalId) {
+  
+  postReflections() {
     $.ajax({
       type: 'POST',
-      url: '/api/users/'+this.props.user_id + '/goals/' + goalId + '/reflections',
+      url: '/api/users/'+ this.state.profile.user_id + '/reflections',
       contentType: 'application/json',
-      data: JSON.stringify({answer: '', GoalId: goalId, UserId: this.state.userId}),
-      success: function(data) {console.log("SUCCESS: POSTED BLACKLIST: ", data);},
-      error: function(err) {console.log("ERROR: COULD NOT POST BLACKLIST", err);}
+      data: JSON.stringify({answer: this.state.answer, question: this.state.question, auth0_id: this.state.profile.user_id}),
+      success: function(data) {console.log("SUCCESS: POSTED REFLECTIONS: ", data);},
+      error: function(err) {console.log("ERROR: COULD NOT POST REFLECTION", err);}
     });
+  }
+  
+
+  handleAnswerChange(event) {
+    this.setState({answer: event.target.value})
   }
 
-  getUserId() {
-    var that = this;
-    $.ajax({
-      type: 'GET',
-      url: 'api/users/' + this.state.profile.user_id,
-      success: function (data) {
-        console.log("SUCCESS: GOT USERID", data.data[0].id);
-        that.setState({userId: data.data[0].id});
-      },
-      error: function (err) {
-        console.log('ERROR: COULD NOT GET USERID', err);
-      }
-    });
-  }
+  // format this to Date
 
   render() {
-    return (
+    return ( 
       <div>
         <h1> Self-Reflection </h1>
+        {this.state.reflections.map((reflection) => (
         <ul className="collapsible" data-collapsible="expandable">
           <li>
-            <div className="collapsible-header">
-              <span className="questionDate">02/17/17</span><span className="questionDate">|</span>
-              <span>Did you spend adequate time towards your goal today?</span>
-            </div>
-            <div className="collapsible-body"><span>Answer here.</span></div>
-          </li>
-          <li>
-            <div className="collapsible-header">
-              <span className="questionDate">02/18/17</span><span className="questionDate">|</span><span>Question</span>
-            </div>
-            <div className="collapsible-body"><span>Answer here.</span></div>
-          </li>
-          <li>
-            <div className="collapsible-header">
-              <span className="questionDate">02/19/17</span><span className="questionDate">|</span><span>Question</span>
-            </div>
-            <div className="collapsible-body"><span>Answer here.</span></div>
+              <div className="collapsible-header">
+                <span className="questionDate">{reflection.createdAt}</span><span className="questionDate"></span>
+                <span>{reflection.question}</span>
+              </div>
+              <div className="collapsible-body">
+                <span>{reflection.answer}</span>  
+              </div>     
           </li>
         </ul>
+        ))}
+         <Row>
+            <Input s={10} label="New Answer" onChange={this.handleAnswerChange}/>
+            <Button className="submitAnswer" onClick={this.postReflections}>Self Reflection</Button>
+          </Row>  
       </div>
+     
     );
   }
 }
