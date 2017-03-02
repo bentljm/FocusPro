@@ -128,7 +128,6 @@ export default class Settings extends React.Component {
     */
   }
 
-
   postBlacklist(siteURL, siteType, siteTime) {
     const that = this;
     $.ajax({

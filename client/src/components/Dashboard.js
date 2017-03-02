@@ -36,7 +36,6 @@ export default class Dashboard extends React.Component {
   componentWillMount() {
     this.getUserId();
     this.getSetting();
-    this.callCustomJQuery();
   }
 
   componentDidMount() {
