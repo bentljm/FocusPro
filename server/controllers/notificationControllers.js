@@ -8,13 +8,21 @@ function sendNotification (req, res, next) {
 	var freq = req.body.freq;
 	var address = req.body.address;
 	db.Reflection.findAll({where: {auth0_id: auth0_id}}).then(function (reflections) {
+<<<<<<< HEAD
 		//console.log("REFLECTIONS", reflections);
+=======
+		console.log("REFLECTIONS", reflections);
+>>>>>>> Add cron job to set notification frequency
 		if(address.indexOf('@') !== -1) {
 			reflections.length === 0 ? sendEmail(name, address, freq) : sendEmail(name, address, freq, reflections);
 		} else {
 			sendText(name, address, freq);
 		}
+<<<<<<< HEAD
     res.status(201).send('Notification sent successfully');
+=======
+    res.status(201).send('Notification sent successfully to', address);
+>>>>>>> Add cron job to set notification frequency
   });
 }
 
