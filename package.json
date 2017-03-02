@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "server/server.js",
-  "engine": {"node": ">= 6.9.0"},
+  "engine": {
+    "node": ">= 6.9.0"
+  },
   "scripts": {
     "start": "node server/server.js",
     "test": "jest client/* && mocha server/test/*.js",
@@ -45,6 +47,7 @@
     "recharts": "^0.20.8",
     "sequelize": "^3.30.2",
     "twilio": "^2.11.1",
+    "underscore": "^1.8.3",
     "webpack": "^2.2.1"
   },
   "devDependencies": {
