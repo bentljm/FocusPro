@@ -14,7 +14,7 @@ function sendNotification (req, res, next) {
 		} else {
 			sendText(name, address, freq);
 		}
-    res.status(201).send('Notification sent successfully to');
+    res.status(201).send('Notification sent successfully');
   });
 }
 
