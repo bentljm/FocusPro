@@ -1,9 +1,8 @@
 import React from 'react';
-import {} from 'react-materialize';
+import { Row, Input, Col, Button, Icon } from 'react-materialize';
 
 export default class Selfreflection extends React.Component {
   constructor(props) {
-    console.log(props);
     super(props);
     this.state = {
       profile: this.props.auth.getProfile(), // it gets imported here
@@ -12,8 +11,8 @@ export default class Selfreflection extends React.Component {
       question: '',
     };
     this.getReflections = this.getReflections.bind(this);
-    //this.postReflections = this.postReflections.bind(this);
-    //this.handleChange = this.handleChange.bind(this);
+    this.postReflections = this.postReflections.bind(this);
+    this.handleCAnswerhange = this.handleAnswerChange.bind(this);
   }
 
   componentDidMount(){
@@ -41,7 +40,7 @@ export default class Selfreflection extends React.Component {
     });
   }
 
-  /*
+
   
   postReflections() {
     $.ajax({
@@ -49,7 +48,7 @@ export default class Selfreflection extends React.Component {
       url: '/api/users/'+ this.state.profile.user_id + '/reflections',
       contentType: 'application/json',
       data: JSON.stringify({answer: this.state.answer, question: this.state.question, auth0_id: this.state.profile.user_id}),
-      success: function(data) {console.log("SUCCESS: POSTED REFLECTIONS: ", data.data);},
+      success: function(data) {console.log("SUCCESS: POSTED REFLECTIONS: ", data);},
       error: function(err) {console.log("ERROR: COULD NOT POST REFLECTION", err);}
     });
   }
@@ -59,14 +58,10 @@ export default class Selfreflection extends React.Component {
     this.setState({answer: event.target.value})
   }
 
-  handleQuestionChange(event) {
-    this.setState({question: event.target.value})
-  }
-  */
   // format this to Date
 
   render() {
-    return (
+    return ( 
       <div>
         <h1> Self-Reflection </h1>
         {this.state.reflections.map((reflection) => (
@@ -78,11 +73,16 @@ export default class Selfreflection extends React.Component {
               </div>
               <div className="collapsible-body">
                 <span>{reflection.answer}</span>  
-              </div>        
+              </div>     
           </li>
         </ul>
         ))}
+         <Row>
+            <Input s={10} label="New Answer" onChange={this.handleAnswerChange}/>
+            <Button className="submitAnswer" onClick={this.postReflections}>Self Reflection</Button>
+          </Row>  
       </div>
+     
     );
   }
 }
