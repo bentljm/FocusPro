@@ -23,25 +23,25 @@ export default class Settings extends React.Component {
       labelStyle: {},
       inputStyle: {}
     };
-    this.handleSiteChange = this.handleSiteChange.bind(this);
-    this.handleSiteTypeChange = this.handleSiteTypeChange.bind(this);
-    this.handleSiteLimitChange = this.handleSiteLimitChange.bind(this);
-    this.handleSiteSubmission = this.handleSiteSubmission.bind(this);
+    // this.handleSiteChange = this.handleSiteChange.bind(this);
+    // this.handleSiteTypeChange = this.handleSiteTypeChange.bind(this);
+    // this.handleSiteLimitChange = this.handleSiteLimitChange.bind(this);
+    // this.handleSiteSubmission = this.handleSiteSubmission.bind(this);
     // this.handleImageChange = this.handleImageChange.bind(this);
     // this.handleImageSubmission = this.handleImageSubmission.bind(this);
     // this.handleQuoteSubmission = this.handleQuoteSubmission.bind(this);
     // this.handleQuoteChange = this.handleQuoteChange.bind(this);
     this.handleReminderSubmission = this.handleReminderSubmission.bind(this);
-    this.handleReminderTypeChange = this.handleReminderTypeChange.bind(this);
-    this.handleReminderAddressChange = this.handleReminderAddressChange.bind(this);
-    this.handleReminderFreqChange = this.handleReminderFreqChange.bind(this);
+    // this.handleReminderTypeChange = this.handleReminderTypeChange.bind(this);
+    // this.handleReminderAddressChange = this.handleReminderAddressChange.bind(this);
+    // this.handleReminderFreqChange = this.handleReminderFreqChange.bind(this);
     // this.handleUsernameChange = this.handleUsernameChange.bind(this);
     // this.handleUsernameSubmission = this.handleUsernameSubmission.bind(this);
     this.deleteBlacklist = this.deleteBlacklist.bind(this);
     this.sendNotification = this.sendNotification.bind(this);
     // this.handleImageKeyPress = this.handleImageKeyPress.bind(this);
     // this.handleQuoteKeyPress = this.handleQuoteKeyPress.bind(this);
-    this.handleSiteKeyPress = this.handleSiteKeyPress.bind(this);
+    // this.handleSiteKeyPress = this.handleSiteKeyPress.bind(this);
     // this.handleUsernameKeyPress = this.handleUsernameKeyPress.bind(this);
     this.siteFormsFilled = this.siteFormsFilled.bind(this);
     this.editStyle = this.editStyle.bind(this);
@@ -175,7 +175,7 @@ export default class Settings extends React.Component {
       type: 'POST',
       url: `api/users/${this.state.profile.user_id}/sendNotification`,
       contentType: 'application/json',
-      data: JSON.stringify({address: this.state.reminderAddress, name: this.state.profile.given_name}),
+      data: JSON.stringify({ address: this.state.reminderAddress, name: this.state.profile.given_name }),
       success: (data) => {
         console.log('SUCCESS: SENT NOTIFICATIONS', data);
         that.alertUser('Email notification');
@@ -185,19 +185,19 @@ export default class Settings extends React.Component {
     });
   }
 
-  handleSiteChange(event) {
-    this.setState({ siteURL: event.target.value });
-  }
-  handleSiteTypeChange(event) {
-    this.setState({ siteType: event.target.value });
-  }
-  handleSiteLimitChange(event) {
-    this.setState({ siteLimit: event.target.value });
-  }
-  handleSiteSubmission() {
-    this.postBlacklist(this.state.siteURL, this.state.siteType, this.state.siteLimit);
-    this.alertUser('Blacklist site');
-  }
+  // handleChange(event) {
+  //   this.setState({ siteURL: event.target.value });
+  // }
+  // handleSiteTypeChange(event) {
+  //   this.setState({ siteType: event.target.value });
+  // }
+  // handleSiteLimitChange(event) {
+  //   this.setState({ siteLimit: event.target.value });
+  // }
+  // handleSiteSubmission() {
+  //   this.postBlacklist(this.state.siteURL, this.state.siteType, this.state.siteLimit);
+  //   this.alertUser('Blacklist site');
+  // }
   // handleImageChange(event) {
   //   this.setState({ image: event.target.value });
   // }
@@ -214,15 +214,15 @@ export default class Settings extends React.Component {
   //   console.log('this.state.setting.quote',this.state.setting.quote);
   //   // this.setState({ quote: this.state.setting.quote }); // handle case when quote is removed. once quote is set, it cannot be removed
   // }
-  handleReminderTypeChange(event) {
-    this.setState({ reminderType: event.target.value });
-  }
-  handleReminderAddressChange(event) {
-    this.setState({ reminderAddress: event.target.value });
-  }
-  handleReminderFreqChange(event) {
-    this.setState({ reminderFreq: event.target.value });
-  }
+  // handleReminderTypeChange(event) {
+  //   this.setState({ reminderType: event.target.value });
+  // }
+  // handleReminderAddressChange(event) {
+  //   this.setState({ reminderAddress: event.target.value });
+  // }
+  // handleReminderFreqChange(event) {
+  //   this.setState({ reminderFreq: event.target.value });
+  // }
   handleReminderSubmission() {
     this.updateSetting(null, null, null, true, this.state.reminderType, this.state.reminderFreq, this.state.reminderAddress);
     this.setState({ reminderClicked: true });
@@ -247,12 +247,12 @@ export default class Settings extends React.Component {
   //     this.viewStyle('quote');
   //   }
   // }
-  handleSiteKeyPress(e){
-    if(e.key == 'Enter'){
-      if(this.siteFormsFilled())
-      this.handleSiteSubmission();
-    }
-  }
+  // handleSiteKeyPress(e){
+  //   if(e.key == 'Enter'){
+  //     if(this.siteFormsFilled())
+  //     this.handleSubmission('site');
+  //   }
+  // }
   // handleUsernameKeyPress(e){
   //   if(e.key == 'Enter'){
       // this.handleUsernameSubmission();
@@ -260,7 +260,6 @@ export default class Settings extends React.Component {
   // }
 
   handleChange(event, str) {
-    console.log('str event', str);
     this.setState({ [str]: event.target.value });
   }
 
@@ -278,6 +277,10 @@ export default class Settings extends React.Component {
       username: () => {
         this.updateUsername(this.state.username.trim());
       },
+      site: () => {
+        this.postBlacklist(this.state.siteURL, this.state.siteType, this.state.siteLimit);
+        this.alertUser('Blacklist site');
+      },
     };
     console.log('submit', str);
     delegator[str]();
@@ -286,8 +289,14 @@ export default class Settings extends React.Component {
 
   handleKeyPress(e, str) {
     // Enter key triggers blur, so don't need to call handleSubmission
+    // unless there is no onBlur on the element
     if (e.key === 'Enter') {
       this.viewStyle(str);
+      if (str === 'site') {
+        if (this.siteFormsFilled()) {
+          this.handleSubmission('site');
+        }
+      }
     }
   }
 
@@ -380,14 +389,14 @@ export default class Settings extends React.Component {
         </Table>
         <br />
         <Row>
-          <Input s={5} label="Site" value={this.state.siteURL} onChange={this.handleSiteChange} onKeyPress={this.handleSiteKeyPress}/>
-          <Input s={3} type="select" label="Type" defaultValue="1" value={this.state.siteType} onChange={this.handleSiteTypeChange} onKeyPress={this.handleSiteKeyPress}>
+          <Input s={5} label="Site" value={this.state.siteURL} onChange={e=> this.handleChange(e, 'siteURL')} onKeyPress={e => this.handleKeyPress(e, 'site')}/>
+          <Input s={3} type="select" label="Type" defaultValue="1" value={this.state.siteType} onChange={e => this.handleChange(e, 'siteType')}>
             <option value="1">Blackout</option>
             <option value="2">Block after exceeding</option>
             <option value="3">Warn after exceeding</option>
           </Input>
-          <Input s={2} label="Time Limit (min)" value={this.state.siteLimit} onChange={this.handleSiteLimitChange} onKeyPress={this.handleSiteKeyPress}/>
-          <Button disabled={!siteSubmitEnabled} className="blacklistButton" waves="light" onClick={this.handleSiteSubmission}>Add Site</Button>
+          <Input s={2} label="Time Limit (min)" value={this.state.siteLimit} onChange={e => this.handleChange(e, 'siteLimit')} onKeyPress={e => this.handleKeyPress(e, 'site')}/>
+          <Button disabled={!siteSubmitEnabled} className="blacklistButton" waves="light" onClick={() => this.handleSubmission('site')}>Add Site</Button>
         </Row>
         <br />
         <h3> Personalization: </h3>
@@ -408,13 +417,13 @@ export default class Settings extends React.Component {
         </Row>
         <br />
         <Row>
-          <Input s={2} type="select" label="Reminder Type" defaultValue="1" value={this.state.reminderType} onChange={this.handleReminderTypeChange}>
+          <Input s={2} type="select" label="Reminder Type" defaultValue="1" value={this.state.reminderType} onChange={e => this.handleChange(e, 'reminderType')}>
             <option value="1">No Reminder</option>
             <option value="2">Text</option>
             <option value="3">Email</option>
           </Input>
-          <Input s={6} label="Number/Email Address" value={this.state.reminderAddress} onChange={this.handleReminderAddressChange}/>
-          <Input s={2} type="select" label="Frequency" defaultValue="1" value={this.state.reminderFreq} onChange={this.handleReminderFreqChange}>
+          <Input s={6} label="Number/Email Address" value={this.state.reminderAddress} onChange={e => this.handleChange(e, 'reminderAddress')}/>
+          <Input s={2} type="select" label="Frequency" defaultValue="1" value={this.state.reminderFreq} onChange={e => this.handleChange(e, 'reminderFreq')}>
             <option value="1">Daily</option>
             <option value="2">Weekly</option>
           </Input>
