@@ -21,7 +21,7 @@ export default class Settings extends React.Component {
       reminderAddress: '',
       reminderClicked: false,
       labelStyle: {},
-      inputStyle: {}
+      inputStyle: {},
     };
     this.handleReminderSubmission = this.handleReminderSubmission.bind(this);
     this.deleteBlacklist = this.deleteBlacklist.bind(this);
@@ -57,6 +57,7 @@ export default class Settings extends React.Component {
       error: (err) => { console.log('ERROR: COULD NOT GET USERID', err); },
     });
   }
+
   getSetting() {
     const that = this;
     $.ajax({
@@ -114,7 +115,6 @@ export default class Settings extends React.Component {
     });
   }
 
-
   postBlacklist(siteURL, siteType, siteTime) {
     const that = this;
     $.ajax({
@@ -148,7 +148,6 @@ export default class Settings extends React.Component {
       error: (err) => { console.log('Error deleting', err); },
     });
   }
-
 
   updateUsername(username) {
     const that = this;
