@@ -1,5 +1,6 @@
 import React from 'react';
 import { Table, Input, Row, Button, Icon } from 'react-materialize';
+import { extend } from 'underscore';
 
 export default class Settings extends React.Component {
   constructor(props) {
@@ -19,30 +20,18 @@ export default class Settings extends React.Component {
       reminderFreq: 0,
       reminderAddress: '',
       reminderClicked: false,
+      labelStyle: {},
+      inputStyle: {}
     };
-    this.handleSiteChange = this.handleSiteChange.bind(this);
-    this.handleSiteTypeChange = this.handleSiteTypeChange.bind(this);
-    this.handleSiteLimitChange = this.handleSiteLimitChange.bind(this);
-    this.handleSiteSubmission = this.handleSiteSubmission.bind(this);
-    this.handleImageChange = this.handleImageChange.bind(this);
-    this.handleImageSubmission = this.handleImageSubmission.bind(this);
-    this.handleQuoteSubmission = this.handleQuoteSubmission.bind(this);
-    this.handleQuoteChange = this.handleQuoteChange.bind(this);
     this.handleReminderSubmission = this.handleReminderSubmission.bind(this);
-    this.handleReminderTypeChange = this.handleReminderTypeChange.bind(this);
-    this.handleReminderAddressChange = this.handleReminderAddressChange.bind(this);
-    this.handleReminderFreqChange = this.handleReminderFreqChange.bind(this);
-    this.handleUsernameChange = this.handleUsernameChange.bind(this);
-    this.handleUsernameSubmission = this.handleUsernameSubmission.bind(this);
     this.deleteBlacklist = this.deleteBlacklist.bind(this);
     this.sendNotification = this.sendNotification.bind(this);
-    this.handleImageKeyPress = this.handleImageKeyPress.bind(this);
-    this.handleQuoteKeyPress = this.handleQuoteKeyPress.bind(this);
-    this.handleSiteKeyPress = this.handleSiteKeyPress.bind(this);
-    this.handleUsernameKeyPress = this.handleUsernameKeyPress.bind(this);
     this.siteFormsFilled = this.siteFormsFilled.bind(this);
-    //this.handleReminderKeyPress = this.handleReminderKeyPress.bind(this);
-    //this.reminderFormsFilled = this.reminderFormsFilled.bind(this);
+    this.editStyle = this.editStyle.bind(this);
+    this.viewStyle = this.viewStyle.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.handleSubmission = this.handleSubmission.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
@@ -51,6 +40,23 @@ export default class Settings extends React.Component {
     this.getBlacklist();
   }
 
+  componentDidUpdate() {
+    // this.initialiseSettings();
+  }
+
+  getUserId() {
+    const that = this;
+    $.ajax({
+      type: 'GET',
+      url: `api/users/${this.state.profile.user_id}`,
+      success: (data) => {
+        console.log('SUCCESS: GOT USERID', data.data[0].id);
+        that.setState({ userId: data.data[0].id });
+        that.setState({ username: data.data[0].username || this.state.profile.nickname });
+      },
+      error: (err) => { console.log('ERROR: COULD NOT GET USERID', err); },
+    });
+  }
   getSetting() {
     const that = this;
     $.ajax({
@@ -58,11 +64,35 @@ export default class Settings extends React.Component {
       url: `/api/users/${this.state.profile.user_id}/setting`,
       success: (data) => {
         console.log('SUCCESS: OBTAINED SETTINGS: ', data);
-        that.setState({ setting: data.data[0] });
-        that.setState({ image: data.data[0].picture });
-        that.setState({ quote: data.data[0].quote });
+        that.setState({ setting: data.data[0] }, () => {
+          console.log('get setting', that.state.setting);
+          that.initialiseSettings();
+        });
+        // that.setState({ image: data.data[0].picture });
+        // that.setState({ quote: data.data[0].quote });
+        that.setState({
+          image: data.data[0].picture,
+          quote: data.data[0].quote,
+          reminderType: data.data[0].reminder_type,
+          reminderFreq: data.data[0].reminder_freq,
+          reminderAddress: data.data[0].reminder_address,
+        });
+        // that.initialiseSettings();
       },
       error: (err) => { console.log('ERROR: COULD NOT GET SETTINGS', err); },
+    });
+  }
+
+  getBlacklist() {
+    const that = this;
+    $.ajax({
+      type: 'GET', // GET REQUEST
+      url: `/api/users/${this.state.profile.user_id}/blacklist`,
+      success: (data) => {
+        console.log('SUCCESS: OBTAINED BLACKLIST: ', data.data);
+        that.setState({ blacklist: data.data });
+      },
+      error: (err) => { console.log('ERROR: COULD NOT GET BLACKLIST', err); },
     });
   }
 
@@ -84,18 +114,6 @@ export default class Settings extends React.Component {
     });
   }
 
-  getBlacklist() {
-    const that = this;
-    $.ajax({
-      type: 'GET', // GET REQUEST
-      url: `/api/users/${this.state.profile.user_id}/blacklist`,
-      success: (data) => {
-        console.log('SUCCESS: OBTAINED BLACKLIST: ', data.data);
-        that.setState({ blacklist: data.data });
-      },
-      error: (err) => { console.log('ERROR: COULD NOT GET BLACKLIST', err); },
-    });
-  }
 
   postBlacklist(siteURL, siteType, siteTime) {
     const that = this;
@@ -107,6 +125,12 @@ export default class Settings extends React.Component {
       success: (data) => {
         console.log('SUCCESS: POSTED BLACKLIST: ', data);
         that.getBlacklist();
+        that.alertUser('Blacklist site');
+        that.setState({
+          siteURL: '',
+          siteType: '',
+          siteLimit: 0,
+        });
       },
       error: (err) => { console.log('ERROR: COULD NOT POST BLACKLIST', err); },
     });
@@ -125,18 +149,6 @@ export default class Settings extends React.Component {
     });
   }
 
-  getUserId() {
-    const that = this;
-    $.ajax({
-      type: 'GET',
-      url: `api/users/${this.state.profile.user_id}`,
-      success: (data) => {
-        console.log('SUCCESS: GOT USERID', data.data[0].id);
-        that.setState({ userId: data.data[0].id });
-      },
-      error: (err) => { console.log('ERROR: COULD NOT GET USERID', err); },
-    });
-  }
 
   updateUsername(username) {
     const that = this;
@@ -144,8 +156,8 @@ export default class Settings extends React.Component {
       type: 'PUT',
       url: `api/users/${this.state.profile.user_id}/username`,
       contentType: 'application/json',
-      data: JSON.stringify({username: username}),
-      success: (data) => {
+      data: JSON.stringify({ username }),
+      success: () => {
         console.log('SUCCESS: UPDATED USERNAME');
         that.alertUser('Username');
       },
@@ -159,7 +171,7 @@ export default class Settings extends React.Component {
       type: 'POST',
       url: `api/users/${this.state.profile.user_id}/sendNotification`,
       contentType: 'application/json',
-      data: JSON.stringify({address: this.state.reminderAddress, name: this.state.profile.given_name}),
+      data: JSON.stringify({ address: this.state.reminderAddress, name: this.state.profile.given_name }),
       success: (data) => {
         console.log('SUCCESS: SENT NOTIFICATIONS', data);
         that.alertUser('Email notification');
@@ -169,95 +181,96 @@ export default class Settings extends React.Component {
     });
   }
 
-  handleSiteChange(event) {
-    this.setState({ siteURL: event.target.value });
-  }
-  handleSiteTypeChange(event) {
-    this.setState({ siteType: event.target.value });
-  }
-  handleSiteLimitChange(event) {
-    this.setState({ siteLimit: event.target.value });
-  }
-  handleSiteSubmission() {
-    this.postBlacklist(this.state.siteURL, this.state.siteType, this.state.siteLimit);
-    this.alertUser('Blacklist site');
-  }
-  handleImageChange(event) {
-    this.setState({ image: event.target.value });
-  }
-  handleQuoteChange(event) {
-    this.setState({ quote: event.target.value });
-  }
-  handleImageSubmission() {
-    this.updateSetting(this.state.image);
-    this.alertUser('Image');
-  }
-  handleQuoteSubmission() {
-    this.updateSetting(null, this.state.quote);
-    this.alertUser('Quote');
-  }
-  handleReminderTypeChange(event) {
-    this.setState({ reminderType: event.target.value });
-  }
-  handleReminderAddressChange(event) {
-    this.setState({ reminderAddress: event.target.value });
-  }
-  handleReminderFreqChange(event) {
-    this.setState({ reminderFreq: event.target.value });
-  }
   handleReminderSubmission() {
     this.updateSetting(null, null, null, true, this.state.reminderType, this.state.reminderFreq, this.state.reminderAddress);
     this.setState({ reminderClicked: true });
     this.alertUser('Reminder');
   }
-  handleUsernameChange(event) {
-    this.setState({ username: event.target.value });
-  }
-  handleUsernameSubmission() {
-    this.updateUsername(this.state.username);
+
+  handleChange(event, str) {
+    this.setState({ [str]: event.target.value });
   }
 
-  handleImageKeyPress(e){
-    if(e.key == 'Enter'){
-      this.handleImageSubmission();
+  handleSubmission(str) {
+    const that = this;
+    const delegator = {
+      quote: () => {
+        that.updateSetting(null, that.state.quote);
+        that.alertUser('Quote');
+      },
+      image: () => {
+        that.updateSetting(this.state.image);
+        that.alertUser('Image');
+      },
+      username: () => {
+        this.updateUsername(this.state.username.trim());
+      },
+      site: () => {
+        this.postBlacklist(this.state.siteURL, this.state.siteType, this.state.siteLimit);
+      },
+    };
+    delegator[str]();
+    that.viewStyle(str);
+  }
+
+  handleKeyPress(e, str) {
+    // Enter key triggers blur, so don't need to call handleSubmission
+    // unless there is no onBlur on the element
+    if (e.key === 'Enter') {
+      this.viewStyle(str);
+      if (str === 'site') {
+        if (this.siteFormsFilled()) {
+          this.handleSubmission('site');
+        }
+      }
     }
   }
-  handleQuoteKeyPress(e){
-    if(e.key == 'Enter'){
-      this.handleQuoteSubmission();
-    }
-  }
-  handleSiteKeyPress(e){
-    if(e.key == 'Enter'){
-      if(this.siteFormsFilled())
-      this.handleSiteSubmission();
-    }
-  }
-  handleUsernameKeyPress(e){
-    if(e.key == 'Enter'){
-      this.handleUsernameSubmission();
-    }
-  }
-  // handleReminderKeyPress(e){
-  //   if(e.key == 'Enter'){
-  //     console.log('CLICKED')
-  //     if(this.reminderFormsFilled())
-  //       console.log('CLICKED')
-  //       this.handleReminderSubmission();
-  //   }
-  // }
+
   siteFormsFilled() {
-    return  this.state.siteURL.length > 0 && this.state.siteLimit.length > 0 && this.state.siteType.length > 0;
+    return this.state.siteURL.length > 0 && this.state.siteLimit.length > 0 && this.state.siteType.length > 0;
   }
-  // reminderFormsFilled() {
-  //   console.log(this.state.reminderType.length > 0 && this.state.reminderAddress.length > 0 && this.state.reminderFreq.length > 0)
-  //   return  this.state.reminderType.length > 0 && this.state.reminderAddress.length > 0 && this.state.reminderFreq.length > 0;
-  // }
+
 
   alertUser(str) {
     Materialize.toast(`${str} added!`, 1000);
   }
 
+  initialiseSettings() {
+    const settingList = ['quote'];
+    settingList.forEach((item) => {
+      if (!this.state.setting[item]) {
+        this.editStyle(item);
+      } else {
+        this.viewStyle(item);
+      }
+    });
+
+    if (!this.state.setting.picture) {
+      this.editStyle('image');
+    } else {
+      this.viewStyle('image');
+    }
+
+    if (!this.state.username) {
+      this.editStyle('username');
+    } else {
+      this.viewStyle('username');
+    }
+  }
+
+  editStyle(str) {
+    this.setState({
+      labelStyle: extend(this.state.labelStyle, { [str]: { display: 'none' } }),
+      inputStyle: extend(this.state.inputStyle, { [str]: { display: 'block' } }),
+    });
+  }
+
+  viewStyle(str) {
+    this.setState({
+      labelStyle: extend(this.state.labelStyle, { [str]: { display: 'block' } }),
+      inputStyle: extend(this.state.inputStyle, { [str]: { display: 'none' } }),
+    });
+  }
 
   render() {
     const { siteURL, siteLimit, siteType } = this.state;
@@ -270,7 +283,8 @@ export default class Settings extends React.Component {
       <div>
         <h1> Settings </h1>
         <h3> Blacklist: </h3>
-        <Table>
+        {(this.state.blacklist.length === 0) && <div>There is no blacklist url set currently.</div>}
+        {this.state.blacklist.length > 0 && <Table>
           <thead>
             <tr>
               <th data-field="id">Site</th>
@@ -278,52 +292,54 @@ export default class Settings extends React.Component {
               <th data-field="limit">Time Limit</th>
             </tr>
           </thead>
-
           <tbody>
-            {this.state.blacklist.map((site, index) => (
-              <tr key={index}>
+            {this.state.blacklist.map(site => (
+              <tr key={`blacklist${site.id}`} >
                 <td>{site.url}</td>
                 <td>{site.blacklist_type}</td>
                 <td>{site.blacklist_time}</td>
                 <td><a href="#/settings" onClick={() => this.deleteBlacklist(site.id)}><Icon right>delete</Icon></a></td>
-            </tr>
+              </tr>
             ))}
           </tbody>
-        </Table>
+        </Table>}
         <br />
         <Row>
-          <Input s={5} label="Site" value={this.state.siteURL} onChange={this.handleSiteChange} onKeyPress={this.handleSiteKeyPress}/>
-          <Input s={3} type="select" label="Type" defaultValue="1" value={this.state.siteType} onChange={this.handleSiteTypeChange} onKeyPress={this.handleSiteKeyPress}>
+          <Input s={5} label="Site" value={this.state.siteURL} onChange={e => this.handleChange(e, 'siteURL')} onKeyPress={e => this.handleKeyPress(e, 'site')} />
+          <Input s={3} type="select" label="Type" defaultValue="1" value={this.state.siteType} onChange={e => this.handleChange(e, 'siteType')}>
             <option value="1">Blackout</option>
             <option value="2">Block after exceeding</option>
             <option value="3">Warn after exceeding</option>
           </Input>
-          <Input s={2} label="Time Limit (min)" value={this.state.siteLimit} onChange={this.handleSiteLimitChange} onKeyPress={this.handleSiteKeyPress}/>
-          <Button disabled={!siteSubmitEnabled} className="blacklistButton" waves="light" onClick={this.handleSiteSubmission}>Add Site</Button>
+          <Input s={2} label="Time Limit (min)" value={this.state.siteLimit} onChange={e => this.handleChange(e, 'siteLimit')} onKeyPress={e => this.handleKeyPress(e, 'site')} />
+          <Button disabled={!siteSubmitEnabled} className="blacklistButton" waves="light" onClick={() => this.handleSubmission('site')}>Add Site</Button>
         </Row>
         <br />
         <h3> Personalization: </h3>
         <Row>
-          <Input s={10} label="Username" value={this.state.username} onChange={this.handleUsernameChange} onKeyPress={this.handleUsernameKeyPress}/>
-          <Button className="usernameButton" waves="light" onClick={this.handleUsernameSubmission}>Set Username</Button>
+          <div onDoubleClick={() => this.editStyle('username')} style={this.state.labelStyle.username}>{this.state.username}
+          </div>
+          <Input s={10} placeholder="Enter Username" value={this.state.username} onChange={e => this.handleChange(e, 'username')} onKeyPress={e => this.handleKeyPress(e, 'username')} onBlur={() => this.handleSubmission('username')} style={this.state.inputStyle.username} />
         </Row>
         <Row>
-          <Input s={10} label="Image" value={this.state.image} onChange={this.handleImageChange} onKeyPress={this.handleImageKeyPress}/>
-          <Button className="picButton" waves="light" onClick={this.handleImageSubmission}>Set Image</Button>
+          <div onDoubleClick={() => this.editStyle('image')} style={this.state.labelStyle.image}>{this.state.image}
+          </div>
+          <Input s={10} placeholder="Enter Image URL" value={this.state.image} onChange={e => this.handleChange(e, 'image')} onBlur={() => this.handleSubmission('image')} onKeyPress={e => this.handleKeyPress(e, 'image')} style={this.state.inputStyle.image} />
         </Row>
         <Row>
-          <Input s={10} label="Quote" value={this.state.quote} onChange={this.handleQuoteChange} onKeyPress={this.handleQuoteKeyPress}/>
-          <Button className="quoteButton" waves="light" onClick={this.handleQuoteSubmission}>Set Quote</Button>
+          <div onDoubleClick={() => this.editStyle('quote')} style={this.state.labelStyle.quote}>{this.state.quote}
+          </div>
+          <Input s={10} placeholder="Enter Motivational Quote" value={this.state.quote} onChange={e => this.handleChange(e, 'quote')} onBlur={() => this.handleSubmission('quote')} onKeyPress={e => this.handleKeyPress(e, 'quote')} style={this.state.inputStyle.quote} />
         </Row>
         <br />
         <Row>
-          <Input s={2} type="select" label="Reminder Type" defaultValue="1" value={this.state.reminderType} onChange={this.handleReminderTypeChange}>
+          <Input s={2} type="select" label="Reminder Type" defaultValue="1" value={this.state.reminderType} onChange={e => this.handleChange(e, 'reminderType')}>
             <option value="1">No Reminder</option>
             <option value="2">Text</option>
             <option value="3">Email</option>
           </Input>
-          <Input s={6} label="Number/Email Address" value={this.state.reminderAddress} onChange={this.handleReminderAddressChange}/>
-          <Input s={2} type="select" label="Frequency" defaultValue="1" value={this.state.reminderFreq} onChange={this.handleReminderFreqChange}>
+          <Input s={6} label="Number/Email Address" value={this.state.reminderAddress} onChange={e => this.handleChange(e, 'reminderAddress')} />
+          <Input s={2} type="select" label="Frequency" defaultValue="1" value={this.state.reminderFreq} onChange={e => this.handleChange(e, 'reminderFreq')}>
             <option value="1">Daily</option>
             <option value="2">Weekly</option>
           </Input>
