@@ -85,8 +85,8 @@ export default class Goal extends React.Component {
     this.setState({ subgoal: '' });
   }
 
-  handleKeyPress(e){
-    if(e.key == 'Enter'){
+  handleKeyPress(e) {
+    if (e.key == 'Enter'){
       this.postSubgoal();
     }
   }
@@ -113,7 +113,7 @@ export default class Goal extends React.Component {
         {this.state.subgoals.map(subgoal =>
           <Subgoal key={`sub ${subgoal.id}`} subgoal={subgoal} status={subgoal.status} id={subgoal.id} user_id={this.props.user_id} goal={subgoal.GoalId} updateSubgoals={this.getSubgoals} />
           )}
-        <Input s={8} label="New Subgoal" onChange={this.handleChange} value={this.state.subgoal} onKeyPress={this.handleKeyPress}/>
+        <Input s={8} label="New Subgoal" onChange={this.handleChange} value={this.state.subgoal} onKeyPress={this.handleKeyPress} />
         <Button className="subgoalButton" waves="light" onClick={this.postSubgoal}>Set Subgoal</Button>
       </div>
     );
