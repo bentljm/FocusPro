@@ -68,8 +68,15 @@ export default class Settings extends React.Component {
           console.log('get setting', that.state.setting);
           that.initialiseSettings();
         });
-        that.setState({ image: data.data[0].picture });
-        that.setState({ quote: data.data[0].quote });
+        // that.setState({ image: data.data[0].picture });
+        // that.setState({ quote: data.data[0].quote });
+        that.setState({
+          image: data.data[0].picture,
+          quote: data.data[0].quote,
+          reminderType: data.data[0].reminder_type,
+          reminderFreq: data.data[0].reminder_freq,
+          reminderAddress: data.data[0].reminder_address,
+        });
         // that.initialiseSettings();
       },
       error: (err) => { console.log('ERROR: COULD NOT GET SETTINGS', err); },
