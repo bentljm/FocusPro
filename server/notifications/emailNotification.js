@@ -38,7 +38,7 @@ function sendMail(name, receiver, frequency, reflections) {
         html: emailHTML
       };
        // Runs every weekday (Monday through Friday) or once on Tuesday at 9:30 AM depending on user input
-      frequency === '1' ? notificationFreq = '00 30 20 * * 1-5' : notificationFreq = '00 30 09 * * 2'; 
+      frequency === '1' ? notificationFreq = '00 30 09 * * 1-5' : notificationFreq = '00 30 09 * * 2'; 
 
       //create new timeframe and pass in notificationFreq
       var job = new CronJob(notificationFreq, function() {
