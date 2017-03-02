@@ -135,6 +135,12 @@ export default class Settings extends React.Component {
       success: (data) => {
         console.log('SUCCESS: POSTED BLACKLIST: ', data);
         that.getBlacklist();
+        that.alertUser('Blacklist site');
+        that.setState({
+          siteURL: '',
+          siteType: '',
+          siteLimit: 0
+        });
       },
       error: (err) => { console.log('ERROR: COULD NOT POST BLACKLIST', err); },
     });
@@ -279,7 +285,6 @@ export default class Settings extends React.Component {
       },
       site: () => {
         this.postBlacklist(this.state.siteURL, this.state.siteType, this.state.siteLimit);
-        this.alertUser('Blacklist site');
       },
     };
     console.log('submit', str);
