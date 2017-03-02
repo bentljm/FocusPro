@@ -171,7 +171,7 @@ export default class Settings extends React.Component {
       type: 'POST',
       url: `api/users/${this.state.profile.user_id}/sendNotification`,
       contentType: 'application/json',
-      data: JSON.stringify({ address: this.state.reminderAddress, name: this.state.profile.given_name }),
+      data: JSON.stringify({ address: this.state.reminderAddress, name: this.state.profile.given_name, freq: this.state.reminderFreq }),
       success: (data) => {
         console.log('SUCCESS: SENT NOTIFICATIONS', data);
         that.alertUser('Email notification');
