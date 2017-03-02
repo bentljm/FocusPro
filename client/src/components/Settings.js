@@ -48,7 +48,7 @@ export default class Settings extends React.Component {
     const that = this;
     $.ajax({
       type: 'GET',
-      url: `api/users/${this.state.profile.user_id}`,
+      url: `/api/users/${this.state.profile.user_id}`,
       success: (data) => {
         console.log('SUCCESS: GOT USERID', data.data[0].id);
         that.setState({ userId: data.data[0].id });
@@ -121,7 +121,7 @@ export default class Settings extends React.Component {
     const that = this;
     $.ajax({
       type: 'POST',
-      url: `api/users/${this.state.profile.user_id}/blacklist`,
+      url: `/api/users/${this.state.profile.user_id}/blacklist`,
       contentType: 'application/json',
       data: JSON.stringify({ url: siteURL, blacklist_type: siteType, blacklist_time: siteTime, SettingId: that.state.setting.id }),
       success: (data) => {
@@ -155,7 +155,7 @@ export default class Settings extends React.Component {
     const that = this;
     $.ajax({
       type: 'PUT',
-      url: `api/users/${this.state.profile.user_id}/username`,
+      url: `/api/users/${this.state.profile.user_id}/username`,
       contentType: 'application/json',
       data: JSON.stringify({ username }),
       success: () => {
@@ -170,7 +170,7 @@ export default class Settings extends React.Component {
     const that = this;
     $.ajax({
       type: 'POST',
-      url: `api/users/${this.state.profile.user_id}/sendNotification`,
+      url: `/api/users/${this.state.profile.user_id}/sendNotification`,
       contentType: 'application/json',
       data: JSON.stringify({ address: this.state.reminderAddress, name: this.state.profile.given_name, freq: this.state.reminderFreq }),
       success: (data) => {
