@@ -86,7 +86,7 @@ export default class Goal extends React.Component {
   }
 
   handleKeyPress(e) {
-    if (e.key == 'Enter'){
+    if (e.key === 'Enter') {
       this.postSubgoal();
     }
   }

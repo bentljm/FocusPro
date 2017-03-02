@@ -48,7 +48,7 @@ export default class Settings extends React.Component {
     const that = this;
     $.ajax({
       type: 'GET',
-      url: `api/users/${this.state.profile.user_id}`,
+      url: `/api/users/${this.state.profile.user_id}`,
       success: (data) => {
         console.log('SUCCESS: GOT USERID', data.data[0].id);
         that.setState({ userId: data.data[0].id });
@@ -98,6 +98,7 @@ export default class Settings extends React.Component {
   }
 
   updateSetting(pic, quote, refl_freq, remind, remind_type, remind_freq, remind_addr) {
+    console.log(remind_freq);
     $.ajax({
       type: 'PUT',
       url: `/api/users/${this.state.profile.user_id}/setting`,
@@ -115,13 +116,14 @@ export default class Settings extends React.Component {
     });
   }
 
+
   postBlacklist(siteURL, siteType, siteTime) {
     const that = this;
     $.ajax({
       type: 'POST',
       url: `/api/users/${this.state.profile.user_id}/blacklist`,
       contentType: 'application/json',
-      data: JSON.stringify({ url: siteURL, blacklist_type: siteType, blacklist_time: siteTime, SettingId: this.state.setting.id }),
+      data: JSON.stringify({ url: siteURL, blacklist_type: siteType, blacklist_time: siteTime, SettingId: that.state.setting.id }),
       success: (data) => {
         console.log('SUCCESS: POSTED BLACKLIST: ', data);
         that.getBlacklist();
@@ -132,7 +134,7 @@ export default class Settings extends React.Component {
           siteLimit: 0,
         });
       },
-      error: (err) => { console.log('ERROR: COULD NOT POST BLACKLIST', err); },
+      error: (err) => { console.log('ERROR: COULD NOT GET USERID', err); },
     });
   }
 
@@ -153,7 +155,7 @@ export default class Settings extends React.Component {
     const that = this;
     $.ajax({
       type: 'PUT',
-      url: `api/users/${this.state.profile.user_id}/username`,
+      url: `/api/users/${this.state.profile.user_id}/username`,
       contentType: 'application/json',
       data: JSON.stringify({ username }),
       success: () => {
@@ -168,13 +170,13 @@ export default class Settings extends React.Component {
     const that = this;
     $.ajax({
       type: 'POST',
-      url: `api/users/${this.state.profile.user_id}/sendNotification`,
+      url: `/api/users/${this.state.profile.user_id}/sendNotification`,
       contentType: 'application/json',
-      data: JSON.stringify({ address: this.state.reminderAddress, name: this.state.profile.given_name }),
+      data: JSON.stringify({ address: this.state.reminderAddress, name: this.state.profile.given_name, freq: this.state.reminderFreq }),
       success: (data) => {
         console.log('SUCCESS: SENT NOTIFICATIONS', data);
         that.alertUser('Email notification');
-        this.setState({ reminderClicked: false });
+        that.setState({ reminderClicked: false });
       },
       error: (err) => { console.log('ERROR: COULD NOT SEND NOTIFICATIONS', err); },
     });
@@ -229,9 +231,8 @@ export default class Settings extends React.Component {
     return this.state.siteURL.length > 0 && this.state.siteLimit.length > 0 && this.state.siteType.length > 0;
   }
 
-
   alertUser(str) {
-    Materialize.toast(`${str} added!`, 1000);
+    Materialize.toast(`${str} set!`, 1000);
   }
 
   initialiseSettings() {

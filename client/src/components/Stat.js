@@ -18,7 +18,7 @@ export default class Stat extends React.Component {
     const that = this;
     $.ajax({
       type: 'GET',
-      url: `api/users/${this.props.profile.user_id}/extension_data`,
+      url: `/api/users/${this.props.profile.user_id}/extension_data`,
       success: (data) => {
         // Get data into useable form
         let pieData = [];
