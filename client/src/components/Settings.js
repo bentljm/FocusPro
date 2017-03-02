@@ -1,5 +1,6 @@
 import React from 'react';
 import { Table, Input, Row, Button, Icon } from 'react-materialize';
+import { extend } from 'underscore';
 
 export default class Settings extends React.Component {
   constructor(props) {
@@ -19,6 +20,8 @@ export default class Settings extends React.Component {
       reminderFreq: 0,
       reminderAddress: '',
       reminderClicked: false,
+      labelStyle: {},
+      inputStyle: {}
     };
     this.handleSiteChange = this.handleSiteChange.bind(this);
     this.handleSiteTypeChange = this.handleSiteTypeChange.bind(this);
@@ -32,17 +35,20 @@ export default class Settings extends React.Component {
     this.handleReminderTypeChange = this.handleReminderTypeChange.bind(this);
     this.handleReminderAddressChange = this.handleReminderAddressChange.bind(this);
     this.handleReminderFreqChange = this.handleReminderFreqChange.bind(this);
-    this.handleUsernameChange = this.handleUsernameChange.bind(this);
+    // this.handleUsernameChange = this.handleUsernameChange.bind(this);
     this.handleUsernameSubmission = this.handleUsernameSubmission.bind(this);
     this.deleteBlacklist = this.deleteBlacklist.bind(this);
     this.sendNotification = this.sendNotification.bind(this);
-    this.handleImageKeyPress = this.handleImageKeyPress.bind(this);
-    this.handleQuoteKeyPress = this.handleQuoteKeyPress.bind(this);
+    // this.handleImageKeyPress = this.handleImageKeyPress.bind(this);
+    // this.handleQuoteKeyPress = this.handleQuoteKeyPress.bind(this);
     this.handleSiteKeyPress = this.handleSiteKeyPress.bind(this);
-    this.handleUsernameKeyPress = this.handleUsernameKeyPress.bind(this);
+    // this.handleUsernameKeyPress = this.handleUsernameKeyPress.bind(this);
     this.siteFormsFilled = this.siteFormsFilled.bind(this);
-    //this.handleReminderKeyPress = this.handleReminderKeyPress.bind(this);
-    //this.reminderFormsFilled = this.reminderFormsFilled.bind(this);
+    this.editStyle = this.editStyle.bind(this);
+    this.viewStyle = this.viewStyle.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.handleSubmission = this.handleSubmission.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
@@ -51,6 +57,23 @@ export default class Settings extends React.Component {
     this.getBlacklist();
   }
 
+  componentDidUpdate() {
+    // this.initialiseSettings();
+  }
+
+  getUserId() {
+    const that = this;
+    $.ajax({
+      type: 'GET',
+      url: `api/users/${this.state.profile.user_id}`,
+      success: (data) => {
+        console.log('SUCCESS: GOT USERID', data.data[0].id);
+        that.setState({ userId: data.data[0].id });
+        that.setState({username: data.data[0].username || this.state.profile.nickname});
+      },
+      error: (err) => { console.log('ERROR: COULD NOT GET USERID', err); },
+    });
+  }
   getSetting() {
     const that = this;
     $.ajax({
@@ -58,11 +81,28 @@ export default class Settings extends React.Component {
       url: `/api/users/${this.state.profile.user_id}/setting`,
       success: (data) => {
         console.log('SUCCESS: OBTAINED SETTINGS: ', data);
-        that.setState({ setting: data.data[0] });
+        that.setState({ setting: data.data[0] }, () => {
+          console.log('get setting', that.state.setting);
+          that.initialiseSettings();
+        });
         that.setState({ image: data.data[0].picture });
         that.setState({ quote: data.data[0].quote });
+        // that.initialiseSettings();
       },
       error: (err) => { console.log('ERROR: COULD NOT GET SETTINGS', err); },
+    });
+  }
+
+  getBlacklist() {
+    const that = this;
+    $.ajax({
+      type: 'GET', // GET REQUEST
+      url: `/api/users/${this.state.profile.user_id}/blacklist`,
+      success: (data) => {
+        console.log('SUCCESS: OBTAINED BLACKLIST: ', data.data);
+        that.setState({ blacklist: data.data });
+      },
+      error: (err) => { console.log('ERROR: COULD NOT GET BLACKLIST', err); },
     });
   }
 
@@ -84,18 +124,6 @@ export default class Settings extends React.Component {
     });
   }
 
-  getBlacklist() {
-    const that = this;
-    $.ajax({
-      type: 'GET', // GET REQUEST
-      url: `/api/users/${this.state.profile.user_id}/blacklist`,
-      success: (data) => {
-        console.log('SUCCESS: OBTAINED BLACKLIST: ', data.data);
-        that.setState({ blacklist: data.data });
-      },
-      error: (err) => { console.log('ERROR: COULD NOT GET BLACKLIST', err); },
-    });
-  }
 
   postBlacklist(siteURL, siteType, siteTime) {
     const that = this;
@@ -125,18 +153,6 @@ export default class Settings extends React.Component {
     });
   }
 
-  getUserId() {
-    const that = this;
-    $.ajax({
-      type: 'GET',
-      url: `api/users/${this.state.profile.user_id}`,
-      success: (data) => {
-        console.log('SUCCESS: GOT USERID', data.data[0].id);
-        that.setState({ userId: data.data[0].id });
-      },
-      error: (err) => { console.log('ERROR: COULD NOT GET USERID', err); },
-    });
-  }
 
   updateUsername(username) {
     const that = this;
@@ -195,6 +211,8 @@ export default class Settings extends React.Component {
   handleQuoteSubmission() {
     this.updateSetting(null, this.state.quote);
     this.alertUser('Quote');
+    console.log('this.state.setting.quote',this.state.setting.quote);
+    // this.setState({ quote: this.state.setting.quote }); // handle case when quote is removed. once quote is set, it cannot be removed
   }
   handleReminderTypeChange(event) {
     this.setState({ reminderType: event.target.value });
@@ -210,54 +228,115 @@ export default class Settings extends React.Component {
     this.setState({ reminderClicked: true });
     this.alertUser('Reminder');
   }
-  handleUsernameChange(event) {
-    this.setState({ username: event.target.value });
-  }
+  // handleUsernameChange(event) {
+  //   this.setState({ username: event.target.value });
+  // }
   handleUsernameSubmission() {
-    this.updateUsername(this.state.username);
+    console.log('submission?');
+    this.updateUsername(this.state.username.trim());
   }
 
-  handleImageKeyPress(e){
-    if(e.key == 'Enter'){
-      this.handleImageSubmission();
-    }
-  }
-  handleQuoteKeyPress(e){
-    if(e.key == 'Enter'){
-      this.handleQuoteSubmission();
-    }
-  }
+  // handleImageKeyPress(e){
+  //   if(e.key == 'Enter'){
+  //     this.handleImageSubmission();
+  //   }
+  // }
+  // handleQuoteKeyPress(e){
+  //   console.log('key', e.key);
+  //   if(e.key == 'Enter'){
+  //     this.viewStyle('quote');
+  //   }
+  // }
   handleSiteKeyPress(e){
     if(e.key == 'Enter'){
       if(this.siteFormsFilled())
       this.handleSiteSubmission();
     }
   }
-  handleUsernameKeyPress(e){
-    if(e.key == 'Enter'){
-      this.handleUsernameSubmission();
-    }
-  }
-  // handleReminderKeyPress(e){
+  // handleUsernameKeyPress(e){
   //   if(e.key == 'Enter'){
-  //     console.log('CLICKED')
-  //     if(this.reminderFormsFilled())
-  //       console.log('CLICKED')
-  //       this.handleReminderSubmission();
+  //     this.handleUsernameSubmission();
   //   }
   // }
+
+  handleChange(event, str) {
+    console.log('str event', str);
+    this.setState({ [str]: event.target.value });
+  }
+
+  handleSubmission(str) {
+    const that = this;
+    const delegator = {
+      quote: that.handleQuoteSubmission,
+      image: that.handleImageSubmission,
+      username: that.handleUsernameSubmission,
+    };
+    console.log('submit', str);
+    delegator[str]();
+    that.viewStyle(str);
+  }
+
+  handleKeyPress(e, str) {
+    //Enter key triggers blur, so don't need to call handleSubmission
+    if (e.key === 'Enter') {
+      this.viewStyle(str);
+    }
+  }
+
   siteFormsFilled() {
     return  this.state.siteURL.length > 0 && this.state.siteLimit.length > 0 && this.state.siteType.length > 0;
   }
-  // reminderFormsFilled() {
-  //   console.log(this.state.reminderType.length > 0 && this.state.reminderAddress.length > 0 && this.state.reminderFreq.length > 0)
-  //   return  this.state.reminderType.length > 0 && this.state.reminderAddress.length > 0 && this.state.reminderFreq.length > 0;
-  // }
+
 
   alertUser(str) {
     Materialize.toast(`${str} added!`, 1000);
   }
 
+  initialiseSettings() {
+    console.log('initialise?', this.state.setting);
+    const that = this;
+
+    const settingList = ['quote'];
+    settingList.forEach((item) => {
+      if (!this.state.setting[item]) {
+        this.editStyle(item);
+      } else {
+        this.viewStyle(item);
+      }
+    });
+    console.log('input style after quote', this.state.inputStyle);
+
+    if (!this.state.setting.picture) {
+      this.editStyle('image');
+    } else {
+      this.viewStyle('image');
+      console.log('inputStyle after image', that.state.inputStyle);
+      console.log('labelStyle after image', that.state.labelStyle);
+    }
+
+    if (!this.state.username) {
+      this.editStyle('username');
+    } else {
+      this.viewStyle('username');
+    }
+  }
+
+  editStyle(str) {
+    this.setState({
+      labelStyle: extend(this.state.labelStyle, { [str]: { display: 'none' } }),
+      inputStyle: extend(this.state.inputStyle, { [str]: { display: 'block' } }),
+    });
+  }
+
+  viewStyle(str) {
+    console.log('setting', this.state.setting[str]);
+    console.log('quote', this.state[str]);
+    this.setState({
+      labelStyle: extend(this.state.labelStyle, { [str]: { display: 'block' } }),
+      inputStyle: extend(this.state.inputStyle, { [str]: { display: 'none' } }),
+    });
+    // this.handleSubmission(str);
+  }
 
   render() {
     const { siteURL, siteLimit, siteType } = this.state;
@@ -265,6 +344,8 @@ export default class Settings extends React.Component {
     const { reminderType, reminderAddress, reminderFreq } = this.state;
     const reminderSubmitEnabled = reminderType.length > 0 && reminderAddress.length > 0 && reminderFreq.length > 0;
     const sendNotificationEnabled = this.state.reminderClicked;
+
+    // this.initialiseSettings();
 
     return (
       <div>
@@ -278,7 +359,6 @@ export default class Settings extends React.Component {
               <th data-field="limit">Time Limit</th>
             </tr>
           </thead>
-
           <tbody>
             {this.state.blacklist.map((site, index) => (
               <tr key={index}>
@@ -304,16 +384,19 @@ export default class Settings extends React.Component {
         <br />
         <h3> Personalization: </h3>
         <Row>
-          <Input s={10} label="Username" value={this.state.username} onChange={this.handleUsernameChange} onKeyPress={this.handleUsernameKeyPress}/>
-          <Button className="usernameButton" waves="light" onClick={this.handleUsernameSubmission}>Set Username</Button>
+          <div onDoubleClick={() => this.editStyle('username')} style={this.state.labelStyle.username}>{this.state.username}
+          </div>
+          <Input s={10} placeholder="Enter Username" value={this.state.username} onChange={e => this.handleChange(e, 'username')} onKeyPress={e => this.handleKeyPress(e, 'username')} onBlur={() => this.handleSubmission('username')} style={this.state.inputStyle.username}/>
         </Row>
         <Row>
-          <Input s={10} label="Image" value={this.state.image} onChange={this.handleImageChange} onKeyPress={this.handleImageKeyPress}/>
-          <Button className="picButton" waves="light" onClick={this.handleImageSubmission}>Set Image</Button>
+          <div onDoubleClick={() => this.editStyle('image')} style={this.state.labelStyle.image}>{this.state.image}
+          </div>
+          <Input s={10} placeholder="Enter Image URL" value={this.state.image} onChange={e => this.handleChange(e, 'image')} onBlur={() => this.handleSubmission('image')} onKeyPress={e => this.handleKeyPress(e, 'image')} style={this.state.inputStyle.image}/>
         </Row>
         <Row>
-          <Input s={10} label="Quote" value={this.state.quote} onChange={this.handleQuoteChange} onKeyPress={this.handleQuoteKeyPress}/>
-          <Button className="quoteButton" waves="light" onClick={this.handleQuoteSubmission}>Set Quote</Button>
+          <div onDoubleClick={() => this.editStyle('quote')} style={this.state.labelStyle.quote}>{this.state.quote}
+          </div>
+          <Input s={10} placeholder="Enter Motivational Quote" value={this.state.quote} onChange={e => this.handleChange(e, 'quote')} onBlur={() => this.handleSubmission('quote')} onKeyPress={e => this.handleKeyPress(e, 'quote')} style={this.state.inputStyle.quote}/>
         </Row>
         <br />
         <Row>
