@@ -32,8 +32,7 @@ export default class Settings extends React.Component {
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handleSubmission = this.handleSubmission.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.handleReminderKeyPress = this.handleReminderKeyPress.bind(this);
-    this.reminderFormsFilled = this.reminderFormsFilled.bind(this);
+
   }
 
   componentDidMount() {
@@ -100,6 +99,7 @@ export default class Settings extends React.Component {
   }
 
   updateSetting(pic, quote, refl_freq, remind, remind_type, remind_freq, remind_addr) {
+    console.log(remind_freq);
     $.ajax({
       type: 'PUT',
       url: `/api/users/${this.state.profile.user_id}/setting`,
@@ -167,6 +167,7 @@ export default class Settings extends React.Component {
 
   sendNotification() {
     const that = this;
+     console.log('REMINDER FREQ ', this.state.reminderFreq)
     $.ajax({
       type: 'POST',
       url: `api/users/${this.state.profile.user_id}/sendNotification`,
@@ -182,12 +183,14 @@ export default class Settings extends React.Component {
   }
 
   handleReminderSubmission() {
+    console.log(this.state.reminderType, this.state.reminderFreq, this.state.reminderAddress)
     this.updateSetting(null, null, null, true, this.state.reminderType, this.state.reminderFreq, this.state.reminderAddress);
     this.setState({ reminderClicked: true });
     this.alertUser('Reminder');
   }
 
   handleChange(event, str) {
+    console.log(str, event.target.value)
     this.setState({ [str]: event.target.value });
   }
 
