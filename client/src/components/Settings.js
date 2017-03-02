@@ -373,7 +373,8 @@ export default class Settings extends React.Component {
       <div>
         <h1> Settings </h1>
         <h3> Blacklist: </h3>
-        <Table>
+        {(this.state.blacklist.length === 0) && <div>There is no blacklist url set currently.</div>}
+        {this.state.blacklist.length > 0 && <Table>
           <thead>
             <tr>
               <th data-field="id">Site</th>
@@ -391,7 +392,7 @@ export default class Settings extends React.Component {
               </tr>
             ))}
           </tbody>
-        </Table>
+        </Table>}
         <br />
         <Row>
           <Input s={5} label="Site" value={this.state.siteURL} onChange={e => this.handleChange(e, 'siteURL')} onKeyPress={e => this.handleKeyPress(e, 'site')} />
