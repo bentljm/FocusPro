@@ -117,11 +117,13 @@ export default class Settings extends React.Component {
   }
 
 
-  postBlacklist(siteURL, siteType, siteLimit) {
+  postBlacklist(siteURL, siteType, siteTime) {
     const that = this;
     $.ajax({
-      type: 'GET',
-      url: `api/users/${this.state.profile.user_id}`,
+      type: 'POST',
+      url: `api/users/${this.state.profile.user_id}/blacklist`,
+      contentType: 'application/json',
+      data: JSON.stringify({url: siteURL, blacklist_type: siteType, blacklist_time: siteTime, SettingId: this.state.setting.id})
       success: (data) => {
         console.log('SUCCESS: POSTED BLACKLIST: ', data);
         that.getBlacklist();
