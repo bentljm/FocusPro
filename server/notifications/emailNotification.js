@@ -2,10 +2,10 @@ var nodemailer = require('nodemailer');
 var fs = require('fs');
 var handlebars = require('handlebars');
 var gmailPass = process.env.GMAIL_PASS || require('../config/config.js').GMAIL_PASS;
+var CronJob = require('cron').CronJob;
+var notificationFreq;
 
-
-function sendMail(name, receiver, reflections) {
-
+function sendMail(name, receiver, frequency, reflections) {
   //reusable template to send email
   var template = '/emailTemplate.html';
   //create transporter
@@ -37,15 +37,31 @@ function sendMail(name, receiver, reflections) {
         subject: "It's time for self-reflection!",
         html: emailHTML
       };
-      //send email
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          return console.log(error);
-        }
-          console.log('Message %s sent: %s', info.messageId, info.response);
-      });
+       // Runs every weekday (Monday through Friday) or once on Tuesday at 9:30 AM depending on user input
+      frequency === '1' ? notificationFreq = '00 30 20 * * 1-5' : notificationFreq = '00 30 09 * * 2'; 
+
+      //create new timeframe and pass in notificationFreq
+      var job = new CronJob(notificationFreq, function() {
+        //send email
+        transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            return console.log(error);
+          }
+            console.log('Message %s sent: %s', info.messageId, info.response);
+        });
+
+      }, function () {
+          /* This function is executed when the job stops */
+          console.log("DONE");
+        },
+        true, /* Start the job right now */
+        'America/Los_Angeles' /* Time zone of this job. */
+      );
     }
   });
 }
 
 module.exports = sendMail;
+
+
+  

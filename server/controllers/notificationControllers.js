@@ -5,17 +5,16 @@ var db = require('../databases/Schema.js');
 function sendNotification (req, res, next) {
 	var auth0_id = req.params.auth0_id;
 	var name = req.body.name;
+	var freq = req.body.freq;
+	var address = req.body.address;
 	db.Reflection.findAll({where: {auth0_id: auth0_id}}).then(function (reflections) {
 		console.log("REFLECTIONS", reflections);
-		if(req.body.address.indexOf('@') !== -1) {
-			var userEmail = req.body.address;
-			reflections.length === 0 ? sendEmail(name, userEmail) : sendEmail(name, userEmail, reflections);
+		if(address.indexOf('@') !== -1) {
+			reflections.length === 0 ? sendEmail(name, address, freq) : sendEmail(name, address, freq, reflections);
 		} else {
-			var userText = req.body.address;
-			sendText(name, userText);
+			sendText(name, address, freq);
 		}
-		console.log("SENT NOTIFICATIONS TO", userEmail || userText);
-    res.status(201).send('Notification sent successfully.');
+    res.status(201).send('Notification sent successfully to', address);
   });
 }
 
