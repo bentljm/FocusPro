@@ -27,16 +27,16 @@ export default class Settings extends React.Component {
     this.handleSiteTypeChange = this.handleSiteTypeChange.bind(this);
     this.handleSiteLimitChange = this.handleSiteLimitChange.bind(this);
     this.handleSiteSubmission = this.handleSiteSubmission.bind(this);
-    this.handleImageChange = this.handleImageChange.bind(this);
-    this.handleImageSubmission = this.handleImageSubmission.bind(this);
-    this.handleQuoteSubmission = this.handleQuoteSubmission.bind(this);
-    this.handleQuoteChange = this.handleQuoteChange.bind(this);
+    // this.handleImageChange = this.handleImageChange.bind(this);
+    // this.handleImageSubmission = this.handleImageSubmission.bind(this);
+    // this.handleQuoteSubmission = this.handleQuoteSubmission.bind(this);
+    // this.handleQuoteChange = this.handleQuoteChange.bind(this);
     this.handleReminderSubmission = this.handleReminderSubmission.bind(this);
     this.handleReminderTypeChange = this.handleReminderTypeChange.bind(this);
     this.handleReminderAddressChange = this.handleReminderAddressChange.bind(this);
     this.handleReminderFreqChange = this.handleReminderFreqChange.bind(this);
     // this.handleUsernameChange = this.handleUsernameChange.bind(this);
-    this.handleUsernameSubmission = this.handleUsernameSubmission.bind(this);
+    // this.handleUsernameSubmission = this.handleUsernameSubmission.bind(this);
     this.deleteBlacklist = this.deleteBlacklist.bind(this);
     this.sendNotification = this.sendNotification.bind(this);
     // this.handleImageKeyPress = this.handleImageKeyPress.bind(this);
@@ -198,22 +198,22 @@ export default class Settings extends React.Component {
     this.postBlacklist(this.state.siteURL, this.state.siteType, this.state.siteLimit);
     this.alertUser('Blacklist site');
   }
-  handleImageChange(event) {
-    this.setState({ image: event.target.value });
-  }
-  handleQuoteChange(event) {
-    this.setState({ quote: event.target.value });
-  }
-  handleImageSubmission() {
-    this.updateSetting(this.state.image);
-    this.alertUser('Image');
-  }
-  handleQuoteSubmission() {
-    this.updateSetting(null, this.state.quote);
-    this.alertUser('Quote');
-    console.log('this.state.setting.quote',this.state.setting.quote);
-    // this.setState({ quote: this.state.setting.quote }); // handle case when quote is removed. once quote is set, it cannot be removed
-  }
+  // handleImageChange(event) {
+  //   this.setState({ image: event.target.value });
+  // }
+  // handleQuoteChange(event) {
+  //   this.setState({ quote: event.target.value });
+  // }
+  // handleImageSubmission() {
+  //   this.updateSetting(this.state.image);
+  //   this.alertUser('Image');
+  // }
+  // handleQuoteSubmission() {
+  //   this.updateSetting(null, this.state.quote);
+  //   this.alertUser('Quote');
+  //   console.log('this.state.setting.quote',this.state.setting.quote);
+  //   // this.setState({ quote: this.state.setting.quote }); // handle case when quote is removed. once quote is set, it cannot be removed
+  // }
   handleReminderTypeChange(event) {
     this.setState({ reminderType: event.target.value });
   }
@@ -231,10 +231,10 @@ export default class Settings extends React.Component {
   // handleUsernameChange(event) {
   //   this.setState({ username: event.target.value });
   // }
-  handleUsernameSubmission() {
-    console.log('submission?');
-    this.updateUsername(this.state.username.trim());
-  }
+  // handleUsernameSubmission() {
+  //   console.log('submission?');
+  //   this.updateUsername(this.state.username.trim());
+  // }
 
   // handleImageKeyPress(e){
   //   if(e.key == 'Enter'){
@@ -255,7 +255,7 @@ export default class Settings extends React.Component {
   }
   // handleUsernameKeyPress(e){
   //   if(e.key == 'Enter'){
-  //     this.handleUsernameSubmission();
+      // this.handleUsernameSubmission();
   //   }
   // }
 
@@ -267,9 +267,17 @@ export default class Settings extends React.Component {
   handleSubmission(str) {
     const that = this;
     const delegator = {
-      quote: that.handleQuoteSubmission,
-      image: that.handleImageSubmission,
-      username: that.handleUsernameSubmission,
+      quote: () => {
+        that.updateSetting(null, that.state.quote);
+        that.alertUser('Quote');
+      },
+      image: () => {
+        that.updateSetting(this.state.image);
+        that.alertUser('Image');
+      },
+      username: () => {
+        this.updateUsername(this.state.username.trim());
+      },
     };
     console.log('submit', str);
     delegator[str]();
@@ -277,7 +285,7 @@ export default class Settings extends React.Component {
   }
 
   handleKeyPress(e, str) {
-    //Enter key triggers blur, so don't need to call handleSubmission
+    // Enter key triggers blur, so don't need to call handleSubmission
     if (e.key === 'Enter') {
       this.viewStyle(str);
     }
