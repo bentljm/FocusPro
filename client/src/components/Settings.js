@@ -274,9 +274,15 @@ export default class Settings extends React.Component {
 
   render() {
     const { siteURL, siteLimit, siteType } = this.state;
-    const siteSubmitEnabled = siteURL.length > 0 && siteLimit.length > 0 && siteType.length > 0;
+    let siteSubmitEnabled;
+    if (siteURL && siteLimit && siteType) {
+      siteSubmitEnabled = siteURL.length > 0 && siteLimit.length > 0 && siteType.length > 0;
+    }
     const { reminderType, reminderAddress, reminderFreq } = this.state;
-    const reminderSubmitEnabled = reminderType.length > 0 && reminderAddress.length > 0 && reminderFreq.length > 0;
+    let reminderSubmitEnabled;
+    if (reminderType && reminderAddress && reminderFreq) {
+      reminderSubmitEnabled = reminderType.length > 0 && reminderAddress.length > 0 && reminderFreq.length > 0;
+    }
     const sendNotificationEnabled = this.state.reminderClicked;
 
     return (
