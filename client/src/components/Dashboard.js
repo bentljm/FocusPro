@@ -18,6 +18,8 @@ export default class Dashboard extends React.Component {
       userId: '',
       setting: {},
       blacklist: [],
+      dayGoalEnabled: false,
+      goalEnabled: false,
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.postGoal = this.postGoal.bind(this);
@@ -118,14 +120,18 @@ export default class Dashboard extends React.Component {
   }
 
   handleKeyPress(e) {
-    if (e.key === 'Enter') {
-      this.postGoal();
+    if(this.state.goalEnabled && this.state.goalInput !== '') {
+      if (e.key === 'Enter') {
+        this.postGoal();
+      }
     }
   }
 
   handleQuoteKeyPress(e) {
-    if (e.key === 'Enter') {
-      this.handleDayGoalSubmission();
+    if(this.state.dayGoalEnabled && this.state.dayGoalInput !== '') {
+      if (e.key === 'Enter') {
+        this.handleDayGoalSubmission();
+      }
     }
   }
 
@@ -184,6 +190,14 @@ export default class Dashboard extends React.Component {
   }
 
   render() {
+    const { dayGoalInput } = this.state;
+    if (dayGoalInput) {
+      this.state.dayGoalEnabled = dayGoalInput.length > 0;
+    }
+    const { goalInput } = this.state;
+    if (goalInput) {
+      this.state.goalEnabled = goalInput.length > 0;
+    }
     return (
       <div>
         <h1> Welcome, {this.state.username} </h1>
@@ -195,7 +209,7 @@ export default class Dashboard extends React.Component {
         <br />
         <h3> Goal of the Day: </h3>
         <Row>
-          <Input s={10} value={this.state.dayGoalInput} onChange={this.handleDayGoalChange} onKeyPress={this.handleQuoteKeyPress} /> <Button className="dayGoalButton" waves="light" onClick={this.handleDayGoalSubmission}>Save</Button>
+          <Input s={10} value={this.state.dayGoalInput} onChange={this.handleDayGoalChange} onKeyPress={this.handleQuoteKeyPress} /> <Button disabled={!this.state.dayGoalEnabled} className="dayGoalButton" waves="light" onClick={this.handleDayGoalSubmission}>Save</Button>
         </Row>
         <h3> Main Goals: </h3>
         {(this.state.goals.length === 0 || !this.state.profile.user_id) && <div>You have no goals set currently.</div>}
@@ -213,7 +227,7 @@ export default class Dashboard extends React.Component {
         </ul>}
         <Row>
           <Input s={8} label="New Goal" value={this.state.goalInput} onChange={this.handleInputChange} onKeyPress={this.handleKeyPress} />
-          <Button className="goalButton" waves="light" onClick={this.postGoal}> Set Goal</Button>
+          <Button disabled={!this.state.goalEnabled} className="goalButton" waves="light" onClick={this.postGoal}> Set Goal</Button>
           <Motivational />
         </Row>
         <br />
