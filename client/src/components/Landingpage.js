@@ -52,7 +52,7 @@ export default class Landingpage extends React.Component {
             Download here.
           </Col>
           <Col s={5}>
-            <img className="placeholder" alt="Chrome extension icon" />
+            <img src="../../assets/icon128.png" alt="Chrome extension icon" />
           </Col>
         </Row>
         <br />
