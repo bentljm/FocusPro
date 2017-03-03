@@ -1,6 +1,7 @@
 import React from 'react';
 import { Input, Button } from 'react-materialize';
 import Subgoal from './Subgoal';
+
 const Line = require('rc-progress').Line;
 
 // Todo: Replace with better slider
@@ -49,35 +50,35 @@ export default class Goal extends React.Component {
 
   increaseProgress() {
     const newStep = Math.round((1 / this.state.subgoals.length) * 100);
-    const percent = this.state.percent + newStep;
-    if (percent >= 99) {
+    const percentage = this.state.percent + newStep;
+    if (percentage >= 99) {
       this.setState({ percent: 100, color: '#00ff00' });
     } else {
-      this.setState({ percent: percent });
-      if (percent > 0 && percent <= 16) { this.setState({ color: '#ff0000' }); }
-      if (percent > 16 && percent <= 32) { this.setState({ color: '#ff3f00' }); }
-      if (percent > 32 && percent <= 48) { this.setState({ color: '#ff7d00' }); }
-      if (percent > 48 && percent <= 64) { this.setState({ color: '#ffbe00' }); }
-      if (percent > 64 && percent <= 80) { this.setState({ color: '#ffe700' }); }
-      if (percent > 80 && percent <= 96) { this.setState({ color: '#ffff00' }); }
-      if (percent > 96 && percent <= 100) { this.setState({ color: '#c0ff00' }); }
+      this.setState({ percent: percentage });
+      if (percentage > 0 && percentage <= 16) { this.setState({ color: '#ff0000' }); }
+      if (percentage > 16 && percentage <= 32) { this.setState({ color: '#ff3f00' }); }
+      if (percentage > 32 && percentage <= 48) { this.setState({ color: '#ff7d00' }); }
+      if (percentage > 48 && percentage <= 64) { this.setState({ color: '#ffbe00' }); }
+      if (percentage > 64 && percentage <= 80) { this.setState({ color: '#ffe700' }); }
+      if (percentage > 80 && percentage <= 96) { this.setState({ color: '#ffff00' }); }
+      if (percentage > 96 && percentage <= 100) { this.setState({ color: '#c0ff00' }); }
     }
   }
 
   decreaseProgress() {
     const newStep = Math.round((1 / this.state.subgoals.length) * 100);
-    const percent = this.state.percent - newStep;
-    if (percent <= 1) {
+    const percentage = this.state.percent - newStep;
+    if (percentage <= 1) {
       this.setState({ percent: 0 });
     } else {
-      this.setState({ percent: percent });
-      if (percent > 0 && percent <= 16) { this.setState({ color: '#ff0000' }); }
-      if (percent > 16 && percent <= 32) { this.setState({ color: '#ff3f00' }); }
-      if (percent > 32 && percent <= 48) { this.setState({ color: '#ff7d00' }); }
-      if (percent > 48 && percent <= 64) { this.setState({ color: '#ffbe00' }); }
-      if (percent > 64 && percent <= 80) { this.setState({ color: '#ffe700' }); }
-      if (percent > 80 && percent <= 96) { this.setState({ color: '#ffff00' }); }
-      if (percent > 96 && percent <= 100) { this.setState({ color: '#c0ff00' }); }
+      this.setState({ percent: percentage });
+      if (percentage > 0 && percentage <= 16) { this.setState({ color: '#ff0000' }); }
+      if (percentage > 16 && percentage <= 32) { this.setState({ color: '#ff3f00' }); }
+      if (percentage > 32 && percentage <= 48) { this.setState({ color: '#ff7d00' }); }
+      if (percentage > 48 && percentage <= 64) { this.setState({ color: '#ffbe00' }); }
+      if (percentage > 64 && percentage <= 80) { this.setState({ color: '#ffe700' }); }
+      if (percentage > 80 && percentage <= 96) { this.setState({ color: '#ffff00' }); }
+      if (percentage > 96 && percentage <= 100) { this.setState({ color: '#c0ff00' }); }
     }
   }
 
