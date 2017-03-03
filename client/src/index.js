@@ -1,13 +1,14 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { IndexRoute, Router, Route, hashHistory } from 'react-router';
-
+import ReactGA from 'react-ga';
 import App from './components/App';
 import Landingpage from './components/Landingpage';
 import Dashboard from './components/Dashboard';
 import Selfreflection from './components/Selfreflection';
 import Settings from './components/Settings';
 import AuthService from './utils/AuthService';
+
 
 const app = document.getElementById('app');
 
@@ -20,8 +21,19 @@ const requireAuth = (nextState, replace) => {
   }
 };
 
+// initialize ReactGA to view page popularity
+ReactGA.initialize('UA-000000-01', {
+  debug: true,
+  titleCase: false
+});
+
+function logPageView() {
+  ReactGA.set({ page: window.location.pathname });
+  ReactGA.pageview(window.location.pathname);
+}
+
 render(
-  <Router history={hashHistory}>
+  <Router history={hashHistory} onUpdate={logPageView}>
     <Route path="/" component={App} auth={auth}>
       <IndexRoute component={Landingpage} />
       <Route path="access_token=:token" component={Dashboard} />
