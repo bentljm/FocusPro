@@ -52,7 +52,7 @@ export default class Goal extends React.Component {
     if (percentage >= 99) {
       this.setState({ percent: 100, color: '#00ff00' });
     } else if (percentage <= 1) {
-      this.setState({ percent: 0 });
+      this.setState({ percent: 0, color: '#ff0000' });
     } else {
       this.setState({ percent: percentage });
       this.setColor(percentage);
