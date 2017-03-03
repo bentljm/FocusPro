@@ -1,35 +1,13 @@
-// (function() {
-//   var httpRequest;
-//   document.getElementById("ajaxButton").onclick = function() { makeRequest('localhost:7777/api/users/'); };
+// Notification
+chrome.alarms.create("notificationAlarm", {periodInMinutes: 2});
+chrome.alarms.onAlarm.addListener(function(alarm) {
+  if (alarm.name === "notificationAlarm") {
+    console.log('alarm');
+    chrome.notifications.create('notificationAlarm', {type: 'basic', iconUrl: 'icon128.png', title: 'Notification', message: 'This is a notification!'});
+  }
+});
 
-//   function makeRequest(url) {
-//     console.log('making request');
-//     httpRequest = new XMLHttpRequest();
-
-//     if (!httpRequest) {
-//       console.log('Giving up :( Cannot create an XMLHTTP instance');
-//       //alert('Giving up :( Cannot create an XMLHTTP instance');
-//       return false;
-//     }
-//     httpRequest.onreadystatechange = showContents;
-//     httpRequest.open('GET', url);
-//     httpRequest.send();
-//   }
-
-//   function showContents() {
-//     if (httpRequest.readyState === XMLHttpRequest.DONE) {
-//       if (httpRequest.status === 200) {
-//         console.log(httpRequest.responseText);
-//         //alert(httpRequest.responseText);
-//       } else {
-//         console.log('There was a problem with the request.');
-//         //alert('There was a problem with the request.');
-//       }
-//     }
-//   }
-// })();
-
-//Clear stats
+// Clear stats
 function clearStats() {
   if (config.clearStatsInterval < 3600) {
     config.nextTimeToClear = 0;

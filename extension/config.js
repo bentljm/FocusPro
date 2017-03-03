@@ -12,7 +12,7 @@ function Config() {
 }
 //Handle time display format
 Config.timeDisplayFormatEnum = {
-  PRETTY: 0,
+  //PRETTY: 0,
   MINUTES: 1
 };
 
@@ -43,7 +43,7 @@ Config.prototype.isIgnoredSite = function(site) {
 Object.defineProperty(Config.prototype, "timeDisplayFormat", {
   get: function() {
     if (!localStorage.timeDisplayFormat) {
-      localStorage.timeDisplayFormat = Config.timeDisplayFormatEnum.PRETTY;
+      localStorage.timeDisplayFormat = Config.timeDisplayFormatEnum.MINUTES;
     }
     return localStorage.timeDisplayFormat;
   },

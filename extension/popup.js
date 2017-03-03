@@ -1,26 +1,30 @@
 var config = new Config();
 var gsites = new Sites(config);
 
-function test() {
-  var newInput = document.createElement("input");
-  newInput.setAttribute("id", "authId");
-  document.body.appendChild(newInput);
-  var testBtn = document.createElement("button");
-  var testBtnTxt = document.createTextNode("Send Data");
-  testBtn.appendChild(testBtnTxt);
-  document.body.appendChild(testBtn);
-  testBtn.setAttribute("id", "testButton");
-  testBtn.onclick = function() {
+function sendToApp() {
+  // var newInput = document.createElement("input");
+  // newInput.setAttribute("id", "authId");
+  // document.body.appendChild(newInput);
+  var sendDataBtn = document.createElement("button");
+  var sendDataBtnTxt = document.createTextNode("Send Data");
+  sendDataBtn.appendChild(sendDataBtnTxt);
+  document.body.appendChild(sendDataBtn);
+  sendDataBtn.setAttribute("id", "testButton");
+  sendDataBtn.onclick = function() {
+    // Save auth0id
+    //localStorage.auth0_id = newInput.value;
     // Get all sites and store in array to be parsed and stored in db
+    //url: `http://localhost:7777/api/users/${newInput.value}/extension_data`,
+    console.log(JSON.stringify(localStorage.auth0_id));
     var allSites = [];
     for(var prop in gsites.sites) {
       allSites.push({url: prop, time: gsites.sites[prop], freq: 0});
     }
     $.ajax({
       type: 'POST',
-      url: `http://localhost:7777/api/users/${newInput.value}/extension_data`,
+      url: `http://localhost:7777/api/users/${localStorage.auth0_id}/extension_data`,
       contentType: 'application/json',
-      data: JSON.stringify({urls:allSites}),
+      data: JSON.stringify({ urls:allSites }),
       success: function(data) {
         console.log('success!', data);
       },
@@ -191,7 +195,7 @@ function clearStats() {
 
 function initialize() {
   addLocalDisplay();
-  test();
+  sendToApp();
 
   if (config.lastClearTime) {
     var div = document.getElementById("lastClear");

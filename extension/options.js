@@ -1,6 +1,14 @@
 var config = new Config();
 var sites = new Sites(config);
 
+//Add Auth0id
+function addAuth0Id(){
+  console.log('clickity click');
+  var auth0_input = document.getElementById("auth0_id");
+  localStorage.auth0_id = auth0_input.value;
+  console.log(localStorage.auth0_id);
+}
+
 //Update the interval to clear stats
 function updateClearStatsInterval() {
   var select = document.getElementById("clear_stats_interval");
@@ -109,5 +117,7 @@ document.addEventListener("DOMContentLoaded", function () {
     "change", updateTimeDisplay);
   document.getElementById("download").addEventListener(
     "click", download);
+  document.getElementById("add_auth0_id").addEventListener(
+    "click", addAuth0Id);
   restoreOptions();
 });
