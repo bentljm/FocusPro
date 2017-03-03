@@ -21,7 +21,7 @@ export default class Goal extends React.Component {
     this.increaseProgress = this.increaseProgress.bind(this);
     this.decreaseProgress = this.decreaseProgress.bind(this);
     this.checkStatus = this.checkStatus.bind(this);
-    this.checkColor = this.checkColor.bind(this);
+    this.setColor = this.setColor.bind(this);
     this.setPercentage = this.setPercentage.bind(this);
   }
 
@@ -55,10 +55,11 @@ export default class Goal extends React.Component {
       this.setState({ percent: 0 });
     } else {
       this.setState({ percent: percentage });
+      this.setColor(percentage);
     }
   }
 
-  checkColor(percentage) {
+  setColor(percentage) {
     if (percentage > 0 && percentage <= 16) { this.setState({ color: '#ff0000' }); }
     if (percentage > 16 && percentage <= 32) { this.setState({ color: '#ff3f00' }); }
     if (percentage > 32 && percentage <= 48) { this.setState({ color: '#ff7d00' }); }
@@ -83,7 +84,7 @@ export default class Goal extends React.Component {
       }
     }
     this.setPercentage(percentage);
-    this.checkColor(percentage);
+    this.setColor(percentage);
   }
 
   increaseProgress() {
@@ -148,7 +149,7 @@ export default class Goal extends React.Component {
       <br />
         {this.state.subgoals.length === 0 && <div> There is no subgoal set currently. </div>}
         {this.state.subgoals.map(subgoal =>
-          <Subgoal checkStatus={this.checkStatus} increase={this.increaseProgress} decrease={this.decreaseProgress} key={`sub ${subgoal.id}`} subgoal={subgoal} status={subgoal.status} id={subgoal.id} user_id={this.props.user_id} goal={subgoal.GoalId} updateSubgoals={this.getSubgoals} />
+          <Subgoal increase={this.increaseProgress} decrease={this.decreaseProgress} key={`sub ${subgoal.id}`} subgoal={subgoal} status={subgoal.status} id={subgoal.id} user_id={this.props.user_id} goal={subgoal.GoalId} updateSubgoals={this.getSubgoals} />
           )}
         <Input s={8} label="New Subgoal" onChange={this.handleChange} value={this.state.subgoal} onKeyPress={this.handleKeyPress} />
         <Button className="subgoalButton" waves="light" onClick={this.postSubgoal}>Set Subgoal</Button>
