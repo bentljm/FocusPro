@@ -20,6 +20,9 @@ export default class Goal extends React.Component {
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.increaseProgress = this.increaseProgress.bind(this);
     this.decreaseProgress = this.decreaseProgress.bind(this);
+    this.checkStatus = this.checkStatus.bind(this);
+    this.checkColor = this.checkColor.bind(this);
+    this.setPercentage = this.setPercentage.bind(this);
   }
 
   componentWillMount() {
@@ -39,47 +42,60 @@ export default class Goal extends React.Component {
       success: (data) => {
         console.log('SUCCESS: OBTAINED ALL SUBGOALS:', JSON.stringify(data.data));
         that.setState({ subgoals: data.data });
+        that.checkStatus();
       },
       error: (err) => { console.log('ERROR: COULD NOT GET SUBGOALS', err); },
     });
+  }
+
+  setPercentage(percentage) {
+    if (percentage >= 99) {
+      this.setState({ percent: 100, color: '#00ff00' });
+    } else if (percentage <= 1) {
+      this.setState({ percent: 0 });
+    } else {
+      this.setState({ percent: percentage });
+    }
+  }
+
+  checkColor(percentage) {
+    if (percentage > 0 && percentage <= 16) { this.setState({ color: '#ff0000' }); }
+    if (percentage > 16 && percentage <= 32) { this.setState({ color: '#ff3f00' }); }
+    if (percentage > 32 && percentage <= 48) { this.setState({ color: '#ff7d00' }); }
+    if (percentage > 48 && percentage <= 64) { this.setState({ color: '#ffbe00' }); }
+    if (percentage > 64 && percentage <= 80) { this.setState({ color: '#ffe700' }); }
+    if (percentage > 80 && percentage <= 96) { this.setState({ color: '#ffff00' }); }
+    if (percentage > 96 && percentage <= 98) { this.setState({ color: '#c0ff00' }); }
+    if (percentage > 98 && percentage <= 100) { this.setState({ color: '#00ff00' }); }
   }
 
   callCustomJQuery() {
     $('.collapsible').collapsible();
   }
 
+  checkStatus() {
+    let i = 0;
+    let percentage = 0;
+    const newStep = Math.round((1 / this.state.subgoals.length) * 100);
+    for (i; i < this.state.subgoals.length; i++) {
+      if (this.state.subgoals[i].status) {
+        percentage += newStep;
+      }
+    }
+    this.setPercentage(percentage);
+    this.checkColor(percentage);
+  }
+
   increaseProgress() {
     const newStep = Math.round((1 / this.state.subgoals.length) * 100);
     const percentage = this.state.percent + newStep;
-    if (percentage >= 99) {
-      this.setState({ percent: 100, color: '#00ff00' });
-    } else {
-      this.setState({ percent: percentage });
-      if (percentage > 0 && percentage <= 16) { this.setState({ color: '#ff0000' }); }
-      if (percentage > 16 && percentage <= 32) { this.setState({ color: '#ff3f00' }); }
-      if (percentage > 32 && percentage <= 48) { this.setState({ color: '#ff7d00' }); }
-      if (percentage > 48 && percentage <= 64) { this.setState({ color: '#ffbe00' }); }
-      if (percentage > 64 && percentage <= 80) { this.setState({ color: '#ffe700' }); }
-      if (percentage > 80 && percentage <= 96) { this.setState({ color: '#ffff00' }); }
-      if (percentage > 96 && percentage <= 100) { this.setState({ color: '#c0ff00' }); }
-    }
+    this.setPercentage(percentage);
   }
 
   decreaseProgress() {
     const newStep = Math.round((1 / this.state.subgoals.length) * 100);
     const percentage = this.state.percent - newStep;
-    if (percentage <= 1) {
-      this.setState({ percent: 0 });
-    } else {
-      this.setState({ percent: percentage });
-      if (percentage > 0 && percentage <= 16) { this.setState({ color: '#ff0000' }); }
-      if (percentage > 16 && percentage <= 32) { this.setState({ color: '#ff3f00' }); }
-      if (percentage > 32 && percentage <= 48) { this.setState({ color: '#ff7d00' }); }
-      if (percentage > 48 && percentage <= 64) { this.setState({ color: '#ffbe00' }); }
-      if (percentage > 64 && percentage <= 80) { this.setState({ color: '#ffe700' }); }
-      if (percentage > 80 && percentage <= 96) { this.setState({ color: '#ffff00' }); }
-      if (percentage > 96 && percentage <= 100) { this.setState({ color: '#c0ff00' }); }
-    }
+    this.setPercentage(percentage);
   }
 
   handleChange(event) {
@@ -132,7 +148,7 @@ export default class Goal extends React.Component {
       <br />
         {this.state.subgoals.length === 0 && <div> There is no subgoal set currently. </div>}
         {this.state.subgoals.map(subgoal =>
-          <Subgoal increase={this.increaseProgress} decrease={this.decreaseProgress} key={`sub ${subgoal.id}`} subgoal={subgoal} status={subgoal.status} id={subgoal.id} user_id={this.props.user_id} goal={subgoal.GoalId} updateSubgoals={this.getSubgoals} />
+          <Subgoal checkStatus={this.checkStatus} increase={this.increaseProgress} decrease={this.decreaseProgress} key={`sub ${subgoal.id}`} subgoal={subgoal} status={subgoal.status} id={subgoal.id} user_id={this.props.user_id} goal={subgoal.GoalId} updateSubgoals={this.getSubgoals} />
           )}
         <Input s={8} label="New Subgoal" onChange={this.handleChange} value={this.state.subgoal} onKeyPress={this.handleKeyPress} />
         <Button className="subgoalButton" waves="light" onClick={this.postSubgoal}>Set Subgoal</Button>
