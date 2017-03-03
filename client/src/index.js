@@ -32,9 +32,10 @@ function logPageView() {
   if (!auth.loggedIn()) {
     ReactGA.pageview('/');
   } else {
-    ReactGA.pageView( window.location.pathname )
+    ReactGA.pageView(window.location.pathname);
   }
 }
+
 
 render(
   <Router history={hashHistory} onUpdate={logPageView}>
