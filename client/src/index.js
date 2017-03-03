@@ -21,7 +21,7 @@ const requireAuth = (nextState, replace) => {
 };
 
 // initialize ReactGA to view page popularity
-ReactGA.initialize('UA-000333-23', { 
+ReactGA.initialize('UA-000333-23', {
   debug: true,
   title: 'PAGEVIEWS'
 });
