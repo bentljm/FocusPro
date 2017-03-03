@@ -1,8 +1,7 @@
 import React from 'react';
 import { Input, Button } from 'react-materialize';
-//import Nouislider from 'react-nouislider';
-const Line = require('rc-progress').Line;
 import Subgoal from './Subgoal';
+const Line = require('rc-progress').Line;
 
 // Todo: Replace with better slider
 export default class Goal extends React.Component {
@@ -31,10 +30,6 @@ export default class Goal extends React.Component {
     this.callCustomJQuery();
   }
 
-  callCustomJQuery() {
-    $('.collapsible').collapsible();
-  }
-
   getSubgoals() {
     const that = this;
     $.ajax({
@@ -48,37 +43,41 @@ export default class Goal extends React.Component {
     });
   }
 
+  callCustomJQuery() {
+    $('.collapsible').collapsible();
+  }
+
   increaseProgress() {
-    const newStep = Math.round((1/this.state.subgoals.length)*100);
+    const newStep = Math.round((1 / this.state.subgoals.length) * 100);
     const percent = this.state.percent + newStep;
-    if(percent >= 99) {
-      this.setState({ percent: 100, color: '#00ff00'});
+    if (percent >= 99) {
+      this.setState({ percent: 100, color: '#00ff00' });
     } else {
       this.setState({ percent: percent });
-      if (percent > 0 && percent <= 16) {this.setState({ color: '#ff0000' });}
-      if (percent > 16 && percent <= 32) {this.setState({ color: '#ff3f00' });}
-      if (percent > 32 && percent <= 48) {this.setState({ color: '#ff7d00' });}
-      if (percent > 48 && percent <= 64) {this.setState({ color: '#ffbe00' });} 
-      if (percent > 64 && percent <= 80) {this.setState({ color: '#ffe700' });} 
-      if (percent > 80 && percent <= 96) {this.setState({ color: '#ffff00' });} 
-      if (percent > 96 && percent <= 100) {this.setState({ color: '#c0ff00' });}  
+      if (percent > 0 && percent <= 16) { this.setState({ color: '#ff0000' }); }
+      if (percent > 16 && percent <= 32) { this.setState({ color: '#ff3f00' }); }
+      if (percent > 32 && percent <= 48) { this.setState({ color: '#ff7d00' }); }
+      if (percent > 48 && percent <= 64) { this.setState({ color: '#ffbe00' }); }
+      if (percent > 64 && percent <= 80) { this.setState({ color: '#ffe700' }); }
+      if (percent > 80 && percent <= 96) { this.setState({ color: '#ffff00' }); }
+      if (percent > 96 && percent <= 100) { this.setState({ color: '#c0ff00' }); }
     }
   }
 
   decreaseProgress() {
-    const newStep = Math.round((1/this.state.subgoals.length)*100);
+    const newStep = Math.round((1 / this.state.subgoals.length) * 100);
     const percent = this.state.percent - newStep;
-    if(percent <= 1) {
+    if (percent <= 1) {
       this.setState({ percent: 0 });
     } else {
       this.setState({ percent: percent });
-      if (percent > 0 && percent <= 16) {this.setState({ color: '#ff0000' });}
-      if (percent > 16 && percent <= 32) {this.setState({ color: '#ff3f00' });}
-      if (percent > 32 && percent <= 48) {this.setState({ color: '#ff7d00' });}
-      if (percent > 48 && percent <= 64) {this.setState({ color: '#ffbe00' });} 
-      if (percent > 64 && percent <= 80) {this.setState({ color: '#ffe700' });} 
-      if (percent > 80 && percent <= 96) {this.setState({ color: '#ffff00' });} 
-      if (percent > 96 && percent <= 100) {this.setState({ color: '#c0ff00' });}  
+      if (percent > 0 && percent <= 16) { this.setState({ color: '#ff0000' }); }
+      if (percent > 16 && percent <= 32) { this.setState({ color: '#ff3f00' }); }
+      if (percent > 32 && percent <= 48) { this.setState({ color: '#ff7d00' }); }
+      if (percent > 48 && percent <= 64) { this.setState({ color: '#ffbe00' }); }
+      if (percent > 64 && percent <= 80) { this.setState({ color: '#ffe700' }); }
+      if (percent > 80 && percent <= 96) { this.setState({ color: '#ffff00' }); }
+      if (percent > 96 && percent <= 100) { this.setState({ color: '#c0ff00' }); }
     }
   }
 
@@ -124,23 +123,19 @@ export default class Goal extends React.Component {
     return (
       <div className="collapsible-body">Progress: {this.state.percent}%
       <br />
-      <div style={containerStyle}>
-        <Line percent={this.state.percent} strokeWidth="3" strokeColor={this.state.color} />
-      </div>
-      <br />
+        <div style={containerStyle}>
+          <Line percent={this.state.percent} strokeWidth="3" strokeColor={this.state.color} />
+        </div>
+        <br />
       Subgoals:
       <br />
-      {this.state.subgoals.length === 0 && <div> There is no subgoal set currently. </div>}
-      {this.state.subgoals.map(subgoal =>
-        <Subgoal increase={this.increaseProgress} decrease={this.decreaseProgress} key={`sub ${subgoal.id}`} subgoal={subgoal} status={subgoal.status} id={subgoal.id} user_id={this.props.user_id} goal={subgoal.GoalId} updateSubgoals={this.getSubgoals} />
-        )}
-      <Input s={8} label="New Subgoal" onChange={this.handleChange} value={this.state.subgoal} onKeyPress={this.handleKeyPress} />
-      <Button className="subgoalButton" waves="light" onClick={this.postSubgoal}>Set Subgoal</Button>
+        {this.state.subgoals.length === 0 && <div> There is no subgoal set currently. </div>}
+        {this.state.subgoals.map(subgoal =>
+          <Subgoal increase={this.increaseProgress} decrease={this.decreaseProgress} key={`sub ${subgoal.id}`} subgoal={subgoal} status={subgoal.status} id={subgoal.id} user_id={this.props.user_id} goal={subgoal.GoalId} updateSubgoals={this.getSubgoals} />
+          )}
+        <Input s={8} label="New Subgoal" onChange={this.handleChange} value={this.state.subgoal} onKeyPress={this.handleKeyPress} />
+        <Button className="subgoalButton" waves="light" onClick={this.postSubgoal}>Set Subgoal</Button>
       </div>
     );
   }
 }
-
-
-
-

@@ -26,7 +26,7 @@ export default class Subgoal extends React.Component {
 
   handleClick() {
     const that = this;
-    if(!that.state.status) {
+    if (!that.state.status) {
       that.props.increase();
     } else {
       that.props.decrease();
