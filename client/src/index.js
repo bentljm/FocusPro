@@ -22,15 +22,16 @@ const requireAuth = (nextState, replace) => {
 };
 
 // initialize ReactGA to view page popularity
-ReactGA.initialize('UA-000333-23', {
+ReactGA.initialize('UA-000333-23', { 
   debug: true,
   title: 'PAGEVIEWS'
 });
 
+// Keep track of our log page views
 function logPageView() {
   ReactGA.set({ page: window.location.hash });
   if (!auth.loggedIn()) {
-    ReactGA.pageview('/');
+    ReactGA.pageview('/'); // home page
   } else {
     ReactGA.pageView(window.location.hash);
   }
