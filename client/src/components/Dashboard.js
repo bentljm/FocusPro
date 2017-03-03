@@ -120,7 +120,7 @@ export default class Dashboard extends React.Component {
   }
 
   handleKeyPress(e) {
-    if(this.state.goalEnabled && this.state.goalInput !== '') {
+    if (this.state.goalEnabled && this.state.goalInput !== '') {
       if (e.key === 'Enter') {
         this.postGoal();
       }
@@ -128,7 +128,7 @@ export default class Dashboard extends React.Component {
   }
 
   handleQuoteKeyPress(e) {
-    if(this.state.dayGoalEnabled && this.state.dayGoalInput !== '') {
+    if (this.state.dayGoalEnabled && this.state.dayGoalInput !== '') {
       if (e.key === 'Enter') {
         this.handleDayGoalSubmission();
       }
