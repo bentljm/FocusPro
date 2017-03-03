@@ -26,6 +26,11 @@ export default class Subgoal extends React.Component {
 
   handleClick() {
     const that = this;
+    if(!that.state.status) {
+      that.props.increase();
+    } else {
+      that.props.decrease();
+    }
     $.ajax({
       type: 'PUT',
       url: `/api/subgoals/${this.props.id}`,
