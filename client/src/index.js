@@ -28,8 +28,12 @@ ReactGA.initialize('UA-000000-01', {
 });
 
 function logPageView() {
-  ReactGA.set({ page: window.location.pathname });
-  ReactGA.pageview(window.location.pathname);
+  ReactGA.set({ page: pathname });
+  if (!auth.loggedIn()) {
+    ReactGA.pageview('/');
+  } else {
+    ReactGA.pageView( pathname )
+  }
 }
 
 render(
