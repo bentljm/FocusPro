@@ -9,7 +9,6 @@ import Selfreflection from './components/Selfreflection';
 import Settings from './components/Settings';
 import AuthService from './utils/AuthService';
 
-
 const app = document.getElementById('app');
 
 const auth = new AuthService('V3oJOmHRIeW7nJnLZIa7ioWOo8godJVQ', 'focuspro.auth0.com');

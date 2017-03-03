@@ -11,6 +11,7 @@ export default class Goal extends React.Component {
     this.state = {
       subgoals: [],
       subgoal: '',
+      subgoalEnabled: false,
       percent: 0,
       color: '#ff0000'
     };
@@ -129,8 +130,10 @@ export default class Goal extends React.Component {
   }
 
   handleKeyPress(e) {
-    if (e.key === 'Enter') {
-      this.postSubgoal();
+    if (this.state.subgoalEnabled && this.state.subgoal !== '') {
+      if (e.key === 'Enter') {
+        this.postSubgoal();
+      }
     }
   }
 
@@ -138,6 +141,10 @@ export default class Goal extends React.Component {
     const containerStyle = {
       width: '98%',
     };
+    const { subgoal } = this.state;
+    if (subgoal) {
+      this.state.subgoalEnabled = subgoal.length > 0;
+    }
     return (
       <div className="collapsible-body">Progress: {this.state.percent}%
       <br />
@@ -148,11 +155,11 @@ export default class Goal extends React.Component {
       Subgoals:
       <br />
         {this.state.subgoals.length === 0 && <div> There is no subgoal set currently. </div>}
-        {this.state.subgoals.map(subgoal =>
-          <Subgoal increase={this.increaseProgress} decrease={this.decreaseProgress} key={`sub ${subgoal.id}`} subgoal={subgoal} status={subgoal.status} id={subgoal.id} user_id={this.props.user_id} goal={subgoal.GoalId} updateSubgoals={this.getSubgoals} />
+        {this.state.subgoals.map(subgoals =>
+          <Subgoal increase={this.increaseProgress} decrease={this.decreaseProgress} key={`sub ${subgoals.id}`} subgoal={subgoals} status={subgoals.status} id={subgoals.id} user_id={this.props.user_id} goal={subgoals.GoalId} updateSubgoals={this.getSubgoals} />
           )}
         <Input s={8} label="New Subgoal" onChange={this.handleChange} value={this.state.subgoal} onKeyPress={this.handleKeyPress} />
-        <Button className="subgoalButton" waves="light" onClick={this.postSubgoal}>Set Subgoal</Button>
+        <Button disabled={!this.state.subgoalEnabled} className="subgoalButton" waves="light" onClick={this.postSubgoal}>Set Subgoal</Button>
       </div>
     );
   }
