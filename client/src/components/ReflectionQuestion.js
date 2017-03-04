@@ -4,6 +4,7 @@ import { getExtensionDataAjax, getBlacklistAjax } from '../utils/SettingsUtil';
 import { questionSet1, questionSet2, questionSet3, questionSet4 } from '../utils/QuestionSets';
 
 export default class ReflectionQuestion extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -18,6 +19,14 @@ export default class ReflectionQuestion extends React.Component {
     this.getExtensionData = this.getExtensionData.bind(this);
     this.displayOpenQuestions = this.displayOpenQuestions.bind(this);
     this.setAnswerColor = this.setAnswerColor.bind(this);
+
+    this.TIME_SELECTION_MAP = {
+      0: [0, 0],
+      1: [0, 30],
+      2: [30, 60],
+      3: [60, 120],
+      4: [120, Number.MAX_SAFE_INTEGER],
+    };
   }
 
   componentDidMount() {
@@ -45,22 +54,7 @@ export default class ReflectionQuestion extends React.Component {
   }
 
 
-  isAwareOfTime(exDataArr) {
-    const timeSelectionMap = {
-      0: [0, 0],
-      1: [0, 30],
-      2: [30, 60],
-      3: [60, 120],
-      4: [120, Number.MAX_SAFE_INTEGER],
-    };
-    return exDataArr.every((list) => {
-      if (!list.time_guessed) {
-        return false;
-      }
-      const timeRange = timeSelectionMap[list.time_guessed];
-      return (list.time_spent >= timeRange[0]) && (list.time_spent < timeRange[1]);
-    });
-  }
+
 
   isStickToTime(exDataArr) {
     return exDataArr.every((list) => {
@@ -85,24 +79,24 @@ export default class ReflectionQuestion extends React.Component {
   }
 
   setAnswerColor() {
-    const timeSelectionMap = {
-      0: [0, 0],
-      1: [0, 30],
-      2: [30, 60],
-      3: [60, 120],
-      4: [120, Number.MAX_SAFE_INTEGER],
-    };
+    // const timeSelectionMap = {
+    //   0: [0, 0],
+    //   1: [0, 30],
+    //   2: [30, 60],
+    //   3: [60, 120],
+    //   4: [120, Number.MAX_SAFE_INTEGER],
+    // };
 
     const exDataArrTemp = Array.from(this.state.extensionData);
-    console.log('exDataArrTemp',exDataArrTemp);
+    console.log('timemap',this.TIME_SELECTION_MAP);
     for (let i = 0; i < exDataArrTemp.length; i++) {
-      const timeRange = timeSelectionMap[exDataArrTemp[i].time_guessed];
-      if (!timeRange) {
-        exDataArrTemp[i].color = 'text-red';
-      } else if ((exDataArrTemp[i].time_spent >= timeRange[0]) && (exDataArrTemp[i].time_spent < timeRange[1])) {
-        exDataArrTemp[i].color = 'text-green';
-      } else {
-        exDataArrTemp[i].color = 'text-red';
+      const timeRange = this.TIME_SELECTION_MAP[exDataArrTemp[i].time_guessed];
+
+      exDataArrTemp[i].color = 'text-red';
+      if (timeRange) {
+        if ((exDataArrTemp[i].time_spent >= timeRange[0]) && (exDataArrTemp[i].time_spent < timeRange[1])) {
+          exDataArrTemp[i].color = 'text-green';
+        }
       }
       console.log('url color', exDataArrTemp[i].url, exDataArrTemp[i].color);
     }
@@ -110,6 +104,23 @@ export default class ReflectionQuestion extends React.Component {
       extensionData: exDataArrTemp,
     },()=>{
       console.log('after submission', this.state.extensionData);
+    });
+  }
+
+  isAwareOfTime(exDataArr) {
+    // const timeSelectionMap = {
+    //   0: [0, 0],
+    //   1: [0, 30],
+    //   2: [30, 60],
+    //   3: [60, 120],
+    //   4: [120, Number.MAX_SAFE_INTEGER],
+    // };
+    return exDataArr.every((list) => {
+      if (!list.time_guessed) {
+        return false;
+      }
+      const timeRange = this.TIME_SELECTION_MAP[list.time_guessed];
+      return (list.time_spent >= timeRange[0]) && (list.time_spent < timeRange[1]);
     });
   }
 
