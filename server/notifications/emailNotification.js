@@ -6,12 +6,13 @@ var CronJob = require('cron').CronJob;
 var notificationFreq;
 
 function sendMail(name, receiver, frequency, reflections) {
+  console.log("NOTIFICATION SENT");
   //loop thru reflections and grab all the questions
-  var reflect = 0;
-  for (var i = 0; i < reflections.length; i++) {
-    console.log(reflections[i].dataValues.id);
-    reflect+=reflections[i].dataValues.id;
-  }
+  // var reflect = 0;
+  // for (var i = 0; i < reflections.length; i++) {
+  //   //console.log(reflections[i].dataValues.id);
+  //   reflect+=reflections[i].dataValues.id;
+  // }
   //reusable template to send email
   var template = '/emailTemplate.html';
   //create transporter
@@ -32,7 +33,7 @@ function sendMail(name, receiver, frequency, reflections) {
       //define name and reflection variables
       var emailTemplateVars = {
         name: name || "Guest",
-        reflections: reflect || "How well do you think you spent your time today?"
+        reflections: reflections || "How well do you think you spent your time today?"
       };
       //inject variables into email template
       var emailHTML = emailTemplate(emailTemplateVars);

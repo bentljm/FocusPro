@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, Button } from 'react-materialize';
+import { Input } from 'react-materialize';
 import Subgoal from './Subgoal';
 
 const Line = require('rc-progress').Line;
@@ -53,9 +53,9 @@ export default class Goal extends React.Component {
   }
 
   setPercentage(percentage) {
-    if (percentage >= 99) {
+    if (percentage >= 98) {
       this.setState({ percent: 100, color: '#00ff00' });
-    } else if (percentage <= 1) {
+    } else if (percentage <= 2) {
       this.setState({ percent: 0, color: '#ff0000' });
     } else {
       this.setState({ percent: percentage });
@@ -172,8 +172,10 @@ export default class Goal extends React.Component {
         {this.state.subgoals.map(subgoals =>
           <Subgoal increase={this.increaseProgress} decrease={this.decreaseProgress} key={`sub ${subgoals.id}`} subgoal={subgoals} status={subgoals.status} id={subgoals.id} user_id={this.props.user_id} goal={subgoals.GoalId} updateSubgoals={this.getSubgoals} />
           )}
-        <Input s={8} className={errors.subgoal && this.state.subgoalVisited ? 'red' : 'white'} label="New Subgoal" data-length="255" onChange={this.handleChange} value={this.state.subgoal} onKeyPress={this.handleKeyPress} onBlur={this.handleBlur} />
-        <Button disabled={!this.state.subgoalEnabled} className="subgoalButton" waves="light" onClick={this.postSubgoal}>Set Subgoal</Button>
+        <div>
+          <Input s={12} className={errors.subgoal && this.state.subgoalVisited ? 'red' : 'white'} label="Set new subgoal" data-length="255" onChange={this.handleChange} value={this.state.subgoal} onKeyPress={this.handleKeyPress} onBlur={this.handleBlur} />
+        </div>
+        <br /><br /><br />
       </div>
     );
   }

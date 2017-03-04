@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Input, Col, Button, Icon } from 'react-materialize';
+import { Row, Input, Col, Icon } from 'react-materialize';
 import Goal from './Goal';
 import Site from './Site';
 import Stat from './Stat';
@@ -224,7 +224,7 @@ export default class Dashboard extends React.Component {
         <br />
         <h3> Goal of the Day: </h3>
         <Row>
-          <Input s={10} className={errors.dayGoal && this.state.dayGoalVisited ? 'error' : 'white'} data-length="255" value={this.state.dayGoalInput} onChange={e => this.handleChange(e, 'dayGoalInput')} onKeyPress={this.handleQuoteKeyPress} onBlur={() => this.handleBlur('dayGoal')} /> <Button disabled={!this.state.dayGoalEnabled} className="dayGoalButton" waves="light" onClick={this.handleDayGoalSubmission}>Save</Button>
+          <Input s={10} className={errors.dayGoal && this.state.dayGoalVisited ? 'error' : 'white'} data-length="255" placeholder="Add new goal of the day" value={this.state.dayGoalInput} onChange={e => this.handleChange(e, 'dayGoalInput')} onKeyPress={this.handleQuoteKeyPress} onBlur={() => this.handleBlur('dayGoal')} />
         </Row>
         <h3> Main Goals: </h3>
         {(this.state.goals.length === 0 || !this.state.profile.user_id) && <div>You have no goals set currently.</div>}
@@ -241,8 +241,7 @@ export default class Dashboard extends React.Component {
             )}
         </ul>}
         <Row>
-          <Input s={8} className={errors.goal && this.state.goalVisited ? 'error' : 'white'} data-length="255" label="New Goal" value={this.state.goalInput} onChange={e => this.handleChange(e, 'goalInput')} onKeyPress={this.handleKeyPress} onBlur={() => this.handleBlur('goal')} />
-          <Button disabled={!this.state.goalEnabled} className="goalButton" waves="light" onClick={this.postGoal}> Set Goal</Button>
+          <Input s={10} className={errors.goal && this.state.goalVisited ? 'error' : 'white'} data-length="255" label="Set new goal" value={this.state.goalInput} onChange={e => this.handleChange(e, 'goalInput')} onKeyPress={this.handleKeyPress} onBlur={() => this.handleBlur('goal')} />
           <Motivational />
         </Row>
         <br />
