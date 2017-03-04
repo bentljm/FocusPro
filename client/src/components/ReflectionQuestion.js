@@ -9,6 +9,7 @@ export default class ReflectionQuestion extends React.Component {
       profile: this.props.auth.getProfile(),
       extensionData: [],
       displayStatus: { display: 'none' },
+      questionSet: null,
     };
     this.handleTimeChange = this.handleTimeChange.bind(this);
     this.handleTimeSubmit = this.handleTimeSubmit.bind(this);
@@ -87,13 +88,52 @@ export default class ReflectionQuestion extends React.Component {
     console.log('stickToTime', stickToTime);
 
 
-    this.displayOpenQuestions();
+    this.displayOpenQuestions(awareOfTime, stickToTime);
   }
 
-  displayOpenQuestions() {
+  displayOpenQuestions(awareOfTime, stickToTime) {
+    const questionSet1 = {
+      feedback: 'Well done! <br /> Looks like you are on track to achieve your ultimate dream goal :D <br /> Keep it up as consistency is the key!',
+      questions:['What is already working in your system that can help enhacing self-discipline further?'],
+    };
+    const questionSet2 = {
+      feedback: 'Very good! You have shown good discipline today :D <br /> It seems that you could have done better at tracking the time spent on the distraction site.',
+      questions:['How would performance change if you are more aware of how your time is spent?',
+      'What system can you implement to help you achieve that?'],
+    };
+    const questionSet3 = {
+      feedback: 'Not bad, you are aware of how much time you lost on the distraction site so you knew that you still went over your allocated time. <br /> Please think about:',
+      questions:['What is already working in your system that you can build on?',
+      'What might "help" look like?'],
+    };
+    const questionSet4 = {
+      feedback: 'Oops, not knowing how much time you spent on distraction sites... it seems like you are not on track to achieving you dream goal! Setting smaller yet achievable goals/rules is better than not achieving anything. <br /> Please think about:',
+      questions:['In the beginning, how did you want it to be?',
+      'What is the best/worst thing that could happen if you continue this way?',
+      'What might "help" look like?',
+      'How can you make yourself accountable?'],
+    };
     this.setState({
       displayStatus: {display: 'block'},
     });
+    // based on users awareOfTime and stickToTime
+    if (awareOfTime && stickToTime) {
+      this.setState({
+        questionSet: questionSet1,
+      });
+    } else if (!awareOfTime && stickToTime) {
+      this.setState({
+        questionSet: questionSet2,
+      });
+    } else if (awareOfTime && !stickToTime) {
+      this.setState({
+        questionSet: questionSet3,
+      });
+    } else {
+      this.setState({
+        questionSet: questionSet4,
+      });
+    }
   }
 
   render() {
@@ -106,7 +146,8 @@ export default class ReflectionQuestion extends React.Component {
         <Button onClick={this.handleTimeSubmit}>Answer Awareness Questions</Button>
         <br />
         <br />
-        <OpenQuestion theStyle={this.state.displayStatus}/>
+        {console.log('questionSet', this.state.questionSet)}
+        <OpenQuestion theStyle={this.state.displayStatus} qSet={this.state.questionSet}/>
       </div>
     );
   }
@@ -141,19 +182,24 @@ const AwarenessQuestionTable = ({ exData, callback }) => (
   </Table>
 );
 
-const OpenQuestion = ({theStyle}) => (
-  <div style={theStyle}>
-    <Row>
-      <h1>Reflection Questions</h1>
-      <h5>Not bad, you are aware of how much time you lost on the distraction sites! Please think about:</h5>
-    </Row>
-    <Row>
-      <div>What is already working in your system that you can build on?</div>
-      <Input s={12}></Input>
-    </Row>
-    <Row>
-      <div>What might 'help' look like?</div>
-      <Input s={12}></Input>
-    </Row>
+const OpenQuestion = ({theStyle, qSet}) => (
+  <div>
+    {qSet && <div style={theStyle}>
+      <Row>
+        <h1>Reflection Questions</h1>
+        <Feedback feedback={qSet.feedback} />
+        {console.log('qset feedback', qSet, qSet.feedback)}
+      </Row>
+      {qSet.questions.map((question, ind)=>(
+        <Row key={ind.toString()}>
+          <div>{question}</div>
+          <Input s={12}></Input>
+        </Row>
+      ))}
+    </div>}
   </div>
+);
+
+const Feedback = ({feedback}) => (
+  <div style={{color:'blue'}} dangerouslySetInnerHTML={{ __html: feedback }} />
 );
