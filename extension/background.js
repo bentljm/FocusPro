@@ -1,35 +1,62 @@
-// (function() {
-//   var httpRequest;
-//   document.getElementById("ajaxButton").onclick = function() { makeRequest('localhost:7777/api/users/'); };
-
-//   function makeRequest(url) {
-//     console.log('making request');
-//     httpRequest = new XMLHttpRequest();
-
-//     if (!httpRequest) {
-//       console.log('Giving up :( Cannot create an XMLHTTP instance');
-//       //alert('Giving up :( Cannot create an XMLHTTP instance');
-//       return false;
-//     }
-//     httpRequest.onreadystatechange = showContents;
-//     httpRequest.open('GET', url);
-//     httpRequest.send();
+// Notification
+// chrome.alarms.create("notificationAlarm", {periodInMinutes: 2});
+// chrome.alarms.onAlarm.addListener(function(alarm) {
+//   if (alarm.name === "notificationAlarm") {
+//     console.log('alarm');
+//     chrome.notifications.create('notificationAlarm', {type: 'basic', iconUrl: 'icon128.png', title: 'Notification', message: 'This is a notification!'});
 //   }
+// });
 
-//   function showContents() {
-//     if (httpRequest.readyState === XMLHttpRequest.DONE) {
-//       if (httpRequest.status === 200) {
-//         console.log(httpRequest.responseText);
-//         //alert(httpRequest.responseText);
-//       } else {
-//         console.log('There was a problem with the request.');
-//         //alert('There was a problem with the request.');
-//       }
-//     }
-//   }
-// })();
+//Send information to app every hour
+chrome.alarms.create("updateApp", {periodInMinutes: 60});
+function updateAppStats(){
+  if (alarm.name === "updateApp" && localStorage.auth0_id) {
+    this.sendAppStats();
+  }
+}
 
-//Clear stats
+function sendAppStats() {
+  var allSites = [];
+  for(var prop in gsites.sites) {
+    allSites.push({url: prop, time: gsites.sites[prop], freq: 0});
+  }
+  $.ajax({
+    type: 'POST',
+    url: `http://localhost:7777/api/users/${localStorage.auth0_id}/extension_data`,
+    contentType: 'application/json',
+    data: JSON.stringify({ urls:allSites }),
+    success: function(data) {
+      console.log('success!', data);
+    },
+    error: function(err) {
+      console.log('error', err);
+    },
+  });
+}
+
+// Check blacklist and handle notification cases
+// 1 is blackout
+// 2 is block after exceeding
+// 3 is warn after exceeding
+
+//Check tabs for update
+chrome.tabs.onUpdated.addListener(function(tabId, changedInfo, tab) {
+  console.log('tab url is', tab.url);
+  //Strip url
+  var match = tab.url.match(/^(\w+:\/\/[^\/]+).*$/);
+  if (match) {
+    match = match[1];
+  }
+  for (var i = 0; i < JSON.parse(localStorage.blackout).length; i++) {
+    var blackout = JSON.parse(localStorage.blackout)[i];
+    if (match === blackout || match === `http://${blackout}` || match === `https://${blackout}`) {
+      chrome.tabs.update(tabId, {"url": 'blocked.html'});
+    }
+  }
+});
+
+
+// Clear stats
 function clearStats() {
   if (config.clearStatsInterval < 3600) {
     config.nextTimeToClear = 0;

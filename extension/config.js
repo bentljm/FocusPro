@@ -43,7 +43,7 @@ Config.prototype.isIgnoredSite = function(site) {
 Object.defineProperty(Config.prototype, "timeDisplayFormat", {
   get: function() {
     if (!localStorage.timeDisplayFormat) {
-      localStorage.timeDisplayFormat = Config.timeDisplayFormatEnum.PRETTY;
+      localStorage.timeDisplayFormat = Config.timeDisplayFormatEnum.MINUTES;
     }
     return localStorage.timeDisplayFormat;
   },

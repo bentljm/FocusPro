@@ -415,8 +415,7 @@ function upsertExtension(req, res) {
     urls.forEach((url) => {
     db.Extension.upsert({url: url.url, time_spent: url.time, freq: url.freq, UserId: user.id}).then((data) => {
       res.status(200).json({
-        data: data,
-        success: 'Successfully upserted', userId
+        data: data
       });
     }).catch((err) => { res.send({'ERROR: UPSERT EXTENSION': err}); });
   });

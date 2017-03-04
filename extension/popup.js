@@ -1,16 +1,13 @@
 var config = new Config();
 var gsites = new Sites(config);
 
-function test() {
-  var newInput = document.createElement("input");
-  newInput.setAttribute("id", "authId");
-  document.body.appendChild(newInput);
-  var testBtn = document.createElement("button");
-  var testBtnTxt = document.createTextNode("Send Data");
-  testBtn.appendChild(testBtnTxt);
-  document.body.appendChild(testBtn);
-  testBtn.setAttribute("id", "testButton");
-  testBtn.onclick = function() {
+function sendToApp() {
+  var sendDataBtn = document.createElement("button");
+  var sendDataBtnTxt = document.createTextNode("Send Data");
+  sendDataBtn.appendChild(sendDataBtnTxt);
+  document.body.appendChild(sendDataBtn);
+  sendDataBtn.setAttribute("id", "testButton");
+  sendDataBtn.onclick = function() {
     // Get all sites and store in array to be parsed and stored in db
     var allSites = [];
     for(var prop in gsites.sites) {
@@ -18,14 +15,14 @@ function test() {
     }
     $.ajax({
       type: 'POST',
-      url: `http://localhost:7777/api/users/${newInput.value}/extension_data`,
+      url: `http://localhost:7777/api/users/${localStorage.auth0_id}/extension_data`,
       contentType: 'application/json',
-      data: JSON.stringify({urls:allSites}),
+      data: JSON.stringify({ urls:allSites }),
       success: function(data) {
         console.log('success!', data);
       },
       error: function(err) {
-        console.log('errror', err);
+        console.log('error', err);
       },
     });
   };
@@ -148,7 +145,7 @@ function addLocalDisplay() {
   }
 
   /* Show the "Show All" link if there are some sites we didn't show. */
-  if (max < sortedSites.length && document.getElementById("show") == null) {
+  if (max < sortedSites.length && document.getElementById("show") === null) {
     /* Add an option to show all stats */
     var showAllLink = document.createElement("a");
     showAllLink.onclick = function() {
@@ -159,7 +156,7 @@ function addLocalDisplay() {
     showAllLink.setAttribute("class", "pure-button");
     showAllLink.appendChild(document.createTextNode("Show All"));
     document.getElementById("button_row").appendChild(showAllLink);
-  } else if (document.getElementById("show") != null) {
+  } else if (document.getElementById("show") !== null) {
     var showLink = document.getElementById("show");
     showLink.parentNode.removeChild(showLink);
   }
@@ -191,7 +188,7 @@ function clearStats() {
 
 function initialize() {
   addLocalDisplay();
-  test();
+  sendToApp();
 
   if (config.lastClearTime) {
     var div = document.getElementById("lastClear");

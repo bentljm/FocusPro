@@ -1,6 +1,57 @@
 var config = new Config();
 var sites = new Sites(config);
 
+//TODO: Show blacklist in options
+
+//Add Auth0id and get blacklist
+function addAuth0Id(){
+  var auth0_input = document.getElementById("auth0_id");
+  localStorage.auth0_id = auth0_input.value;
+  this.updateBlacklist();
+}
+
+//Update blacklist
+function updateBlacklist(){
+  $.ajax({
+    type: 'GET',
+    url: `http://localhost:7777/api/users/${localStorage.auth0_id}/blacklist`,
+    success: function(data) {
+      console.log('SUCCESS: OBTAINED BLACKLIST: ', data.data);
+      localStorage.blacklist = JSON.stringify(data.data);
+      // Store all sites to blackout inside localStorage.blackout
+      // Store all sites to block after certain time inside localStorage.block
+      // Store all sites to warn after certain time inside localStorage.warn
+      var blackout = [];
+      var block = [];
+      var warn = [];
+      for (var i = 0; i < data.data.length; i++) {
+        //Strip url
+        var match = data.data[i].url.match(/^(\w+:\/\/[^\/]+).*$/);
+        if (match) {
+          match = match[1];
+        } else {
+          match = data.data[i].url;
+        }
+        match = match.replace(/(https?:\/\/)/, "");
+        if (data.data[i].blacklist_type === "1") {
+          blackout.push(match);
+        } else if (data.data[i].blacklist_type === "2") {
+          block.push([match, data.data[i].blacklist_time]);
+        } else {
+          warn.push([match, data.data[i].blacklist_time]);
+        }
+      }
+      localStorage.blackout = JSON.stringify(blackout);
+      localStorage.block = JSON.stringify(block);
+      localStorage.warn = JSON.stringify(warn);
+      console.log('localStorage', localStorage.blackout, localStorage.block, localStorage.warn);
+    },
+    error: function(err) {
+      console.log('error', err);
+    },
+  });
+}
+
 //Update the interval to clear stats
 function updateClearStatsInterval() {
   var select = document.getElementById("clear_stats_interval");
@@ -109,5 +160,9 @@ document.addEventListener("DOMContentLoaded", function () {
     "change", updateTimeDisplay);
   document.getElementById("download").addEventListener(
     "click", download);
+  document.getElementById("add_auth0_id").addEventListener(
+    "click", addAuth0Id);
+  document.getElementById("update_blacklist").addEventListener(
+    "click", updateBlacklist);
   restoreOptions();
 });

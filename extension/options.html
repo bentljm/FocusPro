@@ -1,10 +1,17 @@
 <html>
   <head><title>Time Tracker Preferences</title></head>
+  <script src="jquery-3.1.1.min.js"></script>
   <script src="config.js"></script>
   <script src="sites.js"></script>
   <script src="options.js"></script>
 
   <body>
+    <b>Auth0 ID</b>:
+    <input type="text" id="auth0_id"></input>
+    <button id="add_auth0_id">Store ID</button>
+    <br />
+    <button id="update_blacklist">Update blacklist</button>
+    <br />
     <b>Time Display</b>:
     <select id="time_display">
       <option value="0">Pretty</option>
