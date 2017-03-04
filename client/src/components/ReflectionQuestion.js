@@ -53,8 +53,33 @@ export default class ReflectionQuestion extends React.Component {
     });
   }
 
+  setAnswerColor() {
+    const exDataArrTemp = Array.from(this.state.extensionData);
+    for (let i = 0; i < exDataArrTemp.length; i++) {
+      const timeRange = this.TIME_SELECTION_MAP[exDataArrTemp[i].time_guessed];
 
+      exDataArrTemp[i].color = 'text-red';
+      if (timeRange) {
+        if ((exDataArrTemp[i].time_spent >= timeRange[0]) && (exDataArrTemp[i].time_spent < timeRange[1])) {
+          exDataArrTemp[i].color = 'text-green';
+        }
+      }
+      console.log('url color', exDataArrTemp[i].url, exDataArrTemp[i].color);
+    }
+    this.setState({
+      extensionData: exDataArrTemp,
+    });
+  }
 
+  isAwareOfTime(exDataArr) {
+    return exDataArr.every((list) => {
+      if (!list.time_guessed) {
+        return false;
+      }
+      const timeRange = this.TIME_SELECTION_MAP[list.time_guessed];
+      return (list.time_spent >= timeRange[0]) && (list.time_spent < timeRange[1]);
+    });
+  }
 
   isStickToTime(exDataArr) {
     return exDataArr.every((list) => {
@@ -78,52 +103,6 @@ export default class ReflectionQuestion extends React.Component {
     this.setAnswerColor();
   }
 
-  setAnswerColor() {
-    // const timeSelectionMap = {
-    //   0: [0, 0],
-    //   1: [0, 30],
-    //   2: [30, 60],
-    //   3: [60, 120],
-    //   4: [120, Number.MAX_SAFE_INTEGER],
-    // };
-
-    const exDataArrTemp = Array.from(this.state.extensionData);
-    console.log('timemap',this.TIME_SELECTION_MAP);
-    for (let i = 0; i < exDataArrTemp.length; i++) {
-      const timeRange = this.TIME_SELECTION_MAP[exDataArrTemp[i].time_guessed];
-
-      exDataArrTemp[i].color = 'text-red';
-      if (timeRange) {
-        if ((exDataArrTemp[i].time_spent >= timeRange[0]) && (exDataArrTemp[i].time_spent < timeRange[1])) {
-          exDataArrTemp[i].color = 'text-green';
-        }
-      }
-      console.log('url color', exDataArrTemp[i].url, exDataArrTemp[i].color);
-    }
-    this.setState({
-      extensionData: exDataArrTemp,
-    },()=>{
-      console.log('after submission', this.state.extensionData);
-    });
-  }
-
-  isAwareOfTime(exDataArr) {
-    // const timeSelectionMap = {
-    //   0: [0, 0],
-    //   1: [0, 30],
-    //   2: [30, 60],
-    //   3: [60, 120],
-    //   4: [120, Number.MAX_SAFE_INTEGER],
-    // };
-    return exDataArr.every((list) => {
-      if (!list.time_guessed) {
-        return false;
-      }
-      const timeRange = this.TIME_SELECTION_MAP[list.time_guessed];
-      return (list.time_spent >= timeRange[0]) && (list.time_spent < timeRange[1]);
-    });
-  }
-
   // save user guessed time with extensionData
   handleTimeChange(event, key) {
     const tempArr = this.state.extensionData;
@@ -131,8 +110,6 @@ export default class ReflectionQuestion extends React.Component {
     tempArr[key].time_guessed = event.target.value;
     this.setState({
       extensionData: tempArr,
-    }, ()=>{
-      console.log('after input change',this.state.extensionData);
     });
   }
 
@@ -168,12 +145,12 @@ export default class ReflectionQuestion extends React.Component {
         {console.log('load blacklist func?', getBlacklistAjax)}
         <h1>Awareness Questions </h1>
         <h5>How much time have you been spending on the blacklist sites?</h5>
-        <AwarenessQuestionTable exData={this.state.extensionData} callback={this.handleTimeChange} theStyle={this.state.displayStatus}/>
+        <AwarenessQuestionTable exData={this.state.extensionData} callback={this.handleTimeChange} theStyle={this.state.displayStatus} />
         <Button onClick={this.handleTimeSubmit}>Answer Awareness Questions</Button>
         <br />
         <br />
         {console.log('questionSet', this.state.questionSet)}
-        <OpenQuestion qSet={this.state.questionSet}/>
+        <OpenQuestion qSet={this.state.questionSet} />
       </div>
     );
   }
@@ -195,7 +172,7 @@ const AwarenessQuestionTable = ({ exData, callback, theStyle }) => (
         <tr key={ind.toString()}>
           <td>{data.url}</td>
           <td><Input type="select" onChange={e => callback(e, ind.toString())}>
-            <option value="0"></option>
+            <option value="0" />
             <option value="1">0~30min</option>
             <option value="2">30min~1hr</option>
             <option value="3">1hr~2hr</option>
@@ -208,7 +185,7 @@ const AwarenessQuestionTable = ({ exData, callback, theStyle }) => (
   </Table>
 );
 
-const OpenQuestion = ({qSet}) => (
+const OpenQuestion = ({ qSet }) => (
   <div>
     {qSet && <div>
       <Row>
@@ -216,16 +193,16 @@ const OpenQuestion = ({qSet}) => (
         <Feedback feedback={qSet.feedback} />
         {console.log('qset feedback', qSet, qSet.feedback)}
       </Row>
-      {qSet.questions.map((question, ind)=>(
+      {qSet.questions.map((question, ind) => (
         <Row key={ind.toString()}>
           <div>{question}</div>
-          <Input s={12}></Input>
+          <Input s={12} />
         </Row>
       ))}
     </div>}
   </div>
 );
 
-const Feedback = ({feedback}) => (
-  <div style={{color:'blue'}} dangerouslySetInnerHTML={{ __html: feedback }} />
+const Feedback = ({ feedback }) => (
+  <div style={{ color: 'blue' }} dangerouslySetInnerHTML={{ __html: feedback }} />
 );
