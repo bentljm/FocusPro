@@ -196,7 +196,11 @@ export default class Dashboard extends React.Component {
   }
 
   handleBlur(field) {
-    field === 'dayGoal' ? this.setState({ dayGoalVisited: true }) : this.setState({ goalVisited: true });
+    if (field === 'dayGoal') {
+      this.setState({ dayGoalVisited: true });
+    } else {
+      this.setState({ goalVisited: true });
+    }
   }
 
   render() {
@@ -220,7 +224,7 @@ export default class Dashboard extends React.Component {
         <br />
         <h3> Goal of the Day: </h3>
         <Row>
-          <Input s={10} className={errors.dayGoal && this.state.dayGoalVisited ? 'red' : 'white'} data-length="255" value={this.state.dayGoalInput} onChange={e => this.handleChange(e, 'dayGoalInput')} onKeyPress={this.handleQuoteKeyPress} onBlur={() => this.handleBlur('dayGoal')} /> <Button disabled={!this.state.dayGoalEnabled} className="dayGoalButton" waves="light" onClick={this.handleDayGoalSubmission}>Save</Button>
+          <Input s={10} className={errors.dayGoal && this.state.dayGoalVisited ? 'error' : 'white'} data-length="255" value={this.state.dayGoalInput} onChange={e => this.handleChange(e, 'dayGoalInput')} onKeyPress={this.handleQuoteKeyPress} onBlur={() => this.handleBlur('dayGoal')} /> <Button disabled={!this.state.dayGoalEnabled} className="dayGoalButton" waves="light" onClick={this.handleDayGoalSubmission}>Save</Button>
         </Row>
         <h3> Main Goals: </h3>
         {(this.state.goals.length === 0 || !this.state.profile.user_id) && <div>You have no goals set currently.</div>}
@@ -237,7 +241,7 @@ export default class Dashboard extends React.Component {
             )}
         </ul>}
         <Row>
-          <Input s={8} className={errors.goal && this.state.goalVisited ? 'red' : 'white'} data-length="255" label="New Goal" value={this.state.goalInput} onChange={e => this.handleChange(e, 'goalInput')} onKeyPress={this.handleKeyPress} onBlur={() => this.handleBlur('goal')} />
+          <Input s={8} className={errors.goal && this.state.goalVisited ? 'error' : 'white'} data-length="255" label="New Goal" value={this.state.goalInput} onChange={e => this.handleChange(e, 'goalInput')} onKeyPress={this.handleKeyPress} onBlur={() => this.handleBlur('goal')} />
           <Button disabled={!this.state.goalEnabled} className="goalButton" waves="light" onClick={this.postGoal}> Set Goal</Button>
           <Motivational />
         </Row>

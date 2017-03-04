@@ -132,3 +132,7 @@ blockquote p{
   color: red;
 }
 
+.error {
+  border-color: red !important;
+}
+
