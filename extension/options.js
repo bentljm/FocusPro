@@ -1,12 +1,26 @@
 var config = new Config();
 var sites = new Sites(config);
 
-//Add Auth0id
+//Add Auth0id and get blacklist
 function addAuth0Id(){
-  console.log('clickity click');
   var auth0_input = document.getElementById("auth0_id");
   localStorage.auth0_id = auth0_input.value;
-  console.log(localStorage.auth0_id);
+  this.updateBlacklist();
+  console.log('local storage holds', localStorage.blacklist);
+}
+
+function updateBlacklist(){
+  $.ajax({
+    type: 'GET',
+    url: `http://localhost:7777/api/users/${localStorage.auth0_id}/blacklist`,
+    success: function(data) {
+      console.log('SUCCESS: OBTAINED BLACKLIST: ', data.data);
+      localStorage.blacklist = data.data;
+    },
+    error: function(err) {
+      console.log('error', err);
+    },
+  });
 }
 
 //Update the interval to clear stats
@@ -119,5 +133,7 @@ document.addEventListener("DOMContentLoaded", function () {
     "click", download);
   document.getElementById("add_auth0_id").addEventListener(
     "click", addAuth0Id);
+  document.getElementById("update_blacklist").addEventListener(
+    "click", updateBlacklist);
   restoreOptions();
 });

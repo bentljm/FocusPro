@@ -2,20 +2,13 @@ var config = new Config();
 var gsites = new Sites(config);
 
 function sendToApp() {
-  // var newInput = document.createElement("input");
-  // newInput.setAttribute("id", "authId");
-  // document.body.appendChild(newInput);
   var sendDataBtn = document.createElement("button");
   var sendDataBtnTxt = document.createTextNode("Send Data");
   sendDataBtn.appendChild(sendDataBtnTxt);
   document.body.appendChild(sendDataBtn);
   sendDataBtn.setAttribute("id", "testButton");
   sendDataBtn.onclick = function() {
-    // Save auth0id
-    //localStorage.auth0_id = newInput.value;
     // Get all sites and store in array to be parsed and stored in db
-    //url: `http://localhost:7777/api/users/${newInput.value}/extension_data`,
-    console.log(JSON.stringify(localStorage.auth0_id));
     var allSites = [];
     for(var prop in gsites.sites) {
       allSites.push({url: prop, time: gsites.sites[prop], freq: 0});
@@ -29,7 +22,7 @@ function sendToApp() {
         console.log('success!', data);
       },
       error: function(err) {
-        console.log('errror', err);
+        console.log('error', err);
       },
     });
   };
@@ -152,7 +145,7 @@ function addLocalDisplay() {
   }
 
   /* Show the "Show All" link if there are some sites we didn't show. */
-  if (max < sortedSites.length && document.getElementById("show") == null) {
+  if (max < sortedSites.length && document.getElementById("show") === null) {
     /* Add an option to show all stats */
     var showAllLink = document.createElement("a");
     showAllLink.onclick = function() {
@@ -163,7 +156,7 @@ function addLocalDisplay() {
     showAllLink.setAttribute("class", "pure-button");
     showAllLink.appendChild(document.createTextNode("Show All"));
     document.getElementById("button_row").appendChild(showAllLink);
-  } else if (document.getElementById("show") != null) {
+  } else if (document.getElementById("show") !== null) {
     var showLink = document.getElementById("show");
     showLink.parentNode.removeChild(showLink);
   }

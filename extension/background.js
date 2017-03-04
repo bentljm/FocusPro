@@ -1,11 +1,34 @@
 // Notification
-chrome.alarms.create("notificationAlarm", {periodInMinutes: 2});
-chrome.alarms.onAlarm.addListener(function(alarm) {
-  if (alarm.name === "notificationAlarm") {
-    console.log('alarm');
-    chrome.notifications.create('notificationAlarm', {type: 'basic', iconUrl: 'icon128.png', title: 'Notification', message: 'This is a notification!'});
+// chrome.alarms.create("notificationAlarm", {periodInMinutes: 2});
+// chrome.alarms.onAlarm.addListener(function(alarm) {
+//   if (alarm.name === "notificationAlarm") {
+//     console.log('alarm');
+//     chrome.notifications.create('notificationAlarm', {type: 'basic', iconUrl: 'icon128.png', title: 'Notification', message: 'This is a notification!'});
+//   }
+// });
+
+//Send information to app every hour
+chrome.alarms.create("updateApp", {periodInMinutes: 60});
+function updateAppStats(){
+  if (alarm.name === "updateApp" && localStorage.auth0_id) {
+    var allSites = [];
+    for(var prop in gsites.sites) {
+      allSites.push({url: prop, time: gsites.sites[prop], freq: 0});
+    }
+    $.ajax({
+      type: 'POST',
+      url: `http://localhost:7777/api/users/${localStorage.auth0_id}/extension_data`,
+      contentType: 'application/json',
+      data: JSON.stringify({ urls:allSites }),
+      success: function(data) {
+        console.log('success!', data);
+      },
+      error: function(err) {
+        console.log('error', err);
+      },
+    });
   }
-});
+}
 
 // Clear stats
 function clearStats() {
