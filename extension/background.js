@@ -11,24 +11,50 @@
 chrome.alarms.create("updateApp", {periodInMinutes: 60});
 function updateAppStats(){
   if (alarm.name === "updateApp" && localStorage.auth0_id) {
-    var allSites = [];
-    for(var prop in gsites.sites) {
-      allSites.push({url: prop, time: gsites.sites[prop], freq: 0});
-    }
-    $.ajax({
-      type: 'POST',
-      url: `http://localhost:7777/api/users/${localStorage.auth0_id}/extension_data`,
-      contentType: 'application/json',
-      data: JSON.stringify({ urls:allSites }),
-      success: function(data) {
-        console.log('success!', data);
-      },
-      error: function(err) {
-        console.log('error', err);
-      },
-    });
+    this.sendAppStats();
   }
 }
+
+function sendAppStats() {
+  var allSites = [];
+  for(var prop in gsites.sites) {
+    allSites.push({url: prop, time: gsites.sites[prop], freq: 0});
+  }
+  $.ajax({
+    type: 'POST',
+    url: `http://localhost:7777/api/users/${localStorage.auth0_id}/extension_data`,
+    contentType: 'application/json',
+    data: JSON.stringify({ urls:allSites }),
+    success: function(data) {
+      console.log('success!', data);
+    },
+    error: function(err) {
+      console.log('error', err);
+    },
+  });
+}
+
+// Check blacklist and handle notification cases
+// 1 is blackout
+// 2 is block after exceeding
+// 3 is warn after exceeding
+
+//Check tabs for update
+chrome.tabs.onUpdated.addListener(function(tabId, changedInfo, tab) {
+  console.log('tab url is', tab.url);
+  //Strip url
+  var match = tab.url.match(/^(\w+:\/\/[^\/]+).*$/);
+  if (match) {
+    match = match[1];
+  }
+  for (var i = 0; i < JSON.parse(localStorage.blackout).length; i++) {
+    var blackout = JSON.parse(localStorage.blackout)[i];
+    if (match === blackout || match === `http://${blackout}` || match === `https://${blackout}`) {
+      chrome.tabs.update(tabId, {"url": 'blocked.html'});
+    }
+  }
+});
+
 
 // Clear stats
 function clearStats() {

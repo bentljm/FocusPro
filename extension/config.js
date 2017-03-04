@@ -12,7 +12,7 @@ function Config() {
 }
 //Handle time display format
 Config.timeDisplayFormatEnum = {
-  //PRETTY: 0,
+  PRETTY: 0,
   MINUTES: 1
 };
 
