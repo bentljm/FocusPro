@@ -17,6 +17,7 @@ export default class ReflectionQuestion extends React.Component {
     this.getBlacklist = this.getBlacklist.bind(this);
     this.getExtensionData = this.getExtensionData.bind(this);
     this.displayOpenQuestions = this.displayOpenQuestions.bind(this);
+    this.setAnswerColor = this.setAnswerColor.bind(this);
   }
 
   componentDidMount() {
@@ -42,17 +43,7 @@ export default class ReflectionQuestion extends React.Component {
       extensionData: exDataArr,
     });
   }
-  // save user guessed time with extensionData
-  handleTimeChange(event, key) {
-    const tempArr = this.state.extensionData;
-    console.log('extensionData change', tempArr, key);
-    tempArr[key].time_guessed = event.target.value;
-    this.setState({
-      extensionData: tempArr,
-    }, ()=>{
-      console.log('after input change',this.state.extensionData);
-    });
-  }
+
 
   isAwareOfTime(exDataArr) {
     const timeSelectionMap = {
@@ -90,12 +81,55 @@ export default class ReflectionQuestion extends React.Component {
 
 
     this.displayOpenQuestions(awareOfTime, stickToTime);
+    this.setAnswerColor();
+  }
+
+  setAnswerColor() {
+    const timeSelectionMap = {
+      0: [0, 0],
+      1: [0, 30],
+      2: [30, 60],
+      3: [60, 120],
+      4: [120, Number.MAX_SAFE_INTEGER],
+    };
+
+    const exDataArrTemp = Array.from(this.state.extensionData);
+    console.log('exDataArrTemp',exDataArrTemp);
+    for (let i = 0; i < exDataArrTemp.length; i++) {
+      const timeRange = timeSelectionMap[exDataArrTemp[i].time_guessed];
+      if (!timeRange) {
+        exDataArrTemp[i].color = 'text-red';
+      } else if ((exDataArrTemp[i].time_spent >= timeRange[0]) && (exDataArrTemp[i].time_spent < timeRange[1])) {
+        exDataArrTemp[i].color = 'text-green';
+      } else {
+        exDataArrTemp[i].color = 'text-red';
+      }
+      console.log('url color', exDataArrTemp[i].url, exDataArrTemp[i].color);
+    }
+    this.setState({
+      extensionData: exDataArrTemp,
+    },()=>{
+      console.log('after submission', this.state.extensionData);
+    });
+  }
+
+  // save user guessed time with extensionData
+  handleTimeChange(event, key) {
+    const tempArr = this.state.extensionData;
+    console.log('extensionData change', tempArr, key);
+    tempArr[key].time_guessed = event.target.value;
+    this.setState({
+      extensionData: tempArr,
+    }, ()=>{
+      console.log('after input change',this.state.extensionData);
+    });
   }
 
   displayOpenQuestions(awareOfTime, stickToTime) {
-
+    const displayStatusTemp = Object.assign({}, this.state.displayStatus);
+    displayStatusTemp.display = 'table-cell';
     this.setState({
-      displayStatus: {display: 'block'},
+      displayStatus: displayStatusTemp,
     });
     // based on users awareOfTime and stickToTime
     if (awareOfTime && stickToTime) {
@@ -123,12 +157,12 @@ export default class ReflectionQuestion extends React.Component {
         {console.log('load blacklist func?', getBlacklistAjax)}
         <h1>Awareness Questions </h1>
         <h5>How much time have you been spending on the blacklist sites?</h5>
-        <AwarenessQuestionTable exData={this.state.extensionData} callback={this.handleTimeChange}/>
+        <AwarenessQuestionTable exData={this.state.extensionData} callback={this.handleTimeChange} theStyle={this.state.displayStatus}/>
         <Button onClick={this.handleTimeSubmit}>Answer Awareness Questions</Button>
         <br />
         <br />
         {console.log('questionSet', this.state.questionSet)}
-        <OpenQuestion theStyle={this.state.displayStatus} qSet={this.state.questionSet}/>
+        <OpenQuestion qSet={this.state.questionSet}/>
       </div>
     );
   }
@@ -136,7 +170,7 @@ export default class ReflectionQuestion extends React.Component {
 
 }
 
-const AwarenessQuestionTable = ({ exData, callback }) => (
+const AwarenessQuestionTable = ({ exData, callback, theStyle }) => (
   <Table>
     <thead>
       <tr>
@@ -156,16 +190,16 @@ const AwarenessQuestionTable = ({ exData, callback }) => (
             <option value="3">1hr~2hr</option>
             <option value="4">2hr+</option>
           </Input></td>
-          <td>{data.time_spent}</td>
+          <td style={theStyle} className={data.color}>{data.time_spent}</td>
         </tr>
       ))}
     </tbody>
   </Table>
 );
 
-const OpenQuestion = ({theStyle, qSet}) => (
+const OpenQuestion = ({qSet}) => (
   <div>
-    {qSet && <div style={theStyle}>
+    {qSet && <div>
       <Row>
         <h1>Reflection Questions</h1>
         <Feedback feedback={qSet.feedback} />

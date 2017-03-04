@@ -124,3 +124,11 @@ blockquote p{
   font-size: 120%;
   font-weight: 600;
 }
+
+.text-green {
+  color: green;
+}
+
+.text-red {
+  color: red;
+}

@@ -8,7 +8,7 @@ export const questionSet2 = {
   'What system can you implement to help you achieve that?'],
 };
 export const questionSet3 = {
-  feedback: 'Not bad, you are aware of how much time you lost on the distraction site so you knew that you still went over your allocated time. <br /> Please think about:',
+  feedback: 'Not bad! you are aware of how much time you lost on the distraction site so you knew that you still went over your allocated time. <br /> Please think about:',
   questions:['What is already working in your system that you can build on?',
   'What might "help" look like?'],
 };
