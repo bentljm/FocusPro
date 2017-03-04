@@ -196,11 +196,7 @@ export default class Dashboard extends React.Component {
   }
 
   handleBlur(field) {
-    if (field === 'dayGoal') {
-      this.setState({ dayGoalVisited: true });
-    } else {
-      this.setState({ goalVisited: true });
-    }
+    field === 'dayGoal' ? this.setState({ dayGoalVisited: true }) : this.setState({ goalVisited: true });
   }
 
   render() {
