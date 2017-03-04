@@ -5,43 +5,32 @@ export default class Motivational extends React.Component {
   render() {
     return (
       <Modal
-        header="Motivational Questions"
         fixedFooter
         trigger={<Button className="goalButton" waves="light">Inspire Me</Button>}
       >
-        What is your Overarching Goal?
+        <h2>What is your Overarching Goal?</h2>
         <br />
-        It is best to prioritise, pick ONE goal and stay focused before moving onto the next one.
-        Some questions to help you getting started:
+        <h3>It is best to optimize by picking ONE goal. Stay focused on that one before moving onto the next one.</h3>
         <br />
+         Examples:
         <br />
-        - Why are you doing what you are doing? What is your theme?
+        <ul> 
+          <p>Why are you doing what you are doing? What is your theme?</p>
+          <p>What would your ideal 60th birthday look like?</p>
+          <p>What would be the biggest regret I could have at the end of my life?</p>
+          <p>18 months from now, what achievement would have the biggest positive impact on your life with respect to your theme?</p>
+          <p>Have you ever had the feeling that a discipline or field was tailor-made just for you?</p>
+          <p>What completed consumes your attention once you start doing it?</p>
+          <p>What makes your heart race with excitement?</p>
+          <p>What do you believe is worthwhile doing, that other people might not agree on?</p>
+        </ul>
         <br />
-        -- What would your ideal 60th birthday look like?
+        <h5>On Subgoals: by taking small, measurable steps regularly, we will be on track to the end.
+        </h5>
         <br />
-        -- What would be the biggest regret I could have at the end of my life?
-        <br />
-        - 18 months from now, what achievement would have the biggest positive impact on your life with respect to your theme?
-        <br />
-        - Have you ever had the feeling that a discipline or field was tailor-made just for you?
-        <br />
-        - What completed consumes your attention once you start doing it?
-        <br />
-        - What makes your heart race with excitement?
-        <br />
-        - What do you believe is worthwhile doing, that other people might not agree on?
-        <br />
-        <br />
-        Sub-Goal setting
-        <br />
-        By taking small, measurable steps regularly, we will be on track to the end.
-        It is best to have a max of 3 subgoals going on at once
-        <br />
-        - Formulate the ONE goal into a number
-        <br />
-        - make it SMART
-        <br />
-        (from http://niklasgoeke.com/how-to-set-goals)
+        <p>It is best to have a max of 3 subgoals going on at once</p>
+        <p>Formulate the ONE goal into a number</p>
+        <p>Make it very descriptive. Be specific. Force yourself to think about it.</p>
         <br />
         <hr />
         <br />
