@@ -10,14 +10,14 @@ export default class Motivational extends React.Component {
       >
         <h2>What is your Overarching Goal?</h2>
         <br />
-        <h3>It is best to optimize by picking ONE goal. Stay focused on that one before moving onto the next one.</h3>
+        <h5>It is best to optimize by picking ONE goal. Stay focused on that one before moving onto the next one.</h5>
         <br />
          Examples:
         <br />
         <ul> 
           <p>Why are you doing what you are doing? What is your theme?</p>
           <p>What would your ideal 60th birthday look like?</p>
-          <p>What would be the biggest regret I could have at the end of my life?</p>
+          <p>What would be the biggest regret you could have at the end of my life?</p>
           <p>18 months from now, what achievement would have the biggest positive impact on your life with respect to your theme?</p>
           <p>Have you ever had the feeling that a discipline or field was tailor-made just for you?</p>
           <p>What completed consumes your attention once you start doing it?</p>
