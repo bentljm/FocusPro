@@ -6,6 +6,7 @@ import App from './components/App';
 import Landingpage from './components/Landingpage';
 import Dashboard from './components/Dashboard';
 import Selfreflection from './components/Selfreflection';
+import ReflectionQuestion from './components/ReflectionQuestion';
 import Settings from './components/Settings';
 import AuthService from './utils/AuthService';
 
@@ -45,6 +46,7 @@ render(
       <Route path="dashboard" component={Dashboard} onEnter={requireAuth} />
       <Route path="selfreflection" component={Selfreflection} onEnter={requireAuth} />
       <Route path="settings" component={Settings} onEnter={requireAuth} />
+      <Route path="question" component={ReflectionQuestion} onEnter={requireAuth} />
     </Route>
   </Router>
   , app,
