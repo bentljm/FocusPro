@@ -14,7 +14,7 @@ export default class Motivational extends React.Component {
         <br />
          Examples:
         <br />
-        <ul> 
+        <ul>
           <p>Why are you doing what you are doing? What is your theme?</p>
           <p>What would your ideal 60th birthday look like?</p>
           <p>What would be the biggest regret you could have at the end of my life?</p>
