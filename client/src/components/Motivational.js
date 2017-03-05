@@ -15,14 +15,14 @@ export default class Motivational extends React.Component {
          Examples:
         <br />
         <ul>
-          <p>Why are you doing what you are doing? What is your theme?</p>
+          <p>Why are you doing what you are doing? What do you hope to accomplish?</p>
           <p>What would your ideal 60th birthday look like?</p>
           <p>What would be the biggest regret you could have at the end of your life?</p>
-          <p>18 months from now, what achievement would have the biggest positive impact on your life with respect to your theme?</p>
+          <p>18 months from now, what achievement would have the biggest positive impact on your life?</p>
           <p>Have you ever had the feeling that a discipline or field was tailor-made for you personally?</p>
-          <p>What completed consumes your attention once you start doing it?</p>
+          <p>What completely consumes your attention once you start doing it?</p>
           <p>What makes your heart race with excitement?</p>
-          <p>What do you believe is worthwhile doing, that other people might not agree on?</p>
+          <p>Do you believe that some things are worth doing, even though others wouldn't agree?</p>
         </ul>
         <br />
         <h5>On Subgoals: by taking small, measurable steps regularly, we will be on track to the end.
