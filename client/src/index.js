@@ -29,11 +29,11 @@ ReactGA.initialize('UA-000333-23', {
 
 // Keep track of our log page views
 function logPageView() {
-  ReactGA.set({ page: window.location.hash });
+  ReactGA.set({ page: window.location.pathname });
   if (!auth.loggedIn()) {
     ReactGA.pageview('/'); // home page
   } else {
-    ReactGA.pageView(window.location.hash);
+    ReactGA.pageview(window.location.pathname);
   }
 }
 
