@@ -1,31 +1,8 @@
 import React from 'react';
 import { Row, Input, Button } from 'react-materialize';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
-import { Table, Column, Cell } from 'fixed-data-table';
+import moment from 'moment'
 import { getReflectionsAjax } from '../utils/SettingsUtil';
-
-class MyTextCell extends React.Component {
-  render() {
-    const {rowIndex, field, data, ...props} = this.props;
-    return (
-      <Cell {...props}>
-        {data[rowIndex][field]}
-      </Cell>
-    );
-  }
-}
-
-class MyLinkCell extends React.Component {
-  render() {
-    const {rowIndex, field, data, ...props} = this.props;
-    const link = data[rowIndex][field];
-    return (
-      <Cell {...props}>
-        <a href={link}>{link}</a>
-      </Cell>
-    );
-  }
-}
 
 export default class Selfreflection extends React.Component {
   constructor(props) { // Hand downs the prop chain
@@ -70,8 +47,14 @@ export default class Selfreflection extends React.Component {
   getReflections() {
     const that = this;
     getReflectionsAjax(this.state.profile.user_id, (data) => {
+      const reflectionData = data.data.slice();
+      (data.data).forEach((refl, index) => {
+        reflectionData[index].date = moment(refl.updatedAt).calendar();
+      });
+      console.log('reflection.date', reflectionData);
+      console.log('reflection.date', data.data);
       that.setState({
-        reflections: data.data,
+        reflections: reflectionData,
       });
     });
   }
@@ -110,10 +93,11 @@ export default class Selfreflection extends React.Component {
       <div>
         <h1> Self-Reflection </h1>
 
-        <BootstrapTable data={this.state.products} striped hover>
-            <TableHeaderColumn isKey dataField='id'>Product ID</TableHeaderColumn>
-            <TableHeaderColumn dataField='name'>Product Name</TableHeaderColumn>
-            <TableHeaderColumn dataField='price'>Product Price</TableHeaderColumn>
+        <BootstrapTable data={this.state.reflections} striped hover>
+            <TableHeaderColumn style={{display:'none'}} isKey dataField='id'>ID</TableHeaderColumn>
+            <TableHeaderColumn dataField='question'>Question</TableHeaderColumn>
+            <TableHeaderColumn dataField='answer'>Answer</TableHeaderColumn>
+            <TableHeaderColumn dataField='date'>Date</TableHeaderColumn>
         </BootstrapTable>
 
 
@@ -121,5 +105,4 @@ export default class Selfreflection extends React.Component {
     );
   }
 }
-
 
