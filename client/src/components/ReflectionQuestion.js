@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router';
+import { Link } from 'react-router';
 import { Row, Input, Button, Table } from 'react-materialize';
 import { getExtensionDataAjax, getBlacklistAjax, postReflectionAjax } from '../utils/SettingsUtil';
 import { questionSet1, questionSet2, questionSet3, questionSet4 } from '../utils/QuestionSets';
@@ -146,11 +146,10 @@ export default class ReflectionQuestion extends React.Component {
   handleRelfectionSubmit() {
     const qaArray = this.transformQAData();
     qaArray.forEach((qa) => {
-      postReflectionAjax(this.state.profile.user_id, qa, (data)=>{
+      postReflectionAjax(this.state.profile.user_id, qa, (data) => {
         console.log('submit reflection', data);
       });
     });
-
   }
 
   transformQAData() {
@@ -166,12 +165,10 @@ export default class ReflectionQuestion extends React.Component {
 
   handleAnswerChange(event, index) {
     const qSetTemp = this.state.questionSet;
-    qSetTemp.answers = this.state.questionSet.answers ||Array.from(Array(this.state.questionSet.questions.length));
+    qSetTemp.answers = this.state.questionSet.answers || Array.from(Array(this.state.questionSet.questions.length));
     qSetTemp.answers[index] = event.target.value;
     this.setState({
       questionSet: qSetTemp,
-    }, ()=>{
-      console.log('questionSet', this.state.questionSet);
     });
   }
 
@@ -185,9 +182,7 @@ export default class ReflectionQuestion extends React.Component {
         <Button onClick={this.handleTimeSubmit}>Answer Awareness Questions</Button>
         <br />
         <br />
-        {console.log('questionSet', this.state.questionSet)}
         <OpenQuestions qSet={this.state.questionSet} callback={this.handleAnswerChange} submitCallback={this.handleRelfectionSubmit}/>
-
       </div>
     );
   }
