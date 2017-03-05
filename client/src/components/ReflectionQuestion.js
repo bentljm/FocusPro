@@ -150,6 +150,7 @@ export default class ReflectionQuestion extends React.Component {
         console.log('submit reflection', data);
       });
     });
+    window.location = '/#/selfreflection';
   }
 
   transformQAData() {

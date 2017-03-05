@@ -48,6 +48,7 @@ export default class Selfreflection extends React.Component {
     const that = this;
     getReflectionsAjax(this.state.profile.user_id, (data) => {
       const reflectionData = data.data.slice();
+      // transform data into format accepted by datatable
       (data.data).forEach((refl, index) => {
         reflectionData[index].date = moment(refl.updatedAt).calendar();
       });
@@ -109,7 +110,7 @@ export default class Selfreflection extends React.Component {
       <div>
         <h1> Self-Reflection </h1>
 
-        <BootstrapTable data={this.state.reflections} striped hover>
+        <BootstrapTable data={this.state.reflections} striped hover pagination>
             <TableHeaderColumn hidden isKey dataField="id">ID</TableHeaderColumn>
             <TableHeaderColumn dataSort dataField="question" tdStyle={{ whiteSpace: "normal" }} caretRender={ this.getCaret }>Question </TableHeaderColumn>
             <TableHeaderColumn dataField="answer" tdStyle={ { whiteSpace: "normal" } }>Answer </TableHeaderColumn>
