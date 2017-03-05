@@ -29,7 +29,7 @@ export const getBlacklistAjax = (auth0Id, callback) => {
 };
 
 
-export const postReflectionAjax = (auth0Id, reflections, callback) =>{
+export const postReflectionAjax = (auth0Id, reflections, callback) => {
   $.ajax({
     type: 'POST',
     url: `/api/users/${auth0Id}/reflections`,
@@ -41,5 +41,19 @@ export const postReflectionAjax = (auth0Id, reflections, callback) =>{
     },
     error: (err) => { console.log('ERROR: COULD NOT POST REFLECTIONS', err); },
   });
-}
+};
+
+export const getReflectionsAjax = (auth0Id, callback) => {
+  $.ajax({
+    type: 'GET',
+    url: `/api/users/${auth0Id}/reflections`,
+    success: (data) => {
+      console.log('SUCCESS: OBTAINED REFLECTIONS: ', data);
+      callback(data);
+    },
+    error: (err) => {
+      console.log('ERROR: COULD NOT GET REFLECTIONS', err);
+    }
+  });
+};
 // export default SettingsUtil;
