@@ -88,16 +88,32 @@ export default class Selfreflection extends React.Component {
     });
   }
 
+  getCaret(direction) {
+    if (direction === 'asc') {
+      return (
+        <i className="fa fa-caret-up" aria-hidden="true"></i>
+      );
+    }
+    if (direction === 'desc') {
+      return (
+        <i className="fa fa-caret-down" aria-hidden="true"></i>
+      );
+    }
+    return (
+      <i className="fa fa-sort" aria-hidden="true"></i>
+    );
+  }
+
   render() {
     return (
       <div>
         <h1> Self-Reflection </h1>
 
         <BootstrapTable data={this.state.reflections} striped hover>
-            <TableHeaderColumn style={{display:'none'}} isKey dataField='id'>ID</TableHeaderColumn>
-            <TableHeaderColumn dataField='question'>Question</TableHeaderColumn>
-            <TableHeaderColumn dataField='answer'>Answer</TableHeaderColumn>
-            <TableHeaderColumn dataField='date'>Date</TableHeaderColumn>
+            <TableHeaderColumn hidden isKey dataField="id">ID</TableHeaderColumn>
+            <TableHeaderColumn dataSort dataField="question" tdStyle={{ whiteSpace: "normal" }} caretRender={ this.getCaret }>Question </TableHeaderColumn>
+            <TableHeaderColumn dataField="answer" tdStyle={ { whiteSpace: "normal" } }>Answer </TableHeaderColumn>
+            <TableHeaderColumn dataSort dataField="date" tdStyle={ { whiteSpace: "normal" } } caretRender={ this.getCaret } width="100">Date </TableHeaderColumn>
         </BootstrapTable>
 
 
