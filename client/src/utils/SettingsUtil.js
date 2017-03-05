@@ -28,4 +28,18 @@ export const getBlacklistAjax = (auth0Id, callback) => {
   });
 };
 
+
+export const postReflectionAjax = (auth0Id, reflections, callback) =>{
+  $.ajax({
+    type: 'POST',
+    url: `/api/users/${auth0Id}/reflections`,
+    contentType: 'application/json',
+    data: JSON.stringify(reflections),
+    success: (data) => {
+      console.log('SUCCESS: POSTED REFLECTIONS: ', data);
+      callback(data);
+    },
+    error: (err) => { console.log('ERROR: COULD NOT POST REFLECTIONS', err); },
+  });
+}
 // export default SettingsUtil;
