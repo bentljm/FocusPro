@@ -9,17 +9,18 @@
 
 //Send information to app every hour
 chrome.alarms.create("updateApp", {periodInMinutes: 60});
-function updateAppStats(){
+chrome.alarms.onAlarm.addListener(function(alarm) {
   if (alarm.name === "updateApp" && localStorage.auth0_id) {
-    this.sendAppStats();
+    sendAppStats();
   }
-}
+});
 
 function sendAppStats() {
   var allSites = [];
-  for(var prop in gsites.sites) {
-    allSites.push({url: prop, time: gsites.sites[prop], freq: 0});
+  for(var prop in JSON.parse(localStorage.sites)) {
+    allSites.push({url: prop, time: JSON.parse(localStorage.sites)[prop], freq: 0});
   }
+  console.log(allSites);
   $.ajax({
     type: 'POST',
     url: `http://localhost:7777/api/users/${localStorage.auth0_id}/extension_data`,
@@ -41,7 +42,6 @@ function sendAppStats() {
 
 //Check tabs for update
 chrome.tabs.onUpdated.addListener(function(tabId, changedInfo, tab) {
-  console.log('tab url is', tab.url);
   //Strip url
   var match = tab.url.match(/^(\w+:\/\/[^\/]+).*$/);
   if (match) {
