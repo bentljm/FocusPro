@@ -9,6 +9,7 @@ var client = require('twilio')(accountSid, authToken);
  
 var sendText = function(name, recipientNumber, frequency, reflections) {
 	//set phone number
+	console.log("NOTIFICATION SENT");
 	var number = "'+1" + recipientNumber + "'";
 	// Run every weekday (Monday through Friday) or once on Tuesday at 9:30 AM depending on user input
 	frequency === '1' ? notificationFreq = '00 30 09 * * 1-5' : notificationFreq = '00 30 09 * * 2'; 

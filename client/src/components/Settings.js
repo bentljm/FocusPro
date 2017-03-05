@@ -19,7 +19,6 @@ export default class Settings extends React.Component {
       reminderType: '',
       reminderFreq: 0,
       reminderAddress: '',
-      reminderClicked: false,
       labelStyle: {},
       inputStyle: {},
     };
@@ -27,6 +26,7 @@ export default class Settings extends React.Component {
     this.deleteBlacklist = this.deleteBlacklist.bind(this);
     this.sendNotification = this.sendNotification.bind(this);
     this.siteFormsFilled = this.siteFormsFilled.bind(this);
+    this.reminderFormsFilled = this.reminderFormsFilled.bind(this);
     this.editStyle = this.editStyle.bind(this);
     this.viewStyle = this.viewStyle.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
@@ -175,8 +175,8 @@ export default class Settings extends React.Component {
       data: JSON.stringify({ address: this.state.reminderAddress, name: this.state.profile.given_name, freq: this.state.reminderFreq }),
       success: (data) => {
         console.log('SUCCESS: SENT NOTIFICATIONS', data);
-        that.alertUser('Email notification');
-        that.setState({ reminderClicked: false });
+        that.alertUser('Notifications');
+        this.setState({ reminderAddress: '' });
       },
       error: (err) => { console.log('ERROR: COULD NOT SEND NOTIFICATIONS', err); },
     });
@@ -184,8 +184,7 @@ export default class Settings extends React.Component {
 
   handleReminderSubmission() {
     this.updateSetting(null, null, null, true, this.state.reminderType, this.state.reminderFreq, this.state.reminderAddress);
-    this.setState({ reminderClicked: true });
-    this.alertUser('Reminder');
+    this.sendNotification();
   }
 
   handleChange(event, str) {
@@ -223,12 +222,20 @@ export default class Settings extends React.Component {
         if (this.siteFormsFilled()) {
           this.handleSubmission('site');
         }
+      } else if (str === 'reminder') {
+        if (this.reminderFormsFilled()) {
+          this.handleReminderSubmission();
+        }
       }
     }
   }
 
   siteFormsFilled() {
     return this.state.siteURL.length > 0 && this.state.siteLimit.length > 0 && this.state.siteType.length > 0;
+  }
+
+  reminderFormsFilled() {
+    return this.state.reminderType.length > 0 && this.state.reminderAddress.length > 0 && this.state.reminderFreq.length > 0;
   }
 
   alertUser(str) {
@@ -273,17 +280,11 @@ export default class Settings extends React.Component {
   }
 
   render() {
-    const { siteURL, siteLimit, siteType } = this.state;
-    let siteSubmitEnabled;
-    if (siteURL && siteLimit && siteType) {
-      siteSubmitEnabled = siteURL.length > 0 && siteLimit.length > 0 && siteType.length > 0;
-    }
     const { reminderType, reminderAddress, reminderFreq } = this.state;
     let reminderSubmitEnabled;
     if (reminderType && reminderAddress && reminderFreq) {
       reminderSubmitEnabled = reminderType.length > 0 && reminderAddress.length > 0 && reminderFreq.length > 0;
     }
-    const sendNotificationEnabled = this.state.reminderClicked;
 
     return (
       <div>
@@ -311,14 +312,13 @@ export default class Settings extends React.Component {
         </Table>}
         <br />
         <Row>
-          <Input s={5} label="Site" value={this.state.siteURL} onChange={e => this.handleChange(e, 'siteURL')} onKeyPress={e => this.handleKeyPress(e, 'site')} />
-          <Input s={3} type="select" label="Type" defaultValue="1" value={this.state.siteType} onChange={e => this.handleChange(e, 'siteType')}>
+          <Input s={5} label="Input Site" value={this.state.siteURL} onChange={e => this.handleChange(e, 'siteURL')} onKeyPress={e => this.handleKeyPress(e, 'site')} />
+          <Input s={3} type="select" label="Select Type" defaultValue="1" value={this.state.siteType} onChange={e => this.handleChange(e, 'siteType')}>
             <option value="1">Blackout</option>
             <option value="2">Block after exceeding</option>
             <option value="3">Warn after exceeding</option>
           </Input>
-          <Input s={2} label="Time Limit (min)" value={this.state.siteLimit} onChange={e => this.handleChange(e, 'siteLimit')} onKeyPress={e => this.handleKeyPress(e, 'site')} />
-          <Button disabled={!siteSubmitEnabled} className="blacklistButton" waves="light" onClick={() => this.handleSubmission('site')}>Add Site</Button>
+          <Input s={2} label="Set Time Limit (min)" value={this.state.siteLimit} onChange={e => this.handleChange(e, 'siteLimit')} onKeyPress={e => this.handleKeyPress(e, 'site')} />
         </Row>
         <br />
         <h3> Personalization: </h3>
@@ -326,34 +326,33 @@ export default class Settings extends React.Component {
           <div className="label-header">Username:</div>
           <div onDoubleClick={() => this.editStyle('username')} style={this.state.labelStyle.username}>{this.state.username}
           </div>
-          <Input s={10} placeholder="Enter Username" value={this.state.username} onChange={e => this.handleChange(e, 'username')} onKeyPress={e => this.handleKeyPress(e, 'username')} onBlur={() => this.handleSubmission('username')} style={this.state.inputStyle.username} />
+          <Input s={10} data-length="255" placeholder="Enter Username" value={this.state.username} onChange={e => this.handleChange(e, 'username')} onKeyPress={e => this.handleKeyPress(e, 'username')} onBlur={() => this.handleSubmission('username')} style={this.state.inputStyle.username} />
         </Row>
         <Row>
           <div className="label-header">Image:</div>
           <div onDoubleClick={() => this.editStyle('image')} style={this.state.labelStyle.image}>{this.state.image}
           </div>
-          <Input s={10} placeholder="Enter Image URL" value={this.state.image} onChange={e => this.handleChange(e, 'image')} onBlur={() => this.handleSubmission('image')} onKeyPress={e => this.handleKeyPress(e, 'image')} style={this.state.inputStyle.image} />
+          <Input s={10} data-length="255" placeholder="Enter Image URL" value={this.state.image} onChange={e => this.handleChange(e, 'image')} onBlur={() => this.handleSubmission('image')} onKeyPress={e => this.handleKeyPress(e, 'image')} style={this.state.inputStyle.image} />
         </Row>
         <Row>
           <div className="label-header">Quote:</div>
           <div onDoubleClick={() => this.editStyle('quote')} style={this.state.labelStyle.quote}>{this.state.quote}
           </div>
-          <Input s={10} placeholder="Enter Motivational Quote" value={this.state.quote} onChange={e => this.handleChange(e, 'quote')} onBlur={() => this.handleSubmission('quote')} onKeyPress={e => this.handleKeyPress(e, 'quote')} style={this.state.inputStyle.quote} />
+          <Input s={10} data-length="255" placeholder="Enter Motivational Quote" value={this.state.quote} onChange={e => this.handleChange(e, 'quote')} onBlur={() => this.handleSubmission('quote')} onKeyPress={e => this.handleKeyPress(e, 'quote')} style={this.state.inputStyle.quote} />
         </Row>
         <br />
         <Row>
-          <Input s={2} type="select" label="Reminder Type" defaultValue="1" value={this.state.reminderType} onChange={e => this.handleChange(e, 'reminderType')}>
+          <Input s={2} type="select" label="Set Reminder Type" defaultValue="1" value={this.state.reminderType} onChange={e => this.handleChange(e, 'reminderType')}>
             <option value="1">No Reminder</option>
             <option value="2">Text</option>
             <option value="3">Email</option>
           </Input>
-          <Input s={6} label="Number/Email Address" value={this.state.reminderAddress} onChange={e => this.handleChange(e, 'reminderAddress')} />
-          <Input s={2} type="select" label="Frequency" defaultValue="1" value={this.state.reminderFreq} onChange={e => this.handleChange(e, 'reminderFreq')}>
+          <Input s={6} label="Select Number/Email Address" value={this.state.reminderAddress} onChange={e => this.handleChange(e, 'reminderAddress')} onKeyPress={e => this.handleKeyPress(e, 'reminder')} />
+          <Input s={2} type="select" label="Select Frequency" defaultValue="1" value={this.state.reminderFreq} onChange={e => this.handleChange(e, 'reminderFreq')} >
             <option value="1">Daily</option>
             <option value="2">Weekly</option>
           </Input>
           <Button disabled={!reminderSubmitEnabled} className="reminderButton" waves="light" onClick={this.handleReminderSubmission}>Set Reminder</Button>
-          <Button disabled={!sendNotificationEnabled} waves="light" onClick={this.sendNotification}>Send Notification Now</Button>
         </Row>
         <br />
         <h3> Chrome Extension: </h3>

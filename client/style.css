@@ -124,7 +124,6 @@ blockquote p{
   font-size: 120%;
   font-weight: 600;
 }
-
 .text-green {
   color: green;
 }
@@ -132,3 +131,8 @@ blockquote p{
 .text-red {
   color: red;
 }
+
+.error {
+  border-color: red !important;
+}
+

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Input, Col, Button, Icon } from 'react-materialize';
+import { Row, Input, Col, Icon } from 'react-materialize';
 import Goal from './Goal';
 import Site from './Site';
 import Stat from './Stat';
@@ -20,14 +20,17 @@ export default class Dashboard extends React.Component {
       blacklist: [],
       dayGoalEnabled: false,
       goalEnabled: false,
+      dayGoalVisited: false,
+      goalVisited: false,
     };
-    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.postGoal = this.postGoal.bind(this);
-    this.handleDayGoalChange = this.handleDayGoalChange.bind(this);
     this.handleDayGoalSubmission = this.handleDayGoalSubmission.bind(this);
     this.removeGoal = this.removeGoal.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handleQuoteKeyPress = this.handleQuoteKeyPress.bind(this);
+    this.validate = this.validate.bind(this);
+    this.handleBlur = this.handleBlur.bind(this);
   }
 
   componentWillMount() {
@@ -111,12 +114,8 @@ export default class Dashboard extends React.Component {
     $('.collapsible').collapsible();
   }
 
-  handleInputChange(event) {
-    this.setState({ goalInput: event.target.value });
-  }
-
-  handleDayGoalChange(event) {
-    this.setState({ dayGoalInput: event.target.value });
+  handleChange(event, str) {
+    this.setState({ [str]: event.target.value });
   }
 
   handleKeyPress(e) {
@@ -189,6 +188,21 @@ export default class Dashboard extends React.Component {
     this.setState({ goalInput: '' });
   }
 
+  validate(dayGoal, goal) {
+    return {
+      dayGoal: dayGoal.length === 0,
+      goal: goal.length === 0,
+    };
+  }
+
+  handleBlur(field) {
+    if (field === 'dayGoal') {
+      this.setState({ dayGoalVisited: true });
+    } else {
+      this.setState({ goalVisited: true });
+    }
+  }
+
   render() {
     const { dayGoalInput } = this.state;
     if (dayGoalInput) {
@@ -198,6 +212,7 @@ export default class Dashboard extends React.Component {
     if (goalInput) {
       this.state.goalEnabled = goalInput.length > 0;
     }
+    const errors = this.validate(this.state.dayGoalInput, this.state.goalInput);
     return (
       <div>
         <h1> Welcome, {this.state.username} </h1>
@@ -209,7 +224,7 @@ export default class Dashboard extends React.Component {
         <br />
         <h3> Goal of the Day: </h3>
         <Row>
-          <Input s={10} value={this.state.dayGoalInput} onChange={this.handleDayGoalChange} onKeyPress={this.handleQuoteKeyPress} /> <Button disabled={!this.state.dayGoalEnabled} className="dayGoalButton" waves="light" onClick={this.handleDayGoalSubmission}>Save</Button>
+          <Input s={10} className={errors.dayGoal && this.state.dayGoalVisited ? 'error' : 'white'} data-length="255" placeholder="Add new goal of the day" value={this.state.dayGoalInput} onChange={e => this.handleChange(e, 'dayGoalInput')} onKeyPress={this.handleQuoteKeyPress} onBlur={() => this.handleBlur('dayGoal')} />
         </Row>
         <h3> Main Goals: </h3>
         {(this.state.goals.length === 0 || !this.state.profile.user_id) && <div>You have no goals set currently.</div>}
@@ -226,8 +241,7 @@ export default class Dashboard extends React.Component {
             )}
         </ul>}
         <Row>
-          <Input s={8} label="New Goal" value={this.state.goalInput} onChange={this.handleInputChange} onKeyPress={this.handleKeyPress} />
-          <Button disabled={!this.state.goalEnabled} className="goalButton" waves="light" onClick={this.postGoal}> Set Goal</Button>
+          <Input s={10} className={errors.goal && this.state.goalVisited ? 'error' : 'white'} data-length="255" label="Set new goal" value={this.state.goalInput} onChange={e => this.handleChange(e, 'goalInput')} onKeyPress={this.handleKeyPress} onBlur={() => this.handleBlur('goal')} />
           <Motivational />
         </Row>
         <br />

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, Button } from 'react-materialize';
+import { Input } from 'react-materialize';
 import Subgoal from './Subgoal';
 
 const Line = require('rc-progress').Line;
@@ -11,6 +11,7 @@ export default class Goal extends React.Component {
     this.state = {
       subgoals: [],
       subgoal: '',
+      subgoalVisited: false,
       subgoalEnabled: false,
       percent: 0,
       color: '#ff0000'
@@ -24,6 +25,8 @@ export default class Goal extends React.Component {
     this.checkStatus = this.checkStatus.bind(this);
     this.setColor = this.setColor.bind(this);
     this.setPercentage = this.setPercentage.bind(this);
+    // this.validate = this.validate.bind(this);
+    // this.handleBlur = this.handleBlur.bind(this);
   }
 
   componentWillMount() {
@@ -50,9 +53,9 @@ export default class Goal extends React.Component {
   }
 
   setPercentage(percentage) {
-    if (percentage >= 99) {
+    if (percentage >= 98) {
       this.setState({ percent: 100, color: '#00ff00' });
-    } else if (percentage <= 1) {
+    } else if (percentage <= 2) {
       this.setState({ percent: 0, color: '#ff0000' });
     } else {
       this.setState({ percent: percentage });
@@ -137,6 +140,16 @@ export default class Goal extends React.Component {
     }
   }
 
+  validate(subgoal) {
+    return {
+      subgoal: subgoal.length === 0,
+    };
+  }
+
+  // handleBlur() {
+  //   this.setState({ subgoalVisited: true });
+  // }
+
   render() {
     const containerStyle = {
       width: '98%',
@@ -145,6 +158,7 @@ export default class Goal extends React.Component {
     if (subgoal) {
       this.state.subgoalEnabled = subgoal.length > 0;
     }
+    const errors = this.validate(this.state.subgoal);
     return (
       <div className="collapsible-body">Progress: {this.state.percent}%
       <br />
@@ -158,8 +172,10 @@ export default class Goal extends React.Component {
         {this.state.subgoals.map(subgoals =>
           <Subgoal increase={this.increaseProgress} decrease={this.decreaseProgress} key={`sub ${subgoals.id}`} subgoal={subgoals} status={subgoals.status} id={subgoals.id} user_id={this.props.user_id} goal={subgoals.GoalId} updateSubgoals={this.getSubgoals} />
           )}
-        <Input s={8} label="New Subgoal" onChange={this.handleChange} value={this.state.subgoal} onKeyPress={this.handleKeyPress} />
-        <Button disabled={!this.state.subgoalEnabled} className="subgoalButton" waves="light" onClick={this.postSubgoal}>Set Subgoal</Button>
+        <div>
+          <Input s={12} className={errors.subgoal && this.state.subgoalVisited ? 'red' : 'white'} label="Set new subgoal" data-length="255" onChange={this.handleChange} value={this.state.subgoal} onKeyPress={this.handleKeyPress} onBlur={this.handleBlur} />
+        </div>
+        <br /><br /><br />
       </div>
     );
   }
