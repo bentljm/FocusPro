@@ -1,13 +1,43 @@
 var config = new Config();
 var sites = new Sites(config);
 
-//TODO: Show blacklist in options
+//Blacklist display
+function displayBlacklist() {
+  for(var i = 0; i < JSON.parse(localStorage.blackout).length; i++) {
+    var url = document.createTextNode(JSON.parse(localStorage.blackout)[i]);
+    var list = document.getElementById("blackout_display");
+    list.appendChild(url);
+    list.appendChild(document.createElement("br"));
+  }
+  for(var i = 0; i < JSON.parse(localStorage.block).length; i++) {
+    var url = document.createTextNode(JSON.parse(localStorage.block)[i][0]);
+    var time = document.createTextNode(` after exceeding ${JSON.parse(localStorage.block)[i][1]} minutes`);
+    var table = document.getElementById("block_display");
+    table.appendChild(url);
+    table.appendChild(time);
+    table.appendChild(document.createElement("br"));
+  }
+  for(var i = 0; i < JSON.parse(localStorage.warn).length; i++) {
+    var url = document.createTextNode(JSON.parse(localStorage.warn)[i][0]);
+    var time = document.createTextNode(` after exceeding ${JSON.parse(localStorage.warn)[i][1]} minutes`);
+    var table = document.getElementById("warn_display");
+    table.appendChild(url);
+    table.appendChild(time);
+    table.appendChild(document.createElement("br"));
+  }
+}
 
+//Display Auth0Id
+function displayAuth() {
+  if (localStorage.auth0_id) {
+    document.getElementById("auth0_id").placeholder = localStorage.auth0_id;
+  }
+}
 //Add Auth0id and get blacklist
 function addAuth0Id(){
   var auth0_input = document.getElementById("auth0_id");
   localStorage.auth0_id = auth0_input.value;
-  this.updateBlacklist();
+  updateBlacklist();
 }
 
 //Update blacklist
@@ -150,6 +180,8 @@ function download() {
 
 //Add event listeners
 document.addEventListener("DOMContentLoaded", function () {
+  displayAuth();
+  displayBlacklist();
   document.getElementById("add_ignored").addEventListener(
     "click", addIgnoredSite);
   document.getElementById("remove_ignored").addEventListener(
