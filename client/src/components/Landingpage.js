@@ -7,7 +7,6 @@ export default class Landingpage extends React.Component {
   render() {
     return (
       <div className="row">
-        <h1 className="center"> FocusPro </h1>
         <h3 className="center"> Welcome to FocusPro.</h3>
         <h5 className="center"> We help you limit distractions and stay on task. </h5>
         <br /> <br />
@@ -17,8 +16,8 @@ export default class Landingpage extends React.Component {
           </Col>
           <Col s={5}>
             <br /> <br /><br /> <br /> <br />
-            Set goals and subgoals and track your progress.
-            Blacklist sites to limit distractions by blocking or warning you when you have exceeded the time limit you have set.
+            FocusPro helps you set goals while tracking your progress in accomplishing them.
+            You can blacklist websites to limit distractions by either blocking them directly, or having FocusPro warn you when you have exceeded the time limit you have set.
           </Col>
         </Row>
         <br /> <br />
