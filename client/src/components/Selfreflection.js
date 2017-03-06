@@ -23,7 +23,6 @@ export default class Selfreflection extends React.Component {
 
   componentDidMount() {
     this.getReflections();
-    this.callCustomJQuery();
   }
 
   getReflections() {
@@ -56,13 +55,10 @@ export default class Selfreflection extends React.Component {
 
   handleAnswerChange(event) {
     this.setState({
-      answer: event.target.value
+      answer: event.target.value,
     });
   }
 
-  callCustomJQuery() {
-    $('.collapsible').collapsible();
-  }
 
   render() {
     return (

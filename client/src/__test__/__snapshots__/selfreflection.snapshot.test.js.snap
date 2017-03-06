@@ -1,0 +1,72 @@
+exports[`Selfreflection (Snapshot) Selfreflection renders 1`] = `
+<div>
+  <h1>
+     Self-Reflection 
+  </h1>
+  <BootstrapTable
+    data={
+      Array [
+        Object {
+          "answer": "Get a couch to hold myself accountable",
+          "date": "Yesterday at 4:13 PM",
+          "question": "What help can you get?",
+          "updatedAt": "2017-03-05T00:13:39.289Z",
+        },
+        Object {
+          "answer": "nothing",
+          "date": "Today at 3:19 PM",
+          "question": "Whats the worst thing that could happen?",
+          "updatedAt": "2017-03-05T23:19:16.943Z",
+        },
+      ]
+    }
+    hover={true}
+    options={
+      Object {
+        "defaultSortName": "date",
+        "defaultSortOrder": "asc",
+      }
+    }
+    pagination={true}
+    striped={true}>
+    <TableHeaderColumn
+      dataField="id"
+      hidden={true}
+      isKey={true}>
+      ID
+    </TableHeaderColumn>
+    <TableHeaderColumn
+      caretRender={[Function]}
+      dataField="question"
+      dataSort={true}
+      tdStyle={
+        Object {
+          "whiteSpace": "normal",
+        }
+      }>
+      Question 
+    </TableHeaderColumn>
+    <TableHeaderColumn
+      dataField="answer"
+      tdStyle={
+        Object {
+          "whiteSpace": "normal",
+        }
+      }>
+      Answer 
+    </TableHeaderColumn>
+    <TableHeaderColumn
+      caretRender={[Function]}
+      dataField="date"
+      dataSort={true}
+      tdStyle={
+        Object {
+          "whiteSpace": "normal",
+        }
+      }
+      width="100">
+      Date 
+    </TableHeaderColumn>
+  </BootstrapTable>
+</div>
+`;
