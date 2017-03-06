@@ -1,6 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router';
 import { Row, Input, Button, Table } from 'react-materialize';
-import { getExtensionDataAjax, getBlacklistAjax } from '../utils/SettingsUtil';
+import { getExtensionDataAjax, getBlacklistAjax, postReflectionAjax } from '../utils/SettingsUtil';
 import { questionSet1, questionSet2, questionSet3, questionSet4 } from '../utils/QuestionSets';
 
 export default class ReflectionQuestion extends React.Component {
@@ -19,6 +20,9 @@ export default class ReflectionQuestion extends React.Component {
     this.getExtensionData = this.getExtensionData.bind(this);
     this.displayOpenQuestions = this.displayOpenQuestions.bind(this);
     this.setAnswerColor = this.setAnswerColor.bind(this);
+    this.handleRelfectionSubmit = this.handleRelfectionSubmit.bind(this);
+    this.handleAnswerChange = this.handleAnswerChange.bind(this);
+    this.transformQAData = this.transformQAData.bind(this);
 
     this.TIME_SELECTION_MAP = {
       0: [0, 0],
@@ -139,6 +143,36 @@ export default class ReflectionQuestion extends React.Component {
     }
   }
 
+  handleRelfectionSubmit() {
+    const qaArray = this.transformQAData();
+    qaArray.forEach((qa) => {
+      postReflectionAjax(this.state.profile.user_id, qa, (data) => {
+        console.log('submit reflection', data);
+      });
+    });
+    window.location = '/#/selfreflection';
+  }
+
+  transformQAData() {
+    const data = [];
+    this.state.questionSet.questions.forEach((q, index) => {
+      const obj = {};
+      obj.question = q;
+      obj.answer = this.state.questionSet.answers[index];
+      data.push(obj);
+    });
+    return data;
+  }
+
+  handleAnswerChange(event, index) {
+    const qSetTemp = this.state.questionSet;
+    qSetTemp.answers = this.state.questionSet.answers || Array.from(Array(this.state.questionSet.questions.length));
+    qSetTemp.answers[index] = event.target.value;
+    this.setState({
+      questionSet: qSetTemp,
+    });
+  }
+
   render() {
     return (
       <div>
@@ -149,8 +183,7 @@ export default class ReflectionQuestion extends React.Component {
         <Button onClick={this.handleTimeSubmit}>Answer Awareness Questions</Button>
         <br />
         <br />
-        {console.log('questionSet', this.state.questionSet)}
-        <OpenQuestion qSet={this.state.questionSet} />
+        <OpenQuestions qSet={this.state.questionSet} callback={this.handleAnswerChange} submitCallback={this.handleRelfectionSubmit}/>
       </div>
     );
   }
@@ -185,7 +218,7 @@ const AwarenessQuestionTable = ({ exData, callback, theStyle }) => (
   </Table>
 );
 
-const OpenQuestion = ({ qSet }) => (
+const OpenQuestions = ({ qSet, callback, submitCallback }) => (
   <div>
     {qSet && <div>
       <Row>
@@ -196,9 +229,10 @@ const OpenQuestion = ({ qSet }) => (
       {qSet.questions.map((question, ind) => (
         <Row key={ind.toString()}>
           <div>{question}</div>
-          <Input s={12} />
+          <Input s={12} onChange={e => callback(e, ind.toString())} />
         </Row>
       ))}
+      <Button onClick={submitCallback}><Link to="/selfreflection">Save Reflection</Link></Button>
     </div>}
   </div>
 );

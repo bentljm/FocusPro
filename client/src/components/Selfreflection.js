@@ -1,5 +1,7 @@
 import React from 'react';
-import { Row, Input, Button } from 'react-materialize';
+import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import moment from 'moment';
+import { getReflectionsAjax } from '../utils/SettingsUtil';
 
 export default class Selfreflection extends React.Component {
   constructor(props) { // Hand downs the prop chain
@@ -11,86 +13,66 @@ export default class Selfreflection extends React.Component {
       question: '',
     };
     this.getReflections = this.getReflections.bind(this);
-    this.postReflections = this.postReflections.bind(this);
     this.handleCAnswerhange = this.handleAnswerChange.bind(this);
+
+    this.options = {
+      defaultSortName: 'date',  // default sort column
+      defaultSortOrder: 'asc',  // default sort order
+    };
   }
 
   componentDidMount() {
     this.getReflections();
-    this.callCustomJQuery();
   }
 
   getReflections() {
     const that = this;
-    $.ajax({
-      type: 'GET',
-      url: `/api/users/${this.state.profile.user_id}/reflections`,
-      success: (data) => {
-        console.log('USER ID: ', that.state.profile.user_id);
-        console.log('SUCCESS: OBTAINED REFLECTIONS: ', data);
-        that.setState({
-          reflections: data.data
-        });
-      },
-      error: (err) => {
-        console.log('ERROR: COULD NOT GET REFLECTIONS', err);
-      }
+    getReflectionsAjax(this.state.profile.user_id, (data) => {
+      const reflectionData = data.data.slice();
+      // transform data into format accepted by datatable
+      (data.data).forEach((refl, index) => {
+        reflectionData[index].date = moment(refl.updatedAt).calendar();
+      });
+      that.setState({
+        reflections: reflectionData,
+      });
     });
   }
 
-  callCustomJQuery() {
-    $('.collapsible').collapsible();
-  }
-
-  postReflections() {
-    $.ajax({
-      type: 'POST',
-      url: `/api/users/${this.state.profile.user_id}/reflections`,
-      contentType: 'application/json',
-      data: JSON.stringify({
-        answer: this.state.answer,
-        question: this.state.question,
-        auth0_id: this.state.profile.user_id
-      }),
-      success: (data) => {
-        console.log('SUCCESS: POSTED REFLECTIONS: ', data);
-      },
-      error: (err) => {
-        console.log('ERROR: COULD NOT POST REFLECTION', err);
-      }
-    });
+  getCaret(direction) {
+    if (direction === 'asc') {
+      return ( <i className="fa fa-caret-up" aria-hidden="true" /> );
+    }
+    if (direction === 'desc') {
+      return (
+        <i className="fa fa-caret-down" aria-hidden="true" />
+      );
+    }
+    return (
+      <i className="fa fa-sort" aria-hidden="true" />
+    );
   }
 
   handleAnswerChange(event) {
     this.setState({
-      answer: event.target.value
+      answer: event.target.value,
     });
   }
+
 
   render() {
     return (
       <div>
         <h1> Self-Reflection </h1>
-        {
-          this.state.reflections.map(reflection => (
-            <ul className="collapsible" data-collapsible="expandable">
-              <li>
-                <div className="collapsible-header">
-                  <span className="questionDate">{reflection.createdAt}</span>
-                  <span>{reflection.question}</span>
-                </div>
-                <div className="collapsible-body">
-                  <span>{reflection.answer}</span>
-                </div>
-              </li>
-            </ul>
-          ))
-        }
-        <Row>
-          <Input s={10} label="New Answer" onChange={this.handleAnswerChange} />
-          <Button className="submitAnswer" onClick={this.postReflections}>Self Reflection</Button>
-        </Row>
+
+        <BootstrapTable data={this.state.reflections} options={this.options} striped hover pagination>
+          <TableHeaderColumn hidden isKey dataField="id">ID</TableHeaderColumn>
+          <TableHeaderColumn dataSort dataField="question" tdStyle={{ whiteSpace: 'normal' }} caretRender={this.getCaret}>Question </TableHeaderColumn>
+          <TableHeaderColumn dataField="answer" tdStyle={{ whiteSpace: 'normal' }}>Answer </TableHeaderColumn>
+          <TableHeaderColumn dataSort dataField="date" tdStyle={{ whiteSpace: 'normal' }} caretRender={this.getCaret} width="100">Date </TableHeaderColumn>
+        </BootstrapTable>
       </div>
     );
   }
 }
+

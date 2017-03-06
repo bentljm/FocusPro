@@ -86,6 +86,10 @@ i.material-icons.right {
   color: red;
 }
 
+button>a {
+  color: white;
+}
+
 #container {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -135,4 +139,3 @@ blockquote p{
 .error {
   border-color: red !important;
 }
-
