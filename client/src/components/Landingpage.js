@@ -24,8 +24,9 @@ export default class Landingpage extends React.Component {
         <Row>
           <Col s={7}>
             <br /> <br /><br /> <br /> <br />
-            Alerts you when you are off task through window notifications using our Chrome extension.
-            Shows prompts to ask you to self-reflect on your progress for the day and how much you have worked towards your goal.
+            FocusPro alerts you when you are off task through window notifications using the Chrome extension.
+            It shows prompts to ask you to actively reflect on your progress for the day, forcing you to actively engage in the habit-forming process.
+
           </Col>
           <Col s={5}>
             <img className="placeholder" alt="Chrome extension notification" />
@@ -38,8 +39,8 @@ export default class Landingpage extends React.Component {
           </Col>
           <Col s={5}>
             <br /> <br /><br /> <br /> <br />
-            Intelligently keeps track of overall data patterns.
-            See how your habits change as you slowly wean yourself off unproductive sites.
+            FocusPro intelligently keeps track of your aggregate data patterns in real-time.
+            You can see for yourself how your habits change as you slowly wean yourself off unproductive sites.
           </Col>
         </Row>
         <br /> <br />
