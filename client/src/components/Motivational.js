@@ -22,7 +22,7 @@ export default class Motivational extends React.Component {
           <p>Have you ever had the feeling that a discipline or field was tailor-made for you personally?</p>
           <p>What completely consumes your attention once you start doing it?</p>
           <p>What makes your heart race with excitement?</p>
-          <p>Do you believe that some things are worth doing, even though others wouldn't agree?</p>
+          <p>Do you believe that some things are worth doing, even though others, perhaps, would not agree?</p>
         </ul>
         <br />
         <h5>On Subgoals: by taking small, measurable steps regularly, we will be on track to the end.
