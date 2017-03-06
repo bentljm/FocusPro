@@ -17,6 +17,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
 
 function sendAppStats() {
   var allSites = [];
+  console.log('parsed', JSON.parse(localStorage.sites));
   for(var prop in JSON.parse(localStorage.sites)) {
     allSites.push({url: prop, time: JSON.parse(localStorage.sites)[prop], freq: 0});
   }
@@ -55,6 +56,46 @@ chrome.tabs.onUpdated.addListener(function(tabId, changedInfo, tab) {
   }
 });
 
+//Check blacklist every 5 min. For testing purposes, currently set at 1 min
+chrome.alarms.create("checkBlacklist", {periodInMinutes: 1});
+chrome.alarms.onAlarm.addListener(function(alarm) {
+  var block = JSON.parse(localStorage.block);
+  var warn = JSON.parse(localStorage.warn);
+  var sites = JSON.parse(localStorage.sites);
+  if(alarm.name === "checkBlacklist" && (warn.length !== 0 || block.length !== 0)) {
+    //Block sites
+    //Pseudocode -
+    //For each site to track
+    //Check if limit exceeded, every 5 min
+    //store date of when you first exceeded limit
+    //Block the site
+    //Set alarm for 24 hours afterwards then reset limit counter
+    //Check if limit exceeded
+    block.map(function(site) {
+      for(var prop in sites) {
+        var re = new RegExp(site[0].replace(/www./, '')); //Get rid of www. and make it a new regexp
+        if (re.test(prop)) { //Test for a match
+          //If match found, check for time spent
+          if (sites[prop] > site[1]) {
+            //Time has been exceeded
+            //Do something
+          }
+        }
+      }
+    });
+
+
+
+//Track warn sites
+//Pseudocode -
+//For each site to track
+//Check if limit exceeded, every 5 min
+//store date of when you first exceeded limit
+//Send notification and set alarm for every 30 minute you exceed
+//Set alarm for 24 hours afterwards then reset limit counter
+//Check if limit exceeded
+  }
+});
 
 // Clear stats
 function clearStats() {
