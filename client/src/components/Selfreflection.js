@@ -33,8 +33,6 @@ export default class Selfreflection extends React.Component {
       // transform data into format accepted by datatable
       (data.data).forEach((refl, index) => {
         reflectionData[index].date = moment(refl.updatedAt).calendar();
-        console.log('UTC', refl.updatedAt);
-        console.log('date', reflectionData[index].date);
       });
       that.setState({
         reflections: reflectionData,
