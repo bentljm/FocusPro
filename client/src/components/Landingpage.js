@@ -7,7 +7,6 @@ export default class Landingpage extends React.Component {
   render() {
     return (
       <div className="row">
-        <h1 className="center"> FocusPro </h1>
         <h3 className="center"> Welcome to FocusPro.</h3>
         <h5 className="center"> We help you limit distractions and stay on task. </h5>
         <br /> <br />
@@ -17,16 +16,17 @@ export default class Landingpage extends React.Component {
           </Col>
           <Col s={5}>
             <br /> <br /><br /> <br /> <br />
-            Set goals and subgoals and track your progress.
-            Blacklist sites to limit distractions by blocking or warning you when you have exceeded the time limit you have set.
+            FocusPro helps you set goals while tracking your progress in accomplishing them.
+            You can blacklist websites to limit distractions by either blocking them directly, or having FocusPro warn you when you have exceeded the time limit you have set.
           </Col>
         </Row>
         <br /> <br />
         <Row>
           <Col s={7}>
             <br /> <br /><br /> <br /> <br />
-            Alerts you when you are off task through window notifications using our Chrome extension.
-            Shows prompts to ask you to self-reflect on your progress for the day and how much you have worked towards your goal.
+            FocusPro alerts you when you are off task through window notifications using the Chrome extension.
+            It shows prompts to ask you to actively reflect on your progress for the day, forcing you to actively engage in the habit-forming process.
+
           </Col>
           <Col s={5}>
             <img className="placeholder" alt="Chrome extension notification" />
@@ -39,8 +39,8 @@ export default class Landingpage extends React.Component {
           </Col>
           <Col s={5}>
             <br /> <br /><br /> <br /> <br />
-            Intelligently keeps track of overall data patterns.
-            See how your habits change as you slowly wean yourself off unproductive sites.
+            FocusPro intelligently keeps track of your aggregate data patterns in real-time.
+            You can see for yourself how your habits change as you slowly wean yourself off unproductive sites.
           </Col>
         </Row>
         <br /> <br />
