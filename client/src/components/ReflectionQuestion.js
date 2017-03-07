@@ -183,7 +183,7 @@ export default class ReflectionQuestion extends React.Component {
         <Button onClick={this.handleTimeSubmit}>Answer Awareness Questions</Button>
         <br />
         <br />
-        <OpenQuestions qSet={this.state.questionSet} callback={this.handleAnswerChange} submitCallback={this.handleRelfectionSubmit}/>
+        <OpenQuestions qSet={this.state.questionSet} callback={this.handleAnswerChange} submitCallback={this.handleRelfectionSubmit} />
       </div>
     );
   }
