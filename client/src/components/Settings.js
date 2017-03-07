@@ -21,6 +21,7 @@ export default class Settings extends React.Component {
       reminderAddress: '',
       labelStyle: {},
       inputStyle: {},
+      validationStyle: {},
     };
     this.handleReminderSubmission = this.handleReminderSubmission.bind(this);
     this.deleteBlacklist = this.deleteBlacklist.bind(this);
@@ -32,6 +33,7 @@ export default class Settings extends React.Component {
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handleSubmission = this.handleSubmission.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.setValidationStyle = this.setValidationStyle.bind(this);
     // this.validate = this.validate.bind(this);
   }
 
@@ -210,11 +212,21 @@ export default class Settings extends React.Component {
       site: () => {
         if (this.siteFormsFilled()) {
           this.postBlacklist(this.state.siteURL, this.state.siteType, this.state.siteLimit);
+        } else {
+          this.setValidationStyle('site', 'error');
         }
       },
     };
     delegator[str]();
     that.viewStyle(str);
+  }
+
+  setValidationStyle(str, className) {
+    this.setState({
+      validationStyle: Object.assign(this.state.validationStyle, {
+        [str]: className,
+      }),
+    });
   }
 
   handleKeyPress(e, str) {
@@ -326,13 +338,13 @@ export default class Settings extends React.Component {
         </Table>}
         <br />
         <Row>
-          <Input s={5} label="Input Site" value={this.state.siteURL} onChange={e => this.handleChange(e, 'siteURL')} onKeyPress={e => this.handleKeyPress(e, 'site')} />
+          <Input s={5} onFocus={() => this.setValidationStyle('site','')} className={this.state.validationStyle.site} label="Input Site" value={this.state.siteURL} onChange={e => this.handleChange(e, 'siteURL')} onKeyPress={e => this.handleKeyPress(e, 'site')} />
           <Input s={3} type="select" label="Select Type" defaultValue="1" value={this.state.siteType} onChange={e => this.handleChange(e, 'siteType')}>
             <option value="1">Blackout</option>
             <option value="2">Block after exceeding</option>
             <option value="3">Warn after exceeding</option>
           </Input>
-          <Input s={2} label="Set Time Limit (min)" value={this.state.siteLimit} onChange={e => this.handleChange(e, 'siteLimit')} onKeyPress={e => this.handleKeyPress(e, 'site')} />
+          <Input s={2} onFocus={() => this.setValidationStyle('site','')} className={this.state.validationStyle.site} label="Set Time Limit (min)" value={this.state.siteLimit} onChange={e => this.handleChange(e, 'siteLimit')} onKeyPress={e => this.handleKeyPress(e, 'site')} />
           <button className="waves-effect waves-teal btn-flat btn-large" onClick={() => this.handleSubmission('site')}><i className="material-icons small">add_box</i></button>
         </Row>
         <br />
