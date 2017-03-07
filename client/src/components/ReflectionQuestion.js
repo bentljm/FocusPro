@@ -148,9 +148,9 @@ export default class ReflectionQuestion extends React.Component {
     qaArray.forEach((qa) => {
       postReflectionAjax(this.state.profile.user_id, qa, (data) => {
         console.log('submit reflection', data);
+        window.location = '/#/selfreflection';
       });
     });
-    window.location = '/#/selfreflection';
   }
 
   transformQAData() {

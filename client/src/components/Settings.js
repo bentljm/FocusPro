@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Input, Row, Button, Icon } from 'react-materialize';
+import { Table, Input, Row, Button, Icon, Col } from 'react-materialize';
 import { extend } from 'underscore';
 
 export default class Settings extends React.Component {
@@ -98,22 +98,34 @@ export default class Settings extends React.Component {
   }
 
   updateSetting(pic, quote, refl_freq, remind, remind_type, remind_freq, remind_addr) {
-    console.log(remind_freq);
     $.ajax({
       type: 'PUT',
       url: `/api/users/${this.state.profile.user_id}/setting`,
       contentType: 'application/json',
       data: JSON.stringify({
-        picture: pic || this.state.setting.picture,
-        quote: quote || this.state.setting.quote,
+        picture: (pic !== null) ? pic : this.state.setting.picture,
+        quote: (quote !== null) ? quote : this.state.setting.quote,
         reflection_freq: refl_freq || this.state.setting.reflection_freq,
         reminder: remind || this.state.setting.reminder,
         reminder_type: remind_type || this.state.setting.reminder_type,
         reminder_freq: remind_freq || this.state.setting.reminder_freq,
         reminder_address: remind_addr || this.state.setting.reminder_address }),
-      success: (data) => { console.log('SUCCESS: POSTED SETTING: ', data); },
+      success: (data) => {
+        console.log('SUCCESS: POSTED SETTING: ', data);
+        this.getSetting();
+      },
       error: (err) => { console.log('ERROR: COULD NOT POST SETTING', err); },
     });
+    /*
+    JSON.stringify({
+            picture: pic || this.state.setting.picture,
+            quote: quote || this.state.setting.quote,
+            reflection_freq: refl_freq || this.state.setting.reflection_freq,
+            reminder: remind || this.state.setting.reminder,
+            reminder_type: remind_type || this.state.setting.reminder_type,
+            reminder_freq: remind_freq || this.state.setting.reminder_freq,
+            reminder_address: remind_addr || this.state.setting.reminder_address }
+    */
   }
 
 
@@ -305,7 +317,7 @@ export default class Settings extends React.Component {
                 <td>{site.url}</td>
                 <td>{site.blacklist_type}</td>
                 <td>{site.blacklist_time}</td>
-                <td><a href="#/settings" onClick={() => this.deleteBlacklist(site.id)}><Icon right>delete</Icon></a></td>
+                <td><a className="waves-effect waves-teal btn-flat btn-small" href="#/settings" onClick={() => this.deleteBlacklist(site.id)}><Icon right>delete</Icon></a></td>
               </tr>
             ))}
           </tbody>
@@ -324,20 +336,36 @@ export default class Settings extends React.Component {
         <h3> Personalization: </h3>
         <Row>
           <div className="label-header">Username:</div>
-          <div onDoubleClick={() => this.editStyle('username')} style={this.state.labelStyle.username}>{this.state.username}
-          </div>
-          <Input s={10} data-length="255" placeholder="Enter Username" value={this.state.username} onChange={e => this.handleChange(e, 'username')} onKeyPress={e => this.handleKeyPress(e, 'username')} onBlur={() => this.handleSubmission('username')} style={this.state.inputStyle.username} />
+          <Col s={10}>
+            <div onDoubleClick={() => this.editStyle('username')} style={this.state.labelStyle.username}>{this.state.username}
+            </div>
+          </Col>
+          <Col s={2}>
+           <button className="waves-effect waves-teal btn-flat btn-small" style={this.state.labelStyle.username} onClick={() => this.editStyle('username')}><i className="material-icons small">mode_edit</i></button>
+          </Col>
+
+          <Input s={10} data-length="255" placeholder="Enter Username (Mandatory)" value={this.state.username} onChange={e => this.handleChange(e, 'username')} onKeyPress={e => this.handleKeyPress(e, 'username')} onBlur={() => this.handleSubmission('username')} style={this.state.inputStyle.username} />
         </Row>
         <Row>
           <div className="label-header">Image:</div>
-          <div onDoubleClick={() => this.editStyle('image')} style={this.state.labelStyle.image}>{this.state.image}
-          </div>
+          <Col s={10}>
+            <div onDoubleClick={() => this.editStyle('image')} style={this.state.labelStyle.image}>{this.state.image}
+            </div>
+          </Col>
+          <Col s={2}>
+            <button className="waves-effect waves-teal btn-flat btn-small" style={this.state.labelStyle.image} onClick={() => this.editStyle('image')}><i className="material-icons small">mode_edit</i></button>
+          </Col>
           <Input s={10} data-length="255" placeholder="Enter Image URL" value={this.state.image} onChange={e => this.handleChange(e, 'image')} onBlur={() => this.handleSubmission('image')} onKeyPress={e => this.handleKeyPress(e, 'image')} style={this.state.inputStyle.image} />
         </Row>
         <Row>
           <div className="label-header">Quote:</div>
-          <div onDoubleClick={() => this.editStyle('quote')} style={this.state.labelStyle.quote}>{this.state.quote}
-          </div>
+          <Col s={10}>
+            <div onDoubleClick={() => this.editStyle('quote')} style={this.state.labelStyle.quote}>{this.state.quote}
+            </div>
+          </Col>
+          <Col s={2}>
+            <button className="waves-effect waves-teal btn-flat btn-small" style={this.state.labelStyle.quote} onClick={() => this.editStyle('quote')}><i className="material-icons small">mode_edit</i></button>
+          </Col>
           <Input s={10} data-length="255" placeholder="Enter Motivational Quote" value={this.state.quote} onChange={e => this.handleChange(e, 'quote')} onBlur={() => this.handleSubmission('quote')} onKeyPress={e => this.handleKeyPress(e, 'quote')} style={this.state.inputStyle.quote} />
         </Row>
         <br />

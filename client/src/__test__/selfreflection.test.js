@@ -41,8 +41,8 @@ describe ('Given the user has answered 2 self-reflection questions', () => {
   });
 
   it ('selfreflection page displays 2 pairs of reflection Q&A', () => {
-    //check if state is aldy set. no it is [].
-    // selfreflection.getReflections(); //use mount to get access to func
+    selfreflection.instance().getReflections(); // to get access to func
+    selfreflection.update(); //update render tree
     console.log(selfreflection.state(['reflections']));
   });
 

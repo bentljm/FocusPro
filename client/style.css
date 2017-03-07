@@ -90,6 +90,12 @@ button>a {
   color: white;
 }
 
+.btn-small {
+  height: 20px;
+  line-height: 20px;
+  padding: 0 0.5rem;
+}
+
 #container {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
