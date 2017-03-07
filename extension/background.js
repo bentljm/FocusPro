@@ -8,7 +8,7 @@
 // });
 
 //Send information to app every hour
-chrome.alarms.create("updateApp", {periodInMinutes: 2});
+chrome.alarms.create("updateApp", {periodInMinutes: 10});
 chrome.alarms.onAlarm.addListener(function(alarm) {
   if (alarm.name === "updateApp" && localStorage.auth0_id) {
     console.log('sending stats!');
@@ -70,18 +70,17 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
         //console.log('comparing blacklist site', site, 'to prop', prop);
         var re = new RegExp(site[0].replace(/www./, '')); //Get rid of www. and make it a new regexp
         if (re.test(prop)) { //Test for a match
-          console.log('match found');
+          console.log('match found', sites[prop], site[1]);
           //If match found, check for time spent
           if (sites[prop] > site[1]) {
             //Check if already blocking
-            if (JSON.parse(localStorage.blackout).indexOf(site) !== -1) {
-              console.log('time exceeded!');
+            if (JSON.parse(localStorage.blackout).indexOf(site[0]) === -1) {
               //Time has been exceeded
               //Create an alarm that will notify when 24 hr block has ended (1440 min)
               //For testing, use 1 min
-              chrome.alarms.create(`block${site[0]}`, {periodInMinutes: 2});
+              chrome.alarms.create(`block${site[0]}`, {delayInMinutes: 2});
               //Add the site to blackout
-              console.log('Alarm created, now blocking!');
+              console.log('Alarm created, now blocking!', site[0]);
               blackout.push(site[0]);
               localStorage.blackout = JSON.stringify(blackout);
             }
@@ -113,16 +112,16 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
 //Listener for when to unblock
 chrome.alarms.onAlarm.addListener(function(alarm) {
   if(alarm.name.includes("block")) {
-    console.log('Time to unblock!');
     var site = alarm.name.replace("block", ""); //Get site name
-    console.log('site was', site);
     var blackout = JSON.parse(localStorage.blackout);
+    console.log('Time to unblock', site);
     console.log('before filtering', blackout);
     blackout = blackout.filter((e) => {
       return !e.includes(site); //Filter out that site
     });
     localStorage.blackout = JSON.stringify(blackout);
     console.log('after filtering', blackout);
+    chrome.alarms.clear(`block${site}`);
     //Clear alarm after unblocking
   }
 });
