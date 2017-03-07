@@ -9,7 +9,6 @@ function sendNotification (req, res, next) {
 	var address = req.body.address;
 	db.Reflection.findAll({where: {auth0_id: auth0_id}}).then(function (reflections) {
 		//console.log("REFLECTIONS", reflections);
-		console.log("REFLECTIONS", reflections);
 		if(address.indexOf('@') !== -1) {
 			reflections.length === 0 ? sendEmail(name, address, freq) : sendEmail(name, address, freq, reflections);
 		} else {
