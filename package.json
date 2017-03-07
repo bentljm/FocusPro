@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "node server/server.js",
-    "test": "jest client/* && mocha server/test/*.js",
+    "test": "jest client/src/* && mocha server/test/*.js",
     "test:frontend": "jest client/*",
     "test:backend": "mocha server/test/*.js",
     "cover:frontend": "jest client/* --coverage",

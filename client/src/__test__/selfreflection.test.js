@@ -43,6 +43,7 @@ describe ('Given the user has answered 2 self-reflection questions', () => {
   it ('selfreflection page displays 2 pairs of reflection Q&A', () => {
     selfreflection.instance().getReflections(); // to get access to func
     selfreflection.update(); //update render tree
+    expect(selfreflection.state(['reflections'])).toHaveLength(2);
     console.log(selfreflection.state(['reflections']));
   });
 
