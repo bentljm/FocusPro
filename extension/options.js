@@ -1,29 +1,31 @@
 var config = new Config();
 var sites = new Sites(config);
-
 //Blacklist display
 function displayBlacklist() {
-  for(var i = 0; i < JSON.parse(localStorage.blackout).length; i++) {
-    var url = document.createTextNode(JSON.parse(localStorage.blackout)[i]);
-    var list = document.getElementById("blackout_display");
-    list.appendChild(url);
-    list.appendChild(document.createElement("br"));
-  }
-  for(var i = 0; i < JSON.parse(localStorage.block).length; i++) {
-    var url = document.createTextNode(JSON.parse(localStorage.block)[i][0]);
-    var time = document.createTextNode(` after exceeding ${JSON.parse(localStorage.block)[i][1]} minutes`);
-    var table = document.getElementById("block_display");
-    table.appendChild(url);
-    table.appendChild(time);
-    table.appendChild(document.createElement("br"));
-  }
-  for(var i = 0; i < JSON.parse(localStorage.warn).length; i++) {
-    var url = document.createTextNode(JSON.parse(localStorage.warn)[i][0]);
-    var time = document.createTextNode(` after exceeding ${JSON.parse(localStorage.warn)[i][1]} minutes`);
-    var table = document.getElementById("warn_display");
-    table.appendChild(url);
-    table.appendChild(time);
-    table.appendChild(document.createElement("br"));
+  console.log('ls is', JSON.parse(localStorage.blackout));
+  if (localStorage.blackout) {
+    for(var i = 0; i < JSON.parse(localStorage.blackout).length; i++) {
+      var url = document.createTextNode(JSON.parse(localStorage.blackout)[i]);
+      var list = document.getElementById("blackout_display");
+      list.appendChild(url);
+      list.appendChild(document.createElement("br"));
+    }
+    for(var i = 0; i < JSON.parse(localStorage.block).length; i++) {
+      var url = document.createTextNode(JSON.parse(localStorage.block)[i][0]);
+      var time = document.createTextNode(` after exceeding ${JSON.parse(localStorage.block)[i][1]} minutes`);
+      var table = document.getElementById("block_display");
+      table.appendChild(url);
+      table.appendChild(time);
+      table.appendChild(document.createElement("br"));
+    }
+    for(var i = 0; i < JSON.parse(localStorage.warn).length; i++) {
+      var url = document.createTextNode(JSON.parse(localStorage.warn)[i][0]);
+      var time = document.createTextNode(` after exceeding ${JSON.parse(localStorage.warn)[i][1]} minutes`);
+      var table = document.getElementById("warn_display");
+      table.appendChild(url);
+      table.appendChild(time);
+      table.appendChild(document.createElement("br"));
+    }
   }
 }
 
