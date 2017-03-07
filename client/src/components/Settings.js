@@ -294,11 +294,11 @@ export default class Settings extends React.Component {
 
   validate(str) {
     if (str === 'username' && this.state.username === '') {
-      this.setState({ username: 'Please enter a value, thanks!' });
+      this.setState({ username: 'Please enter a username, thanks!' });
     } else if (str === 'image' && this.state.image === '') {
-      this.setState({ image: 'Please enter a value, thanks!' });
+      this.setState({ image: 'Please enter an image url, thanks!' });
     } else if (str === 'quote' && this.state.quote === '') {
-      this.setState({ quote: 'Please enter a value, thanks!' });
+      this.setState({ quote: 'Please enter a quote, thanks!' });
     }
   }
 
