@@ -40,7 +40,7 @@ export default class Settings extends React.Component {
       2: 'Block after exceeding',
       3: 'Warn after exceeding',
     };
-    // this.validate = this.validate.bind(this);
+    this.validate = this.validate.bind(this);
   }
 
   componentDidMount() {
@@ -106,26 +106,6 @@ export default class Settings extends React.Component {
     });
   }
 
-  updateSetting(pic, quote, refl_freq, remind, remind_type, remind_freq, remind_addr) {
-    $.ajax({
-      type: 'PUT',
-      url: `/api/users/${this.state.profile.user_id}/setting`,
-      contentType: 'application/json',
-      data: JSON.stringify({
-        picture: (pic !== null) ? pic : this.state.setting.picture,
-        quote: (quote !== null) ? quote : this.state.setting.quote,
-        reflection_freq: refl_freq || this.state.setting.reflection_freq,
-        reminder: remind || this.state.setting.reminder,
-        reminder_type: remind_type || this.state.setting.reminder_type,
-        reminder_freq: remind_freq || this.state.setting.reminder_freq,
-        reminder_address: remind_addr || this.state.setting.reminder_address }),
-      success: (data) => {
-        console.log('SUCCESS: POSTED SETTING: ', data);
-        this.getSetting();
-      },
-      error: (err) => { console.log('ERROR: COULD NOT POST SETTING', err); },
-    });
-  }
 
   postBlacklist(siteURL, siteType, siteTime) {
     const that = this;
@@ -235,6 +215,28 @@ export default class Settings extends React.Component {
     });
   }
 
+
+  updateSetting(pic, quote, refl_freq, remind, remind_type, remind_freq, remind_addr) {
+    $.ajax({
+      type: 'PUT',
+      url: `/api/users/${this.state.profile.user_id}/setting`,
+      contentType: 'application/json',
+      data: JSON.stringify({
+        picture: (pic !== null) ? pic : this.state.setting.picture,
+        quote: (quote !== null) ? quote : this.state.setting.quote,
+        reflection_freq: refl_freq || this.state.setting.reflection_freq,
+        reminder: remind || this.state.setting.reminder,
+        reminder_type: remind_type || this.state.setting.reminder_type,
+        reminder_freq: remind_freq || this.state.setting.reminder_freq,
+        reminder_address: remind_addr || this.state.setting.reminder_address }),
+      success: (data) => {
+        console.log('SUCCESS: POSTED SETTING: ', data);
+        this.getSetting();
+      },
+      error: (err) => { console.log('ERROR: COULD NOT POST SETTING', err); },
+    });
+  }
+
   handleKeyPress(e, str) {
     // Enter key triggers blur, so don't need to call handleSubmission
     // unless there is no onBlur on the element
@@ -294,22 +296,22 @@ export default class Settings extends React.Component {
   }
 
   viewStyle(str) {
-    // this.validate(str);
+    this.validate(str);
     this.setState({
       labelStyle: extend(this.state.labelStyle, { [str]: { display: 'block' } }),
       inputStyle: extend(this.state.inputStyle, { [str]: { display: 'none' } }),
     });
   }
 
-  // validate(str) {
-  //   if (str === 'username' && this.state.username === '') {
-  //     this.setState({ username: 'Please enter a username, thanks!' });
-  //   } else if (str === 'image' && this.state.image === '') {
-  //     this.setState({ image: 'Please enter an image url, thanks!' });
-  //   } else if (str === 'quote' && this.state.quote === '') {
-  //     this.setState({ quote: 'Please enter a quote, thanks!' });
-  //   }
-  // }
+  validate(str) {
+    if (str === 'username' && this.state.username === '') {
+      this.setState({ username: 'Please enter a username, thanks!' });
+    } else if (str === 'image' && this.state.image === '') {
+      this.setState({ image: 'Please enter an image url, thanks!' });
+    } else if (str === 'quote' && this.state.quote === '') {
+      this.setState({ quote: 'Please enter a quote, thanks!' });
+    }
+  }
 
   render() {
     const { reminderType, reminderAddress, reminderFreq } = this.state;
