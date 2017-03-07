@@ -34,6 +34,12 @@ export default class Settings extends React.Component {
     this.handleSubmission = this.handleSubmission.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.setValidationStyle = this.setValidationStyle.bind(this);
+
+    this.SITETYPE_MAP = {
+      1: 'Blackout',
+      2: 'Block after exceeding',
+      3: 'Warn after exceeding',
+    };
     // this.validate = this.validate.bind(this);
   }
 
@@ -329,7 +335,7 @@ export default class Settings extends React.Component {
             {this.state.blacklist.map(site => (
               <tr key={`blacklist${site.id}`} >
                 <td>{site.url}</td>
-                <td>{site.blacklist_type}</td>
+                <td>{this.SITETYPE_MAP[site.blacklist_type]}</td>
                 <td>{site.blacklist_time}</td>
                 <td><a className="waves-effect waves-teal btn-flat btn-small" href="#/settings" onClick={() => this.deleteBlacklist(site.id)}><Icon right>delete</Icon></a></td>
               </tr>
