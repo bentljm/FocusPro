@@ -44,7 +44,7 @@ var Setting = db.define('Setting', {
 
 //Extension schema
 var Extension = db.define('Extension', {
-  url: {type: Sequelize.STRING, unique: true},
+  url: {type: Sequelize.STRING},
   time_spent: Sequelize.INTEGER,
   freq: Sequelize.INTEGER
 });
@@ -62,7 +62,7 @@ var Reflection = db.define('Reflection', {
 
 //Url schema
 var Url = db.define('Url', {
-  url: {type: Sequelize.STRING, unique: true},
+  url: {type: Sequelize.STRING},
   blacklist_type: Sequelize.STRING,
   blacklist_time: Sequelize.INTEGER
 });

@@ -12,7 +12,7 @@ export default class Settings extends React.Component {
       userId: '',
       blacklist: [],
       siteURL: '',
-      siteType: '',
+      siteType: '1',
       siteLimit: 0,
       image: '',
       quote: '',
@@ -21,6 +21,7 @@ export default class Settings extends React.Component {
       reminderAddress: '',
       labelStyle: {},
       inputStyle: {},
+      validationStyle: {},
     };
     this.handleReminderSubmission = this.handleReminderSubmission.bind(this);
     this.deleteBlacklist = this.deleteBlacklist.bind(this);
@@ -32,6 +33,13 @@ export default class Settings extends React.Component {
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handleSubmission = this.handleSubmission.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.setValidationStyle = this.setValidationStyle.bind(this);
+
+    this.SITETYPE_MAP = {
+      1: 'Blackout',
+      2: 'Block after exceeding',
+      3: 'Warn after exceeding',
+    };
     this.validate = this.validate.bind(this);
   }
 
@@ -98,36 +106,6 @@ export default class Settings extends React.Component {
     });
   }
 
-  updateSetting(pic, quote, refl_freq, remind, remind_type, remind_freq, remind_addr) {
-    $.ajax({
-      type: 'PUT',
-      url: `/api/users/${this.state.profile.user_id}/setting`,
-      contentType: 'application/json',
-      data: JSON.stringify({
-        picture: (pic !== null) ? pic : this.state.setting.picture,
-        quote: (quote !== null) ? quote : this.state.setting.quote,
-        reflection_freq: refl_freq || this.state.setting.reflection_freq,
-        reminder: remind || this.state.setting.reminder,
-        reminder_type: remind_type || this.state.setting.reminder_type,
-        reminder_freq: remind_freq || this.state.setting.reminder_freq,
-        reminder_address: remind_addr || this.state.setting.reminder_address }),
-      success: (data) => {
-        console.log('SUCCESS: POSTED SETTING: ', data);
-        this.getSetting();
-      },
-      error: (err) => { console.log('ERROR: COULD NOT POST SETTING', err); },
-    });
-    /*
-    JSON.stringify({
-            picture: pic || this.state.setting.picture,
-            quote: quote || this.state.setting.quote,
-            reflection_freq: refl_freq || this.state.setting.reflection_freq,
-            reminder: remind || this.state.setting.reminder,
-            reminder_type: remind_type || this.state.setting.reminder_type,
-            reminder_freq: remind_freq || this.state.setting.reminder_freq,
-            reminder_address: remind_addr || this.state.setting.reminder_address }
-    */
-  }
 
   postBlacklist(siteURL, siteType, siteTime) {
     const that = this;
@@ -218,11 +196,45 @@ export default class Settings extends React.Component {
         this.updateUsername(this.state.username.trim());
       },
       site: () => {
-        this.postBlacklist(this.state.siteURL, this.state.siteType, this.state.siteLimit);
+        if (this.siteFormsFilled()) {
+          this.postBlacklist(this.state.siteURL, this.state.siteType, this.state.siteLimit);
+        } else {
+          this.setValidationStyle('site', 'error');
+        }
       },
     };
     delegator[str]();
     that.viewStyle(str);
+  }
+
+  setValidationStyle(str, className) {
+    this.setState({
+      validationStyle: Object.assign(this.state.validationStyle, {
+        [str]: className,
+      }),
+    });
+  }
+
+
+  updateSetting(pic, quote, refl_freq, remind, remind_type, remind_freq, remind_addr) {
+    $.ajax({
+      type: 'PUT',
+      url: `/api/users/${this.state.profile.user_id}/setting`,
+      contentType: 'application/json',
+      data: JSON.stringify({
+        picture: (pic !== null) ? pic : this.state.setting.picture,
+        quote: (quote !== null) ? quote : this.state.setting.quote,
+        reflection_freq: refl_freq || this.state.setting.reflection_freq,
+        reminder: remind || this.state.setting.reminder,
+        reminder_type: remind_type || this.state.setting.reminder_type,
+        reminder_freq: remind_freq || this.state.setting.reminder_freq,
+        reminder_address: remind_addr || this.state.setting.reminder_address }),
+      success: (data) => {
+        console.log('SUCCESS: POSTED SETTING: ', data);
+        this.getSetting();
+      },
+      error: (err) => { console.log('ERROR: COULD NOT POST SETTING', err); },
+    });
   }
 
   handleKeyPress(e, str) {
@@ -231,9 +243,7 @@ export default class Settings extends React.Component {
     if (e.key === 'Enter') {
       this.viewStyle(str);
       if (str === 'site') {
-        if (this.siteFormsFilled()) {
-          this.handleSubmission('site');
-        }
+        this.handleSubmission('site');
       } else if (str === 'reminder') {
         if (this.reminderFormsFilled()) {
           this.handleReminderSubmission();
@@ -243,7 +253,8 @@ export default class Settings extends React.Component {
   }
 
   siteFormsFilled() {
-    return this.state.siteURL.length > 0 && this.state.siteLimit.length > 0 && this.state.siteType.length > 0;
+    console.log('true?', this.state.siteURL.length > 0 && this.state.siteLimit.length > 0);
+    return this.state.siteURL.length > 0 && this.state.siteLimit.length > 0;
   }
 
   reminderFormsFilled() {
@@ -326,7 +337,7 @@ export default class Settings extends React.Component {
             {this.state.blacklist.map(site => (
               <tr key={`blacklist${site.id}`} >
                 <td>{site.url}</td>
-                <td>{site.blacklist_type}</td>
+                <td>{this.SITETYPE_MAP[site.blacklist_type]}</td>
                 <td>{site.blacklist_time}</td>
                 <td><a className="waves-effect waves-teal btn-flat btn-small" href="#/settings" onClick={() => this.deleteBlacklist(site.id)}><Icon right>delete</Icon></a></td>
               </tr>
@@ -335,13 +346,14 @@ export default class Settings extends React.Component {
         </Table>}
         <br />
         <Row>
-          <Input s={5} label="Input Site" value={this.state.siteURL} onChange={e => this.handleChange(e, 'siteURL')} onKeyPress={e => this.handleKeyPress(e, 'site')} />
+          <Input s={5} onFocus={() => this.setValidationStyle('site','')} className={this.state.validationStyle.site} label="Input Site" value={this.state.siteURL} onChange={e => this.handleChange(e, 'siteURL')} onKeyPress={e => this.handleKeyPress(e, 'site')} />
           <Input s={3} type="select" label="Select Type" defaultValue="1" value={this.state.siteType} onChange={e => this.handleChange(e, 'siteType')}>
             <option value="1">Blackout</option>
             <option value="2">Block after exceeding</option>
             <option value="3">Warn after exceeding</option>
           </Input>
-          <Input s={2} label="Set Time Limit (min)" value={this.state.siteLimit} onChange={e => this.handleChange(e, 'siteLimit')} onKeyPress={e => this.handleKeyPress(e, 'site')} />
+          <Input s={2} onFocus={() => this.setValidationStyle('site','')} className={this.state.validationStyle.site} label="Set Time Limit (min)" value={this.state.siteLimit} onChange={e => this.handleChange(e, 'siteLimit')} onKeyPress={e => this.handleKeyPress(e, 'site')} />
+          <button className="waves-effect waves-teal btn-flat btn-large" onClick={() => this.handleSubmission('site')}><i className="material-icons small">add_box</i></button>
         </Row>
         <br />
         <h3> Personalization: </h3>
