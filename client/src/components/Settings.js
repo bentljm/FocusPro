@@ -117,16 +117,6 @@ export default class Settings extends React.Component {
       },
       error: (err) => { console.log('ERROR: COULD NOT POST SETTING', err); },
     });
-    /*
-    JSON.stringify({
-            picture: pic || this.state.setting.picture,
-            quote: quote || this.state.setting.quote,
-            reflection_freq: refl_freq || this.state.setting.reflection_freq,
-            reminder: remind || this.state.setting.reminder,
-            reminder_type: remind_type || this.state.setting.reminder_type,
-            reminder_freq: remind_freq || this.state.setting.reminder_freq,
-            reminder_address: remind_addr || this.state.setting.reminder_address }
-    */
   }
 
   postBlacklist(siteURL, siteType, siteTime) {
@@ -342,6 +332,7 @@ export default class Settings extends React.Component {
             <option value="3">Warn after exceeding</option>
           </Input>
           <Input s={2} label="Set Time Limit (min)" value={this.state.siteLimit} onChange={e => this.handleChange(e, 'siteLimit')} onKeyPress={e => this.handleKeyPress(e, 'site')} />
+          <button className="waves-effect waves-teal btn-flat btn-large" onClick={e => this.handleKeyPress(e, 'site')}><i className="material-icons small">add_box</i></button>
         </Row>
         <br />
         <h3> Personalization: </h3>
