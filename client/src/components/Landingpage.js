@@ -64,22 +64,22 @@ export default class Landingpage extends React.Component {
         <Row s={6}>
           <Col s={7}>
             <Card key={10} className="white" title="Jeff Bentler" actions={[<a href="https://github.com/bentljm">GitHub</a>]}>
-              <img src="../../assets/jeff_img.jpeg" className="circle" alt="Jeff" />
+              <img key={14} src="../../assets/jeff_img.jpeg" className="circle" alt="Jeff" />
             </Card>
           </Col>
           <Col s={7}>
             <Card key={11} className="white" title="Josephine Chen" actions={[<a href="https://github.com/Josephine-Chen">GitHub</a>]}>
-              <img src="../../assets/josephine_img.jpeg" className="circle" alt="Josephine" />
+              <img key={15} src="../../assets/josephine_img.jpeg" className="circle" alt="Josephine" />
             </Card>
           </Col>
           <Col s={7}>
             <Card key={12} className="white" title="Ian George" actions={[<a href="https://github.com/OppenheimerAndTheMartians">GitHub</a>]}>
-              <img src="../../assets/ian_img.jpeg" className="circle" alt="Ian" />
+              <img key={16} src="../../assets/ian_img.jpeg" className="circle" alt="Ian" />
             </Card>
           </Col>
           <Col s={7}>
             <Card key={13} className="white" title="Sherry Hsu" actions={[<a href="https://github.com/SherryH">GitHub</a>]}>
-              <img src="../../assets/sherry_img.jpeg" className="circle" alt="Sherry" />
+              <img key={17} src="../../assets/sherry_img.jpeg" className="circle" alt="Sherry" />
             </Card>
           </Col>
         </Row>
