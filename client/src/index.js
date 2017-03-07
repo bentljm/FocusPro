@@ -37,7 +37,6 @@ function logPageView() {
   }
 }
 
-
 render(
   <Router history={hashHistory} onUpdate={logPageView}>
     <Route path="/" component={App} auth={auth}>

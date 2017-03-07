@@ -32,6 +32,7 @@ export default class Settings extends React.Component {
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handleSubmission = this.handleSubmission.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.validate = this.validate.bind(this);
   }
 
   componentDidMount() {
@@ -127,7 +128,6 @@ export default class Settings extends React.Component {
             reminder_address: remind_addr || this.state.setting.reminder_address }
     */
   }
-
 
   postBlacklist(siteURL, siteType, siteTime) {
     const that = this;
@@ -285,10 +285,17 @@ export default class Settings extends React.Component {
   }
 
   viewStyle(str) {
+    this.validate(str);
     this.setState({
       labelStyle: extend(this.state.labelStyle, { [str]: { display: 'block' } }),
       inputStyle: extend(this.state.inputStyle, { [str]: { display: 'none' } }),
     });
+  }
+
+  validate(str) {
+    if ((str === 'username' && this.state.username === '') || (str === 'image' && this.state.image === '') || (str === 'quote' && this.state.quote === '')) {
+      this.setState({ [str]: 'Please enter a value, thanks!' });
+    }
   }
 
   render() {
@@ -341,9 +348,8 @@ export default class Settings extends React.Component {
             </div>
           </Col>
           <Col s={2}>
-           <button className="waves-effect waves-teal btn-flat btn-small" style={this.state.labelStyle.username} onClick={() => this.editStyle('username')}><i className="material-icons small">mode_edit</i></button>
+            <button className="waves-effect waves-teal btn-flat btn-small" style={this.state.labelStyle.username} onClick={() => this.editStyle('username')}><i className="material-icons small">mode_edit</i></button>
           </Col>
-
           <Input s={10} data-length="255" placeholder="Enter Username (Mandatory)" value={this.state.username} onChange={e => this.handleChange(e, 'username')} onKeyPress={e => this.handleKeyPress(e, 'username')} onBlur={() => this.handleSubmission('username')} style={this.state.inputStyle.username} />
         </Row>
         <Row>
