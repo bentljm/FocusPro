@@ -143,7 +143,7 @@ export default class Goal extends React.Component {
   validate(subgoal) {
     return {
       subgoal: subgoal.length === 0,
-    }
+    };
   }
 
   // handleBlur() {

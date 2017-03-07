@@ -191,7 +191,7 @@ export default class Dashboard extends React.Component {
     return {
       dayGoal: dayGoal.length === 0,
       goal: goal.length === 0,
-    }
+    };
   }
 
   handleBlur(field) {
