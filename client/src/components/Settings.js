@@ -12,7 +12,7 @@ export default class Settings extends React.Component {
       userId: '',
       blacklist: [],
       siteURL: '',
-      siteType: '',
+      siteType: '1',
       siteLimit: 0,
       image: '',
       quote: '',
@@ -32,7 +32,7 @@ export default class Settings extends React.Component {
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handleSubmission = this.handleSubmission.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.validate = this.validate.bind(this);
+    // this.validate = this.validate.bind(this);
   }
 
   componentDidMount() {
@@ -208,7 +208,9 @@ export default class Settings extends React.Component {
         this.updateUsername(this.state.username.trim());
       },
       site: () => {
-        this.postBlacklist(this.state.siteURL, this.state.siteType, this.state.siteLimit);
+        if (this.siteFormsFilled()) {
+          this.postBlacklist(this.state.siteURL, this.state.siteType, this.state.siteLimit);
+        }
       },
     };
     delegator[str]();
@@ -221,9 +223,7 @@ export default class Settings extends React.Component {
     if (e.key === 'Enter') {
       this.viewStyle(str);
       if (str === 'site') {
-        if (this.siteFormsFilled()) {
-          this.handleSubmission('site');
-        }
+        this.handleSubmission('site');
       } else if (str === 'reminder') {
         if (this.reminderFormsFilled()) {
           this.handleReminderSubmission();
@@ -233,7 +233,8 @@ export default class Settings extends React.Component {
   }
 
   siteFormsFilled() {
-    return this.state.siteURL.length > 0 && this.state.siteLimit.length > 0 && this.state.siteType.length > 0;
+    console.log('true?', this.state.siteURL.length > 0 && this.state.siteLimit.length > 0);
+    return this.state.siteURL.length > 0 && this.state.siteLimit.length > 0;
   }
 
   reminderFormsFilled() {
@@ -275,22 +276,22 @@ export default class Settings extends React.Component {
   }
 
   viewStyle(str) {
-    this.validate(str);
+    // this.validate(str);
     this.setState({
       labelStyle: extend(this.state.labelStyle, { [str]: { display: 'block' } }),
       inputStyle: extend(this.state.inputStyle, { [str]: { display: 'none' } }),
     });
   }
 
-  validate(str) {
-    if (str === 'username' && this.state.username === '') {
-      this.setState({ username: 'Please enter a username, thanks!' });
-    } else if (str === 'image' && this.state.image === '') {
-      this.setState({ image: 'Please enter an image url, thanks!' });
-    } else if (str === 'quote' && this.state.quote === '') {
-      this.setState({ quote: 'Please enter a quote, thanks!' });
-    }
-  }
+  // validate(str) {
+  //   if (str === 'username' && this.state.username === '') {
+  //     this.setState({ username: 'Please enter a username, thanks!' });
+  //   } else if (str === 'image' && this.state.image === '') {
+  //     this.setState({ image: 'Please enter an image url, thanks!' });
+  //   } else if (str === 'quote' && this.state.quote === '') {
+  //     this.setState({ quote: 'Please enter a quote, thanks!' });
+  //   }
+  // }
 
   render() {
     const { reminderType, reminderAddress, reminderFreq } = this.state;
@@ -332,7 +333,7 @@ export default class Settings extends React.Component {
             <option value="3">Warn after exceeding</option>
           </Input>
           <Input s={2} label="Set Time Limit (min)" value={this.state.siteLimit} onChange={e => this.handleChange(e, 'siteLimit')} onKeyPress={e => this.handleKeyPress(e, 'site')} />
-          <button className="waves-effect waves-teal btn-flat btn-large" onClick={e => this.handleKeyPress(e, 'site')}><i className="material-icons small">add_box</i></button>
+          <button className="waves-effect waves-teal btn-flat btn-large" onClick={() => this.handleSubmission('site')}><i className="material-icons small">add_box</i></button>
         </Row>
         <br />
         <h3> Personalization: </h3>
