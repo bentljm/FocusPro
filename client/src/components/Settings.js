@@ -32,6 +32,7 @@ export default class Settings extends React.Component {
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handleSubmission = this.handleSubmission.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.validate = this.validate.bind(this);
   }
 
   componentDidMount() {
@@ -284,10 +285,17 @@ export default class Settings extends React.Component {
   }
 
   viewStyle(str) {
+    this.validate(str);
     this.setState({
       labelStyle: extend(this.state.labelStyle, { [str]: { display: 'block' } }),
       inputStyle: extend(this.state.inputStyle, { [str]: { display: 'none' } }),
     });
+  }
+
+  validate(str) {
+    if ((str === 'username' && this.state.username === '') || (str === 'image' && this.state.image === '') || (str === 'quote' && this.state.quote === '')) {
+      this.setState({ [str]: 'Please enter a value, thanks!' });
+    }
   }
 
   render() {
