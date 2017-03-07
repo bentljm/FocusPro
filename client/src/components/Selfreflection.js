@@ -14,10 +14,11 @@ export default class Selfreflection extends React.Component {
     };
     this.getReflections = this.getReflections.bind(this);
     this.handleCAnswerhange = this.handleAnswerChange.bind(this);
+    this.sortByUTC = this.sortByUTC.bind(this);
 
     this.options = {
-      defaultSortName: 'date',  // default sort column
-      defaultSortOrder: 'asc',  // default sort order
+      defaultSortName: 'id',  // default sort column
+      defaultSortOrder: 'desc',  // default sort order
     };
   }
 
@@ -53,6 +54,14 @@ export default class Selfreflection extends React.Component {
     );
   }
 
+  sortByUTC(a, b, order) {
+    if (order === 'asc') {
+      return a.updatedAt - b.updatedAt;
+    } else {
+      return b.updatedAt - a.updatedAt;
+    }
+  }
+
   handleAnswerChange(event) {
     this.setState({
       answer: event.target.value,
@@ -66,7 +75,7 @@ export default class Selfreflection extends React.Component {
         <h1> Self-Reflection </h1>
 
         <BootstrapTable data={this.state.reflections} options={this.options} striped hover pagination>
-          <TableHeaderColumn hidden isKey dataField="id">ID</TableHeaderColumn>
+          <TableHeaderColumn hidden datasort isKey dataField="id">ID</TableHeaderColumn>
           <TableHeaderColumn dataSort dataField="question" tdStyle={{ whiteSpace: 'normal' }} caretRender={this.getCaret}>Question </TableHeaderColumn>
           <TableHeaderColumn dataField="answer" tdStyle={{ whiteSpace: 'normal' }}>Answer </TableHeaderColumn>
           <TableHeaderColumn dataSort dataField="date" tdStyle={{ whiteSpace: 'normal' }} caretRender={this.getCaret} width="100">Date </TableHeaderColumn>

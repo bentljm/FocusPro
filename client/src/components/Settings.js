@@ -40,7 +40,6 @@ export default class Settings extends React.Component {
       2: 'Block after exceeding',
       3: 'Warn after exceeding',
     };
-    this.validate = this.validate.bind(this);
   }
 
   componentDidMount() {
@@ -296,22 +295,12 @@ export default class Settings extends React.Component {
   }
 
   viewStyle(str) {
-    this.validate(str);
     this.setState({
       labelStyle: extend(this.state.labelStyle, { [str]: { display: 'block' } }),
       inputStyle: extend(this.state.inputStyle, { [str]: { display: 'none' } }),
     });
   }
 
-  validate(str) {
-    if (str === 'username' && this.state.username === '') {
-      this.setState({ username: 'Please enter a username, thanks!' });
-    } else if (str === 'image' && this.state.image === '') {
-      this.setState({ image: 'Please enter an image url, thanks!' });
-    } else if (str === 'quote' && this.state.quote === '') {
-      this.setState({ quote: 'Please enter a quote, thanks!' });
-    }
-  }
 
   render() {
     const { reminderType, reminderAddress, reminderFreq } = this.state;
