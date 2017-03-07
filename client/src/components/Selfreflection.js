@@ -41,7 +41,7 @@ export default class Selfreflection extends React.Component {
 
   getCaret(direction) {
     if (direction === 'asc') {
-      return ( <i className="fa fa-caret-up" aria-hidden="true" /> );
+      return (<i className="fa fa-caret-up" aria-hidden="true" />);
     }
     if (direction === 'desc') {
       return (
