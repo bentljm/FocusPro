@@ -2,9 +2,13 @@
 //Clear data every 24 hours at midnight
 //Add new field to database with the updated [date, time] IFF site is blacklisted
 
+//TODO: Only send notification when tab URL matches the notification url
+//Force refresh when starting to block
+//Force refresh when options is updated
 
 //Send information to app every half hour
-chrome.alarms.create("updateApp", {periodInMinutes: 30});
+//TEMP set to 2 for testing
+chrome.alarms.create("updateApp", {periodInMinutes: 1});
 chrome.alarms.onAlarm.addListener(function(alarm) {
   if (alarm.name === "updateApp" && localStorage.auth0_id) {
     console.log('sending stats!');
@@ -12,10 +16,35 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
   }
 });
 
+//NOTE: Updating blacklist in options will erase history?
 function sendAppStats() {
   var allSites = [];
+  var blacklist = JSON.parse(localStorage.blacklist);
   for(var prop in JSON.parse(localStorage.sites)) {
-    allSites.push({url: prop, time: JSON.parse(localStorage.sites)[prop], history: [Date.now(), JSON.parse(localStorage.sites)[prop]]});
+    //Store history for prop in array
+    var history = [];
+    //Check if site matches a blacklisted site
+    for (var i = 0; i < blacklist.length; i++) {
+      //console.log('blacklist site', blacklist[i]);
+      var re = new RegExp(blacklist[i]['url'].replace(/www./, ''));
+      if (re.test(prop)) {
+        console.log('blacklist site found!', prop);
+        //If it matches, check if there's already history information stored
+        if (blacklist[i]['history']) {
+          console.log('adding to history', blacklist[i]['history']);
+          //Push [Date, time spent] to blacklist history and to history to be sent
+          blacklist[i]['history'].push([Date.now(), JSON.parse(localStorage.sites)[prop]]);
+          history = blacklist[i]['history'];
+        } else {
+          console.log('starting history');
+          //If it matches and no existing history, create empty array
+          blacklist[i]['history'] = [];
+        }
+        //Update blacklist
+        localStorage.blacklist = JSON.stringify(blacklist);
+      }
+    }
+    allSites.push({url: prop, time: JSON.parse(localStorage.sites)[prop], history: history});
   }
   console.log(allSites);
   $.ajax({
@@ -49,7 +78,8 @@ chrome.tabs.onUpdated.addListener(function(tabId, changedInfo, tab) {
   }
 });
 
-//Check blacklist every 5 min. For testing purposes, currently set at 1 min
+//Check blacklist every 5 min.
+//TEMP For testing purposes, currently set at 1 min
 chrome.alarms.create("checkBlacklist", {periodInMinutes: 1});
 chrome.alarms.onAlarm.addListener(function(alarm) {
   var block = JSON.parse(localStorage.block);
@@ -62,14 +92,13 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
         //console.log('comparing blacklist site', site, 'to prop', prop);
         var re = new RegExp(site[0].replace(/www./, '')); //Get rid of www. and make it a new regexp
         if (re.test(prop)) { //Test for a match
-          console.log('match found', sites[prop], site[1]);
           //If match found, check for time spent
           if ((sites[prop]/60) > site[1]) {
             //Check if already blocking
             if (JSON.parse(localStorage.blackout).indexOf(site[0]) === -1) {
               //Time has been exceeded
               //Create an alarm that will notify when 24 hr block has ended (1440 min)
-              //For testing, use 10 min
+              //TEMP For testing, use 10 min
               chrome.alarms.create(`block${site[0]}`, {delayInMinutes: 10});
               //Add the site to blackout
               console.log('Alarm created, now blocking!', site[0]);
@@ -80,7 +109,6 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
         }
       }
     });
-    console.log('start warn is', warn);
     warn.map(function(site) {
       for(var prop in sites) {
         var re = new RegExp(site[0].replace(/www./, ''));
@@ -90,26 +118,22 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
           //Check if warned before
             console.log(site);
             if (site.length === 3) {
-              console.log('site length 3');
               //Check if need to warn now (Check every 10 minutes)
-              //For testing, use 2 min
+              //TEMP For testing, use 1 min
               var diff = (sites[prop]/60) - site[2];
               console.log('diff is', diff);
               if (diff > 1) {
                 //Send notification
                 chrome.alarms.create("notificationWarning", {when: 0});
-                console.log('TIME LIMIT EXCEEDED. THIS IS A NOTIFICATION');
+                console.log('TIME LIMIT EXCEEDED. THIS IS A NOTIFICATION', site);
                 //Update last notified time site[2]
                 site[2] = (sites[prop]/60);
               }
             } else {
               site.push(sites[prop]/60);
-              console.log('division', sites[prop]);
-              console.log('updated', site);
               //Send notification
               chrome.alarms.create("notificationWarning", {when: 0});
-              console.log('FIRST TIME. TIME LIMIT EXCEEDED. THIS IS A NOTIFICATION');
-              console.log('warns', warn);
+              console.log('FIRST TIME. TIME LIMIT EXCEEDED. THIS IS A NOTIFICATION', site);
             }
           }
         }
