@@ -79,7 +79,7 @@ describe('GET POST PUT DELETE requests FOR SETTINGS and BLACKLISTS', () => {
 
   describe('POST NEW SETTINGS and blacklist URL', () =>{
     it('/api/users/:auth0_id/setting creates settings', (done) =>{
-      const dummySetting = {UserId: UserId, picture: 'Dumb3', quote: 'Laconic3', reflection_freq: 30, reminder: false, reminder_type: 'Regula3r', reminder_freq: 30, reminder_address: 'Apple Street3'};
+      const dummySetting = {UserId: UserId1, picture: 'Dumb3', quote: 'Laconic3', reflection_freq: 30, reminder: false, reminder_type: 'Regula3r', reminder_freq: 30, reminder_address: 'Apple Street3'};
       request(app)
       .post('/api/users/auth_id3/setting')
       .send(dummySetting)
@@ -219,79 +219,56 @@ describe('GET POST PUT DELETE requests FOR SETTINGS and BLACKLISTS', () => {
 });
 
 //Chrome Extension
-describe('GET request for Chrome extension', ()=>{
-  beforeEach(()=>{
+describe('POST and GET request for Chrome extension', ()=>{
+  beforeEach((done)=>{
     //set up a dummy user
-
+    var user5 = {username: 'dummy5', email: 'example@gmail.com', auth0_id: 'auth_id5', daily_goal: 'sleep earlier than yesterday'};
     //get dummy user's id
+    global.authId5 = user5.auth0_id;
 
-    //insert Chrome extension data to that dummy user {url, time_spent, freq, UserId}
+    global.extensionData = {
+      url: 'facebook.com',
+      time_spent: 39,
+      history: [['2017-03-01',128],['2017-03-07',39]]
+    };
+
+    //insert Chrome extension data to that dummy user {url, time_spent, history, UserId}
+    db.User.create(user5).then(function(user) {
+      return extensionData.UserId = user.id; //change to auth0ID
+    }).then(() => {
+      return db.Extension.upsert(extensionData);
+    }).then((ext) =>{
+      done();
+    }).catch((err)=>{
+      console.error('ERROR CREATING EXTENSION', err);
+    });
 
   });
-  afterEach(()=>{
+  afterEach((done)=>{
     //destroy the dummy user and chrome extension
-  });
-  it('/api/users/:auth0_id/extension_data get data from chrome extension');
-});
-
-/*
-    describe('POST NEW BLACKLISTS', () =>{
-    it('/api/users/:auth0_id/setting/blacklist creates settings',(done) =>{
-      console.log('POST in BLACKLISTS', SettingId);
-      const dummyBlackList = {SettingId: SettingId, url: 'www.gmail@com', blacklist_type: 'Infrequent', blacklist_time: 10}
-      request(app)
-      .post('/api/users/auth_id3/setting/blacklist')
-      .send(dummyBlacklist)
-      .end((err,res) =>{
-        if(err) {
-          console.error('POSTING TO BLACKLIST ERROR: \n',err);
-        }
-        console.log(res.body.data);
-        expect(res.statusCode).to.equal(201);
-        expect(res.body.data.url).to.equal(dummySetting.url);
-        expect(res.body.data.blacklist_time).to.equal(dummySetting.blacklist_time);
-        expect(res.body.data.blacklist_type).to.equal(dummySetting.blacklist_type);
-        done();
-      });
+    db.Extension.destroy({where:{}})
+    .then(()=>{
+      db.User.destroy({where:{}})
+    })
+    .then(()=>{
+      done();
     });
   });
-
+  it('GET /api/users/:auth0_id/extension_data get data from chrome extension', (done)=>{
+    request(app)
+    .get(`/api/users/${authId5}/extension_data`)
+    .end((err, res)=>{
+      if (err) {console.error('ERROR GETTING EXTENSION', err);}
+      expect(res.body.data[0].history[0][0]).to.equal(extensionData.history[0][0]);
+      expect(res.body.data[0].history[0][1]).to.equal(extensionData.history[0][1].toString());
+      expect(res.body.data[0].history[1][0]).to.equal(extensionData.history[1][0]);
+      expect(res.body.data[0].history[1][1]).to.equal(extensionData.history[1][1].toString());
+      done();
+    });
+  });
+  //not sure how to mock upsert
+  it('POST /api/users/:auth0_id/extension_data upsert extension data');
 });
 
 
-  describe('GET all blacklists', () =>{
-    it('/api/users/:auth0_id/setting fetches all goals given user has goals',(done) =>{
-      const dummyBlackList = {UserId: UserId, url: 'www.gmail@com', blacklist_type: 'Infrequent', blacklist_time: 10}
-        db.Url.create(blacklist).then(function(url){
-      });
-      request(app)
-      .get('/api/users/auth_id3/setting/blacklist'
-      .end((err,res) =>{
-        if(err) {
-          console.error('GETTING SETTINGS ERROR: \n',err);
-        }
-        expect(res.statusCode).to.equal(200);
-        console.log(res.body.data);
-        done();
-      });
-    });
-  });
-
-  describe('GET all extended data', () =>{
-    it('/api/users/:auth0_id/extension_data fetches all goals given user has goals',(done) =>{
-
-      request(app)
-      .get('/api/users/auth_id3/goals')
-      .end((err,res) =>{
-        if(err) {
-          console.error('GET /api/users \n',err);
-        }
-        expect(res.statusCode).to.equal(200);
-        expect(res.body.data.some((goal) =>goal.goal==='Mow Lawn')).to.be.true;
-        done();
-      });
-    });
-  });
-
-  */
 
