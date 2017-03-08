@@ -73,7 +73,7 @@ var Friendship = db.define('Friendship', {
 });
 
 //Instantiate relations
-User.hasMany(Goal);
+User.hasMany(Goal, {foreignKey: 'auth0_id'});
 User.hasOne(Setting);
 User.hasMany(Extension);
 User.hasMany(Url, {foreignKey: 'auth0_id', sourceKey: 'auth0_id', constraints: false});

@@ -52,6 +52,7 @@
     "recharts": "^0.20.8",
     "sequelize": "^3.30.2",
     "twilio": "^2.11.1",
+    "uglifyjs": "^2.4.10",
     "underscore": "^1.8.3",
     "webpack": "^2.2.1"
   },
