@@ -60,7 +60,7 @@ export default class Settings extends React.Component {
       success: (data) => {
         console.log('SUCCESS: GOT USERID', data.data[0].id);
         that.setState({ userId: data.data[0].id });
-        that.setState({ username: data.data[0].username || this.state.profile.nickname }, ()=>{
+        that.setState({ username: data.data[0].username || this.state.profile.nickname }, () => {
           that.initialiseSettings();
         });
       },
@@ -107,25 +107,11 @@ export default class Settings extends React.Component {
     });
   }
 
-
-  postBlacklist(siteURL, siteType, siteTime) {
-    const that = this;
-    $.ajax({
-      type: 'POST',
-      url: `/api/users/${this.state.profile.user_id}/blacklist`,
-      contentType: 'application/json',
-      data: JSON.stringify({ url: siteURL, blacklist_type: siteType, blacklist_time: siteTime, SettingId: that.state.setting.id }),
-      success: (data) => {
-        console.log('SUCCESS: POSTED BLACKLIST: ', data);
-        that.getBlacklist();
-        that.alertUser('Blacklist site');
-        that.setState({
-          siteURL: '',
-          siteType: '',
-          siteLimit: 0,
-        });
-      },
-      error: (err) => { console.log('ERROR: COULD NOT GET USERID', err); },
+  setValidationStyle(str, className) {
+    this.setState({
+      validationStyle: Object.assign(this.state.validationStyle, {
+        [str]: className,
+      }),
     });
   }
 
@@ -208,14 +194,27 @@ export default class Settings extends React.Component {
     that.viewStyle(str);
   }
 
-  setValidationStyle(str, className) {
-    this.setState({
-      validationStyle: Object.assign(this.state.validationStyle, {
-        [str]: className,
-      }),
+
+  postBlacklist(siteURL, siteType, siteTime) {
+    const that = this;
+    $.ajax({
+      type: 'POST',
+      url: `/api/users/${this.state.profile.user_id}/blacklist`,
+      contentType: 'application/json',
+      data: JSON.stringify({ url: siteURL, blacklist_type: siteType, blacklist_time: siteTime, SettingId: that.state.setting.id }),
+      success: (data) => {
+        console.log('SUCCESS: POSTED BLACKLIST: ', data);
+        that.getBlacklist();
+        that.alertUser('Blacklist site');
+        that.setState({
+          siteURL: '',
+          siteType: '1',
+          siteLimit: 0,
+        });
+      },
+      error: (err) => { console.log('ERROR: COULD NOT GET USERID', err); },
     });
   }
-
 
   updateSetting(pic, quote, refl_freq, remind, remind_type, remind_freq, remind_addr) {
     $.ajax({
@@ -255,7 +254,11 @@ export default class Settings extends React.Component {
 
   siteFormsFilled() {
     console.log('true?', this.state.siteURL.length > 0 && this.state.siteLimit.length > 0);
-    return this.state.siteURL.length > 0 && this.state.siteLimit.length > 0;
+    if (this.state.siteType !== '1') {
+      return this.state.siteURL.length > 0 && this.state.siteLimit.length > 0;
+    }
+    // if type is blackout, just assert URL is filled out
+    return this.state.siteURL.length > 0;
   }
 
   reminderFormsFilled() {
@@ -310,6 +313,8 @@ export default class Settings extends React.Component {
     if (reminderType && reminderAddress && reminderFreq) {
       reminderSubmitEnabled = reminderType.length > 0 && reminderAddress.length > 0 && reminderFreq.length > 0;
     }
+    console.log('state siteType?', this.state.siteType, (this.state.siteType === '1'));
+    const URLtimeLimiteDisabled = (this.state.siteType === '1');
 
     return (
       <div>
@@ -329,7 +334,7 @@ export default class Settings extends React.Component {
               <tr key={`blacklist${site.id}`} >
                 <td>{site.url}</td>
                 <td>{this.SITETYPE_MAP[site.blacklist_type]}</td>
-                <td>{site.blacklist_time}</td>
+                <td>{(site.blacklist_time) ? site.blacklist_time : '-'}</td>
                 <td><a className="waves-effect waves-teal btn-flat btn-small" href="#/settings" onClick={() => this.deleteBlacklist(site.id)}><Icon right>delete</Icon></a></td>
               </tr>
             ))}
@@ -343,7 +348,7 @@ export default class Settings extends React.Component {
             <option value="2">Block after exceeding</option>
             <option value="3">Warn after exceeding</option>
           </Input>
-          <Input s={2} onFocus={() => this.setValidationStyle('site', '')} className={this.state.validationStyle.site} label="Set Time Limit (min)" value={this.state.siteLimit} onChange={e => this.handleChange(e, 'siteLimit')} onKeyPress={e => this.handleKeyPress(e, 'site')} />
+          <Input s={2} disabled={URLtimeLimiteDisabled} onFocus={() => this.setValidationStyle('site', '')} className={this.state.validationStyle.site} label="Set Time Limit (min)" value={this.state.siteLimit} onChange={e => this.handleChange(e, 'siteLimit')} onKeyPress={e => this.handleKeyPress(e, 'site')} />
           <button className="waves-effect waves-teal btn-flat btn-large" onClick={() => this.handleSubmission('site')}><i className="material-icons small">add_box</i></button>
         </Row>
         <br />
