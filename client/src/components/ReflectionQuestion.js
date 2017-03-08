@@ -176,7 +176,6 @@ export default class ReflectionQuestion extends React.Component {
   render() {
     return (
       <div>
-        {console.log('load blacklist func?', getBlacklistAjax)}
         <h1>Awareness Questions </h1>
         <h5>How much time have you been spending on the blacklist sites?</h5>
         <AwarenessQuestionTable exData={this.state.extensionData} callback={this.handleTimeChange} theStyle={this.state.displayStatus} />
