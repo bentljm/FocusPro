@@ -49,7 +49,23 @@ function updateBlacklist(){
     url: `http://localhost:7777/api/users/${localStorage.auth0_id}/blacklist`,
     success: function(data) {
       console.log('SUCCESS: OBTAINED BLACKLIST: ', data.data);
-      localStorage.blacklist = JSON.stringify(data.data);
+      //Create list of blacklist urls
+      var newList = [];
+      data.data.forEach(function(e) {newList.push(e.url);});
+      var blacklist = localStorage.blacklist ? JSON.parse(localStorage.blacklist) : [];
+      var oldSites = [];
+      blacklist.forEach(function(e) {oldSites.push(e.url);});
+      //Filter out any blacklist sites that were removed
+      blacklist = blacklist.filter(function(e) {
+        return (newList.indexOf(e.url) !== -1);
+      });
+      //Add new sites to blacklist
+      data.data.forEach(function(e) {
+        if (oldSites.indexOf(e.url) === -1) {
+          blacklist.push(e);
+        }
+      });
+      //localStorage.blacklist = JSON.stringify(data.data);
       // Store all sites to blackout inside localStorage.blackout
       // Store all sites to block after certain time inside localStorage.block
       // Store all sites to warn after certain time inside localStorage.warn
@@ -76,6 +92,7 @@ function updateBlacklist(){
       localStorage.blackout = JSON.stringify(blackout); //[url, url, url]
       localStorage.block = JSON.stringify(block); //[[url, time], [url, time]]
       localStorage.warn = JSON.stringify(warn); //[[url, time, lastWarned], [url, time, lastWarned]]
+      localStorage.blacklist = JSON.stringify(blacklist); //[{}]
       console.log('localStorage', localStorage.blackout, localStorage.block, localStorage.warn);
     },
     error: function(err) {

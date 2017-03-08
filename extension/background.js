@@ -1,6 +1,8 @@
 //Clearing data
 //Clear data every 24 hours at midnight
 //Add new field to database with the updated [date, time] IFF site is blacklisted
+//Another approach: Clear alarm for notifications every 24 hours
+//Simply take diff of each history for graphing purposes
 
 //TODO: Only send notification when tab URL matches the notification url
 //Force refresh when starting to block
@@ -167,6 +169,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
     chrome.notifications.create('notificationAlarm', {type: 'basic', iconUrl: 'icon128.png', title: 'Notification', message: 'You have exceeded the time set for this site. Are you being productive towards your goal?'});
   }
 });
+
 
 // Clear stats
 function clearStats() {
