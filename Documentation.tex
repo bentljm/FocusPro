@@ -29,9 +29,10 @@
 % -------------------------------------------------------------------------------------
 % INTRODUCTION
 % -------------------------------------------------------------------------------------
-\section{Front-end React components}
+\section{Front-end}
+\subsection{React components}
 \begin{itemize}
-\item App.js: Gateway to the app.
+\item App.js: Head of the props chain.
 \item Auth.js: Authentication.
 \item Dashboard.js: Dashboard page.
 \item Goal.js: AJAX getters and setters on client-sides for goals.
@@ -46,13 +47,25 @@
 \item Subgoal.js: AJAX getters and setters on client-sides for subgoals.
 \end{itemize}
 
+\subsection{Middleware}
+\begin{itemize}
+\item AuthService.js: Handles authentication related middleware functions: getters and setters for tokens, logging in, etc.
+\item QuestionSets.js: Dummy questions.
+\item SettingsUtil.js: AJAX getter templates.
+\end{itemize}
 
+\subsection{Miscallaneous}
+\begin{itemize}
+\item customJQuery.js: Handles collapsible features.
+\item index.js: Gateway, React-GA.
+\end{itemize}
 \newpage
 
 % -------------------------------------------------------------------------------------
 % DAEMONS
 % -------------------------------------------------------------------------------------
-\section{Controllers}
+\section{Back-end}
+\subsection{Controllers}
 \begin{itemize}
  \item getAllUsers: Obtains all users from the User Schema.
  \item getSingleUser: Obtains specific user from User Schema.
@@ -84,6 +97,14 @@
  \item updateBlacklist: Change blacklisted website.
  \item upsertExtension: Update and insert new extension data for given user.
  
+\end{itemize}
+
+\subsection{Notifications}
+Handles server-end email notifications to users using nodemailer.
+\begin{itemize}
+\item emailNotification.js: Using an html template, send email to user periodicially via Cron scheduling.
+\item emailTemplate.html: The aforementioned email template.
+\item send-sms.js: Handles texting with confidential account ids. Also uses cron.
 \end{itemize}
 \newpage
 % -------------------------------------------------------------------------------------
