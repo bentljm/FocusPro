@@ -40,8 +40,5 @@ module.exports = {
       }, {})
     }),
     new webpack.DefinePlugin({ "global.GENTLY": false }),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {warnings: false}
-    })
   ]
 };
