@@ -61,6 +61,7 @@ export default class Settings extends React.Component {
         console.log('SUCCESS: GOT USERID', data.data[0].id);
         that.setState({ userId: data.data[0].id });
         that.setState({ username: data.data[0].username || this.state.profile.nickname });
+        that.initialiseSettings();
       },
       error: (err) => { console.log('ERROR: COULD NOT GET USERID', err); },
     });
