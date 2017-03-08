@@ -6,24 +6,34 @@ function reload() {
 }
 //Blacklist display
 function displayBlacklist() {
-  if (localStorage.blackout) {
-    for(var i = 0; i < JSON.parse(localStorage.blackout).length; i++) {
-      var url = document.createTextNode(JSON.parse(localStorage.blackout)[i]);
+  if (JSON.parse(localStorage.blackout)) {
+    var blackout = JSON.parse(localStorage.blackout);
+    blackout = blackout.filter(e => e);
+    for(var i = 0; i < blackout.length; i++) {
+      var url = document.createTextNode(blackout[i]);
       var list = document.getElementById("blackout_display");
       list.appendChild(url);
       list.appendChild(document.createElement("br"));
     }
-    for(var i = 0; i < JSON.parse(localStorage.block).length; i++) {
-      var url = document.createTextNode(JSON.parse(localStorage.block)[i][0]);
-      var time = document.createTextNode(` after exceeding ${JSON.parse(localStorage.block)[i][1]} minutes`);
+  }
+  if (JSON.parse(localStorage.block)) {
+    var block = JSON.parse(localStorage.block);
+    block = block.filter(e => e);
+    for(var i = 0; i < block.length; i++) {
+      var url = document.createTextNode(block[i][0]);
+      var time = document.createTextNode(` after exceeding ${block[i][1]} minutes`);
       var table = document.getElementById("block_display");
       table.appendChild(url);
       table.appendChild(time);
       table.appendChild(document.createElement("br"));
     }
-    for(var i = 0; i < JSON.parse(localStorage.warn).length; i++) {
-      var url = document.createTextNode(JSON.parse(localStorage.warn)[i][0]);
-      var time = document.createTextNode(` after exceeding ${JSON.parse(localStorage.warn)[i][1]} minutes`);
+  }
+  if (JSON.parse(localStorage.warn)) {
+    var warn = JSON.parse(localStorage.warn);
+    warn = warn.filter(e => e);
+    for(var i = 0; i < warn.length; i++) {
+      var url = document.createTextNode(warn[i][0]);
+      var time = document.createTextNode(` after exceeding ${warn[i][1]} minutes`);
       var table = document.getElementById("warn_display");
       table.appendChild(url);
       table.appendChild(time);
@@ -46,6 +56,7 @@ function addAuth0Id(){
 }
 
 //Update blacklist
+//TODO: Don't update warns
 function updateBlacklist(){
   $.ajax({
     type: 'GET',
@@ -68,6 +79,7 @@ function updateBlacklist(){
           blacklist.push(e);
         }
       });
+      console.log('blacklist', blacklist);
       //localStorage.blacklist = JSON.stringify(data.data);
       // Store all sites to blackout inside localStorage.blackout
       // Store all sites to block after certain time inside localStorage.block
@@ -92,10 +104,10 @@ function updateBlacklist(){
           warn.push([match, data.data[i].blacklist_time]);
         }
       }
-      localStorage.blackout = JSON.stringify(blackout); //[url, url, url]
-      localStorage.block = JSON.stringify(block); //[[url, time], [url, time]]
-      localStorage.warn = JSON.stringify(warn); //[[url, time, lastWarned], [url, time, lastWarned]]
-      localStorage.blacklist = JSON.stringify(blacklist); //[{}]
+      localStorage.blackout = JSON.stringify(blackout.filter(e => e)); //[url, url, url]
+      localStorage.block = JSON.stringify(block.filter(e => e)); //[[url, time], [url, time]]
+      localStorage.warn = JSON.stringify(warn.filter(e => e)); //[[url, time, lastWarned], [url, time, lastWarned]]
+      localStorage.blacklist = JSON.stringify(blacklist.filter(e => e)); //[{}]
       console.log('localStorage', localStorage.blackout, localStorage.block, localStorage.warn);
       reload();
     },
