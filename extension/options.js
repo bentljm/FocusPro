@@ -85,12 +85,12 @@ function updateBlacklist(){
 }
 
 //Update the interval to clear stats
-function updateClearStatsInterval() {
-  var select = document.getElementById("clear_stats_interval");
-  var option = select.options[select.selectedIndex];
-  config.clearStatsInterval = option.value;
-  restoreOptions();
-}
+// function updateClearStatsInterval() {
+//   var select = document.getElementById("clear_stats_interval");
+//   var option = select.options[select.selectedIndex];
+//   config.clearStatsInterval = option.value;
+//   restoreOptions();
+// }
 
 //Upate the format of time display
 function updateTimeDisplay() {
@@ -145,15 +145,15 @@ function restoreOptions() {
     select.appendChild(option);
   }
 
-  var clearStatsInterval = config.clearStatsInterval;
-  select = document.getElementById("clear_stats_interval");
-  for (var i = 0; i < select.options.length; i++) {
-    var option = select.options[i];
-    if (option.value == clearStatsInterval) {
-      option.selected = true;
-      break;
-    }
-  }
+  // var clearStatsInterval = config.clearStatsInterval;
+  // select = document.getElementById("clear_stats_interval");
+  // for (var i = 0; i < select.options.length; i++) {
+  //   var option = select.options[i];
+  //   if (option.value == clearStatsInterval) {
+  //     option.selected = true;
+  //     break;
+  //   }
+  // }
 
   var timeDisplay = config.timeDisplayFormat;
   select = document.getElementById("time_display");
@@ -188,8 +188,8 @@ document.addEventListener("DOMContentLoaded", function () {
     "click", addIgnoredSite);
   document.getElementById("remove_ignored").addEventListener(
     "click", removeIgnoredSites);
-  document.getElementById("clear_stats_interval").addEventListener(
-    "change", updateClearStatsInterval);
+  // document.getElementById("clear_stats_interval").addEventListener(
+  //   "change", updateClearStatsInterval);
   document.getElementById("time_display").addEventListener(
     "change", updateTimeDisplay);
   document.getElementById("download").addEventListener(

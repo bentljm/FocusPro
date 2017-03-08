@@ -1,11 +1,7 @@
-// Notification
-// chrome.alarms.create("notificationAlarm", {periodInMinutes: 2});
-// chrome.alarms.onAlarm.addListener(function(alarm) {
-//   if (alarm.name === "notificationAlarm") {
-//     console.log('alarm');
-//     chrome.notifications.create('notificationAlarm', {type: 'basic', iconUrl: 'icon128.png', title: 'Notification', message: 'This is a notification!'});
-//   }
-// });
+//Clearing data
+//Clear data every 24 hours at midnight
+//Add new field to database with the updated [date, time] IFF site is blacklisted
+
 
 //Send information to app every half hour
 chrome.alarms.create("updateApp", {periodInMinutes: 30});
@@ -37,10 +33,6 @@ function sendAppStats() {
 }
 
 // Check blacklist and handle notification cases
-// 1 is blackout
-// 2 is block after exceeding
-// 3 is warn after exceeding
-
 //BLACKOUT CASE
 //Check tabs for update
 chrome.tabs.onUpdated.addListener(function(tabId, changedInfo, tab) {

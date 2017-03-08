@@ -57,10 +57,13 @@ Object.defineProperty(Config.prototype, "timeDisplayFormat", {
  */
 Object.defineProperty(Config.prototype, "clearStatsInterval", {
   get: function() {
-    if (!localStorage.clearStatsInterval) {
-      localStorage.clearStatsInterval = "0";
-    }
-    return parseInt(localStorage.clearStatsInterval, 10);
+    // if (!localStorage.clearStatsInterval) {
+    //   localStorage.clearStatsInterval = "86400";
+    // }
+    // return parseInt(localStorage.clearStatsInterval, 10);
+    //return 86400;
+    console.log('get clear stats interval');
+    return 120;
   },
   set: function(i) {
     if (i !== this.clearStatsInterval) {
