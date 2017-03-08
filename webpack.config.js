@@ -39,6 +39,6 @@ module.exports = {
         return o;
       }, {})
     }),
-    new webpack.DefinePlugin({ "global.GENTLY": false })
+    new webpack.DefinePlugin({ "global.GENTLY": false }),
   ]
 };
