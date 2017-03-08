@@ -56,7 +56,6 @@ function addAuth0Id(){
 }
 
 //Update blacklist
-//TODO: Don't update warns
 function updateBlacklist(){
   $.ajax({
     type: 'GET',

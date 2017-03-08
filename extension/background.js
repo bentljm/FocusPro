@@ -1,21 +1,39 @@
 //TODO: Force refresh when starting to block
+//Change options view so only original warn time is showing
 
 //Clearing data
 //Clear data every 24 hours at midnight
-chrome.alarms.create("midnightClearStats", {when: new Date().setHours(0), periodInMinutes: 1440});
+//chrome.alarms.create("midnightClearStats", {when: new Date().setHours(0), periodInMinutes: 1440});
+//Clear all notifications every 24 hours at midnight
+chrome.alarms.create("clearNotifications", {when: new Date().setHours(0), periodInMinutes: 1440});
+
+//For testing:
+//chrome.alarms.create("clearNotifications", {periodInMinutes: 1});
 
 //Send information to app every half hour
 chrome.alarms.create("updateApp", {periodInMinutes: 30});
+
 chrome.alarms.onAlarm.addListener(function(alarm) {
   if (alarm.name === "updateApp" && localStorage.auth0_id) {
     console.log('sending stats!');
     sendAppStats();
 
-  } else if (alarm.name === "midnightClearStats") {
-    console.log('now clearing stats');
-    var oldSites = new Sites(config);
-    oldSites.clear();
+  } else if (alarm.name === "clearNotifications") {
+    var warn = JSON.parse(localStorage.warn);
+    var sites = JSON.parse(localStorage.sites);
+    //Replace all warn[i][1] with original warn[i][1] + time spent on it
+    for(var i = 0; i < warn.length; i++){
+      var siteTime = sites[`http://${warn[i][0]}`] || sites[`https://${warn[i][0]}`];
+      warn[i][1] = warn[i][1] + siteTime;
+    }
+    console.log('update warn time');
+    localStorage.warn = JSON.stringify(warn);
   }
+  // if (alarm.name === "midnightClearStats") {
+  //   console.log('now clearing stats');
+  //   var oldSites = new Sites(config);
+  //   oldSites.clear();
+  // }
 });
 
 function sendAppStats() {
@@ -89,7 +107,6 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
     //BLOCK CASE
     block.map(function(site) { //for each site in blacklist to block
       for(var prop in sites) { //Compare site with prop in sites you have visited
-        //console.log('comparing blacklist site', site, 'to prop', prop);
         var re = new RegExp(site[0].replace(/www./, '')); //Get rid of www. and make it a new regexp
         if (re.test(prop)) { //Test for a match
           //If match found, check for time spent
@@ -110,17 +127,16 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
     });
     //WARNING CASE
     warn.map(function(site) {
+      //site[url, time limit, time since last exceeded]
       for(var prop in sites) {
         var re = new RegExp(site[0].replace(/www./, ''));
         if (re.test(prop)) {
           if ((sites[prop]/60) > site[1]) {
           //Time exceeded
           //Check if warned before
-            console.log(site);
             if (site.length === 3) {
               //Check if need to warn now (Check every 10 minutes)
               var diff = (sites[prop]/60) - site[2];
-              console.log('diff is', diff);
               if (diff > 10) {
                 //Send notification
                 chrome.alarms.create(`notificationWarning${site[0]}`, {when: 0});

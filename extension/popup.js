@@ -1,33 +1,6 @@
 var config = new Config();
 var gsites = new Sites(config);
 
-// function sendToApp() {
-//   var sendDataBtn = document.createElement("button");
-//   var sendDataBtnTxt = document.createTextNode("Send Data");
-//   sendDataBtn.appendChild(sendDataBtnTxt);
-//   document.body.appendChild(sendDataBtn);
-//   sendDataBtn.setAttribute("id", "testButton");
-//   sendDataBtn.onclick = function() {
-//     // Get all sites and store in array to be parsed and stored in db
-//     var allSites = [];
-//     for(var prop in gsites.sites) {
-//       allSites.push({url: prop, time: gsites.sites[prop], freq: 0});
-//     }
-//     $.ajax({
-//       type: 'POST',
-//       url: `http://localhost:7777/api/users/${localStorage.auth0_id}/extension_data`,
-//       contentType: 'application/json',
-//       data: JSON.stringify({ urls:allSites }),
-//       success: function(data) {
-//         console.log('success!', data);
-//       },
-//       error: function(err) {
-//         console.log('error', err);
-//       },
-//     });
-//   };
-// }
-
 //Add to ignored sites
 function addIgnoredSite(new_site) {
   return function() {
