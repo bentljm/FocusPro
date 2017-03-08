@@ -21,9 +21,19 @@ jest.mock('../utils/SettingsUtil', () => {
   }
 });
 
+global.data = [{
+            question: 'What help can you get?',
+            answer: 'Get a couch to hold myself accountable',
+            updatedAt: '2017-03-05T00:13:39.289Z'
+          }, {
+            question: 'Whats the worst thing that could happen?',
+            answer: 'nothing',
+            updatedAt: '2017-03-05T23:19:16.943Z'
+    }];
 
 describe ('Given the user has answered 2 self-reflection questions', () => {
   let selfreflection; // global var
+  let selfreflectionMounted;
 
   beforeAll(() => {
     const auth = {
@@ -33,6 +43,7 @@ describe ('Given the user has answered 2 self-reflection questions', () => {
       }
     };
     selfreflection = shallow(<SelfReflection auth={auth}/>);
+    selfreflectionMounted = mount(<SelfReflection auth={auth}/>);
   });
 
   it ('selfreflection page is rendered', () => {
@@ -44,7 +55,18 @@ describe ('Given the user has answered 2 self-reflection questions', () => {
     selfreflection.instance().getReflections(); // to get access to func
     selfreflection.update(); //update render tree
     expect(selfreflection.state(['reflections'])).toHaveLength(2);
-    console.log(selfreflection.state(['reflections']));
+
+    // To verify the data is rendered in the table..  may need to use mount..
+    const bootstraptable = selfreflectionMounted.find('BootstrapTable').first();
+    bootstraptable.find('.react-bs-container-body tbody').forEach(tr => {
+      tr.forEach(td=>{
+        expect(td.text().includes(`${data[0].question}`));
+        expect(td.text().includes(`${data[0].answer}`));
+        expect(td.text().includes(`${data[1].question}`));
+        expect(td.text().includes(`${data[1].answer}`));
+
+      });
+    });
   });
 
   it ('selfreflection page desc sorts by date on users first click on Date heading')

@@ -1,0 +1,84 @@
+exports[`ReflectionQuestion (Snapshot) ReflectionQuestion renders 1`] = `
+<div>
+  <h1>
+    Awareness Questions 
+  </h1>
+  <h5>
+    How much time have you been spending on the blacklist sites?
+  </h5>
+  <table
+    className="">
+    <thead>
+      <tr>
+        <th
+          data-field="sites">
+          Blacklist sites
+        </th>
+        <th
+          data-field="guessedTime">
+          Time you think you spent
+        </th>
+        <th
+          data-field="actualTime">
+          Actual time spent (min)
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          facebook.com
+        </td>
+        <td>
+          <div
+            className="col input-field">
+            <select
+              className=""
+              defaultValue={undefined}
+              id="input_0"
+              multiple={undefined}
+              onChange={[Function]}>
+              <option
+                value="0" />
+              <option
+                value="1">
+                0~30min
+              </option>
+              <option
+                value="2">
+                30min~1hr
+              </option>
+              <option
+                value="3">
+                1hr~2hr
+              </option>
+              <option
+                value="4">
+                2hr+
+              </option>
+            </select>
+          </div>
+        </td>
+        <td
+          className={undefined}
+          style={
+            Object {
+              "display": "none",
+            }
+          }>
+          30
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <button
+    className="btn"
+    disabled={false}
+    onClick={[Function]}>
+    Answer Awareness Questions
+  </button>
+  <br />
+  <br />
+  <div />
+</div>
+`;
