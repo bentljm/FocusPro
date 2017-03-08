@@ -173,7 +173,7 @@ export default class Goal extends React.Component {
           <Subgoal increase={this.increaseProgress} decrease={this.decreaseProgress} key={`sub ${subgoals.id}`} subgoal={subgoals} status={subgoals.status} id={subgoals.id} user_id={this.props.user_id} goal={subgoals.GoalId} updateSubgoals={this.getSubgoals} />
           )}
         <div>
-          <Input s={12} className={errors.subgoal && this.state.subgoalVisited ? 'red' : 'white'} label="Set new subgoal" data-length="255" onChange={this.handleChange} value={this.state.subgoal} onKeyPress={this.handleKeyPress} onBlur={this.handleBlur} />
+          <Input s={12} className={errors.subgoal && this.state.subgoalVisited ? 'error' : 'white'} label="Set new subgoal" data-length="255" onChange={this.handleChange} value={this.state.subgoal} onKeyPress={this.handleKeyPress} onBlur={this.handleBlur} />
         </div>
         <br /><br /><br />
       </div>
