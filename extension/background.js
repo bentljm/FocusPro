@@ -4,9 +4,7 @@
 //Another approach: Clear alarm for notifications every 24 hours
 //Simply take diff of each history for graphing purposes
 
-//TODO: Only send notification when tab URL matches the notification url
-//Force refresh when starting to block
-//Force refresh when options is updated
+//TODO: Force refresh when starting to block
 
 //Send information to app every half hour
 //TEMP set to 2 for testing
@@ -121,12 +119,12 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
             console.log(site);
             if (site.length === 3) {
               //Check if need to warn now (Check every 10 minutes)
-              //TEMP For testing, use 1 min
+              //TEMP For testing, use 5 min
               var diff = (sites[prop]/60) - site[2];
               console.log('diff is', diff);
-              if (diff > 1) {
+              if (diff > 5) {
                 //Send notification
-                chrome.alarms.create("notificationWarning", {when: 0});
+                chrome.alarms.create(`notificationWarning${site[0]}`, {when: 0});
                 console.log('TIME LIMIT EXCEEDED. THIS IS A NOTIFICATION', site);
                 //Update last notified time site[2]
                 site[2] = (sites[prop]/60);
@@ -134,7 +132,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
             } else {
               site.push(sites[prop]/60);
               //Send notification
-              chrome.alarms.create("notificationWarning", {when: 0});
+              chrome.alarms.create(`notificationWarning${site[0]}`, {when: 0});
               console.log('FIRST TIME. TIME LIMIT EXCEEDED. THIS IS A NOTIFICATION', site);
             }
           }
@@ -164,9 +162,17 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
 
 //Listener for sending notification
 chrome.alarms.onAlarm.addListener(function(alarm) {
-  if (alarm.name === "notificationWarning") {
-    console.log('alarm');
-    chrome.notifications.create('notificationAlarm', {type: 'basic', iconUrl: 'icon128.png', title: 'Notification', message: 'You have exceeded the time set for this site. Are you being productive towards your goal?'});
+  if (alarm.name.includes("notificationWarning")) {
+    var site = alarm.name.replace("notificationWarning", "");
+    //Check if on site or not, don't send notification if not currently on site
+    chrome.tabs.query({currentWindow: true, active: true}, function(tabs){
+      var url = tabs[0].url.match(/^(\w+:\/\/[^\/]+).*$/)[1];
+      url = url.replace(/https?:\/\//, "");
+      console.log('notification sent');
+      if (site.includes(url)) {
+        chrome.notifications.create('notificationAlarm', {type: 'basic', iconUrl: 'icon128.png', title: 'Notification', message: `You have exceeded the time set for ${site}. Are you being productive towards your goal?`});
+      }
+    });
   }
 });
 

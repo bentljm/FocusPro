@@ -1,8 +1,11 @@
 var config = new Config();
 var sites = new Sites(config);
+
+function reload() {
+  window.location.reload();
+}
 //Blacklist display
 function displayBlacklist() {
-  console.log('ls is', JSON.parse(localStorage.blackout));
   if (localStorage.blackout) {
     for(var i = 0; i < JSON.parse(localStorage.blackout).length; i++) {
       var url = document.createTextNode(JSON.parse(localStorage.blackout)[i]);
@@ -94,6 +97,7 @@ function updateBlacklist(){
       localStorage.warn = JSON.stringify(warn); //[[url, time, lastWarned], [url, time, lastWarned]]
       localStorage.blacklist = JSON.stringify(blacklist); //[{}]
       console.log('localStorage', localStorage.blackout, localStorage.block, localStorage.warn);
+      reload();
     },
     error: function(err) {
       console.log('error', err);
