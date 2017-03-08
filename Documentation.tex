@@ -40,6 +40,26 @@
 \section{Controllers}
 \begin{itemize}
  \item getAllUsers: Obtains all users from the User Schema.
+ \item getSingleUser: Obtains specific user from User Schema.
+ \item getSettings: Obtains specific user from User Schema, and subsequently obtains settings for that specific user from the Setting Schema.
+ \item getBlacklist: Obtains list of blacklisted websites.
+ \item getExtension: Obtains specific user from User extension, and using the specific user id, gets Extension data from Extension Schema for that user.
+ \item getReflections: Obtains reflections from Reflection Schema.
+ \item getAllGoals: Obtains all goals for given user.
+ \item getSingleGoal: Obtains single goal for given user.
+ \item getSubGoals: Obtains all subgoals for given goal.
+ \item getSingleSubgoal: Obtains specific subgoal for given goal.
+ 
+ \item postUser: Inserts new user, with requisite parameters, into User Schema.
+ \item postSettings: Inserts new settings for specific user, with requisite parameters into Setting Schema.
+ \item postBlackList: Inserts new blacklisted website into Url Schema.
+ \item postReflectionId: Inserts new specific reflection by id into Reflection Schema.
+ \item postSingleGoal: Inserts new individual goal into Goal Schema for specific User.
+ \item postSubGoal: Inserts new individual subgoal into Subgoal Schema for specific Goal.
+ 
+ \item removeSubGoal: Destroys specific individual subgoal in Subgoal Schema.
+ \item removeSingleGoal: Destroys specific individual goal in Goal Schema.
+ 
 \end{itemize}
 \newpage
 % -------------------------------------------------------------------------------------
