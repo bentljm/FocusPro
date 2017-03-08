@@ -335,13 +335,13 @@ export default class Settings extends React.Component {
         </Table>}
         <br />
         <Row>
-          <Input s={5} onFocus={() => this.setValidationStyle('site','')} className={this.state.validationStyle.site} label="Input Site" value={this.state.siteURL} onChange={e => this.handleChange(e, 'siteURL')} onKeyPress={e => this.handleKeyPress(e, 'site')} />
+          <Input s={5} onFocus={() => this.setValidationStyle('site', '')} className={this.state.validationStyle.site} label="Input Site" value={this.state.siteURL} onChange={e => this.handleChange(e, 'siteURL')} onKeyPress={e => this.handleKeyPress(e, 'site')} />
           <Input s={3} type="select" label="Select Type" defaultValue="1" value={this.state.siteType} onChange={e => this.handleChange(e, 'siteType')}>
             <option value="1">Blackout</option>
             <option value="2">Block after exceeding</option>
             <option value="3">Warn after exceeding</option>
           </Input>
-          <Input s={2} onFocus={() => this.setValidationStyle('site','')} className={this.state.validationStyle.site} label="Set Time Limit (min)" value={this.state.siteLimit} onChange={e => this.handleChange(e, 'siteLimit')} onKeyPress={e => this.handleKeyPress(e, 'site')} />
+          <Input s={2} onFocus={() => this.setValidationStyle('site', '')} className={this.state.validationStyle.site} label="Set Time Limit (min)" value={this.state.siteLimit} onChange={e => this.handleChange(e, 'siteLimit')} onKeyPress={e => this.handleKeyPress(e, 'site')} />
           <button className="waves-effect waves-teal btn-flat btn-large" onClick={() => this.handleSubmission('site')}><i className="material-icons small">add_box</i></button>
         </Row>
         <br />
