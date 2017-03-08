@@ -7,8 +7,8 @@
 //   }
 // });
 
-//Send information to app every hour
-chrome.alarms.create("updateApp", {periodInMinutes: 10});
+//Send information to app every half hour
+chrome.alarms.create("updateApp", {periodInMinutes: 30});
 chrome.alarms.onAlarm.addListener(function(alarm) {
   if (alarm.name === "updateApp" && localStorage.auth0_id) {
     console.log('sending stats!');
@@ -65,20 +65,20 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
   var sites = JSON.parse(localStorage.sites);
   var blackout = JSON.parse(localStorage.blackout);
   if(alarm.name === "checkBlacklist" && (warn.length !== 0 || block.length !== 0)) {
-    block.map(function(site) { //for each site in blacklist
+    block.map(function(site) { //for each site in blacklist to block
       for(var prop in sites) { //Compare site with prop in sites you have visited
         //console.log('comparing blacklist site', site, 'to prop', prop);
         var re = new RegExp(site[0].replace(/www./, '')); //Get rid of www. and make it a new regexp
         if (re.test(prop)) { //Test for a match
           console.log('match found', sites[prop], site[1]);
           //If match found, check for time spent
-          if (sites[prop] > site[1]) {
+          if ((sites[prop]/60) > site[1]) {
             //Check if already blocking
             if (JSON.parse(localStorage.blackout).indexOf(site[0]) === -1) {
               //Time has been exceeded
               //Create an alarm that will notify when 24 hr block has ended (1440 min)
-              //For testing, use 1 min
-              chrome.alarms.create(`block${site[0]}`, {delayInMinutes: 2});
+              //For testing, use 10 min
+              chrome.alarms.create(`block${site[0]}`, {delayInMinutes: 10});
               //Add the site to blackout
               console.log('Alarm created, now blocking!', site[0]);
               blackout.push(site[0]);
@@ -88,24 +88,42 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
         }
       }
     });
-
-// Block sites
-// Pseudocode -
-// For each site to track
-// Check if limit exceeded, every 5 min
-// store date of when you first exceeded limit
-// Block the site
-// Set alarm for 24 hours afterwards then reset limit counter
-// Check if limit exceeded
-
-//Track warn sites
-//Pseudocode -
-//For each site to track
-//Check if limit exceeded, every 5 min
-//store date of when you first exceeded limit
-//Send notification and set alarm for every 30 minute you exceed
-//Set alarm for 24 hours afterwards then reset limit counter
-//Check if limit exceeded
+    console.log('start warn is', warn);
+    warn.map(function(site) {
+      for(var prop in sites) {
+        var re = new RegExp(site[0].replace(/www./, ''));
+        if (re.test(prop)) {
+          if ((sites[prop]/60) > site[1]) {
+          //Time exceeded
+          //Check if warned before
+            console.log(site);
+            if (site.length === 3) {
+              console.log('site length 3');
+              //Check if need to warn now (Check every 10 minutes)
+              //For testing, use 2 min
+              var diff = (sites[prop]/60) - site[2];
+              console.log('diff is', diff);
+              if (diff > 1) {
+                //Send notification
+                chrome.alarms.create("notificationWarning", {when: 0});
+                console.log('TIME LIMIT EXCEEDED. THIS IS A NOTIFICATION');
+                //Update last notified time site[2]
+                site[2] = (sites[prop]/60);
+              }
+            } else {
+              site.push(sites[prop]/60);
+              console.log('division', sites[prop]);
+              console.log('updated', site);
+              //Send notification
+              chrome.alarms.create("notificationWarning", {when: 0});
+              console.log('FIRST TIME. TIME LIMIT EXCEEDED. THIS IS A NOTIFICATION');
+              console.log('warns', warn);
+            }
+          }
+        }
+      }
+    });
+    localStorage.warn = JSON.stringify(warn);
   }
 });
 
@@ -123,6 +141,14 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
     console.log('after filtering', blackout);
     chrome.alarms.clear(`block${site}`);
     //Clear alarm after unblocking
+  }
+});
+
+//Listener for sending notification
+chrome.alarms.onAlarm.addListener(function(alarm) {
+  if (alarm.name === "notificationWarning") {
+    console.log('alarm');
+    chrome.notifications.create('notificationAlarm', {type: 'basic', iconUrl: 'icon128.png', title: 'Notification', message: 'You have exceeded the time set for this site. Are you being productive towards your goal?'});
   }
 });
 

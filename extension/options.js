@@ -73,9 +73,9 @@ function updateBlacklist(){
           warn.push([match, data.data[i].blacklist_time]);
         }
       }
-      localStorage.blackout = JSON.stringify(blackout);
-      localStorage.block = JSON.stringify(block);
-      localStorage.warn = JSON.stringify(warn);
+      localStorage.blackout = JSON.stringify(blackout); //[url, url, url]
+      localStorage.block = JSON.stringify(block); //[[url, time], [url, time]]
+      localStorage.warn = JSON.stringify(warn); //[[url, time, lastWarned], [url, time, lastWarned]]
       console.log('localStorage', localStorage.blackout, localStorage.block, localStorage.warn);
     },
     error: function(err) {
