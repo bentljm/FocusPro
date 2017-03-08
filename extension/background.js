@@ -11,7 +11,8 @@ chrome.alarms.create("clearNotifications", {when: new Date().setHours(0), period
 //chrome.alarms.create("clearNotifications", {periodInMinutes: 1});
 
 //Send information to app every half hour
-chrome.alarms.create("updateApp", {periodInMinutes: 30});
+//TEMP 1
+chrome.alarms.create("updateApp", {periodInMinutes: 1});
 
 chrome.alarms.onAlarm.addListener(function(alarm) {
   if (alarm.name === "updateApp" && localStorage.auth0_id) {
@@ -51,7 +52,7 @@ function sendAppStats() {
         if (blacklist[i]['history']) {
           console.log('adding to history', blacklist[i]['history']);
           //Push [Date, time spent] to blacklist history and to history to be sent
-          blacklist[i]['history'].push([Date.now(), JSON.parse(localStorage.sites)[prop]]);
+          blacklist[i]['history'].push([Date.now().toString(), JSON.parse(localStorage.sites)[prop].toString()]);
           history = blacklist[i]['history'];
         } else {
           console.log('starting history');
@@ -64,7 +65,7 @@ function sendAppStats() {
     }
     allSites.push({url: prop, time: JSON.parse(localStorage.sites)[prop], history: history});
   }
-  console.log(allSites);
+  console.log(JSON.stringify(allSites));
   $.ajax({
     type: 'POST',
     url: `http://localhost:7777/api/users/${localStorage.auth0_id}/extension_data`,

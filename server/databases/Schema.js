@@ -46,7 +46,7 @@ var Setting = db.define('Setting', {
 var Extension = db.define('Extension', {
   url: {type: Sequelize.STRING, unique: true},
   time_spent: Sequelize.INTEGER,
-  history: Sequelize.ARRAY(Sequelize.ARRAY(Sequelize.STRING, Sequelize.INTEGER))
+  history: Sequelize.ARRAY(Sequelize.ARRAY(Sequelize.STRING, Sequelize.STRING))
 });
 
 //Reflection schema

@@ -397,12 +397,12 @@ function updateSingleGoal(req, res) {
 function updateBlackList(req, res) {
   var id = req.params.url_id;
   db.Url.update({url: req.body.url, blacklist_type: req.body.blacklist_type, blacklist_time: req.body.blacklist_time}, {where: { id: id}})
-  .then((count)=>{
+  .then((count) => {
     res.status(200).json({
       data: count
     });
   })
-  .catch((err)=>{
+  .catch((err) => {
     res.send({'ERROR: UPDATE BLACKLIST': err});
   });
 }
@@ -413,13 +413,12 @@ function upsertExtension(req, res) {
     var userId = user.id;
     var urls = req.body.urls;
     urls.forEach((url) => {
-    db.Extension.upsert({url: url.url, time_spent: url.time, freq: url.freq, UserId: user.id}).then((data) => {
+    db.Extension.upsert({url: url.url, time_spent: url.time, history: url.history, UserId: user.id});
+  }).then((stats) => {
       res.status(200).json({
-        data: data
+        data: stats
       });
-    }).catch((err) => { res.send({'ERROR: UPSERT EXTENSION': err}); });
-  });
-
+    });
   }).catch((err) => { res.send({'ERROR: UPSERT EXTENSION': err}); });
 }
 
