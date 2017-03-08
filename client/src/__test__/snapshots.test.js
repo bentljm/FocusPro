@@ -20,7 +20,7 @@ describe('App (Snapshot)', () => {
   });
 });
 
-describe('Landingpage (Snapshot)', () => {
+xdescribe('Landingpage (Snapshot)', () => {
   beforeAll(() => {
     global.auth = {
       getProfile: ()=>'dummy',
