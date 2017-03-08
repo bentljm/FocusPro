@@ -15,7 +15,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
 function sendAppStats() {
   var allSites = [];
   for(var prop in JSON.parse(localStorage.sites)) {
-    allSites.push({url: prop, time: JSON.parse(localStorage.sites)[prop], freq: 0});
+    allSites.push({url: prop, time: JSON.parse(localStorage.sites)[prop], history: [Date.now(), JSON.parse(localStorage.sites)[prop]]});
   }
   console.log(allSites);
   $.ajax({
