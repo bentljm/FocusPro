@@ -1,14 +1,18 @@
 import React from 'react';
-import { Surface, Pie } from 'recharts';
+import { AreaChart, Area, CartesianGrid, XAxis, YAxis, linearGradient, Tooltip } from 'recharts';
 
 export default class Site extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       data: [
-        { name: 'iphone4', value: 120, fill: '#ff7300' },
-        { name: 'iphone4s', value: 500, fill: '#e5671a' },
-        { name: 'iphone5', value: 600, fill: '#907213' },
+        { date: 'Feb 26', time: 4 },
+        { date: 'Feb 27', time: 6 },
+        { date: 'Feb 28', time: 9 },
+        { date: 'Feb 29', time: 12 },
+        { date: 'Mar 1', time: 20 },
+        { date: 'Mar 2', time: 50 },
+        { date: 'Mar 3', time: 100 },
       ],
     };
   }
@@ -26,18 +30,18 @@ export default class Site extends React.Component {
 
   render() {
     return (
-      <Surface width={400} height={200}>
-        <Pie
-          startAngle={360}
-          endAngle={0}
-          cx={100}
-          cy={100}
-          outerRadius={80}
-          innerRadius={0}
-          data={this.state.data}
-          paddingAngle={0}
-        />
-      </Surface>
+      <AreaChart width={650} height={250} data={this.state.data}>
+        <defs>
+          <linearGradient id="colorUv" x1="0" y1="0">
+            <stop stopColor="#0088FE" stopOpacity={1} />
+          </linearGradient>
+        </defs>
+        <XAxis dataKey="date" />
+        <YAxis />
+        <CartesianGrid strokeDasharray="3 3" />
+        <Tooltip />
+        <Area type="monotone" dataKey="time" stroke="#0088FE" fillOpacity={1} fill="url(#colorUv)" />
+      </AreaChart>
     );
   }
 }
