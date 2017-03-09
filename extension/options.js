@@ -6,7 +6,8 @@ function reload() {
 }
 //Blacklist display
 function displayBlacklist() {
-  if (JSON.parse(localStorage.blackout)) {
+  console.log('localStorage.blackout',localStorage.blackout);
+  if ((localStorage.blackout)) {
     var blackout = JSON.parse(localStorage.blackout);
     blackout = blackout.filter(e => e);
     for(var i = 0; i < blackout.length; i++) {
@@ -16,7 +17,7 @@ function displayBlacklist() {
       list.appendChild(document.createElement("br"));
     }
   }
-  if (JSON.parse(localStorage.block)) {
+  if ((localStorage.block)) {
     var block = JSON.parse(localStorage.block);
     block = block.filter(e => e);
     for(var i = 0; i < block.length; i++) {
@@ -28,7 +29,7 @@ function displayBlacklist() {
       table.appendChild(document.createElement("br"));
     }
   }
-  if (JSON.parse(localStorage.warn)) {
+  if ((localStorage.warn)) {
     var warn = JSON.parse(localStorage.warn);
     warn = warn.filter(e => e);
     for(var i = 0; i < warn.length; i++) {
