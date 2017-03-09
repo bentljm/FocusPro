@@ -150,7 +150,7 @@ export default class Settings extends React.Component {
       success: (data) => {
         console.log('SUCCESS: SENT NOTIFICATIONS', data);
         that.alertUser('Notifications');
-        this.setState({ reminderAddress: '' });
+        that.setState({ reminderAddress: '' });
       },
       error: (err) => { console.log('ERROR: COULD NOT SEND NOTIFICATIONS', err); },
     });
