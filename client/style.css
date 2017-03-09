@@ -18,6 +18,12 @@ nav {
   padding-right: 10px;
 }
 
+.side-nav div {
+  color: white;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
 .side-nav li>a>i.icon-white {
     color: white;
     margin-right: 10px;
