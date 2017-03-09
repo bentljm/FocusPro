@@ -23,6 +23,7 @@ export default class Dashboard extends React.Component {
       goalEnabled: false,
       dayGoalVisited: false,
       goalVisited: false,
+      status: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.postGoal = this.postGoal.bind(this);
@@ -33,6 +34,9 @@ export default class Dashboard extends React.Component {
     this.validate = this.validate.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
     this.getExtensionSite = this.getExtensionSite.bind(this);
+    this.handleBoxClick = this.handleBoxClick.bind(this);
+    this.checkBox = this.checkBox.bind(this);
+    this.uncheckBox = this.uncheckBox.bind(this);
   }
 
   componentWillMount() {
@@ -232,6 +236,22 @@ export default class Dashboard extends React.Component {
     $('.collapsible').collapsible();
   }
 
+  handleBoxClick() {
+    if (this.state.status) {
+      this.setState({ status: false });
+    } else {
+      this.setState({ status: true });
+    }
+  }
+
+  checkBox() {
+    this.setState({ status: true });
+  }
+
+  uncheckBox() {
+    this.setState({ status: false });
+  }
+
   render() {
     const { dayGoalInput } = this.state;
     if (dayGoalInput) {
@@ -260,12 +280,13 @@ export default class Dashboard extends React.Component {
         {(this.state.goals.length > 0 && this.state.profile.user_id) && <ul className="collapsible" data-collapsible="expandable">
           {this.state.goals.map(goal =>
             <li key={goal.id}>
-              <div className="collapsible-header">{goal.goal}
+              <div className="collapsible-header">
+              <Input name="group1" type="checkbox" value="check" checked={this.state.status} label={goal.goal} onClick={this.handleBoxClick} />
                 <a href="#/dashboard" onClick={() => this.removeGoal(goal.id)}>
                   <Icon right>delete</Icon>
                 </a>
               </div>
-              <Goal goal={goal.id} user_id={this.state.profile.user_id} />
+              <Goal checkBox={this.checkBox} uncheckBox={this.uncheckBox} goal={goal.id} user_id={this.state.profile.user_id} />
             </li>
             )}
         </ul>}
