@@ -26,7 +26,7 @@ export default class Sidebar extends React.Component {
   }
 
   getUserInfo() {
-    getUserAjax(this.state.profile.user_id, (data)=>{
+    getUserAjax(this.state.profile.user_id, (data) => {
       this.setState({
         username: data.data[0].username || this.state.profile.nickname,
       });
