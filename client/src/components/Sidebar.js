@@ -1,5 +1,6 @@
 import React from 'react';
 import getUserAjax from '../utils/UsersUtil';
+import { getSettingAjax } from '../utils/SettingsUtil';
 // export const Sidebar =({auth})=>(
 
 export default class Sidebar extends React.Component {
@@ -9,22 +10,28 @@ export default class Sidebar extends React.Component {
     this.state = {
       profile: this.props.auth.getProfile(),
       username: '',
+      picture: '',
     };
     // listen to profile_updated events to update internal state
     this.props.auth.event.on('profile_updated', (newProfile) => {
       this.setState({ profile: newProfile });
     });
-    this.getUser = this.getUser.bind(this);
+    this.getUserInfo = this.getUserInfo.bind(this);
   }
 
   componentDidMount() {
-    this.getUser();
+    this.getUserInfo();
   }
 
-  getUser() {
+  getUserInfo() {
     getUserAjax(this.state.profile.user_id, (data)=>{
       this.setState({
         username: data.data[0].username || this.state.profile.nickname,
+      });
+    });
+    getSettingAjax(this.state.profile.user_id, (data) => {
+      this.setState({
+        picture: data.picture || this.state.profile.picture,
       });
     });
   }
@@ -40,7 +47,7 @@ export default class Sidebar extends React.Component {
 
         <ul id="slide-out" className="side-nav fixed theme-color">
           {localStorage.profile && <li><div className="userView">
-            <div><img className="circle" src={this.state.profile.picture} alt="auth0" /></div>
+            <div><img className="circle" src={this.state.picture} alt="auth0" /></div>
             <div><span className="name">{this.state.username}</span></div>
             <div><span className="email">{this.state.profile.email}</span></div>
             <a href="#" className="btn" onClick={this.props.auth.logout}>Log Out</a>

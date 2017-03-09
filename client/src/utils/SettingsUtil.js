@@ -56,4 +56,15 @@ export const getReflectionsAjax = (auth0Id, callback) => {
     }
   });
 };
-// export default SettingsUtil;
+
+export const getSettingAjax = (auth0Id, callback) => {
+  $.ajax({
+    type: 'GET', // GET REQUEST
+    url: `/api/users/${auth0Id}/setting`,
+    success: (data) => {
+      console.log('SUCCESS: OBTAINED SETTINGS: ', data.data[0]);
+      callback(data.data[0]);
+    },
+    error: (err) => { console.log('ERROR: COULD NOT GET SETTINGS', err); },
+  });
+}
