@@ -9,77 +9,49 @@ export default class Landingpage extends React.Component {
       <div className="row">
         <h3 className="center"> Welcome to FocusPro.</h3>
         <h5 className="center"> We help you limit distractions and stay on task. </h5>
-        <br /> <br />
+        <br /><br />
         <Row s={6}>
-          <Col s={7}>
+          <Col s={6}>
             <img className="placeholder" src="../../assets/Landingpage-goals.jpeg" alt="goals" />
           </Col>
-          <Col s={5}>
-            <br /> <br /><br /> <br /> <br />
+          <Col s={6}>
+            <br /><br /><br /> <br />
             FocusPro helps you set goals while tracking your progress in accomplishing them.
             You can blacklist websites to limit distractions by either blocking them directly, or having FocusPro warn you when you have exceeded the time limit you have set.
           </Col>
         </Row>
-        <br /> <br />
         <Row s={6}>
           <Col s={7}>
-            <br /> <br /><br /> <br /> <br />
-            FocusPro alerts you when you are off task through window notifications using the Chrome extension.
-            It shows prompts to ask you to actively reflect on your progress for the day, forcing you to actively engage in the habit-forming process.
-
-          </Col>
-          <Col s={5}>
-            <img className="placeholder" alt="Chrome extension notification" />
-          </Col>
-        </Row>
-        <br /> <br />
-        <Row s={6}>
-          <Col s={7}>
-            <img className="placeholder" src="../../assets/Landingpage-stats.jpeg" alt="stats for site" />
-          </Col>
-          <Col s={5}>
-            <br />
-            FocusPro intelligently keeps track of your aggregate data patterns in real-time.
-            You can see for yourself how your habits change as you slowly wean yourself off unproductive sites.
-          </Col>
-        </Row>
-        <br /> <br />
-        <Row s={6}>
-          <Col s={7}>
-            <br /> <br /><br /> <br /> <br />
+            <br /><br />
             <h5>Companion Google Chrome Extension</h5>
             Use our Chrome extension to track your tab usage and to send you alert messages and self-reflection questions.
             Download here.
           </Col>
           <Col s={5}>
-            <br /> <br /><br /> <br />
+            <br />
             <img src="../../assets/icon128.png" alt="Chrome extension icon" />
           </Col>
         </Row>
         <br />
-        <div className="center">
-          <a className="waves-effect waves-light btn-large">Get Started</a>
-        </div>
-        <br />
         <h5 className="center"> Meet the Team </h5>
-        <Row s={6}>
-          <Col s={7}>
-            <Card key={10} className="white" title="Jeff Bentler" actions={[<a href="https://github.com/bentljm">GitHub</a>]}>
+        <Row s={12}>
+          <Col>
+            <Card s={3} className="white" title="Jeff Bentler" actions={[<a href="https://github.com/bentljm">GitHub</a>]}>
               <img key={14} src="../../assets/jeff_img.jpeg" className="circle" alt="Jeff" />
             </Card>
           </Col>
-          <Col s={7}>
-            <Card key={11} className="white" title="Josephine Chen" actions={[<a href="https://github.com/Josephine-Chen">GitHub</a>]}>
+          <Col>
+            <Card s={3} className="white" title="Josephine C." actions={[<a href="https://github.com/Josephine-Chen">GitHub</a>]}>
               <img key={15} src="../../assets/josephine_img.jpeg" className="circle" alt="Josephine" />
             </Card>
           </Col>
-          <Col s={7}>
-            <Card key={12} className="white" title="Ian George" actions={[<a href="https://github.com/OppenheimerAndTheMartians">GitHub</a>]}>
+          <Col>
+            <Card s={3} className="white" title="Ian George" actions={[<a href="https://github.com/OppenheimerAndTheMartians">GitHub</a>]}>
               <img key={16} src="../../assets/ian_img.jpeg" className="circle" alt="Ian" />
             </Card>
           </Col>
-          <Col s={7}>
-            <Card key={13} className="white" title="Sherry Hsu" actions={[<a href="https://github.com/SherryH">GitHub</a>]}>
+          <Col>
+            <Card s={3} className="white" title="Sherry Hsu" actions={[<a href="https://github.com/SherryH">GitHub</a>]}>
               <img key={17} src="../../assets/sherry_img.jpeg" className="circle" alt="Sherry" />
             </Card>
           </Col>
