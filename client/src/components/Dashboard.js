@@ -280,13 +280,12 @@ export default class Dashboard extends React.Component {
         {(this.state.goals.length > 0 && this.state.profile.user_id) && <ul className="collapsible" data-collapsible="expandable">
           {this.state.goals.map(goal =>
             <li key={goal.id}>
-              <div className="collapsible-header">
-                <Input name="group1" type="checkbox" value="check" checked={this.state.status} label={goal.goal} onClick={this.handleBoxClick} />
+              <div className="collapsible-header">{goal.goal}
                 <a href="#/dashboard" onClick={() => this.removeGoal(goal.id)}>
                   <Icon right>delete</Icon>
                 </a>
               </div>
-              <Goal checkBox={this.checkBox} uncheckBox={this.uncheckBox} goal={goal.id} user_id={this.state.profile.user_id} />
+              <Goal goal={goal.id} user_id={this.state.profile.user_id} />
             </li>
             )}
         </ul>}
