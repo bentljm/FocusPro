@@ -37,7 +37,6 @@ var Setting = db.define('Setting', {
   quote: Sequelize.STRING,
   reflection_freq: Sequelize.INTEGER,
   reminder: Sequelize.BOOLEAN,
-  reminder_type: Sequelize.STRING,
   reminder_freq: Sequelize.INTEGER,
   reminder_address: Sequelize.STRING
 });

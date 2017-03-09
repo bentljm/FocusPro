@@ -23,6 +23,7 @@ export default class Dashboard extends React.Component {
       goalEnabled: false,
       dayGoalVisited: false,
       goalVisited: false,
+      status: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.postGoal = this.postGoal.bind(this);
@@ -33,6 +34,9 @@ export default class Dashboard extends React.Component {
     this.validate = this.validate.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
     this.getExtensionSite = this.getExtensionSite.bind(this);
+    this.handleBoxClick = this.handleBoxClick.bind(this);
+    this.checkBox = this.checkBox.bind(this);
+    this.uncheckBox = this.uncheckBox.bind(this);
   }
 
   componentWillMount() {
@@ -232,6 +236,22 @@ export default class Dashboard extends React.Component {
     $('.collapsible').collapsible();
   }
 
+  handleBoxClick() {
+    if (this.state.status) {
+      this.setState({ status: false });
+    } else {
+      this.setState({ status: true });
+    }
+  }
+
+  checkBox() {
+    this.setState({ status: true });
+  }
+
+  uncheckBox() {
+    this.setState({ status: false });
+  }
+
   render() {
     const { dayGoalInput } = this.state;
     if (dayGoalInput) {
@@ -253,19 +273,20 @@ export default class Dashboard extends React.Component {
         <br />
         <h3> Goal of the Day: </h3>
         <Row>
-          <Input s={10} className={errors.dayGoal && this.state.dayGoalVisited ? 'error' : 'white'} data-length="255" placeholder="Add new goal of the day" value={this.state.dayGoalInput} onChange={e => this.handleChange(e, 'dayGoalInput')} onKeyPress={this.handleQuoteKeyPress} onBlur={() => this.handleBlur('dayGoal')} />
+          <Input s={10} className={errors.dayGoal && this.state.dayGoalVisited ? 'error' : 'white'} data-length="255" placeholder="Add new goal of the day" value={this.state.dayGoalInput} onChange={e => this.handleChange(e, 'dayGoalInput')} onKeyPress={this.handleQuoteKeyPress} onBlur={() => this.handleBlur('dayGoal')} /><p><i className="material-icons small left-align">keyboard_return</i></p>
         </Row>
         <h3> Main Goals: </h3>
         {(this.state.goals.length === 0 || !this.state.profile.user_id) && <div>You have no goals set currently.</div>}
         {(this.state.goals.length > 0 && this.state.profile.user_id) && <ul className="collapsible" data-collapsible="expandable">
           {this.state.goals.map(goal =>
             <li key={goal.id}>
-              <div className="collapsible-header">{goal.goal}
+              <div className="collapsible-header">
+                <Input name="group1" type="checkbox" value="check" checked={this.state.status} label={goal.goal} onClick={this.handleBoxClick} />
                 <a href="#/dashboard" onClick={() => this.removeGoal(goal.id)}>
                   <Icon right>delete</Icon>
                 </a>
               </div>
-              <Goal goal={goal.id} user_id={this.state.profile.user_id} />
+              <Goal checkBox={this.checkBox} uncheckBox={this.uncheckBox} goal={goal.id} user_id={this.state.profile.user_id} />
             </li>
             )}
         </ul>}

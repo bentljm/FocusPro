@@ -177,14 +177,13 @@ function postSettings(req, res, next) { // Post settings for specific user.
     var quote = req.body.quote;
     var reflection_freq = req.body.reflection_freq;
     var reminder = req.body.reminder;
-    var reminder_type = req.body.reminder_type;
     var reminder_freq = req.body.reminder_freq;
     var reminder_address = req.body.reminder_address;
     var UserId = user.id;
 
     // Create entry in Settings with above parameters.
 
-    db.Setting.create({picture: picture, quote: quote, reflection_freq: reflection_freq, reminder: reminder, reminder_type: reminder_type, reminder_freq: reminder_freq, reminder_address: reminder_address, UserId: UserId}).then(function (data) {
+    db.Setting.create({picture: picture, quote: quote, reflection_freq: reflection_freq, reminder: reminder, reminder_freq: reminder_freq, reminder_address: reminder_address, UserId: UserId}).then(function (data) {
       res.status(201).json({ // Send 201 status upon success.
         status: 'success',
         data: data,
@@ -354,7 +353,7 @@ function updateSettings(req, res, next) {
     var UserId = user.id;
 
     // Update entry in Settings with above parameters.
-    db.Setting.update({picture: req.body.picture, quote: req.body.quote, reflection_freq: req.body.reflection_freq, reminder: req.body.reminder, reminder_type: req.body.reminder_type, reminder_freq: req.body.reminder_freq, reminder_address: req.body.reminder_address}, {where: {UserId: UserId}}).then(function (data) {
+    db.Setting.update({picture: req.body.picture, quote: req.body.quote, reflection_freq: req.body.reflection_freq, reminder: req.body.reminder, reminder_freq: req.body.reminder_freq, reminder_address: req.body.reminder_address}, {where: {UserId: UserId}}).then(function (data) {
       res.status(201).json({ // Send 201 status upon success.
         status: 'success',
         data: data,

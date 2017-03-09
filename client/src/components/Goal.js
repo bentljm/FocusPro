@@ -14,7 +14,7 @@ export default class Goal extends React.Component {
       subgoalVisited: false,
       subgoalEnabled: false,
       percent: 0,
-      color: '#ff0000'
+      color: '#ff0000',
     };
     this.handleChange = this.handleChange.bind(this);
     this.postSubgoal = this.postSubgoal.bind(this);
@@ -55,11 +55,14 @@ export default class Goal extends React.Component {
   setPercentage(percentage) {
     if (percentage >= 98) {
       this.setState({ percent: 100, color: '#00ff00' });
+      this.props.checkBox();
     } else if (percentage <= 2) {
       this.setState({ percent: 0, color: '#ff0000' });
+      this.props.uncheckBox();
     } else {
       this.setState({ percent: percentage });
       this.setColor(percentage);
+      this.props.uncheckBox();
     }
   }
 
