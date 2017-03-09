@@ -1,5 +1,6 @@
 //TODO: Force refresh when starting to block
 //Change options view so only original warn time is showing
+//Check edge cases
 
 //Clearing data
 //Clear data every 24 hours at midnight
@@ -11,8 +12,7 @@ chrome.alarms.create("clearNotifications", {when: new Date().setHours(0), period
 //chrome.alarms.create("clearNotifications", {periodInMinutes: 1});
 
 //Send information to app every half hour
-//TEMP 1
-chrome.alarms.create("updateApp", {periodInMinutes: 1});
+chrome.alarms.create("updateApp", {periodInMinutes: 30});
 
 chrome.alarms.onAlarm.addListener(function(alarm) {
   if (alarm.name === "updateApp" && localStorage.auth0_id) {
@@ -65,7 +65,6 @@ function sendAppStats() {
     }
     allSites.push({url: prop, time: JSON.parse(localStorage.sites)[prop], history: history});
   }
-  console.log(JSON.stringify(allSites));
   $.ajax({
     type: 'POST',
     url: `http://localhost:7777/api/users/${localStorage.auth0_id}/extension_data`,
