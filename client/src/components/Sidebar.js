@@ -14,7 +14,9 @@ export default class Sidebar extends React.Component {
     };
     // listen to profile_updated events to update internal state
     this.props.auth.event.on('profile_updated', (newProfile) => {
-      this.setState({ profile: newProfile });
+      this.setState({ profile: newProfile }, () => {
+        this.getUserInfo();
+      });
     });
     this.getUserInfo = this.getUserInfo.bind(this);
   }
