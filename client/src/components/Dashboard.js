@@ -94,7 +94,8 @@ export default class Dashboard extends React.Component {
       url: `/api/users/${this.state.profile.user_id}/blacklist`,
       success: (data) => {
         console.log('SUCCESS: OBTAINED BLACKLIST: ', data.data);
-        var filtered = data.data.filter(e => e.blacklist_type !== "1");
+        // Do not show blackout sites
+        const filtered = data.data.filter(e => e.blacklist_type !== '1');
         that.setState({ blacklist: filtered });
       },
       error: (err) => { console.log('ERROR: COULD NOT GET BLACKLIST', err); },
@@ -114,10 +115,29 @@ export default class Dashboard extends React.Component {
     });
   }
 
-  callCustomJQuery() {
-    $('.collapsible').collapsible();
+  getExtensionData() {
+    const that = this;
+    $.ajax({
+      type: 'GET', // GET REQUEST
+      url: `/api/users/${this.state.profile.user_id}/extension_data`,
+      success: (data) => {
+        console.log('SUCCESS: OBTAINED EXTENSION DATA: ', data.data);
+        that.setState({ extension: data.data });
+      },
+      error: (err) => { console.log('ERROR: COULD NOT GET EXTENSION DATA', err); },
+    });
   }
 
+  getExtensionSite(site) {
+    let siteInfo = {};
+    for (let i = 0; i < this.state.extension.length; i++) {
+      if (this.state.extension[i].url.includes(site)) {
+        siteInfo = this.state.extension[i];
+      }
+    }
+    console.log('siteInfo', siteInfo);
+    return siteInfo;
+  }
   handleChange(event, str) {
     this.setState({ [str]: event.target.value });
   }
@@ -207,32 +227,11 @@ export default class Dashboard extends React.Component {
     }
   }
 
-  getExtensionData() {
-    const that = this;
-    $.ajax({
-      type: 'GET', // GET REQUEST
-      url: `/api/users/${this.state.profile.user_id}/extension_data`,
-      success: (data) => {
-        console.log('SUCCESS: OBTAINED EXTENSION DATA: ', data.data);
-        that.setState({ extension: data.data });
-      },
-      error: (err) => { console.log('ERROR: COULD NOT GET EXTENSION DATA', err); },
-    });
+  callCustomJQuery() {
+    $('.collapsible').collapsible();
   }
 
-  getExtensionSite(site) {
-    let siteInfo = {};
-    for (let i = 0; i < this.state.extension.length; i++) {
-      if(this.state.extension[i].url.includes(site)) {
-        siteInfo = this.state.extension[i];
-      }
-    }
-    console.log('siteInfo', siteInfo);
-    return siteInfo;
-  }
   render() {
-    var bloop = this.getExtensionSite('www.reddit.com');
-    console.log('get extension data reddit', bloop);
     const { dayGoalInput } = this.state;
     if (dayGoalInput) {
       this.state.dayGoalEnabled = dayGoalInput.length > 0;
@@ -279,7 +278,7 @@ export default class Dashboard extends React.Component {
           {this.state.blacklist.map(site =>
             <li key={`sites ${site.id}`}>
               <div className="collapsible-header">{site.url}</div>
-              <div className="collapsible-body"><Site url={site.url} siteId={site.id} siteInfo = {this.getExtensionSite}/></div>
+              <div className="collapsible-body"><Site url={site.url} siteId={site.id} siteInfo={this.getExtensionSite} /></div>
             </li>
             )}
         </ul>
