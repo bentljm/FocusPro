@@ -16,7 +16,6 @@ export default class Settings extends React.Component {
       siteLimit: 0,
       image: '',
       quote: '',
-      reminderType: '',
       reminderFreq: 0,
       reminderAddress: '',
       labelStyle: {},
@@ -83,7 +82,6 @@ export default class Settings extends React.Component {
         that.setState({
           image: data.data[0].picture,
           quote: data.data[0].quote,
-          reminderType: data.data[0].reminder_type,
           reminderFreq: data.data[0].reminder_freq,
           reminderAddress: data.data[0].reminder_address,
         });
@@ -159,7 +157,7 @@ export default class Settings extends React.Component {
   }
 
   handleReminderSubmission() {
-    this.updateSetting(null, null, null, true, this.state.reminderType, this.state.reminderFreq, this.state.reminderAddress);
+    this.updateSetting(null, null, null, true, this.state.reminderFreq, this.state.reminderAddress);
     this.sendNotification();
   }
 
@@ -215,7 +213,7 @@ export default class Settings extends React.Component {
     });
   }
 
-  updateSetting(pic, quote, refl_freq, remind, remind_type, remind_freq, remind_addr) {
+  updateSetting(pic, quote, refl_freq, remind, remind_freq, remind_addr) {
     $.ajax({
       type: 'PUT',
       url: `/api/users/${this.state.profile.user_id}/setting`,
@@ -225,7 +223,6 @@ export default class Settings extends React.Component {
         quote: (quote !== null) ? quote : this.state.setting.quote,
         reflection_freq: refl_freq || this.state.setting.reflection_freq,
         reminder: remind || this.state.setting.reminder,
-        reminder_type: remind_type || this.state.setting.reminder_type,
         reminder_freq: remind_freq || this.state.setting.reminder_freq,
         reminder_address: remind_addr || this.state.setting.reminder_address }),
       success: (data) => {
@@ -252,6 +249,7 @@ export default class Settings extends React.Component {
   }
 
   siteFormsFilled() {
+
     console.log('true?', this.state.siteURL.length > 0 && this.state.siteLimit.length > 0);
     if (this.state.siteType !== '1') {
       return this.state.siteURL.length > 0 && this.state.siteLimit.length > 0;
@@ -261,7 +259,7 @@ export default class Settings extends React.Component {
   }
 
   reminderFormsFilled() {
-    return this.state.reminderType.length > 0 && this.state.reminderAddress.length > 0 && this.state.reminderFreq.length > 0;
+    return this.state.reminderAddress.length > 0 && this.state.reminderFreq.length > 0;
   }
 
   alertUser(str) {
@@ -307,10 +305,10 @@ export default class Settings extends React.Component {
 
 
   render() {
-    const { reminderType, reminderAddress, reminderFreq } = this.state;
+    const { reminderAddress, reminderFreq } = this.state;
     let reminderSubmitEnabled;
-    if (reminderType && reminderAddress && reminderFreq) {
-      reminderSubmitEnabled = reminderType.length > 0 && reminderAddress.length > 0 && reminderFreq.length > 0;
+    if (reminderAddress && reminderFreq) {
+      reminderSubmitEnabled = reminderAddress.length > 0 && reminderFreq.length > 0;
     }
     const URLtimeLimiteDisabled = (this.state.siteType === '1');
 
@@ -385,14 +383,11 @@ export default class Settings extends React.Component {
           <Input s={10} data-length="255" placeholder="Enter Motivational Quote" value={this.state.quote} onChange={e => this.handleChange(e, 'quote')} onBlur={() => this.handleSubmission('quote')} onKeyPress={e => this.handleKeyPress(e, 'quote')} style={this.state.inputStyle.quote} />
         </Row>
         <br />
+        <h3> Reminders: </h3>
         <Row>
-          <Input s={2} type="select" label="Set Reminder Type" defaultValue="1" value={this.state.reminderType} onChange={e => this.handleChange(e, 'reminderType')}>
-            <option value="1">No Reminder</option>
-            <option value="2">Text</option>
-            <option value="3">Email</option>
-          </Input>
-          <Input s={6} label="Select Number/Email Address" value={this.state.reminderAddress} onChange={e => this.handleChange(e, 'reminderAddress')} onKeyPress={e => this.handleKeyPress(e, 'reminder')} />
-          <Input s={2} type="select" label="Select Frequency" defaultValue="1" value={this.state.reminderFreq} onChange={e => this.handleChange(e, 'reminderFreq')} >
+          <Input s={8} label="Input Number/Email Address" value={this.state.reminderAddress} onChange={e => this.handleChange(e, 'reminderAddress')} onKeyPress={e => this.handleKeyPress(e, 'reminder')} />
+          <Input s={2} type="select" label="Frequency" defaultValue="0" value={this.state.reminderFreq} onChange={e => this.handleChange(e, 'reminderFreq')} >
+            <option value="0">Select</option>
             <option value="1">Daily</option>
             <option value="2">Weekly</option>
           </Input>
