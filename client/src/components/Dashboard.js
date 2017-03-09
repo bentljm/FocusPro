@@ -18,6 +18,7 @@ export default class Dashboard extends React.Component {
       userId: '',
       setting: {},
       blacklist: [],
+      extension: [],
       dayGoalEnabled: false,
       goalEnabled: false,
       dayGoalVisited: false,
@@ -31,11 +32,13 @@ export default class Dashboard extends React.Component {
     this.handleQuoteKeyPress = this.handleQuoteKeyPress.bind(this);
     this.validate = this.validate.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
+    this.getExtensionSite = this.getExtensionSite.bind(this);
   }
 
   componentWillMount() {
     this.getUserId();
     this.getSetting();
+    this.getExtensionData();
     this.callCustomJQuery();
   }
 
@@ -51,6 +54,7 @@ export default class Dashboard extends React.Component {
     });
     this.getAllGoals();
     this.getBlacklist();
+    this.getExtensionData();
     this.callCustomJQuery();
   }
 
@@ -91,7 +95,9 @@ export default class Dashboard extends React.Component {
       url: `/api/users/${this.state.profile.user_id}/blacklist`,
       success: (data) => {
         console.log('SUCCESS: OBTAINED BLACKLIST: ', data.data);
-        that.setState({ blacklist: data.data });
+        // Do not show blackout sites
+        const filtered = data.data.filter(e => e.blacklist_type !== '1');
+        that.setState({ blacklist: filtered });
       },
       error: (err) => { console.log('ERROR: COULD NOT GET BLACKLIST', err); },
     });
@@ -110,10 +116,29 @@ export default class Dashboard extends React.Component {
     });
   }
 
-  callCustomJQuery() {
-    $('.collapsible').collapsible();
+  getExtensionData() {
+    const that = this;
+    $.ajax({
+      type: 'GET', // GET REQUEST
+      url: `/api/users/${this.state.profile.user_id}/extension_data`,
+      success: (data) => {
+        console.log('SUCCESS: OBTAINED EXTENSION DATA: ', data.data);
+        that.setState({ extension: data.data });
+      },
+      error: (err) => { console.log('ERROR: COULD NOT GET EXTENSION DATA', err); },
+    });
   }
 
+  getExtensionSite(site) {
+    let siteInfo = {};
+    for (let i = 0; i < this.state.extension.length; i++) {
+      if (this.state.extension[i].url.includes(site)) {
+        siteInfo = this.state.extension[i];
+      }
+    }
+    console.log('siteInfo', siteInfo);
+    return siteInfo;
+  }
   handleChange(event, str) {
     this.setState({ [str]: event.target.value });
   }
@@ -203,6 +228,10 @@ export default class Dashboard extends React.Component {
     }
   }
 
+  callCustomJQuery() {
+    $('.collapsible').collapsible();
+  }
+
   render() {
     const { dayGoalInput } = this.state;
     if (dayGoalInput) {
@@ -250,7 +279,7 @@ export default class Dashboard extends React.Component {
           {this.state.blacklist.map(site =>
             <li key={`sites ${site.id}`}>
               <div className="collapsible-header">{site.url}</div>
-              <div className="collapsible-body"><Site url={site.url} siteId={site.id} /></div>
+              <div className="collapsible-body"><Site url={site.url} siteId={site.id} siteInfo={this.getExtensionSite} /></div>
             </li>
             )}
         </ul>

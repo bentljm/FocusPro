@@ -5,32 +5,37 @@ export default class Site extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: [
-        { date: 'Feb 26', time: 4 },
-        { date: 'Feb 27', time: 6 },
-        { date: 'Feb 28', time: 9 },
-        { date: 'Feb 29', time: 12 },
-        { date: 'Mar 1', time: 20 },
-        { date: 'Mar 2', time: 50 },
-        { date: 'Mar 3', time: 100 },
-      ],
+      data: [],
     };
   }
 
   componentDidMount() {
-    this.updateData();
+    this.historyData();
   }
 
-  updateData() {
-    this.setState = {
-      // data.labels = this.props.url;
-      // data.datasets[0].data = this.props.data
-    };
+  historyData() {
+    const that = this;
+    const site = this.props.siteInfo(this.props.url);
+    let curr = 0;
+    const historyData = [];
+    if (site.history) {
+      for (let i = 0; i < site.history.length; i++) {
+        const ms = parseInt(site.history[i][0], 10);
+        let displayDate = new Date(ms).toLocaleDateString();
+        const year = new Date(ms).getFullYear();
+        displayDate = displayDate.toString().replace(`/${year}`, '');
+        const displayTime = parseInt(site.history[i][1], 10) - curr;
+        curr = parseInt(site.history[i][1], 10);
+        historyData.push({ date: displayDate, time: displayTime });
+      }
+    }
+    that.setState({ data: historyData });
   }
 
   render() {
-    return (
-      <AreaChart width={650} height={250} data={this.state.data}>
+    let chart = <span> Sorry, there is currently no data to be displayed. Data is collected daily at midnight. </span>;
+    if (this.state.data.length > 0) {
+      chart = (<AreaChart width={650} height={250} data={this.state.data}>
         <defs>
           <linearGradient id="colorUv" x1="0" y1="0">
             <stop stopColor="#0088FE" stopOpacity={1} />
@@ -41,7 +46,12 @@ export default class Site extends React.Component {
         <CartesianGrid strokeDasharray="3 3" />
         <Tooltip />
         <Area type="monotone" dataKey="time" stroke="#0088FE" fillOpacity={1} fill="url(#colorUv)" />
-      </AreaChart>
+      </AreaChart>);
+    }
+    return (
+      <div>
+        {chart}
+      </div>
     );
   }
 }
