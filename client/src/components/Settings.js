@@ -249,7 +249,6 @@ export default class Settings extends React.Component {
   }
 
   siteFormsFilled() {
-
     console.log('true?', this.state.siteURL.length > 0 && this.state.siteLimit.length > 0);
     if (this.state.siteType !== '1') {
       return this.state.siteURL.length > 0 && this.state.siteLimit.length > 0;
