@@ -54,6 +54,7 @@ export default class Dashboard extends React.Component {
     });
     this.getAllGoals();
     this.getBlacklist();
+    this.getExtensionData();
     this.callCustomJQuery();
   }
 

@@ -91,7 +91,7 @@ function addLocalDisplay() {
    row = document.createElement("tr");
    cell = document.createElement("td");
    var removeImage = document.createElement("img");
-   removeImage.src = chrome.extension.getURL("images/remove.png");
+   removeImage.src = chrome.extension.getURL("ic_close.png");
    removeImage.title = "Remove and stop tracking.";
    removeImage.width = 10;
    removeImage.height = 10;

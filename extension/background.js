@@ -3,13 +3,8 @@
 //Check edge cases
 
 //Clearing data
-//Clear data every 24 hours at midnight
-//chrome.alarms.create("midnightClearStats", {when: new Date().setHours(0), periodInMinutes: 1440});
 //Clear all notifications every 24 hours at midnight
 chrome.alarms.create("clearNotifications", {when: new Date().setHours(0), periodInMinutes: 1440});
-
-//For testing:
-//chrome.alarms.create("clearNotifications", {periodInMinutes: 1});
 
 //Send information to app every half hour
 chrome.alarms.create("updateApp", {periodInMinutes: 30});
@@ -30,11 +25,6 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
     console.log('update warn time');
     localStorage.warn = JSON.stringify(warn);
   }
-  // if (alarm.name === "midnightClearStats") {
-  //   console.log('now clearing stats');
-  //   var oldSites = new Sites(config);
-  //   oldSites.clear();
-  // }
 });
 
 function sendAppStats() {

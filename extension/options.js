@@ -79,7 +79,6 @@ function updateBlacklist(){
         }
       });
       console.log('blacklist', blacklist);
-      //localStorage.blacklist = JSON.stringify(data.data);
       // Store all sites to blackout inside localStorage.blackout
       // Store all sites to block after certain time inside localStorage.block
       // Store all sites to warn after certain time inside localStorage.warn
