@@ -35,8 +35,8 @@ describe('GET POST PUT DELETE requests FOR SETTINGS and BLACKLISTS', () => {
     global.authId = 'auth_id3';
     global.authId2 = 'auth_id4';
 
-    global.setting1 = {picture: 'Dumb', quote: 'Laconic', reflection_freq: 10, reminder: false, reminder_type: 'Regular', reminder_freq: 10, reminder_address: 'Apple Street'};
-    global.setting2 = {picture: 'Dumb2', quote: 'Laconic2', reflection_freq: 20, reminder: true, reminder_type: 'Regular2', reminder_freq: 20, reminder_address: 'Apple Street'};
+    global.setting1 = {picture: 'Dumb', quote: 'Laconic', reflection_freq: 10, reminder: false, reminder_freq: 10, reminder_address: 'Apple Street'};
+    global.setting2 = {picture: 'Dumb2', quote: 'Laconic2', reflection_freq: 20, reminder: true, reminder_freq: 20, reminder_address: 'Apple Street'};
     global.blacklist = {url: 'www.gmail@com', blacklist_type: 'Infrequent', blacklist_time: 10};
 
 
@@ -79,7 +79,7 @@ describe('GET POST PUT DELETE requests FOR SETTINGS and BLACKLISTS', () => {
 
   describe('POST NEW SETTINGS and blacklist URL', () =>{
     it('/api/users/:auth0_id/setting creates settings', (done) =>{
-      const dummySetting = {UserId: UserId1, picture: 'Dumb3', quote: 'Laconic3', reflection_freq: 30, reminder: false, reminder_type: 'Regula3r', reminder_freq: 30, reminder_address: 'Apple Street3'};
+      const dummySetting = {UserId: UserId1, picture: 'Dumb3', quote: 'Laconic3', reflection_freq: 30, reminder: false, reminder_freq: 30, reminder_address: 'Apple Street3'};
       request(app)
       .post('/api/users/auth_id3/setting')
       .send(dummySetting)
@@ -94,7 +94,6 @@ describe('GET POST PUT DELETE requests FOR SETTINGS and BLACKLISTS', () => {
         expect(res.body.data.reminder).to.equal(dummySetting.reminder);
         expect(res.body.data.reminder_address).to.equal(dummySetting.reminder_address);
         expect(res.body.data.reminder_freq).to.equal(dummySetting.reminder_freq);
-        expect(res.body.data.reminder_type).to.equal(dummySetting.reminder_type);
         done();
       });
     });
@@ -132,7 +131,6 @@ describe('GET POST PUT DELETE requests FOR SETTINGS and BLACKLISTS', () => {
         expect(res.body.data[0].reminder).to.equal(setting2.reminder);
         expect(res.body.data[0].reminder_address).to.equal(setting2.reminder_address);
         expect(res.body.data[0].reminder_freq).to.equal(setting2.reminder_freq);
-        expect(res.body.data[0].reminder_type).to.equal(setting2.reminder_type);
         done();
       });
     });
@@ -178,7 +176,6 @@ describe('GET POST PUT DELETE requests FOR SETTINGS and BLACKLISTS', () => {
           expect(res.body.data[0].reminder).to.equal(setting2.reminder);
           expect(res.body.data[0].reminder_address).to.equal(setting2.reminder_address);
           expect(res.body.data[0].reminder_freq).to.equal(setting2.reminder_freq);
-          expect(res.body.data[0].reminder_type).to.equal(setting2.reminder_type);
           expect(res.body.data[0].UserId).to.equal(UserId2);
           done();
         });
