@@ -1,6 +1,0 @@
-\contentsline {section}{\numberline {0.1}Front-end}{2}{section.0.1}
-\contentsline {subsection}{\numberline {0.1.1}React components}{2}{subsection.0.1.1}
-\contentsline {subsection}{\numberline {0.1.2}Middleware}{2}{subsection.0.1.2}
-\contentsline {subsection}{\numberline {0.1.3}Miscallaneous}{2}{subsection.0.1.3}
-\contentsline {section}{\numberline {0.2}Back-end}{3}{section.0.2}
-\contentsline {subsection}{\numberline {0.2.1}Controllers}{3}{subsection.0.2.1}
