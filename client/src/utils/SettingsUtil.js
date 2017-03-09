@@ -67,4 +67,4 @@ export const getSettingAjax = (auth0Id, callback) => {
     },
     error: (err) => { console.log('ERROR: COULD NOT GET SETTINGS', err); },
   });
-}
+};

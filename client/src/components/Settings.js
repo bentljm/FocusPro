@@ -76,7 +76,6 @@ export default class Settings extends React.Component {
       success: (data) => {
         console.log('SUCCESS: OBTAINED SETTINGS: ', data);
         that.setState({ setting: data.data[0] }, () => {
-          console.log('get setting', that.state.setting);
           that.initialiseSettings();
         });
         // that.setState({ image: data.data[0].picture });
@@ -313,7 +312,6 @@ export default class Settings extends React.Component {
     if (reminderType && reminderAddress && reminderFreq) {
       reminderSubmitEnabled = reminderType.length > 0 && reminderAddress.length > 0 && reminderFreq.length > 0;
     }
-    console.log('state siteType?', this.state.siteType, (this.state.siteType === '1'));
     const URLtimeLimiteDisabled = (this.state.siteType === '1');
 
     return (
