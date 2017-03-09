@@ -1,13 +1,14 @@
 //TODO: Force refresh when starting to block
 //Change options view so only original warn time is showing
 //Check edge cases
+//Move history saving to clearNotifications
 
 //Clearing data
 //Clear all notifications every 24 hours at midnight
 chrome.alarms.create("clearNotifications", {when: new Date().setHours(0), periodInMinutes: 1440});
 
 //Send information to app every half hour
-chrome.alarms.create("updateApp", {periodInMinutes: 30});
+chrome.alarms.create("updateApp", {periodInMinutes: 1});
 
 chrome.alarms.onAlarm.addListener(function(alarm) {
   if (alarm.name === "updateApp" && localStorage.auth0_id) {
