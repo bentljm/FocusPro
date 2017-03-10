@@ -248,9 +248,9 @@ export default class Dashboard2 extends React.Component {
           <Col s={12}>
             <div className="titleHead z-depth-4">
                 <h2 className="topName">
-                Hello, {this.state.username}!
+                Hello, {this.state.username}! <a href="#/new"><i className="material-icons tiny edit">edit</i></a>
                 </h2>
-                {this.state.setting.quote}
+                {this.state.setting.quote} <a href="#/new"><i className="material-icons tiny edit">edit</i></a>
             </div>
           </Col>
         </Row>
@@ -264,12 +264,12 @@ export default class Dashboard2 extends React.Component {
           </Col>
           <Col s={3}>
             <div className="dashboardBox z-depth-4">
-              <h3 className="titleText">Sites</h3>
+              <h3 className="titleText">Blacklist</h3>
               <ul className="collapsible" data-collapsible="expandable">
               {this.state.blacklist.map(site =>
               <li key={`sites ${site.id}`}>
-                <div className="collapsible-header">{site.url}</div>
-                <div className="collapsible-body"><Site url={site.url} siteId={site.id} siteInfo={this.getExtensionSite} /></div>
+                <div className="collapsible-header">{site.url} <Icon large right>keyboard_arrow_right</Icon> </div>
+                <div className="collapsible-body site"><Site url={site.url} siteId={site.id} siteInfo={this.getExtensionSite} /></div>
               </li>
               )}
               </ul>
@@ -286,6 +286,7 @@ export default class Dashboard2 extends React.Component {
                 <li key={goal.id}>
                   <div className="collapsible-header">{goal.goal}
                     <a href="#/dashboard" onClick={() => this.removeGoal(goal.id)}>
+                      <Icon large right>keyboard_arrow_right</Icon>
                       <Icon right>delete</Icon>
                     </a>
                   </div>
@@ -299,7 +300,7 @@ export default class Dashboard2 extends React.Component {
           </Col>
           <Col s={3}>
             <div className="statsBox z-depth-4">
-              <h3 className="titleText">Stats</h3>
+              <h3 className="titleText">Time Stats</h3>
               <Stat profile={this.state.profile} />
             </div>
           </Col>

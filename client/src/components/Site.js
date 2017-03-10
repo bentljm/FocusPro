@@ -35,7 +35,7 @@ export default class Site extends React.Component {
   render() {
     let chart = <span> Sorry, there is currently no data to be displayed. Data is collected daily at midnight. </span>;
     if (this.state.data.length > 0) {
-      chart = (<AreaChart width={650} height={250} data={this.state.data}>
+      chart = (<AreaChart width={250} height={250} data={this.state.data}>
         <defs>
           <linearGradient id="colorUv" x1="0" y1="0">
             <stop stopColor="#0088FE" stopOpacity={1} />
