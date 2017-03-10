@@ -174,7 +174,6 @@ export default class Goal extends React.Component {
   }
 
   openCollapsible() {
-    console.log('clickity click');
     const open = this.state.open;
     this.setState({open: !open});
   }

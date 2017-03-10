@@ -187,14 +187,16 @@ div.container {
 .gotd {
   background: white;
   min-height: 120px;
-  padding-top: 5px;
+  padding-top: 15px;
   padding-left: 0px;
   padding-right: 10px;
 }
 .titleText {
   margin: 0px;
-  padding: 5px;
+  padding-bottom: 5px;
+  padding-right: 15px;
   padding-left: 15px;
+  padding-top: 0px;
 }
 div.col.input-field {
   margin: 0px;
@@ -213,7 +215,7 @@ div.recharts-wrapper {
   max-height: 100%;
 }
 .statsBox {
-  padding-top: 5px;
+  padding-top: 15px;
   background: white;
   min-height: 280px;
 }

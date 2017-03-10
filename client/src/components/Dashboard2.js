@@ -267,10 +267,7 @@ export default class Dashboard2 extends React.Component {
               <h3 className="titleText">Blacklist <a href="#/new"><i className="material-icons small return">add_box</i></a></h3>
               <ul className="collapsible" data-collapsible="expandable">
               {this.state.blacklist.map(site =>
-              <li key={`sites ${site.id}`}>
-                <div className="collapsible-header">{site.url} <Icon large right>keyboard_arrow_right</Icon> </div>
-                <div className="collapsible-body site"><Site url={site.url} siteId={site.id} siteInfo={this.getExtensionSite} /></div>
-              </li>
+                <Site site={site} url={site.url} siteId={site.id} siteInfo={this.getExtensionSite} />
               )}
               </ul>
             </div>
@@ -281,11 +278,11 @@ export default class Dashboard2 extends React.Component {
             <div className="dashboardBox z-depth-4">
               <h3 className="titleText">Goals <Motivational /></h3>
               {(this.state.goals.length === 0 || !this.state.profile.user_id) && <div className="setGoal">You have no goals set currently. Set one now.</div>}
-              <ul className="collapsible" data-collapsible="expandable">
+              {(this.state.goals.length > 0 && this.state.profile.user_id) && <ul className="collapsible" data-collapsible="expandable">
               {this.state.goals.map(goal =>
-                  <Goal goal={goal} user_id={this.state.profile.user_id} removeGoal={this.removeGoal}/>
+                  <Goal key={goal.id} goal={goal} user_id={this.state.profile.user_id} removeGoal={this.removeGoal}/>
                 )}
-              </ul>
+              </ul>}
             <Input s={11} className={errors.goal && this.state.goalVisited ? 'error' : 'white'} data-length="255" label="Set new goal" value={this.state.goalInput} onChange={e => this.handleChange(e, 'goalInput')} onKeyPress={this.handleKeyPress} onBlur={() => this.handleBlur('goal')} />
             <a href="#/new"><i className="material-icons small return">add_box</i></a>
             </div>
@@ -299,6 +296,5 @@ export default class Dashboard2 extends React.Component {
         </Row>
       </div>
       );
-
   }
 }
