@@ -193,14 +193,14 @@ export default class Goal extends React.Component {
     return (
       <li key={this.props.goal.id}>
         <div className="collapsible-header" onClick={this.openCollapsible}>
-        <a href = "#/new" onClick={this.handleBoxClick}>
+        <a href = "#/dashboard" onClick={this.handleBoxClick}>
         {(!this.state.status) && <Icon>check_box_outline_blank</Icon>}
         {(this.state.status) && <Icon>check_box</Icon>}
         </a>
         {this.props.goal.goal}
           {(!this.state.open) && <Icon large right>keyboard_arrow_right</Icon> }
           {(this.state.open) && <Icon large right>keyboard_arrow_down</Icon> }
-          <a href="#/new" onClick={() => this.props.removeGoal(this.props.goal.id)}>
+          <a href="#/dashboard" onClick={() => this.props.removeGoal(this.props.goal.id)}>
             <Icon right>delete</Icon>
           </a>
         </div>

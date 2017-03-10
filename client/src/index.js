@@ -43,10 +43,10 @@ render(
     <Route path="/" component={App} auth={auth}>
       <IndexRoute component={Landingpage} />
       <Route path="access_token=:token" component={Dashboard} />
-      <Route path="dashboard" component={Dashboard} onEnter={requireAuth} />
+      <Route path="dashboard" component={Dashboard2} onEnter={requireAuth} />
       <Route path="selfreflection" component={Selfreflection} onEnter={requireAuth} />
       <Route path="settings" component={Settings} onEnter={requireAuth} />
-      <Route path="new" component={Dashboard2} onEnter={requireAuth} />
+      <Route path="new" component={Dashboard} onEnter={requireAuth} />
       <Route path="question" component={ReflectionQuestion} onEnter={requireAuth} />
     </Route>
   </Router>
