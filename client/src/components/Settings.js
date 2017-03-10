@@ -21,6 +21,7 @@ export default class Settings extends React.Component {
       labelStyle: {},
       inputStyle: {},
       validationStyle: {},
+      blacklistHelp: false,
     };
     this.handleReminderSubmission = this.handleReminderSubmission.bind(this);
     this.deleteBlacklist = this.deleteBlacklist.bind(this);
@@ -33,6 +34,7 @@ export default class Settings extends React.Component {
     this.handleSubmission = this.handleSubmission.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.setValidationStyle = this.setValidationStyle.bind(this);
+    this.blacklistInfo = this.blacklistInfo.bind(this);
 
     this.SITETYPE_MAP = {
       1: 'Blackout',
@@ -147,7 +149,7 @@ export default class Settings extends React.Component {
       url: `/api/users/${this.state.profile.user_id}/sendNotification`,
       contentType: 'application/json',
       data: JSON.stringify({ address: this.state.reminderAddress, name: this.state.profile.given_name, freq: this.state.reminderFreq }),
-      success: (data) => {
+      success: () => {
         that.alertUser('Notifications');
         that.setState({ reminderAddress: '' });
       },
@@ -301,7 +303,9 @@ export default class Settings extends React.Component {
     });
   }
 
-
+  blacklistInfo() {
+    this.setState({ blacklistHelp: !this.state.blacklistHelp });
+  }
   render() {
     const { reminderAddress, reminderFreq } = this.state;
     let reminderSubmitEnabled;
@@ -313,88 +317,112 @@ export default class Settings extends React.Component {
     return (
       <div>
         <h1> Settings </h1>
-        <h3> Blacklist: </h3>
-        {(this.state.blacklist.length === 0) && <div>There is no blacklist url set currently.</div>}
-        {this.state.blacklist.length > 0 && <Table>
-          <thead>
-            <tr>
-              <th data-field="id">Site</th>
-              <th data-field="type">Type</th>
-              <th data-field="limit">Time Limit</th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.state.blacklist.map(site => (
-              <tr key={`blacklist${site.id}`} >
-                <td>{site.url}</td>
-                <td>{this.SITETYPE_MAP[site.blacklist_type]}</td>
-                <td>{(site.blacklist_time) ? site.blacklist_time : '-'}</td>
-                <td><a className="waves-effect waves-teal btn-flat btn-small" href="#/settings" onClick={() => this.deleteBlacklist(site.id)}><Icon right>delete</Icon></a></td>
+        <div className="settingsBox z-depth-4">
+          <h3>
+            Blacklist
+            <a href="#/settings" onClick={this.blacklistInfo}>
+              <i className="material-icons small return">help_outline</i>
+            </a>
+          </h3>
+          {(this.state.blacklistHelp) && <p> Blackout prevents you from visiting the site at all. <br />
+            Block after exceeding will block you from visiting the site for 24 hours after exceeding the set time limit.
+            <br />
+            Warn after exceeding will send you notifications every 10 minutes you exceed the set time limit for 24 hours. </p>}
+          {(this.state.blacklist.length === 0) && <div>There is no blacklist url set currently.</div>}
+          {this.state.blacklist.length > 0 && <Table>
+            <thead>
+              <tr>
+                <th data-field="id">Site</th>
+                <th data-field="type">Type</th>
+                <th data-field="limit">Time Limit</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>}
+            </thead>
+            <tbody>
+              {this.state.blacklist.map(site => (
+                <tr key={`blacklist${site.id}`} >
+                  <td>{site.url}</td>
+                  <td>{this.SITETYPE_MAP[site.blacklist_type]}</td>
+                  <td>{(site.blacklist_time) ? site.blacklist_time : '-'}</td>
+                  <td><a className="waves-effect waves-teal btn-flat btn-small" href="#/settings" onClick={() => this.deleteBlacklist(site.id)}><Icon right>delete</Icon></a></td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>}
+          <br />
+          <Row>
+            <Input s={5} onFocus={() => this.setValidationStyle('site', '')} className={this.state.validationStyle.site} label="Input Site" value={this.state.siteURL} onChange={e => this.handleChange(e, 'siteURL')} onKeyPress={e => this.handleKeyPress(e, 'site')} />
+            <Input s={3} type="select" label="Select Type" defaultValue="1" value={this.state.siteType} onChange={e => this.handleChange(e, 'siteType')}>
+              <option value="1">Blackout</option>
+              <option value="2">Block after exceeding</option>
+              <option value="3">Warn after exceeding</option>
+            </Input>
+            <Input s={2} disabled={URLtimeLimiteDisabled} onFocus={() => this.setValidationStyle('site', '')} className={this.state.validationStyle.site} label="Set Time Limit (min)" value={this.state.siteLimit} onChange={e => this.handleChange(e, 'siteLimit')} onKeyPress={e => this.handleKeyPress(e, 'site')} />
+            <button className="waves-effect waves-teal btn-flat btn-large" onClick={() => this.handleSubmission('site')}><i className="material-icons small">add_box</i></button>
+          </Row>
+        </div>
         <br />
-        <Row>
-          <Input s={5} onFocus={() => this.setValidationStyle('site', '')} className={this.state.validationStyle.site} label="Input Site" value={this.state.siteURL} onChange={e => this.handleChange(e, 'siteURL')} onKeyPress={e => this.handleKeyPress(e, 'site')} />
-          <Input s={3} type="select" label="Select Type" defaultValue="1" value={this.state.siteType} onChange={e => this.handleChange(e, 'siteType')}>
-            <option value="1">Blackout</option>
-            <option value="2">Block after exceeding</option>
-            <option value="3">Warn after exceeding</option>
-          </Input>
-          <Input s={2} disabled={URLtimeLimiteDisabled} onFocus={() => this.setValidationStyle('site', '')} className={this.state.validationStyle.site} label="Set Time Limit (min)" value={this.state.siteLimit} onChange={e => this.handleChange(e, 'siteLimit')} onKeyPress={e => this.handleKeyPress(e, 'site')} />
-          <button className="waves-effect waves-teal btn-flat btn-large" onClick={() => this.handleSubmission('site')}><i className="material-icons small">add_box</i></button>
-        </Row>
+        <div className="settingsBox z-depth-4">
+          <h3> Personalization </h3>
+          <Row>
+            <div className="label-header">Username</div>
+            <Col s={10}>
+              <div onDoubleClick={() => this.editStyle('username')} style={this.state.labelStyle.username}>{this.state.username}
+              </div>
+            </Col>
+            <Col s={2}>
+              <button className="waves-effect waves-teal btn-flat btn-small" style={this.state.labelStyle.username} onClick={() => this.editStyle('username')}><i className="material-icons small">mode_edit</i></button>
+            </Col>
+            <Input s={10} data-length="255" placeholder="Enter Username (Mandatory)" value={this.state.username} onChange={e => this.handleChange(e, 'username')} onKeyPress={e => this.handleKeyPress(e, 'username')} onBlur={() => this.handleSubmission('username')} style={this.state.inputStyle.username} />
+          </Row>
+          <Row>
+            <div className="label-header">Image</div>
+            <Col s={10}>
+              <div onDoubleClick={() => this.editStyle('image')} style={this.state.labelStyle.image}>{this.state.image}
+              </div>
+            </Col>
+            <Col s={2}>
+              <button className="waves-effect waves-teal btn-flat btn-small" style={this.state.labelStyle.image} onClick={() => this.editStyle('image')}><i className="material-icons small">mode_edit</i></button>
+            </Col>
+            <Input s={10} data-length="255" placeholder="Enter Image URL" value={this.state.image} onChange={e => this.handleChange(e, 'image')} onBlur={() => this.handleSubmission('image')} onKeyPress={e => this.handleKeyPress(e, 'image')} style={this.state.inputStyle.image} />
+          </Row>
+          <Row>
+            <div className="label-header">Quote</div>
+            <Col s={10}>
+              <div onDoubleClick={() => this.editStyle('quote')} style={this.state.labelStyle.quote}>{this.state.quote}
+              </div>
+            </Col>
+            <Col s={2}>
+              <button className="waves-effect waves-teal btn-flat btn-small" style={this.state.labelStyle.quote} onClick={() => this.editStyle('quote')}><i className="material-icons small">mode_edit</i></button>
+            </Col>
+            <Input s={10} data-length="255" placeholder="Enter Motivational Quote" value={this.state.quote} onChange={e => this.handleChange(e, 'quote')} onBlur={() => this.handleSubmission('quote')} onKeyPress={e => this.handleKeyPress(e, 'quote')} style={this.state.inputStyle.quote} />
+          </Row>
+        </div>
         <br />
-        <h3> Personalization: </h3>
-        <Row>
-          <div className="label-header">Username:</div>
-          <Col s={10}>
-            <div onDoubleClick={() => this.editStyle('username')} style={this.state.labelStyle.username}>{this.state.username}
-            </div>
-          </Col>
-          <Col s={2}>
-            <button className="waves-effect waves-teal btn-flat btn-small" style={this.state.labelStyle.username} onClick={() => this.editStyle('username')}><i className="material-icons small">mode_edit</i></button>
-          </Col>
-          <Input s={10} data-length="255" placeholder="Enter Username (Mandatory)" value={this.state.username} onChange={e => this.handleChange(e, 'username')} onKeyPress={e => this.handleKeyPress(e, 'username')} onBlur={() => this.handleSubmission('username')} style={this.state.inputStyle.username} />
-        </Row>
-        <Row>
-          <div className="label-header">Image:</div>
-          <Col s={10}>
-            <div onDoubleClick={() => this.editStyle('image')} style={this.state.labelStyle.image}>{this.state.image}
-            </div>
-          </Col>
-          <Col s={2}>
-            <button className="waves-effect waves-teal btn-flat btn-small" style={this.state.labelStyle.image} onClick={() => this.editStyle('image')}><i className="material-icons small">mode_edit</i></button>
-          </Col>
-          <Input s={10} data-length="255" placeholder="Enter Image URL" value={this.state.image} onChange={e => this.handleChange(e, 'image')} onBlur={() => this.handleSubmission('image')} onKeyPress={e => this.handleKeyPress(e, 'image')} style={this.state.inputStyle.image} />
-        </Row>
-        <Row>
-          <div className="label-header">Quote:</div>
-          <Col s={10}>
-            <div onDoubleClick={() => this.editStyle('quote')} style={this.state.labelStyle.quote}>{this.state.quote}
-            </div>
-          </Col>
-          <Col s={2}>
-            <button className="waves-effect waves-teal btn-flat btn-small" style={this.state.labelStyle.quote} onClick={() => this.editStyle('quote')}><i className="material-icons small">mode_edit</i></button>
-          </Col>
-          <Input s={10} data-length="255" placeholder="Enter Motivational Quote" value={this.state.quote} onChange={e => this.handleChange(e, 'quote')} onBlur={() => this.handleSubmission('quote')} onKeyPress={e => this.handleKeyPress(e, 'quote')} style={this.state.inputStyle.quote} />
-        </Row>
+        <div className="settingsBox z-depth-4">
+          <h3> Reminders </h3>
+          <Row>
+            <Input s={8} label="Input Number/Email Address" value={this.state.reminderAddress} onChange={e => this.handleChange(e, 'reminderAddress')} onKeyPress={e => this.handleKeyPress(e, 'reminder')} />
+            <Input s={2} type="select" label="Frequency" defaultValue="0" value={this.state.reminderFreq} onChange={e => this.handleChange(e, 'reminderFreq')} >
+              <option value="0">Select</option>
+              <option value="1">Daily</option>
+              <option value="2">Weekly</option>
+            </Input>
+            <Button disabled={!reminderSubmitEnabled} className="reminderButton" waves="light" onClick={this.handleReminderSubmission}>Set Reminder</Button>
+          </Row>
+        </div>
         <br />
-        <h3> Reminders: </h3>
-        <Row>
-          <Input s={8} label="Input Number/Email Address" value={this.state.reminderAddress} onChange={e => this.handleChange(e, 'reminderAddress')} onKeyPress={e => this.handleKeyPress(e, 'reminder')} />
-          <Input s={2} type="select" label="Frequency" defaultValue="0" value={this.state.reminderFreq} onChange={e => this.handleChange(e, 'reminderFreq')} >
-            <option value="0">Select</option>
-            <option value="1">Daily</option>
-            <option value="2">Weekly</option>
-          </Input>
-          <Button disabled={!reminderSubmitEnabled} className="reminderButton" waves="light" onClick={this.handleReminderSubmission}>Set Reminder</Button>
-        </Row>
-        <br />
-        <h3> Chrome Extension: </h3>
-        Forgot to download the extension? Download it here: ___________
-        Your id is {this.state.profile.user_id}. Please enter it into the extension to connect.
+        <div className="settingsBox z-depth-4">
+          <h3> Chrome Extension </h3>
+          Chrome Extension is used to keep track of the sites you visit and to block the sites you have blacklisted. It will also send you notifications for blacklisted sites.
+          <br />
+          Download it here:
+          <a href="#/settings">
+            <Icon>file_download</Icon>
+          </a>
+          <br />
+          <br />
+          Your id is {this.state.profile.user_id}. Please enter it into the extension's options to connect.
+        </div>
       </div>
     );
   }

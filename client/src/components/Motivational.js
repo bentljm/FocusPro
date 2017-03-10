@@ -1,12 +1,12 @@
 import React from 'react';
-import { Modal, Button } from 'react-materialize';
+import { Modal } from 'react-materialize';
 
 export default class Motivational extends React.Component {
   render() {
     return (
       <Modal
         fixedFooter
-        trigger={<Button className="goalButton" waves="light">Inspire Me</Button>}
+        trigger={<a href="#/new"><i className="material-icons small return">lightbulb_outline</i></a>}
       >
         <h2>What is your Overarching Goal?</h2>
         <br />

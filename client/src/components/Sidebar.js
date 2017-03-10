@@ -45,23 +45,23 @@ export default class Sidebar extends React.Component {
           <a href="#" data-activates="slide-out" className="button-collapse top-nav full hide-on-large-only">
             <i className="material-icons">menu</i>
           </a>
+          FocusPro
         </nav>
 
         <ul id="slide-out" className="side-nav fixed theme-color">
+          <h4 className="focusPro">FocusPro</h4>
           {localStorage.profile && <li><div className="userView">
             <div><img className="circle" src={this.state.picture} alt="auth0" /></div>
             <div><span className="name">{this.state.username}</span></div>
             <div><span className="email">{this.state.profile.email}</span></div>
-            <a href="#" className="btn" onClick={this.props.auth.logout}>Log Out</a>
           </div></li>}
-
           <li>
             {!localStorage.id_token && <a href="#" className="btn login" onClick={this.props.auth.login}>Log In</a>}
           </li>
-          {localStorage.id_token && <li><div className="divider" /></li>}
           {localStorage.id_token && <li><a href="#/dashboard" className="waves-effect"><i className="material-icons icon-white">dashboard</i>Dashboard</a></li>}
           {localStorage.id_token && <li><a href="#/settings" className="waves-effect"><i className="material-icons icon-white">settings</i>Settings</a></li>}
           {localStorage.id_token && <li><a href="#/selfreflection" className="waves-effect"><i className="material-icons icon-white">perm_identity</i>Self Reflections</a></li>}
+          {localStorage.profile && <li><a href="#" className="waves-effect logout" onClick={this.props.auth.logout}><i className="material-icons icon-white">exit_to_app</i>Log Out</a></li>}
         </ul>
       </header>
     );

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Icon } from 'react-materialize';
 import { AreaChart, Area, CartesianGrid, XAxis, YAxis, linearGradient, Tooltip } from 'recharts';
 
 export default class Site extends React.Component {
@@ -6,7 +7,9 @@ export default class Site extends React.Component {
     super(props);
     this.state = {
       data: [],
+      open: false,
     };
+    this.openCollapsible = this.openCollapsible.bind(this);
   }
 
   componentDidMount() {
@@ -32,10 +35,16 @@ export default class Site extends React.Component {
     that.setState({ data: historyData });
   }
 
+  openCollapsible() {
+    console.log('CLICK');
+    const open = this.state.open;
+    this.setState({ open: !open });
+  }
+
   render() {
     let chart = <span> Sorry, there is currently no data to be displayed. Data is collected daily at midnight. </span>;
     if (this.state.data.length > 0) {
-      chart = (<AreaChart width={650} height={250} data={this.state.data}>
+      chart = (<AreaChart width={250} height={250} data={this.state.data}>
         <defs>
           <linearGradient id="colorUv" x1="0" y1="0">
             <stop stopColor="#0088FE" stopOpacity={1} />
@@ -49,9 +58,16 @@ export default class Site extends React.Component {
       </AreaChart>);
     }
     return (
-      <div>
-        {chart}
-      </div>
+      <li key={`sites ${this.props.site.id}`}>
+        <div className="collapsible-header" onClick={this.openCollapsible}>
+          {this.props.site.url}
+          {(!this.state.open) && <Icon large right>keyboard_arrow_right</Icon> }
+          {(this.state.open) && <Icon large right>keyboard_arrow_down</Icon> }
+        </div>
+        <div className="collapsible-body site">
+          {chart}
+        </div>
+      </li>
     );
   }
 }

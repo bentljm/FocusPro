@@ -42,7 +42,7 @@ export default class Stat extends React.Component {
 
   render() {
     return (
-      <PieChart width={400} height={200}>
+      <PieChart width={200} height={200}>
         <Pie
           startAngle={360}
           endAngle={0}
