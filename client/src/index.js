@@ -5,6 +5,7 @@ import ReactGA from 'react-ga';
 import App from './components/App';
 import Landingpage from './components/Landingpage';
 import Dashboard from './components/Dashboard';
+import Dashboard2 from './components/Dashboard2';
 import Selfreflection from './components/Selfreflection';
 import ReflectionQuestion from './components/ReflectionQuestion';
 import Settings from './components/Settings';
@@ -45,6 +46,7 @@ render(
       <Route path="dashboard" component={Dashboard} onEnter={requireAuth} />
       <Route path="selfreflection" component={Selfreflection} onEnter={requireAuth} />
       <Route path="settings" component={Settings} onEnter={requireAuth} />
+      <Route path="new" component={Dashboard2} onEnter={requireAuth} />
       <Route path="question" component={ReflectionQuestion} onEnter={requireAuth} />
     </Route>
   </Router>

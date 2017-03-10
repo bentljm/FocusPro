@@ -12,6 +12,13 @@ nav {
 .theme-color {
   background-color: #4b87e1;
 }
+
+div.main {
+  margin-top: 20px;
+  margin-left: 220px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
 .side-nav a {
   color: white;
   padding-left: 10px;
@@ -37,6 +44,11 @@ ul#slide-out.side-nav.fixed.theme-color {
   border-color: white;
   border: solid;
   margin: auto;
+}
+
+.side-nav .userView {
+  padding: 0px;
+  padding-top: 32px;
 }
 
 .placeholder {
@@ -150,4 +162,60 @@ blockquote p{
 
 .error {
   border-color: red !important;
+}
+body {
+  background-color: #92C3FC;
+}
+
+div.container {
+  margin-left: 100px;
+  margin-right: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.topName {
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+.titleHead {
+  background: white;
+  padding-top: 5px;
+  padding-left: 10px;
+  padding-right: 15px;
+  padding-bottom: 5px;
+}
+
+.gotd {
+  background: white;
+  min-height: 120px;
+  padding-top: 5px;
+  padding-left: 0px;
+  padding-right: 10px;
+}
+.titleText {
+  margin: 0px;
+  padding: 5px;
+  padding-left: 15px;
+}
+div.col.input-field {
+  margin: 0px;
+}
+.dashboardBox {
+  padding-top: 5px;
+  background: white;
+}
+div.collapsible-header {
+  background-color: #50E3C2;
+  border: none;
+}
+div.recharts-wrapper {
+  margin: auto;
+}
+.statsBox {
+  padding-top: 5px;
+  background: white;
+  min-height: 280px;
+}
+.setGoal {
+  padding-left: 15px;
 }

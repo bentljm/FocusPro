@@ -18,14 +18,9 @@ export default class App extends React.Component {
       <div>
         <Sidebar auth={this.props.route.auth} />
         <main>
-          <Row>
-            <Col s={1} />
-            <Col s={11}>
-              <div className="container">
-                {children}
-              </div>
-            </Col>
-          </Row>
+        <div className="main">
+          {children}
+        </div>
         </main>
       </div>
     );
