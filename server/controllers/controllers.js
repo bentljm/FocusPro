@@ -80,6 +80,34 @@ function getExtension(req, res, next) { // Get extensions for specific user.
   });
 }
 
+function getSingleExtension(req, res, next) {
+  // console.log('getSingleExtension url', decodeURIComponent(req.params.blacklist));
+  var auth0_id = req.params.auth0_id;
+  var url = decodeURIComponent(req.params.blacklist);
+  //use like to match the hostname, ignore other query param or http(s)://www
+  //get url in the simplest form.
+  //e.g. https://www.facebook.com/group/456457 -> facebook.com
+  // facebook.com -> facebook.com
+  url = url.match(/^(([\w+:\/\/]*)[^\/]+).*$/);
+  url = url[1].replace(/http(s*)\:\/\/([www.]*)/, '');
+  // console.log('url:' ,url);
+
+  db.User.find({where: {auth0_id: auth0_id}})
+  .then(user => {
+    return db.Extension.findAll({where: {
+      UserId: user.id,
+      url: {$like: `%${url}`},
+      } })
+    .then((exData)=>{
+      res.status(200).json({
+        data: exData,
+      });
+    });
+  })
+  .catch((err)=>{
+    return next(err);
+  });
+}
 
 
 function getReflections(req, res) {
@@ -432,6 +460,7 @@ module.exports = {
   getBlackList: getBlackList,
   postBlackList: postBlackList,
   getExtension: getExtension,
+  getSingleExtension: getSingleExtension,
   getAllGoals: getAllGoals,
   getReflections: getReflections,
   postReflectionId: postReflectionId,

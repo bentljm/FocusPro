@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import { Link } from 'react-router';
 import { Row, Input, Button, Table } from 'react-materialize';
 import { getExtensionDataAjax, getBlacklistAjax, postReflectionAjax } from '../utils/SettingsUtil';
@@ -45,16 +46,97 @@ export default class ReflectionQuestion extends React.Component {
   // save the blacklist_time with extensionData
   getExtensionData(blacklistData) {
     const exDataArr = [];
+    let url;
+    let count = 0; // counting when all async calls finish
     blacklistData.forEach((blacklist) => {
-      getExtensionDataAjax(blacklist, (exData) => {
-        const data = exData;
-        data.blacklist_time = blacklist.blacklist_time;
-        exDataArr.push(data);
-      });
-    });
-    this.setState({
-      extensionData: exDataArr,
-    });
+      getExtensionDataAjax(this.state.profile.user_id, (data) => {
+        // for each blacklist site, e.g. github.com
+        // data returned include http://gist.github.com, http://www.github.com
+        const listArr = (data.data).filter((urlObj) => {
+          // each url in DB, remove http://www
+          // return if blacklist contains the blacklist-url in DB
+          url = (urlObj.url).replace(/http(s*)\:\/\/([www.]*)/, '');
+          console.log('blacklist.url', blacklist.url, 'url', url, 'length', data.data.length);
+          return new RegExp(url).test(blacklist.url);
+        });
+
+        // For eahc blacklist URL, aggregate the information in similar URLs e.g. http(s)://www.facebook.com
+        // {url: , blacklist_time: , time_spent: }
+        // time_spent is the aggregation of time_spent today from listArr.history
+        if (listArr.length > 0) {
+          // aggregate the time spent in each list in listArr
+          // set the url to be that of blacklist.url
+          const listTemp = { time_spent: 0 };
+          // listArr.forEach(list => {
+          //   console.log('list',list);
+          //   // loop thru each elem in history array, if array[0] is today
+          //   (list.history).forEach(history => {
+          //     // console.log('history', history);
+          //     const aDay = moment(new Date(+history[0])).format('DD/MM/YYYY');
+          //     // const today = moment(new Date()).format('DD/MM/YYYY');
+          //     const today = '09/03/2017';
+          //     // console.log('aDay', aDay.toString(), 'today',today.toString(), 'history[1]', history[1]);
+          //     if (today.toString() === aDay.toString()) {
+          //       listTemp.time_spent = listTemp.time_spent + parseInt(history[1]);
+          //     }
+
+          //   });
+          //   listTemp.url = blacklist.url;
+          //   listTemp.blacklist_time = blacklist.blacklist_time;
+          // });
+
+          // listArry may include http://www.github.com and https://www.github.com
+          // take only one list to compute time_spent as they store duplicate results
+          // history array [date, accumulated time so far]
+          // find the first occurance of today's history, subtract its time_spent
+          // const lastHistoryInd = listArr[0].history.length - 1;
+          // const today = moment(new Date()).format('DD/MM/YYYY');
+          // for (let i = lastHistoryInd; i >= 0; i--) {
+          //   // find the first time when history's date is not today
+          //   // a date in history: listArr[0].history[i][0]
+          //   const aDay = moment(new Date(+listArr[0].history[i][0])).format('DD/MM/YYYY');
+          //   if (aDay.toString() !== today.toString() || i === 0) {
+          //     console.log('aDay', aDay, 'today', today);
+          //     // the first occurance of yesterday's data!
+          //     // take the last record of today's data from history[i-1]
+          //     const finalTimeSp = listArr[0].history[lastHistoryInd][1];
+          //     console.log('finalTimeSp',finalTimeSp);
+          //     console.log('listArr[0].history[i]',listArr[0].history[i],'listArr[0].history[i+1]',listArr[0].history[i+1]);
+          //     if (i === lastHistoryInd) {
+          //       listTemp.time_spent = 0;
+          //     } else {
+          //       listTemp.time_spent = finalTimeSp - listArr[0].history[i+1][1];
+          //     }
+          //     break;
+          //   }
+          // }
+          listTemp.time_spent = listArr[0].time_spent;
+          listTemp.url = blacklist.url;
+          listTemp.blacklist_time = blacklist.blacklist_time;
+
+          exDataArr.push(listTemp);
+        }
+        // if user has not opened the blacklist site at all
+        if (data.data.length === 0) {
+          exDataArr.push({
+            url: blacklist.url,
+            blacklist_time: blacklist.blacklist_time,
+            time_spent: 0
+          });
+        }
+        // console.log('exDataArr', exDataArr);
+        // set state when all blacklist extension data have been extracted
+        count += 1;
+        // console.log('count', count, 'blacklistData.length', blacklistData.length);
+        if (count === blacklistData.length) {
+          this.setState({
+            extensionData: exDataArr,
+          }, () => {
+            console.log('this.state.extensionData', this.state.extensionData);
+          });
+        }
+      }, blacklist); // end extension data Ajax
+    }); // end blacklist forEach
   }
 
   setAnswerColor() {

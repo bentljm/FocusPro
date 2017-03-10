@@ -3,7 +3,7 @@ import renderer from 'react-test-renderer';
 import Sidebar from '../components/Sidebar.js';
 import { shallow, mount } from 'enzyme';
 
-describe('Given the user is logged in, Sidebar', () => {
+xdescribe('Given the user is logged in, Sidebar', () => {
   let sidebar;
 
   beforeAll(() => {
@@ -48,7 +48,7 @@ describe('Given the user is logged in, Sidebar', () => {
   });
 });
 
-describe('Given the user is NOT logged in, Sidebar', () => {
+xdescribe('Given the user is NOT logged in, Sidebar', () => {
   let sidebar;
 
   beforeAll(() => {

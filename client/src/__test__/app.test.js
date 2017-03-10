@@ -4,7 +4,7 @@ import Sidebar from '../components/Sidebar.js';
 import { shallow, mount } from 'enzyme';
 import {Col} from 'react-materialize';
 
-describe('App', ()=>{
+xdescribe('App', ()=>{
   it('renders without crashing', ()=>{
     var route = {auth: 'dummy'};
     shallow(<App route={route}/>);

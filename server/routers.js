@@ -20,6 +20,7 @@ module.exports = function(app, express) {
 
 
   app.get('/api/users/:auth0_id/extension_data', controller.getExtension); // Get all extention data
+  app.get('/api/users/:auth0_id/extension_data/:blacklist', controller.getSingleExtension); // Get single extention data
   app.post('/api/users/:auth0_id/extension_data', controller.upsertExtension); // Upsert individual extention data
 
   app.get('/api/users/:auth0_id/reflections', controller.getReflections); // Get all reflection data

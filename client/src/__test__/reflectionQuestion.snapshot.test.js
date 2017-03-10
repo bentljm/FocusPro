@@ -47,7 +47,7 @@ jest.mock('../utils/SettingsUtil', () => {
 import ReflectionQuestion from '../components/ReflectionQuestion.js';
 
 
-describe('ReflectionQuestion (Snapshot)', () => {
+xdescribe('ReflectionQuestion (Snapshot)', () => {
   beforeAll(() => {
     global.auth = {
       getProfile: ()=>'dummy',

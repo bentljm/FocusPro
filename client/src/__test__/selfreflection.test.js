@@ -31,7 +31,7 @@ global.data = [{
             updatedAt: '2017-03-05T23:19:16.943Z'
     }];
 
-describe ('Given the user has answered 2 self-reflection questions', () => {
+xdescribe ('Given the user has answered 2 self-reflection questions', () => {
   let selfreflection; // global var
   let selfreflectionMounted;
 
