@@ -2,6 +2,8 @@
 //Change options view so only original warn time is showing
 //Check edge cases
 //Move history saving to clearNotifications
+//Give blocking the same treatment as warning with the increasing time limit
+//Change all ajax request urls for deployment
 
 //Clearing data
 //Clear all notifications every 24 hours at midnight

@@ -248,9 +248,9 @@ export default class Dashboard2 extends React.Component {
           <Col s={12}>
             <div className="titleHead z-depth-4">
               <h2 className="topName">
-              Hello, {this.state.username}! <a href="#/dashboard"><i className="material-icons tiny edit">edit</i></a>
+              Hello, {this.state.username}! <a href="#/settings"><i className="material-icons tiny edit">edit</i></a>
               </h2>
-              {this.state.setting.quote} <a href="#/dashboard"><i className="material-icons tiny edit">edit</i></a>
+              {this.state.setting.quote ? this.state.setting.quote : "In order to succeed, we must first believe that we can."} <a href="#/settings"><i className="material-icons tiny edit">edit</i></a>
             </div>
           </Col>
         </Row>
@@ -259,7 +259,7 @@ export default class Dashboard2 extends React.Component {
             <div className="gotd z-depth-4">
               <h3 className="titleText"> Goal of the Day </h3>
               <Input s={11} className={errors.dayGoal && this.state.dayGoalVisited ? 'error' : 'white'} data-length="255" placeholder="Add new goal of the day" value={this.state.dayGoalInput} onChange={e => this.handleChange(e, 'dayGoalInput')} onKeyPress={this.handleQuoteKeyPress} onBlur={() => this.handleBlur('dayGoal')} />
-              <a href="#/dashboard"><i className="material-icons small return">add_box</i></a>
+              <a href="#/dashboard" onClick={this.handleDayGoalSubmission}><i className="material-icons small return">add_box</i></a>
             </div>
           </Col>
           <Col s={3}>
@@ -284,7 +284,7 @@ export default class Dashboard2 extends React.Component {
                 )}
               </ul>}
               <Input s={11} className={errors.goal && this.state.goalVisited ? 'error' : 'white'} data-length="255" label="Set new goal" value={this.state.goalInput} onChange={e => this.handleChange(e, 'goalInput')} onKeyPress={this.handleKeyPress} onBlur={() => this.handleBlur('goal')} />
-              <a href="#/dashboard"><i className="material-icons small return">add_box</i></a>
+              <a href="#/dashboard" onClick={this.postGoal}><i className="material-icons small return">add_box</i></a>
             </div>
           </Col>
           <Col s={3}>
