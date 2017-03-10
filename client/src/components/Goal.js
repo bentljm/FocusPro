@@ -16,6 +16,7 @@ export default class Goal extends React.Component {
       percent: 0,
       color: '#ff0000',
       status: false,
+      open: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.postSubgoal = this.postSubgoal.bind(this);
@@ -29,6 +30,7 @@ export default class Goal extends React.Component {
     this.handleBoxClick = this.handleBoxClick.bind(this);
     this.checkBox = this.checkBox.bind(this);
     this.uncheckBox = this.uncheckBox.bind(this);
+    this.openCollapsible = this.openCollapsible.bind(this);
     // this.validate = this.validate.bind(this);
     // this.handleBlur = this.handleBlur.bind(this);
   }
@@ -171,6 +173,11 @@ export default class Goal extends React.Component {
     this.setState({ status: false });
   }
 
+  openCollapsible() {
+    console.log('clickity click');
+    const open = this.state.open;
+    this.setState({open: !open});
+  }
   // handleBlur() {
   //   this.setState({ subgoalVisited: true });
   // }
@@ -187,14 +194,19 @@ export default class Goal extends React.Component {
 
     return (
       <li key={this.props.goal.id}>
-        <div className="collapsible-header">{this.props.goal.goal}
-          <a href="#/dashboard">
-            <Icon large right>keyboard_arrow_right</Icon>
+        <div className="collapsible-header" onClick={this.openCollapsible}>
+        <a href = "#/new" onClick={this.handleBoxClick}>
+        {(!this.state.status) && <Icon>check_box_outline_blank</Icon>}
+        {(this.state.status) && <Icon>check_box</Icon>}
+        </a>
+        {this.props.goal.goal}
+          {(!this.state.open) && <Icon large right>keyboard_arrow_right</Icon> }
+          {(this.state.open) && <Icon large right>keyboard_arrow_down</Icon> }
+          <a href="#/new" onClick={() => this.props.removeGoal(this.props.goal.id)}>
             <Icon right>delete</Icon>
           </a>
         </div>
         <div className="collapsible-body">
-          <Input name="group1" type="checkbox" value="check" checked={this.state.status} label={'Done!'} onClick={this.handleBoxClick} /><br /><br />
         Progress: {this.state.percent}%
         <br />
           <div style={containerStyle}>
