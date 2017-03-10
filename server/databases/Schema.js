@@ -81,7 +81,6 @@ Reflection.belongsTo(User, {foreignKey: 'auth0_id', targetKey: 'auth0_id', const
 Goal.hasMany(Subgoal, {onDelete: 'cascade', hooks: true, constraints: false});
 // Reflection.hasOne(Question);
 
-
 //create new database if it doesn't already exist
 db.sync()
 .then(()=>User.sync())
