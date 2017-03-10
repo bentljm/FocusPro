@@ -51,10 +51,9 @@ ul#slide-out.side-nav.fixed.theme-color {
 }
 
 .placeholder {
-  width: 350px;
-  height: 250px;
-  border: solid;
-  border-color: black;
+  padding: auto;
+  width: 100%;
+  height: 75%;
 }
 
 .goalButton {
@@ -263,6 +262,18 @@ table.table.table-hover.table-bordered {
   outline: black;
 }
 
+.landing {
+  background: white;
+  padding: 15px;
+}
+
+.FPicon {
+  margin: auto;
+}
+.meetTeam {
+  margin-left: 20%;
+  margin-right: 5%;
+}
 @media screen and (max-width: 1000px) {
   div.main {
     margin: 20px !important;
