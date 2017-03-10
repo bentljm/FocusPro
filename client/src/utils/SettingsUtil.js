@@ -1,20 +1,31 @@
-export const getExtensionDataAjax = (blacklist, callback) => {
-  const exData1 = {
-    url: 'facebook.com',
-    time_spent: 30,
-  };
-  const exData2 = {
-    url: 'pinterest.com',
-    time_spent: 60,
-  };
-  if (blacklist.url === exData1.url) {
-    callback(exData1);
-  }
-  if (blacklist.url === exData2.url) {
-    callback(exData2);
-  }
-};
+// export const getExtensionDataAjax = (blacklist, callback) => {
+//   // const exData1 = {
+//     url: 'facebook.com',
+//     time_spent: 30,
+//   };
+//   const exData2 = {
+//     url: 'pinterest.com',
+//     time_spent: 60,
+//   };
+//   if (blacklist.url === exData1.url) {
+//     callback(exData1);
+//   }
+//   if (blacklist.url === exData2.url) {
+//     callback(exData2);
+//   }
+// };
 
+export const getExtensionDataAjax = (auth0Id, callback, blacklist) => {
+  console.log('blacklist passed', encodeURI(blacklist.url));
+  $.ajax({
+    type: 'GET',
+    url: `/api/users/${auth0Id}/extension_data/${encodeURIComponent(blacklist.url)}`,
+    success: (data) => {
+      callback(data);
+    },
+    error: (err) => { console.log('ERROR: COULD NOT GET EXTENSION', err); },
+  });
+};
 
 export const getBlacklistAjax = (auth0Id, callback) => {
   $.ajax({
