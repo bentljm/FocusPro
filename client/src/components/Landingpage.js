@@ -13,7 +13,7 @@ export default class Landingpage extends React.Component {
           <br /><br />
           <Row s={6}>
             <Col s={6}>
-              <img className="placeholder z-depth-4" src="../../assets/Landingpage.png" alt="dashboard" />
+              <img className="placeholder z-depth-4" src="../../assets/LandingPage.png" alt="dashboard" />
             </Col>
             <Col s={6}>
               <br /><br /><br /> <br />
