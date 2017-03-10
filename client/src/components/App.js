@@ -1,5 +1,4 @@
 import React from 'react';
-import { Row, Col } from 'react-materialize';
 import Sidebar from './Sidebar';
 
 
@@ -18,9 +17,9 @@ export default class App extends React.Component {
       <div>
         <Sidebar auth={this.props.route.auth} />
         <main>
-        <div className="main">
-          {children}
-        </div>
+          <div className="main">
+            {children}
+          </div>
         </main>
       </div>
     );

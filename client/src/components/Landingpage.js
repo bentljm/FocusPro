@@ -30,7 +30,7 @@ export default class Landingpage extends React.Component {
             </Col>
             <Col s={5}>
               <br />
-              <img src="../../assets/icon128.png" alt="Chrome extension icon" className="FPicon z-depth-4 circle"/>
+              <img src="../../assets/icon128.png" alt="Chrome extension icon" className="FPicon z-depth-4 circle" />
             </Col>
           </Row>
           <br />

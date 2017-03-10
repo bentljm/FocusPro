@@ -19,15 +19,15 @@ export default class Selfreflection extends React.Component {
     this.options = {
       defaultSortName: 'id',  // default sort column
       defaultSortOrder: 'desc',  // default sort order
-      sizePerPageList: [ {
+      sizePerPageList: [{
         text: '5 questions per page', value: 5
       }, {
         text: '10 questions per page', value: 10
       }, {
         text: '25 questions per page', value: 25
-      },{
+      }, {
         text: 'All', value: this.state.reflections.length
-      } ], // you can change the dropdown list for size per page
+      }], // you can change the dropdown list for size per page
     };
   }
 
@@ -79,14 +79,14 @@ export default class Selfreflection extends React.Component {
       <div>
         <h1> Self-Reflection </h1>
         <div className="settingsBox z-depth-4">
-        <br />
-        Self-reflection questions are sent daily in reminders. Once answered, the questions and answers will be displayed below. If reminders are not set, you will not receive questions.
-        <BootstrapTable data={this.state.reflections} options={this.options} striped hover pagination>
-          <TableHeaderColumn hidden datasort isKey dataField="id">ID</TableHeaderColumn>
-          <TableHeaderColumn dataSort dataField="question" tdStyle={{ whiteSpace: 'normal' }} caretRender={this.getCaret}>Question </TableHeaderColumn>
-          <TableHeaderColumn dataField="answer" tdStyle={{ whiteSpace: 'normal' }}>Answer </TableHeaderColumn>
-          <TableHeaderColumn dataSort dataField="date" tdStyle={{ whiteSpace: 'normal' }} caretRender={this.getCaret} width="100">Date </TableHeaderColumn>
-        </BootstrapTable>
+          <br />
+          Self-reflection questions are sent daily in reminders. Once answered, the questions and answers will be displayed below. If reminders are not set, you will not receive questions.
+          <BootstrapTable data={this.state.reflections} options={this.options} striped hover pagination>
+            <TableHeaderColumn hidden datasort isKey dataField="id">ID</TableHeaderColumn>
+            <TableHeaderColumn dataSort dataField="question" tdStyle={{ whiteSpace: 'normal' }} caretRender={this.getCaret}>Question </TableHeaderColumn>
+            <TableHeaderColumn dataField="answer" tdStyle={{ whiteSpace: 'normal' }}>Answer </TableHeaderColumn>
+            <TableHeaderColumn dataSort dataField="date" tdStyle={{ whiteSpace: 'normal' }} caretRender={this.getCaret} width="100">Date </TableHeaderColumn>
+          </BootstrapTable>
         </div>
       </div>
     );

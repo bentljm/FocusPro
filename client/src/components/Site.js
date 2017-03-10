@@ -38,7 +38,7 @@ export default class Site extends React.Component {
   openCollapsible() {
     console.log('CLICK');
     const open = this.state.open;
-    this.setState({open: !open});
+    this.setState({ open: !open });
   }
 
   render() {
@@ -59,14 +59,14 @@ export default class Site extends React.Component {
     }
     return (
       <li key={`sites ${this.props.site.id}`}>
-      <div className="collapsible-header" onClick={this.openCollapsible}>
-      {this.props.site.url}
-      {(!this.state.open) && <Icon large right>keyboard_arrow_right</Icon> }
-      {(this.state.open) && <Icon large right>keyboard_arrow_down</Icon> }
-      </div>
-      <div className="collapsible-body site">
-        {chart}
-      </div>
+        <div className="collapsible-header" onClick={this.openCollapsible}>
+          {this.props.site.url}
+          {(!this.state.open) && <Icon large right>keyboard_arrow_right</Icon> }
+          {(this.state.open) && <Icon large right>keyboard_arrow_down</Icon> }
+        </div>
+        <div className="collapsible-body site">
+          {chart}
+        </div>
       </li>
     );
   }

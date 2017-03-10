@@ -19,6 +19,7 @@
     "comma-dangle": 1, // In-line React conditionals are being caught
     "no-undef": 1, // Materialize is being caught
     "react/no-unescaped-entities": 1, // Inconsistent HTML handling
+    "jsx-a11y/no-static-element-interactions": 1,
   }
 }
 

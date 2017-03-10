@@ -149,7 +149,7 @@ export default class Settings extends React.Component {
       url: `/api/users/${this.state.profile.user_id}/sendNotification`,
       contentType: 'application/json',
       data: JSON.stringify({ address: this.state.reminderAddress, name: this.state.profile.given_name, freq: this.state.reminderFreq }),
-      success: (data) => {
+      success: () => {
         that.alertUser('Notifications');
         that.setState({ reminderAddress: '' });
       },
@@ -304,7 +304,7 @@ export default class Settings extends React.Component {
   }
 
   blacklistInfo() {
-    this.setState({blacklistHelp: !this.state.blacklistHelp});
+    this.setState({ blacklistHelp: !this.state.blacklistHelp });
   }
   render() {
     const { reminderAddress, reminderFreq } = this.state;
@@ -317,8 +317,13 @@ export default class Settings extends React.Component {
     return (
       <div>
         <h1> Settings </h1>
-          <div className="settingsBox z-depth-4">
-          <h3> Blacklist <a href="#/settings" onClick={this.blacklistInfo}><i className="material-icons small return">help_outline</i></a></h3>
+        <div className="settingsBox z-depth-4">
+          <h3>
+            Blacklist
+            <a href="#/settings" onClick={this.blacklistInfo}>
+              <i className="material-icons small return">help_outline</i>
+            </a>
+          </h3>
           {(this.state.blacklistHelp) && <p> Blackout prevents you from visiting the site at all. <br />
             Block after exceeding will block you from visiting the site for 24 hours after exceeding the set time limit.
             <br />
@@ -410,7 +415,11 @@ export default class Settings extends React.Component {
           <h3> Chrome Extension </h3>
           Chrome Extension is used to keep track of the sites you visit and to block the sites you have blacklisted. It will also send you notifications for blacklisted sites.
           <br />
-          Download it here:  <a href="#/settings"><Icon>file_download</Icon></a><br />
+          Download it here:
+          <a href="#/settings">
+            <Icon>file_download</Icon>
+          </a>
+          <br />
           <br />
           Your id is {this.state.profile.user_id}. Please enter it into the extension's options to connect.
         </div>

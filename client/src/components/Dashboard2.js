@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Input, Col, Icon } from 'react-materialize';
+import { Row, Input, Col } from 'react-materialize';
 import Goal from './Goal';
 import Site from './Site';
 import Stat from './Stat';
@@ -242,15 +242,15 @@ export default class Dashboard2 extends React.Component {
       this.state.goalEnabled = goalInput.length > 0;
     }
     const errors = this.validate(this.state.dayGoalInput, this.state.goalInput);
-    return(
+    return (
       <div>
         <Row>
           <Col s={12}>
             <div className="titleHead z-depth-4">
-                <h2 className="topName">
-                Hello, {this.state.username}! <a href="#/dashboard"><i className="material-icons tiny edit">edit</i></a>
-                </h2>
-                {this.state.setting.quote} <a href="#/dashboard"><i className="material-icons tiny edit">edit</i></a>
+              <h2 className="topName">
+              Hello, {this.state.username}! <a href="#/dashboard"><i className="material-icons tiny edit">edit</i></a>
+              </h2>
+              {this.state.setting.quote} <a href="#/dashboard"><i className="material-icons tiny edit">edit</i></a>
             </div>
           </Col>
         </Row>
@@ -266,9 +266,9 @@ export default class Dashboard2 extends React.Component {
             <div className="dashboardBox z-depth-4">
               <h3 className="titleText">Blacklist <a href="#/settings"><i className="material-icons small return">add_box</i></a></h3>
               <ul className="collapsible" data-collapsible="expandable">
-              {this.state.blacklist.map(site =>
-                <Site site={site} url={site.url} siteId={site.id} siteInfo={this.getExtensionSite} />
-              )}
+                {this.state.blacklist.map(site =>
+                  <Site site={site} url={site.url} siteId={site.id} siteInfo={this.getExtensionSite} />
+                )}
               </ul>
             </div>
           </Col>
@@ -279,12 +279,12 @@ export default class Dashboard2 extends React.Component {
               <h3 className="titleText">Goals <Motivational /></h3>
               {(this.state.goals.length === 0 || !this.state.profile.user_id) && <div className="setGoal">You have no goals set currently. Set one now.</div>}
               {(this.state.goals.length > 0 && this.state.profile.user_id) && <ul className="collapsible" data-collapsible="expandable">
-              {this.state.goals.map(goal =>
-                  <Goal key={goal.id} goal={goal} user_id={this.state.profile.user_id} removeGoal={this.removeGoal}/>
+                {this.state.goals.map(goal =>
+                  <Goal key={goal.id} goal={goal} user_id={this.state.profile.user_id} removeGoal={this.removeGoal} />
                 )}
               </ul>}
-            <Input s={11} className={errors.goal && this.state.goalVisited ? 'error' : 'white'} data-length="255" label="Set new goal" value={this.state.goalInput} onChange={e => this.handleChange(e, 'goalInput')} onKeyPress={this.handleKeyPress} onBlur={() => this.handleBlur('goal')} />
-            <a href="#/dashboard"><i className="material-icons small return">add_box</i></a>
+              <Input s={11} className={errors.goal && this.state.goalVisited ? 'error' : 'white'} data-length="255" label="Set new goal" value={this.state.goalInput} onChange={e => this.handleChange(e, 'goalInput')} onKeyPress={this.handleKeyPress} onBlur={() => this.handleBlur('goal')} />
+              <a href="#/dashboard"><i className="material-icons small return">add_box</i></a>
             </div>
           </Col>
           <Col s={3}>
@@ -295,6 +295,6 @@ export default class Dashboard2 extends React.Component {
           </Col>
         </Row>
       </div>
-      );
+    );
   }
 }

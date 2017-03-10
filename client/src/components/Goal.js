@@ -174,7 +174,7 @@ export default class Goal extends React.Component {
 
   openCollapsible() {
     const open = this.state.open;
-    this.setState({open: !open});
+    this.setState({ open: !open });
   }
   // handleBlur() {
   //   this.setState({ subgoalVisited: true });
@@ -193,11 +193,11 @@ export default class Goal extends React.Component {
     return (
       <li key={this.props.goal.id}>
         <div className="collapsible-header" onClick={this.openCollapsible}>
-        <a href = "#/dashboard" onClick={this.handleBoxClick}>
-        {(!this.state.status) && <Icon>check_box_outline_blank</Icon>}
-        {(this.state.status) && <Icon>check_box</Icon>}
-        </a>
-        {this.props.goal.goal}
+          <a href="#/dashboard" onClick={this.handleBoxClick}>
+            {(!this.state.status) && <Icon>check_box_outline_blank</Icon>}
+            {(this.state.status) && <Icon>check_box</Icon>}
+          </a>
+          {this.props.goal.goal}
           {(!this.state.open) && <Icon large right>keyboard_arrow_right</Icon> }
           {(this.state.open) && <Icon large right>keyboard_arrow_down</Icon> }
           <a href="#/dashboard" onClick={() => this.props.removeGoal(this.props.goal.id)}>
