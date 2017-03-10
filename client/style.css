@@ -48,7 +48,6 @@ ul#slide-out.side-nav.fixed.theme-color {
 
 .side-nav .userView {
   padding: 0px;
-  padding-top: 32px;
 }
 
 .placeholder {
@@ -218,4 +217,20 @@ div.recharts-wrapper {
 }
 .setGoal {
   padding-left: 15px;
+}
+
+i.material-icons.small.return {
+  margin-top: 25px;
+  color: #9e9e9e;
+}
+
+h3.focusPro {
+  color: white;
+  margin-left: 2%;
+}
+
+@media screen and (max-width: 1000px) {
+  div.main {
+    margin: 20px !important;
+  }
 }

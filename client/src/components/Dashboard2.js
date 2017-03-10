@@ -258,7 +258,8 @@ export default class Dashboard2 extends React.Component {
           <Col s={9}>
             <div className="gotd z-depth-4">
               <h3 className="titleText"> Goal of the Day </h3>
-              <Input s={12} className={errors.dayGoal && this.state.dayGoalVisited ? 'error' : 'white'} data-length="255" placeholder="Add new goal of the day" value={this.state.dayGoalInput} onChange={e => this.handleChange(e, 'dayGoalInput')} onKeyPress={this.handleQuoteKeyPress} onBlur={() => this.handleBlur('dayGoal')} />
+              <Input s={11} className={errors.dayGoal && this.state.dayGoalVisited ? 'error' : 'white'} data-length="255" placeholder="Add new goal of the day" value={this.state.dayGoalInput} onChange={e => this.handleChange(e, 'dayGoalInput')} onKeyPress={this.handleQuoteKeyPress} onBlur={() => this.handleBlur('dayGoal')} />
+              <a href="#/new"><i className="material-icons small return">add_box</i></a>
             </div>
           </Col>
           <Col s={3}>
@@ -278,7 +279,7 @@ export default class Dashboard2 extends React.Component {
         <Row>
           <Col s={9}>
             <div className="dashboardBox z-depth-4">
-              <h3 className="titleText">Goals</h3>
+              <h3 className="titleText">Goals <Motivational /></h3>
               {(this.state.goals.length === 0 || !this.state.profile.user_id) && <div className="setGoal">You have no goals set currently. Set one now.</div>}
               {(this.state.goals.length > 0 && this.state.profile.user_id) && <ul className="collapsible" data-collapsible="expandable">
               {this.state.goals.map(goal =>
@@ -292,8 +293,8 @@ export default class Dashboard2 extends React.Component {
                 </li>
                 )}
             </ul>}
-            <Input s={10} className={errors.goal && this.state.goalVisited ? 'error' : 'white'} data-length="255" label="Set new goal" value={this.state.goalInput} onChange={e => this.handleChange(e, 'goalInput')} onKeyPress={this.handleKeyPress} onBlur={() => this.handleBlur('goal')} />
-            <Motivational />
+            <Input s={11} className={errors.goal && this.state.goalVisited ? 'error' : 'white'} data-length="255" label="Set new goal" value={this.state.goalInput} onChange={e => this.handleChange(e, 'goalInput')} onKeyPress={this.handleKeyPress} onBlur={() => this.handleBlur('goal')} />
+            <a href="#/new"><i className="material-icons small return">add_box</i></a>
             </div>
           </Col>
           <Col s={3}>

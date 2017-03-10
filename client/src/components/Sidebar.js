@@ -45,9 +45,11 @@ export default class Sidebar extends React.Component {
           <a href="#" data-activates="slide-out" className="button-collapse top-nav full hide-on-large-only">
             <i className="material-icons">menu</i>
           </a>
+          FocusPro
         </nav>
 
         <ul id="slide-out" className="side-nav fixed theme-color">
+          <h3 className="focusPro">FocusPro</h3>
           {localStorage.profile && <li><div className="userView">
             <div><img className="circle" src={this.state.picture} alt="auth0" /></div>
             <div><span className="name">{this.state.username}</span></div>

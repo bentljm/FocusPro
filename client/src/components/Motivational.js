@@ -6,7 +6,7 @@ export default class Motivational extends React.Component {
     return (
       <Modal
         fixedFooter
-        trigger={<Button className="goalButton" waves="light">Inspire Me</Button>}
+        trigger={<a href="#/new"><i className="material-icons small return">lightbulb_outline</i></a>}
       >
         <h2>What is your Overarching Goal?</h2>
         <br />
