@@ -55,11 +55,7 @@ export default class Selfreflection extends React.Component {
   }
 
   sortByUTC(a, b, order) {
-    if (order === 'asc') {
-      return a.updatedAt - b.updatedAt;
-    } else {
-      return b.updatedAt - a.updatedAt;
-    }
+    return order === 'asc' ? a.updatedAt - b.updatedAt : b.updatedAt - a.updatedAt;
   }
 
   handleAnswerChange(event) {

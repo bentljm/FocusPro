@@ -15,7 +15,7 @@ const expect = chai.expect;
 //set up DB connection
 before((done) =>{
   //more on connection: http://mherman.org/blog/2015/02/12/postgresql-and-nodejs/#.WKyhjBIrInU
-  const connectionString = process.env.DATABASE_URL || require('../config/config.js').LOCAL_DATABASE_URL;
+  const connectionString = process.env.TEST_DATABASE_URI || require('../config/config.js').LOCAL_DATABASE_URL;
   global.client = new pg.Client(connectionString);
   global.client.connect();
   done();

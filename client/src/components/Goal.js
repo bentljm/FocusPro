@@ -15,6 +15,7 @@ export default class Goal extends React.Component {
       subgoalEnabled: false,
       percent: 0,
       color: '#ff0000',
+      status: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.postSubgoal = this.postSubgoal.bind(this);
@@ -25,6 +26,9 @@ export default class Goal extends React.Component {
     this.checkStatus = this.checkStatus.bind(this);
     this.setColor = this.setColor.bind(this);
     this.setPercentage = this.setPercentage.bind(this);
+    this.handleBoxClick = this.handleBoxClick.bind(this);
+    this.checkBox = this.checkBox.bind(this);
+    this.uncheckBox = this.uncheckBox.bind(this);
     // this.validate = this.validate.bind(this);
     // this.handleBlur = this.handleBlur.bind(this);
   }
@@ -55,14 +59,14 @@ export default class Goal extends React.Component {
   setPercentage(percentage) {
     if (percentage >= 98) {
       this.setState({ percent: 100, color: '#00ff00' });
-      this.props.checkBox();
+      this.checkBox();
     } else if (percentage <= 2) {
       this.setState({ percent: 0, color: '#ff0000' });
-      this.props.uncheckBox();
+      this.uncheckBox();
     } else {
       this.setState({ percent: percentage });
       this.setColor(percentage);
-      this.props.uncheckBox();
+      this.uncheckBox();
     }
   }
 
@@ -149,6 +153,23 @@ export default class Goal extends React.Component {
     };
   }
 
+  handleBoxClick() {
+    if (this.state.status) {
+      this.setState({ status: false });
+    } else {
+      this.setState({ status: true });
+      this.setPercentage(100);
+    }
+  }
+
+  checkBox() {
+    this.setState({ status: true });
+  }
+
+  uncheckBox() {
+    this.setState({ status: false });
+  }
+
   // handleBlur() {
   //   this.setState({ subgoalVisited: true });
   // }
@@ -162,8 +183,11 @@ export default class Goal extends React.Component {
       this.state.subgoalEnabled = subgoal.length > 0;
     }
     const errors = this.validate(this.state.subgoal);
+
     return (
-      <div className="collapsible-body">Progress: {this.state.percent}%
+      <div className="collapsible-body">
+        <Input name="group1" type="checkbox" value="check" checked={this.state.status} label={'Done!'} onClick={this.handleBoxClick} /><br /><br />
+      Progress: {this.state.percent}%
       <br />
         <div style={containerStyle}>
           <Line percent={this.state.percent} strokeWidth="3" strokeColor={this.state.color} />

@@ -148,7 +148,6 @@ export default class Settings extends React.Component {
       contentType: 'application/json',
       data: JSON.stringify({ address: this.state.reminderAddress, name: this.state.profile.given_name, freq: this.state.reminderFreq }),
       success: (data) => {
-        console.log('SUCCESS: SENT NOTIFICATIONS', data);
         that.alertUser('Notifications');
         that.setState({ reminderAddress: '' });
       },
