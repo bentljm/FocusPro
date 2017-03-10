@@ -363,6 +363,7 @@ export default class Settings extends React.Component {
         <br />
         <div className="settingsBox z-depth-4">
           <h3> Personalization </h3>
+          Personalize your dashboard.
           <Row>
             <div className="label-header">Username</div>
             <Col s={10}>
@@ -400,6 +401,7 @@ export default class Settings extends React.Component {
         <br />
         <div className="settingsBox z-depth-4">
           <h3> Reminders </h3>
+          Send yourself daily self-reflection questions as a reminder to keep on working towards your goals.
           <Row>
             <Input s={8} label="Input Number/Email Address" value={this.state.reminderAddress} onChange={e => this.handleChange(e, 'reminderAddress')} onKeyPress={e => this.handleKeyPress(e, 'reminder')} />
             <Input s={2} type="select" label="Frequency" defaultValue="0" value={this.state.reminderFreq} onChange={e => this.handleChange(e, 'reminderFreq')} >
