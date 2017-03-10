@@ -48,7 +48,7 @@ export default class ReflectionQuestion extends React.Component {
     const exDataArr = [];
     let url;
     let count = 0; // counting when all async calls finish
-    blacklistData.forEach((blacklist, blacklistIndex) => {
+    blacklistData.forEach((blacklist) => {
       getExtensionDataAjax(this.state.profile.user_id, (data) => {
         // for each blacklist site, e.g. github.com
         // data returned include http://gist.github.com, http://www.github.com
@@ -64,9 +64,9 @@ export default class ReflectionQuestion extends React.Component {
         // {url: , blacklist_time: , time_spent: }
         // time_spent is the aggregation of time_spent today from listArr.history
         if (listArr.length > 0) {
-          //aggregate the time spent in each list in listArr
-          //set the url to be that of blacklist.url
-          const listTemp = {time_spent: 0};
+          // aggregate the time spent in each list in listArr
+          // set the url to be that of blacklist.url
+          const listTemp = { time_spent: 0 };
           // listArr.forEach(list => {
           //   console.log('list',list);
           //   // loop thru each elem in history array, if array[0] is today
@@ -114,7 +114,6 @@ export default class ReflectionQuestion extends React.Component {
           listTemp.url = blacklist.url;
           listTemp.blacklist_time = blacklist.blacklist_time;
 
-          //push the
           exDataArr.push(listTemp);
         }
         // if user has not opened the blacklist site at all
@@ -125,14 +124,14 @@ export default class ReflectionQuestion extends React.Component {
             time_spent: 0
           });
         }
-        console.log('exDataArr', exDataArr);
+        // console.log('exDataArr', exDataArr);
         // set state when all blacklist extension data have been extracted
-        count = count + 1;
-        console.log('count', count, 'blacklistData.length', blacklistData.length);
+        count += 1;
+        // console.log('count', count, 'blacklistData.length', blacklistData.length);
         if (count === blacklistData.length) {
           this.setState({
             extensionData: exDataArr,
-          }, ()=>{
+          }, () => {
             console.log('this.state.extensionData', this.state.extensionData);
           });
         }
