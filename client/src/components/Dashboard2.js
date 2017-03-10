@@ -259,12 +259,12 @@ export default class Dashboard2 extends React.Component {
             <div className="gotd z-depth-4">
               <h3 className="titleText"> Goal of the Day </h3>
               <Input s={11} className={errors.dayGoal && this.state.dayGoalVisited ? 'error' : 'white'} data-length="255" placeholder="Add new goal of the day" value={this.state.dayGoalInput} onChange={e => this.handleChange(e, 'dayGoalInput')} onKeyPress={this.handleQuoteKeyPress} onBlur={() => this.handleBlur('dayGoal')} />
-              <a href="#/new"><i className="material-icons small return">add_box</i></a>
+              <a href="#/settings"><i className="material-icons small return">add_box</i></a>
             </div>
           </Col>
           <Col s={3}>
             <div className="dashboardBox z-depth-4">
-              <h3 className="titleText">Blacklist</h3>
+              <h3 className="titleText">Blacklist <a href="#/new"><i className="material-icons small return">add_box</i></a></h3>
               <ul className="collapsible" data-collapsible="expandable">
               {this.state.blacklist.map(site =>
               <li key={`sites ${site.id}`}>
@@ -281,19 +281,11 @@ export default class Dashboard2 extends React.Component {
             <div className="dashboardBox z-depth-4">
               <h3 className="titleText">Goals <Motivational /></h3>
               {(this.state.goals.length === 0 || !this.state.profile.user_id) && <div className="setGoal">You have no goals set currently. Set one now.</div>}
-              {(this.state.goals.length > 0 && this.state.profile.user_id) && <ul className="collapsible" data-collapsible="expandable">
+              <ul className="collapsible" data-collapsible="expandable">
               {this.state.goals.map(goal =>
-                <li key={goal.id}>
-                  <div className="collapsible-header">{goal.goal}
-                    <a href="#/dashboard" onClick={() => this.removeGoal(goal.id)}>
-                      <Icon large right>keyboard_arrow_right</Icon>
-                      <Icon right>delete</Icon>
-                    </a>
-                  </div>
-                  <Goal goal={goal.id} user_id={this.state.profile.user_id} />
-                </li>
+                  <Goal goal={goal} user_id={this.state.profile.user_id} removeGoal={this.removeGoal}/>
                 )}
-            </ul>}
+              </ul>
             <Input s={11} className={errors.goal && this.state.goalVisited ? 'error' : 'white'} data-length="255" label="Set new goal" value={this.state.goalInput} onChange={e => this.handleChange(e, 'goalInput')} onKeyPress={this.handleKeyPress} onBlur={() => this.handleBlur('goal')} />
             <a href="#/new"><i className="material-icons small return">add_box</i></a>
             </div>
@@ -306,7 +298,7 @@ export default class Dashboard2 extends React.Component {
           </Col>
         </Row>
       </div>
-      )
+      );
 
   }
 }

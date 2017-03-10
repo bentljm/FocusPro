@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input } from 'react-materialize';
+import { Input, Icon } from 'react-materialize';
 import Subgoal from './Subgoal';
 
 const Line = require('rc-progress').Line;
@@ -35,6 +35,7 @@ export default class Goal extends React.Component {
 
   componentWillMount() {
     this.getSubgoals();
+    this.callCustomJQuery();
   }
 
   componentDidMount() {
@@ -46,7 +47,7 @@ export default class Goal extends React.Component {
     const that = this;
     $.ajax({
       type: 'GET', // GET REQUEST
-      url: `/api/goals/${this.props.goal}/subgoals`,
+      url: `/api/goals/${this.props.goal.id}/subgoals`,
       success: (data) => {
         console.log('SUCCESS: OBTAINED ALL SUBGOALS:', JSON.stringify(data.data));
         that.setState({ subgoals: data.data });
@@ -118,7 +119,7 @@ export default class Goal extends React.Component {
     const that = this;
     $.ajax({
       type: 'POST',
-      url: `/api/goals/${this.props.goal}/subgoals`,
+      url: `/api/goals/${this.props.goal.id}/subgoals`,
       contentType: 'application/json',
       data: JSON.stringify({ subgoal: this.state.subgoal, status: false, GoalId: this.props.goal }),
       success: (data) => {
@@ -185,25 +186,33 @@ export default class Goal extends React.Component {
     const errors = this.validate(this.state.subgoal);
 
     return (
-      <div className="collapsible-body">
-        <Input name="group1" type="checkbox" value="check" checked={this.state.status} label={'Done!'} onClick={this.handleBoxClick} /><br /><br />
-      Progress: {this.state.percent}%
-      <br />
-        <div style={containerStyle}>
-          <Line percent={this.state.percent} strokeWidth="3" strokeColor={this.state.color} />
+      <li key={this.props.goal.id}>
+        <div className="collapsible-header">{this.props.goal.goal}
+          <a href="#/dashboard">
+            <Icon large right>keyboard_arrow_right</Icon>
+            <Icon right>delete</Icon>
+          </a>
         </div>
+        <div className="collapsible-body">
+          <Input name="group1" type="checkbox" value="check" checked={this.state.status} label={'Done!'} onClick={this.handleBoxClick} /><br /><br />
+        Progress: {this.state.percent}%
         <br />
-      Subgoals:
-      <br />
-        {this.state.subgoals.length === 0 && <div> There is no subgoal set currently. </div>}
-        {this.state.subgoals.map(subgoals =>
-          <Subgoal increase={this.increaseProgress} decrease={this.decreaseProgress} key={`sub ${subgoals.id}`} subgoal={subgoals} status={subgoals.status} id={subgoals.id} user_id={this.props.user_id} goal={subgoals.GoalId} updateSubgoals={this.getSubgoals} />
-          )}
-        <div>
-          <Input s={12} className={errors.subgoal && this.state.subgoalVisited ? 'error' : 'white'} label="Set new subgoal" data-length="255" onChange={this.handleChange} value={this.state.subgoal} onKeyPress={this.handleKeyPress} onBlur={this.handleBlur} />
+          <div style={containerStyle}>
+            <Line percent={this.state.percent} strokeWidth="3" strokeColor={this.state.color} />
+          </div>
+          <br />
+        Subgoals:
+        <br />
+          {this.state.subgoals.length === 0 && <div> There is no subgoal set currently. </div>}
+          {this.state.subgoals.map(subgoals =>
+            <Subgoal increase={this.increaseProgress} decrease={this.decreaseProgress} key={`sub ${subgoals.id}`} subgoal={subgoals} status={subgoals.status} id={subgoals.id} user_id={this.props.user_id} goal={subgoals.GoalId} updateSubgoals={this.getSubgoals} />
+            )}
+          <div>
+            <Input s={12} className={errors.subgoal && this.state.subgoalVisited ? 'error' : 'white'} label="Set new subgoal" data-length="255" onChange={this.handleChange} value={this.state.subgoal} onKeyPress={this.handleKeyPress} onBlur={this.handleBlur} />
+          </div>
+          <br /><br /><br />
         </div>
-        <br /><br /><br />
-      </div>
+      </li>
     );
   }
 }
