@@ -245,6 +245,24 @@ div.collapsible-body.site {
   padding-bottom: 10px;
 }
 
+.settingsBox {
+  padding-top: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 5px;
+  background: white;
+}
+
+button#pageDropDown.btn.btn-default.dropdown-toggle {
+  background-color: #50E3C2;
+  color: black;
+}
+
+table.table.table-hover.table-bordered {
+  border: 1px solid;
+  outline: black;
+}
+
 @media screen and (max-width: 1000px) {
   div.main {
     margin: 20px !important;

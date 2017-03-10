@@ -4,7 +4,6 @@ import Subgoal from './Subgoal';
 
 const Line = require('rc-progress').Line;
 
-// Todo: Replace with better slider
 export default class Goal extends React.Component {
   constructor(props) {
     super(props);
