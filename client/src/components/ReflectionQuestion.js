@@ -56,7 +56,7 @@ export default class ReflectionQuestion extends React.Component {
           // each url in DB, remove http://www
           // return if blacklist contains the blacklist-url in DB
           url = (urlObj.url).replace(/http(s*)\:\/\/([www.]*)/, '');
-          console.log('blacklist.url', blacklist.url, 'url', url, 'length', data.data.length);
+          //console.log('blacklist.url', blacklist.url, 'url', url, 'length', data.data.length);
           return new RegExp(url).test(blacklist.url);
         });
 
@@ -132,7 +132,7 @@ export default class ReflectionQuestion extends React.Component {
           this.setState({
             extensionData: exDataArr,
           }, () => {
-            console.log('this.state.extensionData', this.state.extensionData);
+            //console.log('this.state.extensionData', this.state.extensionData);
           });
         }
       }, blacklist); // end extension data Ajax
@@ -150,7 +150,7 @@ export default class ReflectionQuestion extends React.Component {
           exDataArrTemp[i].color = 'text-green';
         }
       }
-      console.log('url color', exDataArrTemp[i].url, exDataArrTemp[i].color);
+      //console.log('url color', exDataArrTemp[i].url, exDataArrTemp[i].color);
     }
     this.setState({
       extensionData: exDataArrTemp,
@@ -170,7 +170,7 @@ export default class ReflectionQuestion extends React.Component {
   isStickToTime(exDataArr) {
     return exDataArr.every((list) => {
       const timeSpent = list.time_spent || 0;
-      console.log('time vs bt', timeSpent, list.blacklist_time);
+      //console.log('time vs bt', timeSpent, list.blacklist_time);
       return (timeSpent <= list.blacklist_time);
     });
   }
@@ -180,9 +180,9 @@ export default class ReflectionQuestion extends React.Component {
     let stickToTime = true;
 
     awareOfTime = this.isAwareOfTime(this.state.extensionData);
-    console.log('awareOfTime', awareOfTime);
+    //console.log('awareOfTime', awareOfTime);
     stickToTime = this.isStickToTime(this.state.extensionData);
-    console.log('stickToTime', stickToTime);
+    //console.log('stickToTime', stickToTime);
 
 
     this.displayOpenQuestions(awareOfTime, stickToTime);
@@ -192,7 +192,7 @@ export default class ReflectionQuestion extends React.Component {
   // save user guessed time with extensionData
   handleTimeChange(event, key) {
     const tempArr = this.state.extensionData;
-    console.log('extensionData change', tempArr, key);
+    //console.log('extensionData change', tempArr, key);
     tempArr[key].time_guessed = event.target.value;
     this.setState({
       extensionData: tempArr,
@@ -229,7 +229,7 @@ export default class ReflectionQuestion extends React.Component {
     const qaArray = this.transformQAData();
     qaArray.forEach((qa) => {
       postReflectionAjax(this.state.profile.user_id, qa, (data) => {
-        console.log('submit reflection', data);
+        //console.log('submit reflection', data);
         window.location = '/#/selfreflection';
       });
     });
@@ -305,7 +305,6 @@ const OpenQuestions = ({ qSet, callback, submitCallback }) => (
       <Row>
         <h1>Reflection Questions</h1>
         <Feedback feedback={qSet.feedback} />
-        {console.log('qset feedback', qSet, qSet.feedback)}
       </Row>
       {qSet.questions.map((question, ind) => (
         <Row key={ind.toString()}>

@@ -36,7 +36,6 @@ export default class Site extends React.Component {
   }
 
   openCollapsible() {
-    console.log('CLICK');
     const open = this.state.open;
     this.setState({ open: !open });
   }

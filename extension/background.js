@@ -4,6 +4,7 @@
 //Move history saving to clearNotifications
 //Give blocking the same treatment as warning with the increasing time limit
 //Change all ajax request urls for deployment
+//Move all listeners into one function
 
 //Clearing data
 //Clear all notifications every 24 hours at midnight
@@ -14,7 +15,7 @@ chrome.alarms.create("updateApp", {periodInMinutes: 30});
 
 chrome.alarms.onAlarm.addListener(function(alarm) {
   if (alarm.name === "updateApp" && localStorage.auth0_id) {
-    console.log('sending stats!');
+    //console.log('sending stats!');
     sendAppStats();
 
   } else if (alarm.name === "clearNotifications") {
@@ -25,7 +26,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
       var siteTime = sites[`http://${warn[i][0]}`] || sites[`https://${warn[i][0]}`];
       warn[i][1] = warn[i][1] + siteTime;
     }
-    console.log('update warn time');
+    //console.log('update warn time');
     localStorage.warn = JSON.stringify(warn);
   }
 });
@@ -40,15 +41,15 @@ function sendAppStats() {
     for (var i = 0; i < blacklist.length; i++) {
       var re = new RegExp(blacklist[i]['url'].replace(/www./, ''));
       if (re.test(prop)) {
-        console.log('blacklist site found!', prop);
+        //console.log('blacklist site found!', prop);
         //If it matches, check if there's already history information stored
         if (blacklist[i]['history']) {
-          console.log('adding to history', blacklist[i]['history']);
+          //console.log('adding to history', blacklist[i]['history']);
           //Push [Date, time spent] to blacklist history and to history to be sent
           blacklist[i]['history'].push([Date.now().toString(), JSON.parse(localStorage.sites)[prop].toString()]);
           history = blacklist[i]['history'];
         } else {
-          console.log('starting history');
+          //console.log('starting history');
           //If it matches and no existing history, create empty array
           blacklist[i]['history'] = [];
         }
@@ -60,14 +61,14 @@ function sendAppStats() {
   }
   $.ajax({
     type: 'POST',
-    url: `http://localhost:7777/api/users/${localStorage.auth0_id}/extension_data`,
+    url: `/api/users/${localStorage.auth0_id}/extension_data`,
     contentType: 'application/json',
     data: JSON.stringify({ urls:allSites }),
     success: function() {
-      console.log('success!');
+      //console.log('success!');
     },
     error: function(err) {
-      console.log('error', err);
+      //console.log('error', err);
     },
   });
 }
@@ -110,7 +111,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
               //Create an alarm that will notify when 24 hr block has ended (1440 min)
               chrome.alarms.create(`block${site[0]}`, {delayInMinutes: 1440});
               //Add the site to blackout
-              console.log('Alarm created, now blocking!', site[0]);
+              //console.log('Alarm created, now blocking!', site[0]);
               blackout.push(site[0]);
               localStorage.blackout = JSON.stringify(blackout);
             }
@@ -133,7 +134,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
               if (diff > 10) {
                 //Send notification
                 chrome.alarms.create(`notificationWarning${site[0]}`, {when: 0});
-                console.log('TIME LIMIT EXCEEDED. THIS IS A NOTIFICATION', site);
+                //console.log('TIME LIMIT EXCEEDED. THIS IS A NOTIFICATION', site);
                 //Update last notified time site[2]
                 site[2] = (sites[prop]/60);
               }
@@ -141,7 +142,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
               site.push(sites[prop]/60);
               //Send notification
               chrome.alarms.create(`notificationWarning${site[0]}`, {when: 0});
-              console.log('FIRST TIME. TIME LIMIT EXCEEDED. THIS IS A NOTIFICATION', site);
+              //console.log('FIRST TIME. TIME LIMIT EXCEEDED. THIS IS A NOTIFICATION', site);
             }
           }
         }
@@ -156,7 +157,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
   if(alarm.name.includes("block")) {
     var site = alarm.name.replace("block", ""); //Get site name
     var blackout = JSON.parse(localStorage.blackout);
-    console.log('Time to unblock', site);
+    //console.log('Time to unblock', site);
     blackout = blackout.filter((e) => {
       return !e.includes(site); //Filter out that site
     });
@@ -174,7 +175,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
     chrome.tabs.query({currentWindow: true, active: true}, function(tabs){
       var url = tabs[0].url.match(/^(\w+:\/\/[^\/]+).*$/)[1];
       url = url.replace(/https?:\/\//, "");
-      console.log('notification sent');
+      //console.log('notification sent');
       if (site.includes(url)) {
         chrome.notifications.create('notificationAlarm', {type: 'basic', iconUrl: 'icon128.png', title: 'Notification', message: `You have exceeded the time set for ${site}. Are you being productive towards your goal?`});
       }
@@ -222,7 +223,7 @@ chrome.extension.onRequest.addListener(
       config.addIgnoredSite(request.site);
       sendResponse({});
     } else {
-      console.log("Invalid action given: " + request.action);
+      //console.log("Invalid action given: " + request.action);
     }
   });
 

@@ -6,7 +6,7 @@ function reload() {
 }
 //Blacklist display
 function displayBlacklist() {
-  console.log('localStorage.blackout',localStorage.blackout);
+  //console.log('localStorage.blackout',localStorage.blackout);
   if ((localStorage.blackout)) {
     var blackout = JSON.parse(localStorage.blackout);
     blackout = blackout.filter(e => e);
@@ -60,9 +60,9 @@ function addAuth0Id(){
 function updateBlacklist(){
   $.ajax({
     type: 'GET',
-    url: `http://localhost:7777/api/users/${localStorage.auth0_id}/blacklist`,
+    url: `/api/users/${localStorage.auth0_id}/blacklist`,
     success: function(data) {
-      console.log('SUCCESS: OBTAINED BLACKLIST: ', data.data);
+      //console.log('SUCCESS: OBTAINED BLACKLIST: ', data.data);
       //Create list of blacklist urls
       var newList = [];
       data.data.forEach(function(e) {newList.push(e.url);});
@@ -79,7 +79,7 @@ function updateBlacklist(){
           blacklist.push(e);
         }
       });
-      console.log('blacklist', blacklist);
+      //console.log('blacklist', blacklist);
       // Store all sites to blackout inside localStorage.blackout
       // Store all sites to block after certain time inside localStorage.block
       // Store all sites to warn after certain time inside localStorage.warn
@@ -107,11 +107,11 @@ function updateBlacklist(){
       localStorage.block = JSON.stringify(block.filter(e => e)); //[[url, time], [url, time]]
       localStorage.warn = JSON.stringify(warn.filter(e => e)); //[[url, time, lastWarned], [url, time, lastWarned]]
       localStorage.blacklist = JSON.stringify(blacklist.filter(e => e)); //[{}]
-      console.log('localStorage', localStorage.blackout, localStorage.block, localStorage.warn);
+      //console.log('localStorage', localStorage.blackout, localStorage.block, localStorage.warn);
       reload();
     },
     error: function(err) {
-      console.log('error', err);
+      //console.log('error', err);
     },
   });
 }
@@ -222,8 +222,8 @@ document.addEventListener("DOMContentLoaded", function () {
     "click", removeIgnoredSites);
   // document.getElementById("clear_stats_interval").addEventListener(
   //   "change", updateClearStatsInterval);
-  document.getElementById("time_display").addEventListener(
-    "change", updateTimeDisplay);
+  // document.getElementById("time_display").addEventListener(
+  //   "change", updateTimeDisplay);
   document.getElementById("download").addEventListener(
     "click", download);
   document.getElementById("add_auth0_id").addEventListener(

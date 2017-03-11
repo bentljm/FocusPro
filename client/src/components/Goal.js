@@ -54,7 +54,9 @@ export default class Goal extends React.Component {
         that.setState({ subgoals: data.data });
         that.checkStatus();
       },
-      error: (err) => { console.log('ERROR: COULD NOT GET SUBGOALS', err); },
+      error: (err) => {
+        //console.log('ERROR: COULD NOT GET SUBGOALS', err);
+      },
     });
   }
 
@@ -128,7 +130,9 @@ export default class Goal extends React.Component {
         that.cleanInput();
         that.alertConfirmation();
       },
-      error: (err) => { console.log('ERROR: COULD NOT POST INDIVIDUAL GOAL', err); },
+      error: (err) => {
+        //console.log('ERROR: COULD NOT POST INDIVIDUAL GOAL', err);
+      },
     });
   }
 

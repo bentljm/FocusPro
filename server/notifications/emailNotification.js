@@ -6,7 +6,7 @@ var CronJob = require('cron').CronJob;
 var notificationFreq;
 
 function sendMail(name, receiver, frequency, reflections) {
-  console.log("NOTIFICATION SENT");
+  //console.log("NOTIFICATION SENT");
   //loop thru reflections and grab all the questions
   // var reflect = 0;
   // for (var i = 0; i < reflections.length; i++) {
@@ -26,7 +26,7 @@ function sendMail(name, receiver, frequency, reflections) {
   //read through html template
   fs.readFile(__dirname + template, 'utf8', function(err, html) {
     if (err) {
-      console.log('error', err);
+      //console.log('error', err);
     } else {
       //compile html using handlebars
       var emailTemplate = handlebars.compile(html);
@@ -57,7 +57,7 @@ function sendMail(name, receiver, frequency, reflections) {
         });
 
       }, function () {
-          /* This function is executed when the job stops */
+           //This function is executed when the job stops
           console.log("DONE");
         },
         true, /* Start the job right now */

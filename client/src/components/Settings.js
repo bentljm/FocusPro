@@ -59,13 +59,15 @@ export default class Settings extends React.Component {
       type: 'GET',
       url: `/api/users/${this.state.profile.user_id}`,
       success: (data) => {
-        console.log('SUCCESS: GOT USERID', data.data[0].id);
+        //console.log('SUCCESS: GOT USERID', data.data[0].id);
         that.setState({ userId: data.data[0].id });
         that.setState({ username: data.data[0].username || this.state.profile.nickname }, () => {
           that.initialiseSettings();
         });
       },
-      error: (err) => { console.log('ERROR: COULD NOT GET USERID', err); },
+      error: (err) => {
+        //console.log('ERROR: COULD NOT GET USERID', err);
+      },
     });
   }
 
@@ -75,7 +77,7 @@ export default class Settings extends React.Component {
       type: 'GET', // GET REQUEST
       url: `/api/users/${this.state.profile.user_id}/setting`,
       success: (data) => {
-        console.log('SUCCESS: OBTAINED SETTINGS: ', data);
+        //console.log('SUCCESS: OBTAINED SETTINGS: ', data);
         that.setState({ setting: data.data[0] }, () => {
           that.initialiseSettings();
         });
@@ -89,7 +91,9 @@ export default class Settings extends React.Component {
         });
         // that.initialiseSettings();
       },
-      error: (err) => { console.log('ERROR: COULD NOT GET SETTINGS', err); },
+      error: (err) => {
+        //console.log('ERROR: COULD NOT GET SETTINGS', err);
+      },
     });
   }
 
@@ -99,10 +103,12 @@ export default class Settings extends React.Component {
       type: 'GET', // GET REQUEST
       url: `/api/users/${this.state.profile.user_id}/blacklist`,
       success: (data) => {
-        console.log('SUCCESS: OBTAINED BLACKLIST: ', data.data);
+        //console.log('SUCCESS: OBTAINED BLACKLIST: ', data.data);
         that.setState({ blacklist: data.data });
       },
-      error: (err) => { console.log('ERROR: COULD NOT GET BLACKLIST', err); },
+      error: (err) => {
+        //console.log('ERROR: COULD NOT GET BLACKLIST', err);
+      },
     });
   }
 
@@ -120,10 +126,12 @@ export default class Settings extends React.Component {
       type: 'DELETE',
       url: `/api/blacklist/${url_id}`,
       success: (data) => {
-        console.log('Sucessfully deleted', data);
+        //console.log('Sucessfully deleted', data);
         that.getBlacklist();
       },
-      error: (err) => { console.log('Error deleting', err); },
+      error: (err) => {
+        //console.log('Error deleting', err);
+      },
     });
   }
 
@@ -135,10 +143,12 @@ export default class Settings extends React.Component {
       contentType: 'application/json',
       data: JSON.stringify({ username }),
       success: () => {
-        console.log('SUCCESS: UPDATED USERNAME');
+        //console.log('SUCCESS: UPDATED USERNAME');
         that.alertUser('Username');
       },
-      error: (err) => { console.log('ERROR: COULD NOT GET USERID', err); },
+      error: (err) => {
+        //console.log('ERROR: COULD NOT GET USERID', err);
+      },
     });
   }
 
@@ -153,7 +163,9 @@ export default class Settings extends React.Component {
         that.alertUser('Notifications');
         that.setState({ reminderAddress: '' });
       },
-      error: (err) => { console.log('ERROR: COULD NOT SEND NOTIFICATIONS', err); },
+      error: (err) => {
+        //console.log('ERROR: COULD NOT SEND NOTIFICATIONS', err);
+      },
     });
   }
 
@@ -201,7 +213,7 @@ export default class Settings extends React.Component {
       contentType: 'application/json',
       data: JSON.stringify({ url: siteURL, blacklist_type: siteType, blacklist_time: siteTime, SettingId: that.state.setting.id }),
       success: (data) => {
-        console.log('SUCCESS: POSTED BLACKLIST: ', data);
+        //console.log('SUCCESS: POSTED BLACKLIST: ', data);
         that.getBlacklist();
         that.alertUser('Blacklist site');
         that.setState({
@@ -210,7 +222,9 @@ export default class Settings extends React.Component {
           siteLimit: 0,
         });
       },
-      error: (err) => { console.log('ERROR: COULD NOT GET USERID', err); },
+      error: (err) => {
+        //console.log('ERROR: COULD NOT GET USERID', err);
+      },
     });
   }
 
@@ -227,10 +241,12 @@ export default class Settings extends React.Component {
         reminder_freq: remind_freq || this.state.setting.reminder_freq,
         reminder_address: remind_addr || this.state.setting.reminder_address }),
       success: (data) => {
-        console.log('SUCCESS: POSTED SETTING: ', data);
+        //console.log('SUCCESS: POSTED SETTING: ', data);
         this.getSetting();
       },
-      error: (err) => { console.log('ERROR: COULD NOT POST SETTING', err); },
+      error: (err) => {
+        //console.log('ERROR: COULD NOT POST SETTING', err);
+      },
     });
   }
 
@@ -374,17 +390,6 @@ export default class Settings extends React.Component {
               <button className="waves-effect waves-teal btn-flat btn-small" style={this.state.labelStyle.username} onClick={() => this.editStyle('username')}><i className="material-icons small">mode_edit</i></button>
             </Col>
             <Input s={10} data-length="255" placeholder="Enter Username (Mandatory)" value={this.state.username} onChange={e => this.handleChange(e, 'username')} onKeyPress={e => this.handleKeyPress(e, 'username')} onBlur={() => this.handleSubmission('username')} style={this.state.inputStyle.username} />
-          </Row>
-          <Row>
-            <div className="label-header">Image</div>
-            <Col s={10}>
-              <div onDoubleClick={() => this.editStyle('image')} style={this.state.labelStyle.image}>{this.state.image}
-              </div>
-            </Col>
-            <Col s={2}>
-              <button className="waves-effect waves-teal btn-flat btn-small" style={this.state.labelStyle.image} onClick={() => this.editStyle('image')}><i className="material-icons small">mode_edit</i></button>
-            </Col>
-            <Input s={10} data-length="255" placeholder="Enter Image URL" value={this.state.image} onChange={e => this.handleChange(e, 'image')} onBlur={() => this.handleSubmission('image')} onKeyPress={e => this.handleKeyPress(e, 'image')} style={this.state.inputStyle.image} />
           </Row>
           <Row>
             <div className="label-header">Quote</div>
