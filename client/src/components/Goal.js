@@ -13,6 +13,7 @@ export default class Goal extends React.Component {
       subgoalVisited: false,
       subgoalEnabled: false,
       percent: 0,
+      previousPercent: 0,
       color: '#ff0000',
       status: false,
       open: false,
@@ -50,7 +51,6 @@ export default class Goal extends React.Component {
       type: 'GET', // GET REQUEST
       url: `/api/goals/${this.props.goal.id}/subgoals`,
       success: (data) => {
-        console.log('SUCCESS: OBTAINED ALL SUBGOALS:', JSON.stringify(data.data));
         that.setState({ subgoals: data.data });
         that.checkStatus();
       },
@@ -123,8 +123,7 @@ export default class Goal extends React.Component {
       url: `/api/goals/${this.props.goal.id}/subgoals`,
       contentType: 'application/json',
       data: JSON.stringify({ subgoal: this.state.subgoal, status: false, GoalId: this.props.goal }),
-      success: (data) => {
-        console.log('SUCCESS: POSTED INDIVIDUAL GOAL: ', data);
+      success: () => {
         that.getSubgoals();
         that.cleanInput();
         that.alertConfirmation();
@@ -156,10 +155,10 @@ export default class Goal extends React.Component {
   }
 
   handleBoxClick() {
-    if (this.state.status) {
-      this.setState({ status: false });
+    if (this.state.status === true) {
+      this.setPercentage(this.state.previousPercent);
     } else {
-      this.setState({ status: true });
+      this.setState({ previousPercent: this.state.percent });
       this.setPercentage(100);
     }
   }
