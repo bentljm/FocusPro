@@ -57,7 +57,7 @@ function sendMail(name, receiver, frequency, reflections) {
         });
 
       }, function () {
-          /* This function is executed when the job stops */
+           This function is executed when the job stops
           console.log("DONE");
         },
         true, /* Start the job right now */

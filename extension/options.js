@@ -60,7 +60,7 @@ function addAuth0Id(){
 function updateBlacklist(){
   $.ajax({
     type: 'GET',
-    url: `http://localhost:7777/api/users/${localStorage.auth0_id}/blacklist`,
+    url: `/api/users/${localStorage.auth0_id}/blacklist`,
     success: function(data) {
       console.log('SUCCESS: OBTAINED BLACKLIST: ', data.data);
       //Create list of blacklist urls
@@ -222,8 +222,8 @@ document.addEventListener("DOMContentLoaded", function () {
     "click", removeIgnoredSites);
   // document.getElementById("clear_stats_interval").addEventListener(
   //   "change", updateClearStatsInterval);
-  document.getElementById("time_display").addEventListener(
-    "change", updateTimeDisplay);
+  // document.getElementById("time_display").addEventListener(
+  //   "change", updateTimeDisplay);
   document.getElementById("download").addEventListener(
     "click", download);
   document.getElementById("add_auth0_id").addEventListener(

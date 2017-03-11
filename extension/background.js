@@ -4,6 +4,7 @@
 //Move history saving to clearNotifications
 //Give blocking the same treatment as warning with the increasing time limit
 //Change all ajax request urls for deployment
+//Move all listeners into one function
 
 //Clearing data
 //Clear all notifications every 24 hours at midnight
@@ -60,7 +61,7 @@ function sendAppStats() {
   }
   $.ajax({
     type: 'POST',
-    url: `http://localhost:7777/api/users/${localStorage.auth0_id}/extension_data`,
+    url: `/api/users/${localStorage.auth0_id}/extension_data`,
     contentType: 'application/json',
     data: JSON.stringify({ urls:allSites }),
     success: function() {

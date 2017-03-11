@@ -376,17 +376,6 @@ export default class Settings extends React.Component {
             <Input s={10} data-length="255" placeholder="Enter Username (Mandatory)" value={this.state.username} onChange={e => this.handleChange(e, 'username')} onKeyPress={e => this.handleKeyPress(e, 'username')} onBlur={() => this.handleSubmission('username')} style={this.state.inputStyle.username} />
           </Row>
           <Row>
-            <div className="label-header">Image</div>
-            <Col s={10}>
-              <div onDoubleClick={() => this.editStyle('image')} style={this.state.labelStyle.image}>{this.state.image}
-              </div>
-            </Col>
-            <Col s={2}>
-              <button className="waves-effect waves-teal btn-flat btn-small" style={this.state.labelStyle.image} onClick={() => this.editStyle('image')}><i className="material-icons small">mode_edit</i></button>
-            </Col>
-            <Input s={10} data-length="255" placeholder="Enter Image URL" value={this.state.image} onChange={e => this.handleChange(e, 'image')} onBlur={() => this.handleSubmission('image')} onKeyPress={e => this.handleKeyPress(e, 'image')} style={this.state.inputStyle.image} />
-          </Row>
-          <Row>
             <div className="label-header">Quote</div>
             <Col s={10}>
               <div onDoubleClick={() => this.editStyle('quote')} style={this.state.labelStyle.quote}>{this.state.quote}
