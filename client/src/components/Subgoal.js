@@ -17,10 +17,12 @@ export default class Subgoal extends React.Component {
       url: `/api/subgoals/${this.props.id}`,
       contentType: 'application/json',
       success: (data) => {
-        console.log('SUCCESS: GET SINGLE SUBGOAL: ', data);
+        //console.log('SUCCESS: GET SINGLE SUBGOAL: ', data);
         this.setState({ status: data.data.status });
       },
-      error: (err) => { console.log('ERROR: COULD NOT GET SINGLE SUBGOAL', err); },
+      error: (err) => {
+        //console.log('ERROR: COULD NOT GET SINGLE SUBGOAL', err);
+      },
     });
   }
 
@@ -37,10 +39,12 @@ export default class Subgoal extends React.Component {
       contentType: 'application/json',
       data: JSON.stringify({ status: !that.state.status }),
       success: (data) => {
-        console.log('SUCCESS: UPDATED SUBGOAL: ', data);
+        //console.log('SUCCESS: UPDATED SUBGOAL: ', data);
         that.getSubgoal();
       },
-      error: (err) => { console.log('ERROR: COULD NOT PUT INDIVIDUAL SUBGOAL', err); },
+      error: (err) => {
+        //console.log('ERROR: COULD NOT PUT INDIVIDUAL SUBGOAL', err);
+      },
     });
   }
 
@@ -50,10 +54,12 @@ export default class Subgoal extends React.Component {
       type: 'DELETE',
       url: `/api/subgoals/${this.props.id}`,
       success: (data) => {
-        console.log('Remove subgoal:', data);
+        //console.log('Remove subgoal:', data);
         that.props.updateSubgoals();
       },
-      error: (err) => { console.log('ERROR: COULD NOT GET ALL GOALS', err); },
+      error: (err) => {
+        //console.log('ERROR: COULD NOT GET ALL GOALS', err);
+      },
     });
   }
 

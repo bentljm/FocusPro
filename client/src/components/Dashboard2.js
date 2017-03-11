@@ -64,13 +64,13 @@ export default class Dashboard2 extends React.Component {
       type: 'GET',
       url: `api/users/${this.state.profile.user_id}`,
       success: (data) => {
-        console.log('SUCCESS: GOT USER INFO', data.data[0]);
+        //console.log('SUCCESS: GOT USER INFO', data.data[0]);
         that.setState({ userId: data.data[0].id });
         that.setState({ username: data.data[0].username || this.state.profile.nickname });
         that.setState({ dayGoalInput: data.data[0].daily_goal || '' });
       },
       error: (err) => {
-        console.log('ERROR: COULD NOT GET USERID', err);
+        //console.log('ERROR: COULD NOT GET USERID', err);
       },
     });
   }
@@ -81,7 +81,7 @@ export default class Dashboard2 extends React.Component {
       type: 'GET', // GET REQUEST
       url: `/api/users/${this.state.profile.user_id}/setting`,
       success: (data) => {
-        console.log('SUCCESS: OBTAINED SETTINGS: ', data.data[0]);
+        //console.log('SUCCESS: OBTAINED SETTINGS: ', data.data[0]);
         that.setState({ setting: data.data[0] });
       },
       error: (err) => { console.log('ERROR: COULD NOT GET SETTINGS', err); },
@@ -94,7 +94,7 @@ export default class Dashboard2 extends React.Component {
       type: 'GET', // GET REQUEST
       url: `/api/users/${this.state.profile.user_id}/blacklist`,
       success: (data) => {
-        console.log('SUCCESS: OBTAINED BLACKLIST: ', data.data);
+        //console.log('SUCCESS: OBTAINED BLACKLIST: ', data.data);
         // Do not show blackout sites
         const filtered = data.data.filter(e => e.blacklist_type !== '1');
         that.setState({ blacklist: filtered });
@@ -109,10 +109,12 @@ export default class Dashboard2 extends React.Component {
       type: 'GET', // GET REQUEST
       url: `/api/users/${this.state.profile.user_id}/goals/`,
       success: (data) => {
-        console.log('SUCCESS: OBTAINED ALL GOALS:', data);
+        //console.log('SUCCESS: OBTAINED ALL GOALS:', data);
         that.setState({ goals: data.data });
       },
-      error: (err) => { console.log('ERROR: COULD NOT GET ALL GOALS', err); },
+      error: (err) => {
+        //console.log('ERROR: COULD NOT GET ALL GOALS', err);
+      },
     });
   }
 
@@ -122,10 +124,12 @@ export default class Dashboard2 extends React.Component {
       type: 'GET', // GET REQUEST
       url: `/api/users/${this.state.profile.user_id}/extension_data`,
       success: (data) => {
-        console.log('SUCCESS: OBTAINED EXTENSION DATA: ', data.data);
+        //console.log('SUCCESS: OBTAINED EXTENSION DATA: ', data.data);
         that.setState({ extension: data.data });
       },
-      error: (err) => { console.log('ERROR: COULD NOT GET EXTENSION DATA', err); },
+      error: (err) => {
+        //console.log('ERROR: COULD NOT GET EXTENSION DATA', err);
+      },
     });
   }
 
@@ -136,7 +140,7 @@ export default class Dashboard2 extends React.Component {
         siteInfo = this.state.extension[i];
       }
     }
-    console.log('siteInfo', siteInfo);
+    //console.log('siteInfo', siteInfo);
     return siteInfo;
   }
   handleChange(event, str) {
@@ -167,10 +171,12 @@ export default class Dashboard2 extends React.Component {
       contentType: 'application/json',
       data: JSON.stringify({ daily_goal: this.state.dayGoalInput }),
       success: (data) => {
-        console.log('Update daily goal to', data);
+        //console.log('Update daily goal to', data);
         that.alertGoalAdded('Goal of the Day');
       },
-      error: (err) => { console.log('Error updating daily goal', err); },
+      error: (err) => {
+        //console.log('Error updating daily goal', err);
+      },
     });
   }
 
@@ -182,26 +188,30 @@ export default class Dashboard2 extends React.Component {
       contentType: 'application/json',
       data: JSON.stringify({ goal: this.state.goalInput, progress: 0, goal_picture: '', UserId: this.state.userId }),
       success: (data) => {
-        console.log('SUCCESS: POSTED INDIVIDUAL GOAL: ', data);
+        //console.log('SUCCESS: POSTED INDIVIDUAL GOAL: ', data);
         that.getAllGoals();
         that.cleanInput();
         that.alertGoalAdded('Goal');
       },
-      error: (err) => { console.log('ERROR: COULD NOT POST INDIVIDUAL GOAL', err); },
+      error: (err) => {
+        //console.log('ERROR: COULD NOT POST INDIVIDUAL GOAL', err);
+      },
     });
   }
 
   removeGoal(goal_id) {
     const that = this;
-    console.log('goal_id', goal_id);
+    //console.log('goal_id', goal_id);
     $.ajax({
       type: 'DELETE',
       url: `/api/goals/${goal_id}`,
       success: (data) => {
-        console.log('Remove goal:', data);
+        //console.log('Remove goal:', data);
         that.getAllGoals();
       },
-      error: (err) => { console.log('ERROR: COULD NOT REMOVE THE GOAL', err); },
+      error: (err) => {
+        //console.log('ERROR: COULD NOT REMOVE THE GOAL', err);
+      },
     });
   }
 

@@ -36,7 +36,9 @@ export default class Stat extends React.Component {
         }
         that.setState({ data: pieData });
       },
-      error: (err) => { console.log('ERROR: COULD NOT GET EXTENSION DATA', err); },
+      error: (err) => {
+        //console.log('ERROR: COULD NOT GET EXTENSION DATA', err);
+      },
     });
   }
 
